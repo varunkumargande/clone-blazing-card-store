@@ -13,7 +13,7 @@ import Router from 'next/router';
 import { Flip, ToastContainer,Zoom } from "react-toastify";
 import 'react-toastify/scss/main.scss'
 import { LanguageSwitcherAPi } from '../api/account/languageSwitcherAPi';
-
+import '../scss/elements/_streaming.scss';
 
 
 
