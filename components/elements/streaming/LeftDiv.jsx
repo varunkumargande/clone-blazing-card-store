@@ -2,10 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 
 function LeftDiv(){
-    const tabs = ["Auction", "Buy now", "Giveaway", "Sold", "Purchased"]
+    const tabs = ["Auction", "Buy now", "Giveaway", "Sold"]
     return(
         <div className='streaming-div-left'>
-            {/* In left div */}
             <h1>STREAM NAME</h1>
             <div className='stream-nav' >
                 {
@@ -15,7 +14,7 @@ function LeftDiv(){
                 }
             </div>
             <div className='product-quick-search'>
-                <input type="text" className='form-control' placeholder='Search products...'/>
+                <input type="text" className='form-control curved-box' placeholder='Search products...'/>
             </div>
             <div className='product-list'>
                 0 products
