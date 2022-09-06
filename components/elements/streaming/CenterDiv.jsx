@@ -2,6 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 
 function CenterDiv(){
+    const handleMuteButton = ()=>{
+        console.log("here");
+    }
+   
     return(
         <div className='streaming-div-center'>
             <div className='seller-info'>
@@ -10,10 +14,7 @@ function CenterDiv(){
                 </div>
                 <div id="seller-rating">
                     <span>
-                        4.96
-                    </span>
-                    <span>
-                        169 Ratings
+                        4.96  169 Ratings
                     </span>
                 </div>
                 <div id="followers">
@@ -37,7 +38,24 @@ function CenterDiv(){
                 </div>
             </div>
             <div className='streaming-base'>
-                Inside streaming
+                <span>
+                    38
+                </span>
+                <div class="volume">
+                <input type="range" min="0" max="100" value="50" class="volume-range"/>
+                <div class="icon">
+                    <i class="fa fa-volume-up icon-size" aria-hidden="true"></i>
+                </div>
+                <div class="bar-hoverbox">
+                    <div class="bar">
+                    <div class="bar-fill"></div>
+                </div>
+                </div>
+                </div>
+
+                <div>
+                    <button id="mute-button" className='curved-box' onClick={handleMuteButton}>Mute</button>
+                </div>
             </div>
         </div>
     )

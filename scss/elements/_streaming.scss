@@ -3,8 +3,7 @@
   flex-wrap: wrap;
   font-size: 30px;
   text-align: center;
-  // background-color: black;
-  min-height: 100vh;
+  min-height: 650px;
   margin: 0;
   .curved-box{
     border-radius: 40px;
@@ -13,7 +12,6 @@
     background-color: pink;
     padding: 15px;
     flex: 25%;
-    // position: relative;
     h1{
       padding: 10px;
       margin: 0px;
@@ -22,8 +20,6 @@
     }
     h5{
       padding: 10px;
-      // font-size: 15px;
-      // display: flex;
      a:focus{
       text-decoration: underline;
      }
@@ -38,14 +34,12 @@
     .product-quick-search{
       
       input{
-        // border-radius: 40px;
         background-color: white;
       }
     }
     .product-list{
       text-align: left;
       font-size: 20px;
-      // background-color: red;
       padding: 10px;
     }
   }
@@ -59,9 +53,10 @@
     .seller-info{
       text-align: left;
       flex: 50%;
-      background-color: red;
+      // background-color: red;
       height: 100px;
       overflow: hidden;
+      z-index: 1;
       #seller-name{
         font-size: 14px;
       }
@@ -81,7 +76,7 @@
       
     }
     .social-presence{
-      background-color: green;
+      // background-color: green;
       flex: 50%;
       height: 100px;
       text-align: right;
@@ -100,10 +95,22 @@
     .streaming-base{
       background-color: black;
       position: absolute;
-      top: 32px;
       left: 28%;
-      min-height: 500px;
+      min-height: 600px;
       width: 300px;
+      span{
+        background-color: yellow;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 50%;
+        position: absolute;
+        right: -5px;
+        top: -10px
+      }
+      #mute-button{
+        background-color: yellow;
+        font-size: 10px;
+      }
     }
   }
   
@@ -119,8 +126,37 @@
     }
     .streaming-div-center {
       flex: 100%;
+      .streaming-base{
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        span{
+          right: 60px;
+          top: 10px
+        }
+      }
     }
     .streaming-div-right {
+      display: none;
+    }
+
+    .streaming-screen{
+      .header--mobile{
+        display: none;
+      }
+    }
+    .streaming-base{
+      height: 100%;
+    }
+    .seller-info{
+      color: white;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .streaming-screen{
+    .header--mobile{
       display: none;
     }
   }

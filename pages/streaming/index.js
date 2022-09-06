@@ -21,7 +21,7 @@ const StreamingPage = (props, dispatch) => {
    
 
     return (
-        <div className="site-content">
+        <div className="streaming-screen">
             <HeaderDefault />
             <HeaderMobile />
             <NavigationList />
