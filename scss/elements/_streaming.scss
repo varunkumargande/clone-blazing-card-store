@@ -107,9 +107,75 @@
         right: -5px;
         top: -10px
       }
-      #mute-button{
-        background-color: yellow;
-        font-size: 10px;
+      .stream-wrapper{
+        position: absolute;
+        bottom: 15px;
+        display: flex;
+        // background-color: pink;
+        width: 100%;
+        flex-direction: column;
+        #auction{
+          font-size: 10px;
+          // background-color: yellow;
+          width: 100%;
+          padding: 10px
+        }
+      }
+      .overlay{
+        // position: absolute;
+        // bottom: 0px;
+        // background-color: red;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+        .product-info{
+          width: 80%;
+          text-align: left;
+          padding: 10px;
+          #winning-buyer-info{
+            color: white;
+            font-size: 8px;
+          }
+          #product-name{
+            font-size: 15px;
+            color: white;
+            font-weight: 600;
+          }
+          #shipping-details{
+            font-size: 10px;
+            color: rgb(22, 148, 238);
+          }
+        }
+        .video-info{
+          width: 20%;
+          .volume{
+            .volume-range{
+              width: 50px;
+            }
+            #mute-button{
+              background-color: yellow;
+              font-size: 10px;
+            }
+          } 
+        }
+        
+        #pay-button{
+          font-size: 10px;
+          div{
+            color: white;
+          }
+        }
+        #amount{
+          font-size: 15px;
+          color: white;
+          font-weight: 600;
+        }
+        #timer{
+          font-size: 10px;
+          color: red;
+        }
       }
     }
   }
