@@ -42,7 +42,7 @@ function CenterDiv(){
                     38
                 </span>
                 <div class="volume">
-                <input type="range" min="0" max="100" value="50" class="volume-range"/>
+                <input type="range" min="0" max="100" value="50" className="volume-range"/>
                 <div class="icon">
                     <i class="fa fa-volume-up icon-size" aria-hidden="true"></i>
                 </div>
