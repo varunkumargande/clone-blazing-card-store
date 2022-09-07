@@ -1,11 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import StreamingBase from './StreamingBase';
 
 function CenterDiv(){
-    const handleMuteButton = ()=>{
-        console.log("here");
-    }
-   
     return(
         <div className='streaming-div-center'>
             <div className='seller-info'>
@@ -37,56 +34,7 @@ function CenterDiv(){
                     Share to
                 </div>
             </div>
-            <div className='streaming-base'>
-                <span>
-                    38
-                </span>
-                <div className='stream-wrapper'>
-                    <div className='overlay'>
-                        <div className='product-info'>
-                            <div id="winning-buyer-info">
-                                winner won!
-                            </div>
-                            <div id='product-name'>
-                                Product name
-                            </div>
-                            <div id="shipping-details">
-                                Shipping and tax
-                            </div>
-                        </div>
-                        <div className='video-info'>
-                            <div className="volume">
-                                <input type="range" min="0" max="100" value="50" className="volume-range"/>
-                                 {/* <div class="icon">
-                                    <i class="fa fa-volume-up icon-size" aria-hidden="true"></i>
-                                </div> */}
-                                <div className="bar-hoverbox">
-                                    <div classame="bar">
-                                        <div classame="bar-fill"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <button id="mute-button" className='curved-box' onClick={handleMuteButton}>Mute</button>
-                                </div>
-                            </div>
-                            <div id="pay-button">
-                                <button className=' curved-box'>$</button>
-                                <div>Pay</div>
-                            </div>
-                            <div id='amount'>
-                                $25
-                            </div>
-                            <div id="timer">
-                                00:00
-                            </div>
-                        </div>
-                    </div>
-                    <div id='auction'>
-                        <button className='curved-box'>Auction ended</button>
-                    </div>
-                </div>
-                
-            </div>
+            <StreamingBase />
         </div>
     )
 }
