@@ -29,6 +29,7 @@
         "next-redux-wrapper": "^6.0.2",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
+        "react-collapsed": "^3.3.2",
         "react-currency-format": "^1.1.0",
         "react-dom": "^16.13.1",
         "react-facebook-login": "^4.1.1",
@@ -46,6 +47,8 @@
         "redux-devtools-extension": "^2.13.8",
         "redux-saga": "^1.1.3",
         "redux-thunk": "^2.3.0",
-        "sass": "^1.49.9"
+        "sass": "^1.49.9",
+        "slick-carousel": "^1.8.1",
+        "styled-components": "^5.3.5"
     }
 }
