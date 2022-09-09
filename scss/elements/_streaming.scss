@@ -1,0 +1,279 @@
+.wrapper{
+     display: flex;
+  flex-wrap: wrap;
+  font-size: 30px;
+  text-align: center;
+  min-height: 650px;
+  margin: 0;
+  .curved-box{
+    border-radius: 40px;
+  }
+  .close-modal{
+    display: flex;
+    justify-content: flex-end;
+    button{
+      font-size: 10px;
+      background-color: black;
+      font-weight: 800;
+      border: black;
+    }
+  }
+  .streaming-div-left {
+    background-color: pink;
+    padding: 15px;
+    flex: 25%;
+    h1{
+      padding: 10px;
+      margin: 0px;
+      font-size: 15px;
+      text-align: left;
+    }
+    h5{
+      padding: 10px;
+     a:focus{
+      text-decoration: underline;
+     }
+    }
+    .stream-nav{
+      display: flex;
+      overflow-x: auto;
+      h5{
+        display: inline-block;
+      }
+    }
+    .product-quick-search{
+      
+      input{
+        background-color: white;
+      }
+    }
+    .product-list{
+      text-align: left;
+      font-size: 20px;
+      padding: 10px;
+    }
+  }
+  .streaming-div-center {
+    background-color: #f1f1f1;
+    padding: 15px;
+    flex: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    .seller-info{
+      text-align: left;
+      flex: 50%;
+      // background-color: red;
+      height: 100px;
+      overflow: hidden;
+      z-index: 1;
+      #seller-name{
+        font-size: 14px;
+      }
+      #seller-rating, #followers{
+        font-size: 10px;
+      }
+      #follow-button{
+        font-size: 12px;
+      }
+      #follow-button{
+        margin: 0;
+        font-size: 10px;
+        position: relative;
+        top:-10px;
+        background-color: yellow;
+      }
+      
+    }
+    .social-presence{
+      // background-color: green;
+      flex: 50%;
+      height: 100px;
+      text-align: right;
+      #link-address{
+        width: 80%;
+        font-size: 12px;
+      }
+      #copy-link{
+        width: 20%;
+        font-size: 12px;
+      }
+      #social-links{
+        font-size: 10px;
+      }
+    }
+    .streaming-base{
+      background-color: black;
+      position: absolute;
+      left: 28%;
+      min-height: 600px;
+      width: 300px;
+      span{
+        background-color: yellow;
+        font-size: 10px;
+        padding: 5px;
+        border-radius: 50%;
+        position: absolute;
+        right: -5px;
+        top: -10px
+      }
+      .stream-wrapper{
+        position: absolute;
+        bottom: 15px;
+        display: flex;
+        // background-color: pink;
+        width: 100%;
+        flex-direction: column;
+        .product-detail{
+          font-size: 15px;
+          color: white;
+          font-weight: 600;
+        }
+        .buyer-buttons{
+          font-size: 15px;
+          padding: 10px;
+          // background-color: yellow;
+          display: flex;
+          flex-direction: row;
+          #auction-button{
+            width: 100%;
+          }    
+        }
+        .general-button-style{
+          width: 50%;
+          padding: 10px;
+          margin: 0 5px
+        }
+        #custom-bid-popup {
+          border: 1px solid white;
+          color: white;
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
+          background-color: black;
+          height: 180px;
+          width: 100%;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          padding: 10px;
+          #product-name-price{
+            display: flex;
+            justify-content: space-between;
+          }
+          #adjust-bidding-amount{
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            button{
+              background-color: white;
+              border-radius: 50%;
+              width: 40px;
+              color: black;
+            }
+          }
+          .buyer-buttons{
+            color: black
+          }
+        }
+        .bidded-amount{
+          font-size: 15px;
+          color: white;
+          font-weight: 600;
+        }
+      }
+      .timer{
+        font-size: 12px;
+        color: red;
+      }
+      .overlay{
+        // position: absolute;
+        // bottom: 0px;
+        // background-color: red;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+        .product-info{
+          width: 80%;
+          text-align: left;
+          padding: 10px;
+          #winning-buyer-info{
+            color: white;
+            font-size: 8px;
+          }
+          #shipping-details{
+            font-size: 10px;
+            color: rgb(22, 148, 238);
+          }
+        }
+        .video-info{
+          width: 20%;
+          .volume{
+            .volume-range{
+              width: 50px;
+            }
+            #mute-button{
+              background-color: yellow;
+              font-size: 10px;
+            }
+          } 
+        }
+        
+        #pay-button{
+          font-size: 10px;
+          div{
+            color: white;
+          }
+        }  
+      }
+    }
+  }
+  
+  
+  .streaming-div-right {
+    background-color: dodgerblue;
+    padding: 10px;
+    flex: 25%;
+  }
+  @media (max-width: 800px) {
+    .streaming-div-left {
+      display: none;
+    }
+    .streaming-div-center {
+      flex: 100%;
+      .streaming-base{
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        span{
+          right: 60px;
+          top: 10px
+        }
+      }
+    }
+    .streaming-div-right {
+      display: none;
+    }
+
+    .streaming-screen{
+      .header--mobile{
+        display: none;
+      }
+    }
+    .streaming-base{
+      height: 100%;
+    }
+    .seller-info{
+      color: white;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .streaming-screen{
+    .header--mobile{
+      display: none;
+    }
+  }
+}
