@@ -1,0 +1,19 @@
+.collapsible {
+  padding: 6px;
+
+
+}
+.content {
+  padding: 6px;
+  
+  >ul{
+    list-style-type: none;  
+    font-size: 12px;
+  }
+}
+
+.collapsible .header {
+  width: fit-content;
+  padding: 6px;
+  cursor: pointer;
+}
