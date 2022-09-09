@@ -19,20 +19,17 @@ const FooterWidgets = ({footerDet,footerPage}) => {
 
 
                             {page && page.page.map(pagedet => (
-                                //  <Link href="/page-detail/[pdid]" as={`/page-detail/${pagedet.slugName}`} key={pagedet.pageId}>
-                                
-                                    // <p onClick={() => router.push('/page-detail/[pdid]')}  as={`/page-detail/${pagedet.pageId}`} key={pagedet.pageId}>{pagedet.title}</p>
-                                    
-                                //   </Link>S
-
                                 <>
-                                <Link href="/page-detail/[pdid]" as={`/page-detail/${pagedet.slugName}`} key={pagedet.pageId}><p>{pagedet.title}</p></Link>
+                                    <Link href="/page-detail/[pdid]" as={`/page-detail/${pagedet.slugName}`} key={pagedet.pageId}><p>{pagedet.title}</p></Link>
                                 </>
                             ))}
+                            
                         </div>
                         ))}  
-                                 
+                        
                     </div>
+
+                    
                     
                    
                 </aside>
