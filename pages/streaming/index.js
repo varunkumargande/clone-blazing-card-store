@@ -7,12 +7,13 @@ import ThemeChanger from '../../components/elements/color/themeControl';
 import useNetwork from '../../components/reusable/NetworkCheck';
 import Router from "next/router";
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 
-import Streaming from '../../components/elements/streaming';
 
 
 const StreamingPage = (props, dispatch) => {
     const network = useNetwork()
+    const Streaming = dynamic(() => import("../../components/elements/streaming"), {ssr: false})
     const [blogList, setBlogList] = useState([])
 
     useEffect(() => {
