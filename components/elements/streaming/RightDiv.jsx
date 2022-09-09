@@ -57,7 +57,6 @@ function RightDiv() {
     setChannel(channel);
     return channel;
   };
-  console.log(messages, '===================++++++++++++++===========++++++++++=======++++++++=')
 
   const sendAndUpdateMessage = async (initialMessage = null) => {
     const message = initialMessage ?? inputValue;
@@ -66,7 +65,7 @@ function RightDiv() {
     await channel.sendMessage({ text: message, type: "text" });
     setInputValue("");
     channel.on("MemberJoined", (memberId) => {
-      console.log("memberId", memberId);
+
     });
   };
 
@@ -91,7 +90,7 @@ function RightDiv() {
   };
 
   const getRtmToken = async (uuid) => {
-    const url = `rtm/${uuid}`;
+    const url = `/stream/getStreamToken?token=RTC&uid=${uuid}`;
     const response = await getToken(url);
     return response.rtmToken;
   };

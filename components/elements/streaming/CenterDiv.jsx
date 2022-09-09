@@ -14,7 +14,6 @@ function CenterDiv({options}) {
     host : "host",
     audience: "audience"
   }
-  console.log(options)
 
   useEffect(() => {
     const volumeLevel = mute ? 0 : 100;
@@ -22,15 +21,20 @@ function CenterDiv({options}) {
     if(rtc.localAudioTrack) {
         rtc.localAudioTrack.setVolume(volumeLevel)
     }
-    console.log(remoteUser)
     if(remoteUser) {
-        remoteUser.audioTrack.setVolume(value);
+        remoteUser.audioTrack.setVolume(volumeLevel);
     }
   }, [mute]);
 
   useEffect(() => {
-    initiateRTCObject();
-  }, []);
+    if(!Object.keys(rtc)) {
+      initiateRTCObject();
+
+    }
+    if(Object.keys(rtc)){
+      joinChannelAsAudience()
+    }
+  }, [rtc]);
 
 
   const handleMuteButton = () => {
@@ -60,7 +64,6 @@ function CenterDiv({options}) {
     rtc.localAudioTrack.setVolume(volumeLevel)
     rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
     rtc.localStream = await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
-    console.log(rtc, "=====")
     rtc.localVideoTrack.play('local_stream');
     setuserType(TYPES.host);
   }
@@ -91,21 +94,21 @@ function CenterDiv({options}) {
   };
 
   const getRtcToken = async (uid, role, tokenType) => {
-    const url = `rtc/${options.channel}/${role}/${tokenType}/${uid}`;
+    const url = `/stream/getStreamToken?token=RTC&channel=${options.channel}&role=${role}&tokenType=${tokenType}&uid=${uid}`;
     const response = await getToken(url);
-    console.log(response, '=+++++++++')
     return response.rtcToken;
   }
 
   const changeVolume = ({ value }) => {
     if (value == "" || value == undefined) return;
-    setVolumeLevel(Number(value));
     if(rtc.localAudioTrack) {
         rtc.localAudioTrack.setVolume(volumeLevel)
     }
     if(remoteUser) {
         remoteUser.audioTrack.setVolume(volumeLevel);
     }
+    setVolumeLevel(Number(value));
+
   };
 
   return (
@@ -168,7 +171,7 @@ function CenterDiv({options}) {
                     {mute ? "Unmute" : "Mute"}
                   </button>
                 </div>
-                <div>
+                {/* <div>
                   <button
                     id="mute-button"
                     className="curved-box"
@@ -185,7 +188,7 @@ function CenterDiv({options}) {
                   >
                     Audience
                   </button>
-                </div>
+                </div> */}
               </div>
               <div id="pay-button">
                 <button className=" curved-box">$</button>

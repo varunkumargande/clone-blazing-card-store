@@ -1,11 +1,11 @@
 import Axios from "axios";
 import { modalSuccess } from "../intercept";
-import { agora } from "../url";
+import { apiUrl } from "../url";
 
 async function getToken(url) {
 
   const http = Axios.create({
-    baseURL: agora,
+    baseURL: apiUrl,
     headers: {
       "Content-type": "application/json",
     },

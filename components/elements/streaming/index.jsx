@@ -9,7 +9,6 @@ function Index() {
   const [options, setOptions] = useState({});
   useEffect(() => {
     initiateObject();
-    // localStorage.setItem('messages', []);
   }, []);
   const initiateObject = () => {
     setOptions({
@@ -19,7 +18,6 @@ function Index() {
       audience: String(Math.floor(Math.random() * 232)),
     });
   };
-  console.log(options, 'index.js')
   return (
     <div className="wrapper">
       <LeftDiv />

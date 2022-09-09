@@ -12,10 +12,8 @@ function StreamingBase(){
         setBidAmount(amountToBid-1)
     }
     const handleMuteButton = ()=>{
-        console.log("here");
     }
     const handleCustomBid = () => {
-        console.log("heee")
         setOpen(true)
     }
     return(
