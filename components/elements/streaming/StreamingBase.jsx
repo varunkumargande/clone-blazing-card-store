@@ -1,4 +1,5 @@
 import React from "react";
+import Timer from "./Timer";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
@@ -54,7 +55,7 @@ function StreamingBase() {
               <div>Pay</div>
             </div>
             <div className="bidded-amount">$ {bidAmount}</div>
-            <div class="timer">00:00</div>
+            <Timer />
           </div>
         </div>
         <div className="buyer-buttons">
@@ -80,7 +81,11 @@ function StreamingBase() {
                 <div className="product-detail">Product name</div>
                 <div className="product-detail">${bidAmount}</div>
               </div>
-              <div class="timer">00:00</div>
+              <div className="timer">
+                <h2>
+                    00:00
+                </h2>
+              </div>
               <div id="adjust-bidding-amount">
                 <div>
                   <button

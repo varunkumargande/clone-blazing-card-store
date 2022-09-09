@@ -5,6 +5,7 @@ import RightDiv from './RightDiv';
 import CenterDiv from './CenterDiv';
 
 function Index(){
+    const time = new Date();
     return(
         <div className='wrapper'>
             <LeftDiv/>
