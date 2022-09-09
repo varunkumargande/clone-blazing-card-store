@@ -90,9 +90,9 @@ function RightDiv() {
   };
 
   const getRtmToken = async (uuid) => {
-    const url = `/stream/getStreamToken?token=RTC&uid=${uuid}`;
+    const url = `/stream/getStreamToken?token=RTM&uid=${uuid}`;
     const response = await getToken(url);
-    return response.rtmToken;
+    return response.rtcToken;
   };
 
   return (

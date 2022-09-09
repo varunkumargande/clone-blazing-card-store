@@ -4,7 +4,7 @@ import { getToken } from "../../../api/stream/agora";
 import AgoraRTC from "agora-rtc-sdk-ng";
 
 
-function CenterDiv({options}) {
+function CenterDiv() {
   const [volumeLevel, setVolumeLevel] = useState(100);
   const [mute, setMute] = useState(false);
   const [rtc, setRtc] = useState({});
@@ -15,21 +15,25 @@ function CenterDiv({options}) {
     audience: "audience"
   }
 
+  const options = {appID: "cb08a368d17648e9ab2886e3d1100a5e",
+  channel: "POKEMON",
+  host: String(Math.floor(Math.random() * 232)),
+  audience: String(Math.floor(Math.random() * 232)),}
+
   useEffect(() => {
     const volumeLevel = mute ? 0 : 100;
     setVolumeLevel(Number(volumeLevel));
     if(rtc.localAudioTrack) {
-        rtc.localAudioTrack.setVolume(volumeLevel)
+        rtc?.localAudioTrack?.setVolume(volumeLevel)
     }
     if(remoteUser) {
-        remoteUser.audioTrack.setVolume(volumeLevel);
+        remoteUser?.audioTrack?.setVolume(volumeLevel);
     }
   }, [mute]);
 
   useEffect(() => {
     if(!Object.keys(rtc)) {
       initiateRTCObject();
-
     }
     if(Object.keys(rtc)){
       joinChannelAsAudience()
@@ -69,20 +73,21 @@ function CenterDiv({options}) {
   }
 
   const joinChannelAsAudience = async () => {
-    rtc.client.setClientRole(TYPES.audience);
+    if(options.appID){
+      rtc.client.setClientRole(TYPES.audience);
     const token = await getRtcToken(options.audience, TYPES.audience, 'uid')
-    await rtc.client.join(options.appID, options.channel, token, options.audience);
-    rtc.client.on("user-published", async (user, mediaType) => {
-      await rtc.client.subscribe(user, mediaType);
+    await rtc?.client?.join(options.appID, options.channel, token, options.audience);
+    rtc?.client?.on("user-published", async (user, mediaType) => {
+      await rtc?.client?.subscribe(user, mediaType);
       setRemoteUser(user)
       if (mediaType === "video") {
         const remoteVideoTrack = user.videoTrack;
-        remoteVideoTrack.play('local_stream');
+        remoteVideoTrack?.play('local_stream');
       }
       if (mediaType === "audio") {
         const remoteAudioTrack = user.audioTrack;
-        user.audioTrack.setVolume(volumeLevel)
-        remoteAudioTrack.play();
+        user?.audioTrack?.setVolume(volumeLevel)
+        remoteAudioTrack?.play();
       }
       setuserType(TYPES.audience);
     });
@@ -91,10 +96,12 @@ function CenterDiv({options}) {
       const remotePlayerContainer = document.getElementById('local_stream');
       remotePlayerContainer = "";
     });
+    } 
   };
 
   const getRtcToken = async (uid, role, tokenType) => {
-    const url = `/stream/getStreamToken?token=RTC&channel=${options.channel}&role=${role}&tokenType=${tokenType}&uid=${uid}`;
+    const url = `/stream/getStreamToken?token=RTC&channel=${options.channel}&role=${role}&tokentype=${tokenType}&uid=${uid}`;
+    console.log(url)
     const response = await getToken(url);
     return response.rtcToken;
   }
@@ -138,7 +145,7 @@ function CenterDiv({options}) {
         <div id="social-links">Share to</div>
       </div>
       <div className="streaming-base">
-      <div id="local_stream" className="local_stream" style={{ width: "310px", height: "600px" }}></div>
+      <div id="local_stream" className="local_stream" style={{ width: "510px", height: "600px" }}></div>
         <span>38</span>
         <div className="stream-wrapper">
           <div className="overlay">
@@ -199,7 +206,7 @@ function CenterDiv({options}) {
             </div>
           </div>
           <div id="auction">
-            <button className="curved-box">Auction ended</button>
+            {/* <button className="curved-box">Auction ended</button> */}
           </div>
         </div>
       </div>
