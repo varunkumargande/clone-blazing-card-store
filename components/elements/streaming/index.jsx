@@ -1,17 +1,32 @@
-import React from 'react';
-import Link from 'next/link';
-import LeftDiv from './LeftDiv';
-import RightDiv from './RightDiv';
-import CenterDiv from './CenterDiv';
+import React, {useEffect} from "react";
+import Link from "next/link";
+import LeftDiv from "./LeftDiv";
+import RightDiv from "./RightDiv";
+import CenterDiv from "./CenterDiv";
+import { useState } from "react";
 
-function Index(){
-    return(
-        <div className='wrapper'>
-            <LeftDiv/>
-            <CenterDiv/>
-            <RightDiv/>
-        </div>
-    )
+function Index() {
+  const [options, setOptions] = useState({});
+  useEffect(() => {
+    initiateObject();
+    // localStorage.setItem('messages', []);
+  }, []);
+  const initiateObject = () => {
+    setOptions({
+      appID: "cb08a368d17648e9ab2886e3d1100a5e",
+      channel: "POKEMON",
+      host: String(Math.floor(Math.random() * 232)),
+      audience: String(Math.floor(Math.random() * 232)),
+    });
+  };
+  console.log(options, 'index.js')
+  return (
+    <div className="wrapper">
+      <LeftDiv />
+      <CenterDiv options={options} />
+      <RightDiv userType="audience"/>
+    </div>
+  );
 }
 
 export default Index;

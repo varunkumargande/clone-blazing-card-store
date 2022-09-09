@@ -6,7 +6,7 @@
         "dev": "node server.js",
         "dev:staging": "node server.js",
         "dev:production": "node server.js",
-        "build": "next build",
+        "build": "next build && next export",
         "build:staging": "next build",
         "build:production": "next build",
         "start": "next start"
@@ -50,6 +50,9 @@
         "redux-thunk": "^2.3.0",
         "sass": "^1.49.9",
         "slick-carousel": "^1.8.1",
-        "styled-components": "^5.3.5"
+        "styled-components": "^5.3.5",
+        "agora-rtc-sdk": "^3.6.11",
+        "agora-rtm-sdk": "^1.5.1",
+        "agora-rtc-sdk-ng": "^4.13.0"
     }
 }

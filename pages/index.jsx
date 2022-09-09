@@ -42,9 +42,7 @@ function Index(props) {
     }
   }, []);
 
-
- 
-
+  
   useEffect(() => {
     // ManufacturerApi(dispatch);
     categoryListApi(dispatch);
