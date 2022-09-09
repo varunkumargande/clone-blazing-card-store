@@ -65,7 +65,8 @@ const FooterWidgets = ({footerDet,footerPage}) => {
                        
                        <p className="footer-color"><i class="fa fa-envelope" aria-hidden="true" style={{fontSize:"25px",paddingRight:"15px",color:"white"}}></i>
                             {footerDet.storeAddress}
-                            <a href={"mailto:"+footerDet.storeEmail} target="_blank">{footerDet.storeEmail}</a>
+                            {/* <a href={"mailto:"+footerDet.storeEmail} target="_blank">{footerDet.storeEmail}</a> */}
+                            blazingcards@gmail.com
                         </p>
                         <p className="footer-color"><i class="fa fa-clock-o" aria-hidden="true" style={{fontSize:"25px",paddingRight:"15px",color:"white"}}></i>Mon - Sun / 9:00AM - 8:00PM</p>
                     </div>
