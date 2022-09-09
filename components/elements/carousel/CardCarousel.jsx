@@ -13,14 +13,14 @@ export default function CardCarousel() {
   return (
     <div>
       <Slider {...settings}>
-        <StreamCard />
-        <StreamCard />
-        <StreamCard />
-        <StreamCard />
-        <StreamCard />
-        <StreamCard />
-        <StreamCard />
-        <StreamCard />
+        <StreamCard audience="1"/>
+        <StreamCard audience="2"/>
+        <StreamCard audience="3"/>
+        <StreamCard audience="4"/>
+        <StreamCard audience="5"/>
+        <StreamCard audience="6"/>
+        <StreamCard audience="7"/>
+        <StreamCard audience="8"/>
       </Slider>
     </div>
   );
