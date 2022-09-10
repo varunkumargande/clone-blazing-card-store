@@ -11,7 +11,7 @@ export default function Login(){
             <form className="login flex space-between">
                 <div className="input-control">
                     <label>Email Address or Username</label>
-                    <input type="email" placeholder="Enter here" />
+                    <input type="text" placeholder="Enter here" />
                 </div>
                 <div className="input-control">
                     <label>Password</label>

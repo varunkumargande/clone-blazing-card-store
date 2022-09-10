@@ -8,7 +8,7 @@ export default function Login(){
             <h1 className="title mb32">Sign up to Blazing Cards</h1>
             <button className="google-btn mb42"><IconGoogle />Sign Up with Gooogle</button>
             <div className="or mb32 flex flex-center justify-center"><span>Or</span></div>
-            <form className="login flex space-between">
+            <form className="signup flex space-between">
                 <div className="input-control wd50">
                     <label>First Name</label>
                     <input type="text" placeholder="Enter here" />
