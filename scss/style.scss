@@ -1596,3 +1596,7 @@ align-items: left;
 .videorapper{
   padding: 58px 113px 0 113px
 }
+
+// New theme setup 
+@import './newthemes/common';
+@import './newthemes/form';
