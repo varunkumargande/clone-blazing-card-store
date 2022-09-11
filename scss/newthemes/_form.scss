@@ -1,6 +1,6 @@
 .form-wrapper{
     min-height: 100vh;
-    font-size: $primary-color;
+    color: $primary-color;
     a{
         color: $blue-color;
     }
@@ -128,7 +128,7 @@
     max-width: 300px;
 }
 .back{
-    margin-left: -40px;
+    margin-left: -50px;
 }
 @media all and (min-width:320px) and (max-width:767px){
     .login-left{
@@ -136,11 +136,12 @@
     }
 }
 @media all and (min-width:768px){
-    .login-left,.login-right{
+    .login-left{
+        padding: 100px 60px 24px;
         max-width: 50%;
-        padding: 100px 60px 24;
     }
     .login-right{
         padding: 100px 60px 100px;
+        max-width: 50%;
     }
 }
