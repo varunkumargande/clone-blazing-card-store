@@ -1,3 +1,9 @@
+body{
+  @include Inter;
+}
+button,input{
+  @include Inter;
+}
 .flex{
   display: flex;
 }
