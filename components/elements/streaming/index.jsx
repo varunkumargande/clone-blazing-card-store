@@ -5,14 +5,15 @@ import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useState } from "react";
 
-function Index() {
-  return (
-    <div className="wrapper">
-      <LeftDiv />
-      <CenterDiv />
-      <RightDiv />
-    </div>
-  );
+function Index(){
+    const time = new Date();
+    return(
+        <div className='wrapper'>
+            <LeftDiv/>
+            <CenterDiv/>
+            <RightDiv/>
+        </div>
+    )
 }
 
 export default Index;

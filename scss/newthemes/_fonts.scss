@@ -1,0 +1,61 @@
+/* inter-regular - latin */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/static/fonts/Inter/inter-v12-latin-regular.eot'); 
+    src: local(''),
+         url('/static/fonts/Inter/inter-v12-latin-regular.eot?#iefix') format('embedded-opentype'), 
+         url('/static/fonts/Inter/inter-v12-latin-regular.woff2') format('woff2'), 
+         url('/static/fonts/Inter/inter-v12-latin-regular.woff') format('woff'), 
+         url('/static/fonts/Inter/inter-v12-latin-regular.ttf') format('truetype'), 
+         url('/static/fonts/Inter/inter-v12-latin-regular.svg#Inter') format('svg'); 
+         font-display: swap;
+  }
+  /* inter-500 - latin */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    src: url('/static/fonts/Inter/inter-v12-latin-500.eot'); 
+    src: local(''),
+         url('/static/fonts/Inter/inter-v12-latin-500.eot?#iefix') format('embedded-opentype'), 
+         url('/static/fonts/Inter/inter-v12-latin-500.woff2') format('woff2'), 
+         url('/static/fonts/Inter/inter-v12-latin-500.woff') format('woff'), 
+         url('/static/fonts/Inter/inter-v12-latin-500.ttf') format('truetype'), 
+         url('/static/fonts/Inter/inter-v12-latin-500.svg#Inter') format('svg'); 
+         font-display: swap;
+  }
+  /* inter-600 - latin */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/static/fonts/Inter/inter-v12-latin-600.eot'); 
+    src: local(''),
+         url('/static/fonts/Inter/inter-v12-latin-600.eot?#iefix') format('embedded-opentype'), 
+         url('/static/fonts/Inter/inter-v12-latin-600.woff2') format('woff2'), 
+         url('/static/fonts/Inter/inter-v12-latin-600.woff') format('woff'), 
+         url('/static/fonts/Inter/inter-v12-latin-600.ttf') format('truetype'), 
+         url('/static/fonts/Inter/inter-v12-latin-600.svg#Inter') format('svg'); 
+         font-display: swap;
+  }
+  /* inter-700 - latin */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/static/fonts/Inter/inter-v12-latin-700.eot'); 
+    src: local(''),
+         url('/static/fonts/Inter/inter-v12-latin-700.eot?#iefix') format('embedded-opentype'), 
+         url('/static/fonts/Inter/inter-v12-latin-700.woff2') format('woff2'), 
+         url('/static/fonts/Inter/inter-v12-latin-700.woff') format('woff'), 
+         url('/static/fonts/Inter/inter-v12-latin-700.ttf') format('truetype'), 
+         url('/static/fonts/Inter/inter-v12-latin-700.svg#Inter') format('svg'); 
+         font-display: swap;
+  }
+
+
+  @mixin Inter{
+    font-family:'Inter', Helvetica, sans-serif
+  }
