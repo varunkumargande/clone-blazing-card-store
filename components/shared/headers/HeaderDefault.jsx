@@ -26,7 +26,7 @@ function HeaderDefault() {
     // getServiceApi(dispatch);
   }, []);
 
- 
+
   return (
     <header className="header header--1" data-sticky="true" id="headerSticky">
       <div className={`header__top ${currentColor}`}>
@@ -38,7 +38,6 @@ function HeaderDefault() {
                 <i className="icon-menu"></i>
                 <span> {t("soc")}</span>
               </div>
-            
             </div>
           </div>
           <div className="header-menu-main ">
@@ -56,10 +55,7 @@ function HeaderDefault() {
                 <LanguageSwicher />
               </div>
             </div>
-
-            
-                <HeaderActions />
-             
+            <HeaderActions />
           </div>
         </div>
       </div>

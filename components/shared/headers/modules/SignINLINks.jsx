@@ -5,6 +5,22 @@ import { useTranslation } from "../../../../i18n";
 
 function SignINLINks() {
   const { t } = useTranslation("common");
+  const [isLogin, setLogin] = React.useState(false)
+
+
+  // React.useEffect(() => {
+  //   if (sessionStorage.getItem("spurtToken") != null) {
+  //     setLogin(true)
+  //   } else {
+  //     setLogin(false)
+  //   }
+  // }, [sessionStorage.getItem("spurtToken")])
+
+
+  // const eventToVendorAdminPanel = () => {
+  //   window.location.href = "http://localhost:40771/#/auth/login?uid="+sessionStorage.getItem("spurtToken")
+  // }
+
   return (
     <>
       <ul
@@ -25,13 +41,17 @@ function SignINLINks() {
             </a>
           </Link>
         </li>
+{/*         
         <li style={{ padding: "0", margin: "0" }}>
-          <Link href="/vendor">
+          <div onClick={eventToVendorAdminPanel}>
             <a style={{ padding: "0 4px", color: "#fff" }}>
-              {t("Shared.Vendor")}
+              seller
             </a>
-          </Link>
-        </li>
+          </div>
+        </li> */}
+         
+
+
       </ul>
     </>
   );
