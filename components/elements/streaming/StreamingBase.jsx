@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Timer from "./Timer";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount+2);
+  const [timer, setTimer] = useState("00:00");
   const handleMuteButton = () => {
   };
   const handleCustomBid = () => {
@@ -16,6 +17,29 @@ function StreamingBase() {
     setAmountToBid(amountToBid+2);
     setOpen(false);
   }
+  useEffect(() => {
+    var minutes = 1;
+    var seconds = 10;
+    const updateTime = () => {
+      if (minutes >= 0) {
+        if (seconds >= 0 && seconds < 60) {
+          seconds = seconds - 1;
+         
+          if (seconds === -1) {
+            minutes = minutes - 1;
+            seconds = 59;
+            if(minutes== -1 && seconds==59){
+                return "00:00"
+            }
+          }
+        }
+        return minutes + ":" + seconds;
+      }
+    };
+    setInterval(() => {
+      setTimer(updateTime);
+    }, 1000);
+  }, []);
   return (
     <div className="streaming-base">
       <span>38</span>
@@ -55,7 +79,7 @@ function StreamingBase() {
               <div>Pay</div>
             </div>
             <div className="bidded-amount">$ {bidAmount}</div>
-            <Timer />
+            <Timer time={timer} />
           </div>
         </div>
         <div className="buyer-buttons">
@@ -81,11 +105,12 @@ function StreamingBase() {
                 <div className="product-detail">Product name</div>
                 <div className="product-detail">${bidAmount}</div>
               </div>
-              <div className="timer">
+              {/* <div className="timer">
                 <h2>
                     00:00
                 </h2>
-              </div>
+              </div> */}
+              <Timer time={timer}/>
               <div id="adjust-bidding-amount">
                 <div>
                   <button
