@@ -17,8 +17,8 @@ import { Flip, ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/scss/main.scss";
 import { LanguageSwitcherAPi } from "../api/account/languageSwitcherAPi";
 
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+//import "slick-carousel/slick/slick.css";
+//import "slick-carousel/slick/slick-theme.css";
 import "../scss/elements/_streaming.scss";
 
 function MyApp({ Component, pageProps }) {
