@@ -1,7 +1,4 @@
 import React from "react";
-//import {ConnectPlugin} from '../../connectPlugins';
-import NavigationDefault from "../navigation/NavigationDefault";
-import HeaderActions from "./modules/HeaderActions";
 
 import SearchHeader from "./modules/SearchHeader";
 import { useEffect } from "react";
@@ -12,8 +9,9 @@ import { getServiceApi } from "../../../api";
 import LanguageSwicher from "./modules/LanguageSwicher";
 import { useRouter } from "next/router";
 import Logo from "./modules/Logo";
+import HeaderRight from "./modules/HeaderRight";
 
-function HeaderDefault() {
+function HeaderHome() {
   const router = useRouter();
 
   let category = useSelector((s) => s.product);
@@ -40,29 +38,15 @@ function HeaderDefault() {
             </div>
           </div>
           <div className="header-menu-main ">
-            <div className="header__center">
+            <div className="header__right">
               <SearchHeader />
-              <div
-                className="header__newtheme_language"
-                style={{
-                  paddingLeft: "0px",
-                  height: "30px",
-                  padding: "0px 0px",
-                  marginLeft: "21px",
-                }}
-              >
-                <LanguageSwicher />
-              </div>
             </div>
-
-            <HeaderActions />
+            <HeaderRight />
           </div>
         </div>
       </div>
-      <NavigationDefault />
     </header>
   );
-  // }
 }
 
-export default HeaderDefault;
+export default HeaderHome;
