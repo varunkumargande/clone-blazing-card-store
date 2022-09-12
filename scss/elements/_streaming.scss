@@ -6,6 +6,7 @@
   min-height: 650px;
   margin: 0;
   .curved-box{
+    align-content: center;
     border-radius: 40px;
   }
   .close-modal{
@@ -105,9 +106,9 @@
     .streaming-base{
       background-color: black;
       position: absolute;
-      left: 28%;
+      left: 14%;
       min-height: 600px;
-      width: 300px;
+      width: 510px;
       span{
         background-color: yellow;
         font-size: 10px;
@@ -144,6 +145,14 @@
           padding: 10px;
           margin: 0 5px
         }
+        #product-name,#amount,#timer{
+          display: flex;
+          justify-content: center;
+          color: rgb(22, 148, 238);
+          text-align: center;
+          width: 100px;
+          font-size: 15px;
+        }
         #custom-bid-popup {
           border: 1px solid white;
           color: white;
@@ -159,6 +168,7 @@
           #product-name-price{
             display: flex;
             justify-content: space-between;
+            color: rgb(22, 148, 238);
           }
           #adjust-bidding-amount{
             display: flex;
@@ -234,9 +244,16 @@
   
   
   .streaming-div-right {
-    background-color: dodgerblue;
+    position: relative;
+    background-color: lightgray;
     padding: 10px;
     flex: 25%;
+  }
+  .streaming-chat-box {
+    position: absolute;
+    width: 125%;
+    bottom: 10px;
+    left: -50px;
   }
   @media (max-width: 800px) {
     .streaming-div-left {
