@@ -890,6 +890,7 @@ const[buttondisable,setbuttondisable]=useState(false)
                                 <div className="checkout-add-shipping-address">
                                     <Link href="/account/addaddress"><a>+ Add Shipping Address</a></Link>
                                 </div>
+                                {prevAddressRadioValid !== "" ? <span className="error-span">{prevAddressRadioValid}</span> : ""}
                                 <div className="checkout-add-shipping-address">
                                     <Link href="/account/addaddress"><a>+ Add Billing Address</a></Link>
                                 </div>

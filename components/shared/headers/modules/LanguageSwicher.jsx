@@ -12,41 +12,55 @@ function LanguageSwicher({ t, i18n }) {
     let coutryf=useSelector(s=>s.wishlist.langagechange)
     let countflagcout=useSelector(s=>s.wishlist.mainloadedone)
     
-
+console.log(countflagcout,'23423countflagcout')
 useEffect(() => {
-      
-                if (sessionStorage.getItem("language-spurt") !== null) {
-                    if (sessionStorage.getItem("language-spurt") === 'eng') {
-                        dispatch(LanguageListLoading(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20'))
-                        setCurrentLang('English')
+    // JSON.stringify
+   let  lagnchange =  JSON.parse(localStorage.getItem("language-spurt"))
+                if (lagnchange !== null) {
+                    // let lagnchange=localStorage.getItem("language-spurt")
+                    if (lagnchange.code === 'eng') {
+                        dispatch(LanguageListLoading(imageUrl+"?path="+lagnchange.imagePath+"&name="+lagnchange.image+"&width=20&height=20"))
+                        setCurrentLang(lagnchange.name)
                         // setCountryFlag(imageUrl+"?path="+cout.imagePath+"&name="+cout.image+"&width=20&height=20")
                         setCountryFlag(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20')
                         i18n.changeLanguage('en')
-                    }else if(sessionStorage.getItem("language-spurt") === 'fr'){
-                        dispatch(LanguageListLoading(imageUrl+'?path=language/&name=Img_1557569207176.png&width=20&height=20'))
-                        setCurrentLang('French')
+                    }else if(lagnchange.code === 'fr'){
+                        dispatch(LanguageListLoading(imageUrl+"?path="+lagnchange.imagePath+"&name="+lagnchange.image+"&width=20&height=20"))
+                        setCurrentLang(lagnchange.name)
                         // setCountryFlag(imageUrl+"?path="+cout.imagePath+"&name="+cout.image+"&width=20&height=20")
                         setCountryFlag(imageUrl+'?path=language/&name=Img_1557569207176.png&width=20&height=20')
                         i18n.changeLanguage('fr')
 
                     }else{
-                        setCurrentLang('English')
-                        dispatch(LanguageListLoading(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20'))
+                        console.log(lagnchange,'localStorage.getItem("language-spurt").name')
+                        
+                            setCurrentLang(lagnchange.name)
+                        
+                            dispatch(LanguageListLoading(imageUrl+"?path="+lagnchange.imagePath+"&name="+lagnchange.image+"&width=20&height=20"))
+                            // dispatch(LanguageListLoading(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20'))
+                            
+                            setCountryFlag(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20')
+                            i18n.changeLanguage('en')
+                        
+                    }
+                    
+                }
+                else {
+                    if(countflagcout&&countflagcout.length !==0){
+                        console.log(countflagcout,'countflagcout');
+                        setCurrentLang(countflagcout.at(0).name )
+                    
+                        dispatch(LanguageListLoading(imageUrl+"?path="+countflagcout.at(0).imagePath+"&name="+countflagcout.at(0).image+"&width=20&height=20"))
+                        // dispatch(LanguageListLoading(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20'))
+                        
                         setCountryFlag(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20')
                         i18n.changeLanguage('en')
                     }
                     
                 }
-                else {
-                    setCurrentLang('English')
-                    dispatch(LanguageListLoading(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20'))
-                    
-                    setCountryFlag(imageUrl+'?path=language/&name=Img_1622893818038.png&width=20&height=20')
-                    i18n.changeLanguage('en')
-                }
       
 
-    }, [])
+    }, [countflagcout])
 
     
 
@@ -70,14 +84,14 @@ useEffect(() => {
             dispatch(LanguageListLoading(imageUrl+"?path="+datas.imagePath+"&name="+datas.image+"&width=20&height=20"))
             setCountryFlag(imageUrl+"?path="+datas.imagePath+"&name="+datas.image+"&width=20&height=20")
           
-            sessionStorage.setItem("language-spurt", datas.code)
+            localStorage.setItem("language-spurt",JSON.stringify(datas))
 
         }else if(datas.code === 'fr'){
             setCurrentLang(datas.name)
             i18n.changeLanguage('fr');
             dispatch(LanguageListLoading(imageUrl+"?path="+datas.imagePath+"&name="+datas.image+"&width=20&height=20"))
             setCountryFlag(imageUrl+"?path="+datas.imagePath+"&name="+datas.image+"&width=20&height=20")
-            sessionStorage.setItem("language-spurt", datas.code)
+            localStorage.setItem("language-spurt", JSON.stringify(datas))
         }
        else{
             setCurrentLang(datas.name)
@@ -97,13 +111,15 @@ useEffect(() => {
     
 
     return (
+        
         <div className="ps-dropdown language">
     
-           
-               <a href="#" onClick={(e) => e.preventDefault()}>
-                <img src={coutryf} alt="martfury" />
+           {console.log(coutryf,'4324234')}
+           {coutryf&&<><a href="#" onClick={(e) => e.preventDefault()}>
+                <img src={coutryf&&coutryf} alt="martfury" /> </a></>}
+               
 
-            </a>
+           
 
             <ul className="ps-dropdown-menu">
             {countflagcout&&countflagcout.map((flagcout,index)=>(

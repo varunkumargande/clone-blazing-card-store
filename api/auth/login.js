@@ -3,7 +3,9 @@ import { cartListApi } from "../cart/cartList";
 import getProfileApi from "../home/getInfo";
 import APIServices from '../../services'
 import { modalSuccess,modalWarning } from "../intercept";
+import { addItemToWishlist } from "../../store/wishlist/action";
 
+import { addItem } from '../../store/cart/action'
 
 export async function UserLogin(email,password,loginType,Router,setLoginError,dispatch,setMail,setPassword,setLoadImg){
 
@@ -43,10 +45,12 @@ export async function UserLogin(email,password,loginType,Router,setLoginError,di
        
         sessionStorage.setItem("spurtToken", result.data.data.token);
                         // sessionStorage.setItem("spurtUser",JSON.stringify(response.data.user));
-                        getProfileApi( )
+                      //  getProfileApi(dispatch)
                         modalSuccess('success',result.data.message)
                         Router.push('/');
-                        cartListApi(dispatch)
+                       // cartListApi(dispatch)
+                        dispatch(addItem(1))
+
     }else{
        
                             setLoginError(result.data.message)

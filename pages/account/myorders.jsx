@@ -7,6 +7,7 @@ import NavigationList from '../../components/shared/navigation/NavigationList';
 import ThemeChanger from '../../components/elements/color/themeControl';
 import FooterFullwidth from '../../components/shared/footers/FooterFullwidth';
 import MyOrderComp from '../../components/partials/account/OrderMy';
+import { useRouter } from 'next/router';
 
 
 const breadCrumb = [
@@ -18,7 +19,17 @@ const breadCrumb = [
     },
 ];
 
-const MyOrders = () => {
+const MyOrders = () => { 
+       
+    const router=useRouter()
+
+    useEffect(()=>{
+        if(localStorage.getItem("spurtToken")==null){
+            router.push("/account/login")
+           
+        }
+        
+        },[])
 
     return(
         <div className="site-content">
