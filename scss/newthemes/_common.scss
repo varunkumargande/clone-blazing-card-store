@@ -1,11 +1,19 @@
 body{
   @include Inter;
+  color: $primary-color;
+}
+button{
+  background: none;
+  border:none;
 }
 button,input{
   @include Inter;
 }
 .flex{
   display: flex;
+}
+.column{
+  flex-direction: column;
 }
 .flex-wrap{
   flex-wrap: wrap;
@@ -28,7 +36,11 @@ button,input{
 .text-center{
   text-align: center;
 }
-
+.inner-container{
+  padding: 0 15px;
+  max-width: 1310px;
+  margin: 0 auto;
+}
 .mb8{
   margin-bottom: 8px;
 }

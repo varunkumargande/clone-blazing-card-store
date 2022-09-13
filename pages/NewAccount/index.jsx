@@ -13,12 +13,12 @@ export default function NewAccount(){
                 <LeftPannel />
             </div>
             <div className="login-right flex justify-center">
-                {/* <Login/> */}
+                <Login/>
                 {/* <Signup /> */}
                 {/* <ForgetPassword /> */}
                 {/* <ResetPassword /> */}
                 {/* <Success /> */}
-                <SentMail />
+                {/* <SentMail /> */}
             </div>
         </main>
     );
