@@ -19,20 +19,17 @@ const FooterWidgets = ({footerDet,footerPage}) => {
 
 
                             {page && page.page.map(pagedet => (
-                                //  <Link href="/page-detail/[pdid]" as={`/page-detail/${pagedet.slugName}`} key={pagedet.pageId}>
-                                
-                                    // <p onClick={() => router.push('/page-detail/[pdid]')}  as={`/page-detail/${pagedet.pageId}`} key={pagedet.pageId}>{pagedet.title}</p>
-                                    
-                                //   </Link>S
-
                                 <>
-                                <Link href="/page-detail/[pdid]" as={`/page-detail/${pagedet.slugName}`} key={pagedet.pageId}><p>{pagedet.title}</p></Link>
+                                    <Link href="/page-detail/[pdid]" as={`/page-detail/${pagedet.slugName}`} key={pagedet.pageId}><p>{pagedet.title}</p></Link>
                                 </>
                             ))}
+                            
                         </div>
                         ))}  
-                                 
+                        
                     </div>
+
+                    
                     
                    
                 </aside>
@@ -68,7 +65,8 @@ const FooterWidgets = ({footerDet,footerPage}) => {
                        
                        <p className="footer-color"><i class="fa fa-envelope" aria-hidden="true" style={{fontSize:"25px",paddingRight:"15px",color:"white"}}></i>
                             {footerDet.storeAddress}
-                            <a href={"mailto:"+footerDet.storeEmail} target="_blank">{footerDet.storeEmail}</a>
+                            {/* <a href={"mailto:"+footerDet.storeEmail} target="_blank">{footerDet.storeEmail}</a> */}
+                            blazingcards@gmail.com
                         </p>
                         <p className="footer-color"><i class="fa fa-clock-o" aria-hidden="true" style={{fontSize:"25px",paddingRight:"15px",color:"white"}}></i>Mon - Sun / 9:00AM - 8:00PM</p>
                     </div>

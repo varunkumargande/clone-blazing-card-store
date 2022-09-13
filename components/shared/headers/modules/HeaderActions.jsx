@@ -24,7 +24,7 @@ function HeaderActions({auth,compare}){
     let reloadCart=useSelector(s=>s.wishlist.addwishlist)
     let compareSet=useSelector(s=>s.compare.compareCount)
      
- 
+ console.log({auth},"testing auth")
     const dispatch=useDispatch()
     const wishlist=""
     let TokenAuth=""
