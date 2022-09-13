@@ -2,26 +2,15 @@ import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from '../../services'
 
 export async function resetPassApi(key,newPass,Router) {
+console.log(key,newPass,'42423423424')
+   
 
-    // fetch(apiUrl+'/api/customer/reset-password',{
-    //     method: 'PUT',
-    //     body: JSON.stringify({
-    //         key:key,
-    //         newPassword:newPass,
-    //     })
-    // }) 
 
-    // .then((json) =>{
-    //     if (json.status === 1) {
-    //         Router.push("/account/login")
-    //         modalSuccess("success",json.message)
-    //     }
-    // })
     const data = JSON.stringify({
-        key:key,
-            newPassword:newPass,
+             key:key,
+              newPassword:newPass,
     })
-    const result =await APIServices.updateUser('CustomerAddress/update-address',data)
+    const result =await APIServices.updateUser('customer/reset-password',data)
     
     if(result&&result.data&&result.data.status===1){
         Router.push("/account/login")
@@ -30,3 +19,19 @@ export async function resetPassApi(key,newPass,Router) {
     }
 
 }
+
+export async function resetConfomPassApi(key,setPageTrue) {
+   
+       
+    
+        const result =await APIServices.get('customer/forgot-password-key-check',key)
+        console.log(result.data.message);
+        if(result&&result.data&&result.data.status===1){
+            setPageTrue(true)
+                    // modalSuccess("success",result.data.message)
+    
+        }else{
+            modalSuccess("error",result.data.message)
+        }
+    
+    }

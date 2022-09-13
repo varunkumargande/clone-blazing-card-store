@@ -1,173 +1,61 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { getToken } from "../../../api/stream/agora";
-import AgoraRTC from "agora-rtc-sdk-ng";
-
+import React from 'react';
+import { Col, Row } from 'antd';
+import Link from 'next/link';
+import PaymentCard from "./Payment/PaymentCard"
+import ShippmentCard from './Payment/ShippmentCard';
 
 function CenterDiv() {
-  const [volumeLevel, setVolumeLevel] = useState(100);
-  const [mute, setMute] = useState(false);
-  const [rtc, setRtc] = useState({});
-  const [remoteUser, setRemoteUser] = useState(null);
-  const [userType, setuserType] = useState("");
-  const TYPES = {
-    host : "host",
-    audience: "audience"
-  }
+    const [open, setOpen] = React.useState(false)
+    const [openOptions, setOpenOptions] = React.useState(true)
+    const [paymentForm, setPaymentFormOpen] = React.useState(false)
+    const [shippmentForm, setShippmentFormOpen] = React.useState(false)
 
-  const options = {appID: "cb08a368d17648e9ab2886e3d1100a5e",
-  channel: "POKEMON",
-  host: String(Math.floor(Math.random() * 232)),
-  audience: String(Math.floor(Math.random() * 232)),}
 
-  useEffect(() => {
-    const volumeLevel = mute ? 0 : 100;
-    setVolumeLevel(Number(volumeLevel));
-    if(rtc.localAudioTrack) {
-        rtc?.localAudioTrack?.setVolume(volumeLevel)
+    const handlePaymentAndShippmentModal = () => {
+        setOpen(true)
+        setOpenOptions(true)
     }
-    if(remoteUser) {
-        remoteUser?.audioTrack?.setVolume(volumeLevel);
+
+    const handlePaymentMethod = () => {
+        setPaymentFormOpen(true)
     }
-  }, [mute]);
 
-  useEffect(() => {
-    if(!Object.keys(rtc)) {
-      initiateRTCObject();
+    const handleShippmentMethod = () => {
+        setShippmentFormOpen(true)
     }
-    if(Object.keys(rtc)){
-      joinChannelAsAudience()
+
+    const handleMuteButton = () => {
+        console.log("here");
     }
-  }, [rtc]);
 
+    let countries = ["United States", "Canada", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and/or Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Cook Islands", "Costa Rica", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecudaor", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France, Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Ivory Coast", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kosovo", "Kuwait", "Kyrgyzstan", "Lao People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfork Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia South Sandwich Islands", "South Sudan", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbarn and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States minor outlying islands", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City State", "Venezuela", "Vietnam", "Virigan Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zaire", "Zambia", "Zimbabwe"]
 
-  const handleMuteButton = () => {
-    setMute(!mute);
-  };
-
-  const initiateRTCObject = () => {
-    setRtc({
-      client: null,
-      localAudioTrack: null,
-      localVideoTrack: null,
-      joined: false,
-      published: false,
-      localStream: null,
-      remoteStream: [],
-      params: {},
-    });
-  };
-
-  rtc.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
-
-  const joinChannelAsHost = async () => {
-    rtc.client.setClientRole(TYPES.host);
-    const token = await getRtcToken(options.host, "publisher", "userAccount")
-    await rtc.client.join(options.appID, options.channel, token, options.host);
-    rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-    rtc.localAudioTrack.setVolume(volumeLevel)
-    rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-    rtc.localStream = await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
-    rtc.localVideoTrack.play('local_stream');
-    setuserType(TYPES.host);
-  }
-
-  const joinChannelAsAudience = async () => {
-    if(options.appID){
-      rtc.client.setClientRole(TYPES.audience);
-    const token = await getRtcToken(options.audience, TYPES.audience, 'uid')
-    await rtc?.client?.join(options.appID, options.channel, token, options.audience);
-    rtc?.client?.on("user-published", async (user, mediaType) => {
-      await rtc?.client?.subscribe(user, mediaType);
-      setRemoteUser(user)
-      if (mediaType === "video") {
-        const remoteVideoTrack = user.videoTrack;
-        remoteVideoTrack?.play('local_stream');
-      }
-      if (mediaType === "audio") {
-        const remoteAudioTrack = user.audioTrack;
-        user?.audioTrack?.setVolume(volumeLevel)
-        remoteAudioTrack?.play();
-      }
-      setuserType(TYPES.audience);
-    });
-
-    rtc.client.on("user-unpublished", user => {
-      const remotePlayerContainer = document.getElementById('local_stream');
-      remotePlayerContainer = "";
-    });
-    } 
-  };
-
-  const getRtcToken = async (uid, role, tokenType) => {
-    const url = `/stream/getStreamToken?token=RTC&channel=${options.channel}&role=${role}&tokentype=${tokenType}&uid=${uid}`;
-    console.log(url)
-    const response = await getToken(url);
-    return response.rtcToken;
-  }
-
-  const changeVolume = ({ value }) => {
-    if (value == "" || value == undefined) return;
-    if(rtc.localAudioTrack) {
-        rtc.localAudioTrack.setVolume(volumeLevel)
-    }
-    if(remoteUser) {
-        remoteUser.audioTrack.setVolume(volumeLevel);
-    }
-    setVolumeLevel(Number(value));
-
-  };
-
-  return (
-    <div className="streaming-div-center">
-      <div className="seller-info">
-        <div id="seller-name">Seller's name</div>
-        <div id="seller-rating">
-          <span>4.96 169 Ratings</span>
-        </div>
-        <div id="followers">1,214 Followers</div>
-        <button id="follow-button" className="curved-box">
-          Follow
-        </button>
-      </div>
-      <div className="social-presence">
-        <div>
-          <span id="link-address">
-            <input
-              placeholder="www.blazingcard.com/"
-              className="curved-box"
-            ></input>
-          </span>
-          <span id="copy-link">
-            <button className="curved-box">Copy</button>
-          </span>
-        </div>
-        <div id="social-links">Share to</div>
-      </div>
-      <div className="streaming-base">
-      <div id="local_stream" className="local_stream" style={{ width: "510px", height: "600px" }}></div>
-        <span>38</span>
-        <div className="stream-wrapper">
-          <div className="overlay">
-            <div className="product-info">
-              <div id="winning-buyer-info">winner won!</div>
-              <div id="product-name">Product name</div>
-              <div id="shipping-details">Shipping and tax</div>
+    return (
+        <div className='streaming-div-center'>
+            <div className='seller-info'>
+                <div id="seller-name">
+                    Seller's name
+                </div>
+                <div id="seller-rating">
+                    <span>
+                        4.96  169 Ratings
+                    </span>
+                </div>
+                <div id="followers">
+                    1,214 Followers
+                </div>
+                <button id='follow-button' className='curved-box'>
+                    Follow
+                </button>
             </div>
-            <div className="video-info">
-              <div className="volume">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  className="volume-range"
-                  value={volumeLevel}
-                  onChange={(e) => changeVolume(e.target)}
-                />
-                <div className="bar-hoverbox">
-                  <div classame="bar">
-                    <div classame="bar-fill"></div>
-                  </div>
+            <div className='social-presence'>
+                <div>
+                    <span id="link-address" >
+                        <input placeholder="www.blazingcard.com/" className='curved-box'></input>
+                    </span>
+                    <span id="copy-link">
+                        <button className='curved-box'>Copy</button>
+                    </span>
                 </div>
                 <div>
                   <button
@@ -178,39 +66,131 @@ function CenterDiv() {
                     {mute ? "Unmute" : "Mute"}
                   </button>
                 </div>
-                {/* <div>
-                  <button
-                    id="mute-button"
-                    className="curved-box"
-                    onClick={joinChannelAsHost}
-                  >
-                    Host
-                  </button>
-                </div>
-                <div>
-                  <button
-                    id="mute-button"
-                    className="curved-box"
-                    onClick={joinChannelAsAudience}
-                  >
-                    Audience
-                  </button>
-                </div> */}
-              </div>
-              <div id="pay-button">
-                <button className=" curved-box">$</button>
-                <div>Pay</div>
-              </div>
-              <div id="amount">$25</div>
-              <div id="timer">00:00</div>
             </div>
-          </div>
-          <div id="auction">
-            {/* <button className="curved-box">Auction ended</button> */}
-          </div>
+            <div className='streaming-base'>
+                <span className='span'>
+                    38
+                </span>
+                <div className='stream-wrapper'>
+                    <div className='overlay'>
+                        <div className='product-info'>
+                            <div id="winning-buyer-info">
+                                winner won!
+                            </div>
+                            <div id='product-name'>
+                                Product name
+                            </div>
+                            <div id="shipping-details">
+                                Shipping and tax
+                            </div>
+                        </div>
+                        <div className='video-info'>
+                            <div className="volume">
+                                <input type="range" min="0" max="100" value="50" className="volume-range" />
+                                {/* <div class="icon">
+                                    <i class="fa fa-volume-up icon-size" aria-hidden="true"></i>
+                                </div> */}
+                                <div className="bar-hoverbox">
+                                    <div classame="bar">
+                                        <div classame="bar-fill"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button id="mute-button" className='curved-box' onClick={handleMuteButton}>Mute</button>
+                                </div>
+                            </div>
+                            <div id="pay-button">
+                                <button className=' curved-box' onClick={handlePaymentAndShippmentModal}>$</button>
+                                <div>Pay</div>
+                            </div>
+                            <div id='amount'>
+                                $25
+                            </div>
+                            <div id="timer">
+                                00:00
+                            </div>
+                        </div>
+                    </div>
+                    <div id='auction'>
+                        <button className='curved-box'>Auction ended</button>
+                    </div>
+                </div>
+
+
+                {open ? (
+                    <>
+                        <div className="payment_popup">
+                            <div>
+                                <Row>
+                                    <Col span={14}>
+                                        <h3 className='payment_header'>Payment Info</h3>
+                                    </Col>
+                                    <Col span={1} push={7}>
+                                        <button className='payment_close' onClick={() => setOpen(false)}>X</button>
+                                    </Col>
+                                </Row>
+                            </div>
+                            {openOptions ? (
+                                <>
+                                    <div>
+                                        <div>
+                                            <Row>
+                                                <Col span={9}>
+                                                    <h4 className='option-payment'>Payment</h4>
+                                                </Col>
+                                                <Col span={12} push={7}>
+                                                    <button className='option_event' onClick={handlePaymentMethod}> > </button>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                        <div align="center">
+                                            <div class="nav-bar" />
+                                        </div>
+
+                                        <div>
+                                            <Row>
+                                                <Col span={10}>
+                                                    <h4 className='option-shippment'>Shippment</h4>
+                                                </Col>
+                                                <Col span={10} push={7}>
+                                                    <button className='option_event' onClick={handleShippmentMethod}> > </button>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                </>
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    <>
+                    </>
+                )}
+
+                {paymentForm == true ? (
+                    <>
+                        <PaymentCard close={setPaymentFormOpen} />
+                    </>
+                ) : (
+                    <>
+                    </>
+                )}
+
+                {shippmentForm ? (
+                    <>
+                        <ShippmentCard close={setShippmentFormOpen} />
+                    </>
+                ) : (
+                    <>
+                    </>
+                )}
+
+            </div>
+
         </div>
-      </div>
-    </div>
   );
 }
 

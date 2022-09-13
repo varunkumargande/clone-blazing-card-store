@@ -73,7 +73,7 @@ const [defaluremove,setdefaluremove]=useState(true)
                    
                    
                 <div className="mega-menu"  >
-                    {menuData&&menuData.children.map(megaItemChild => (
+                    {menuData&&menuData&&menuData.children&&menuData.children.map(megaItemChild => (
                             <div
                                 className="mega-menu__column"
                                 key={megaItemChild.name}>

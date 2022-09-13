@@ -1,5 +1,7 @@
 import APIServices from '../../services'
-async function getProfileApi() {
+import { addItemToWishlist } from '../../store/wishlist/action'
+import { addItem } from '../../store/cart/action'
+async function getProfileInfoApi(dispatch) {
         // await fetch(apiUrl+'/customer/get-profile', {
         //     method: 'GET',
         // })
@@ -19,9 +21,10 @@ async function getProfileApi() {
                 if (result&&result.data&&result.data.status === 1) {
                    
                     sessionStorage.setItem("spurtUser",JSON.stringify(result.data.data))
+                    dispatch(addItem(1))
                 }
                   
                 }
 
 }
-export default getProfileApi
+export default getProfileInfoApi
