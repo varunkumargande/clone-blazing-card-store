@@ -1,10 +1,12 @@
-import React from 'react';
-import Link from 'next/link';
-import LeftDiv from './LeftDiv';
-import RightDiv from './RightDiv';
-import CenterDiv from './CenterDiv';
+import React, {useEffect} from "react";
+import Link from "next/link";
+import LeftDiv from "./LeftDiv";
+import RightDiv from "./RightDiv";
+import CenterDiv from "./CenterDiv";
+import { useState } from "react";
 
 function Index(){
+    const time = new Date();
     return(
         <div className='wrapper'>
             <LeftDiv/>

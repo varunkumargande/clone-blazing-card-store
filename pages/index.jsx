@@ -8,7 +8,6 @@ import { featuredApi } from "../api";
 import { categoryListApi } from "../api";
 import useNetwork from "../components/reusable/NetworkCheck";
 import Router from "next/router";
-import { ManufacturerApi } from "../api";
 import getPageApi from "../api/home/getPage";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import HeaderMobile from "../components/shared/headers/HeaderMobile";
@@ -21,6 +20,7 @@ import ConumerElectronics from "../components/partials/homepage/home-default/Con
 import FooterFullwidth from "../components/shared/footers/FooterFullwidth";
 import { WidgetApi } from "../api/home/widgetsapi";
 import TopSelling from "../components/partials/homepage/home-default/TopSelling";
+
 
 
 
@@ -41,9 +41,7 @@ function Index(props) {
     }
   }, []);
 
-
- 
-
+  
   useEffect(() => {
     // ManufacturerApi(dispatch);
     categoryListApi(dispatch);

@@ -161,6 +161,19 @@
 /*Account*/
 @import 'components/acccount';
 
+// Hero section
+@import './elements/hero';
+
+//card section
+@import './elements/card';
+
+// filter category
+@import './elements/filtercat';
+
+// streaming card
+@import './elements/streamcard';
+
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -324,6 +337,14 @@ input[type=number] {
     border-radius: 0 4px 4px 0;
 
 
+}
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/public/static/img/blog-banner.jpg");
+  height: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
 }
 
 
@@ -1575,3 +1596,8 @@ align-items: left;
 .videorapper{
   padding: 58px 113px 0 113px
 }
+
+// New theme setup 
+@import './newthemes/fonts';
+@import './newthemes/common';
+@import './newthemes/form';
