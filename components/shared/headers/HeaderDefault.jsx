@@ -54,7 +54,6 @@ function HeaderDefault() {
                 <LanguageSwicher />
               </div>
             </div>
-
             <HeaderActions />
           </div>
         </div>
