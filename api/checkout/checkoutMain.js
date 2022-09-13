@@ -102,8 +102,8 @@ if(result&&result.data&&result.data.status===3){
         sessionStorage.setItem("cartItem",JSON.stringify([]))
 }
 if(result&&result.data&&result.data.status===0){
-    console.log(result.data.data.message[0],'books342')
-    modalWarning("error",result.data.data.message[0])
+   // console.log(result.data.data.message[0],'books342')
+    modalWarning("error",result.data.data.message)
 }
 setButtonLoader(false)
 setbuttondisable(false)
