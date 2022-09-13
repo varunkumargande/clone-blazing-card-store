@@ -5,11 +5,20 @@
   text-align: center;
   min-height: 650px;
   margin: 0;
-
-  .curved-box {
+  .curved-box{
+    align-content: center;
     border-radius: 40px;
   }
-
+  .close-modal{
+    display: flex;
+    justify-content: flex-end;
+    button{
+      font-size: 10px;
+      background-color: black;
+      font-weight: 800;
+      border: black;
+    }
+  }
   .streaming-div-left {
     background-color: pink;
     padding: 15px;
@@ -280,6 +289,12 @@
     background-color: lightgray;
     padding: 10px;
     flex: 25%;
+  }
+  .streaming-chat-box {
+    position: absolute;
+    width: 125%;
+    bottom: 10px;
+    left: -50px;
   }
   @media (max-width: 800px) {
     .streaming-div-left {

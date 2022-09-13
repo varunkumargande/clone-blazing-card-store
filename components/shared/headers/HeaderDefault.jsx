@@ -26,10 +26,6 @@ function HeaderDefault() {
     // getServiceApi(dispatch);
   }, []);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> pre-dev
   return (
     <header className="header header--1" data-sticky="true" id="headerSticky">
       <div className={`header__top ${currentColor}`}>
@@ -58,10 +54,6 @@ function HeaderDefault() {
                 <LanguageSwicher />
               </div>
             </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> pre-dev
             <HeaderActions />
           </div>
         </div>
