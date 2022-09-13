@@ -3,14 +3,14 @@ import React,{useState,useEffect} from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import MiniCart from './MiniCart';
 import { login } from '../../../../store/auth/action';
-import { wishListApi } from '../../../../api';
+import { wishListApi, cartListApi} from '../../../../api';
 import { addItemToWishlist } from '../../../../store/wishlist/action';
 import { getCompareList } from '../../../../store/compare/action';
 import { useTranslation } from '../../../../i18n';
 import CompardItems from './CompardItems';
 import WishlistItems from './wishlistItems';
 import AuthSignIN from './AuthSignIN';
-
+import getProfileInfoApi from '../../../../api/home/getInfo';
 
 
 
@@ -51,13 +51,20 @@ function HeaderActions({auth,compare}){
         sessionStorage.getItem("spurtToken")&&wishListApi(setWishListApi,dispatch,setDummy)
     },[reloadCart])
 
+
     useEffect(()=>{
         dispatch(getCompareList(0))
         setCompareCount(JSON.parse(sessionStorage.getItem("compareId")))
     },[compareSet])
 
   
-
+  useEffect(()=>{
+        if(sessionStorage.getItem("spurtToken")!==null){
+            getProfileInfoApi(dispatch)
+            cartListApi(dispatch)
+        }
+       
+    },[])
    
         return (
             <>
