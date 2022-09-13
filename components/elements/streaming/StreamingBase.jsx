@@ -18,8 +18,8 @@ function StreamingBase() {
     setOpen(false);
   }
   useEffect(() => {
-    var minutes = 1;
-    var seconds = 10;
+    let minutes = 0;
+    let seconds = 30;
     const updateTime = () => {
       if (minutes >= 0) {
         if (seconds >= 0 && seconds < 60) {

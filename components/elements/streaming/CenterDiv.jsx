@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { getToken } from "../../../api/stream/agora";
 import AgoraRTC from "agora-rtc-sdk-ng";
+import StreamingBase from "./StreamingBase";
 
 
 function CenterDiv() {
@@ -144,72 +145,7 @@ function CenterDiv() {
         </div>
         <div id="social-links">Share to</div>
       </div>
-      <div className="streaming-base">
-      <div id="local_stream" className="local_stream" style={{ width: "510px", height: "600px" }}></div>
-        <span>38</span>
-        <div className="stream-wrapper">
-          <div className="overlay">
-            <div className="product-info">
-              <div id="winning-buyer-info">winner won!</div>
-              <div id="product-name">Product name</div>
-              <div id="shipping-details">Shipping and tax</div>
-            </div>
-            <div className="video-info">
-              <div className="volume">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  className="volume-range"
-                  value={volumeLevel}
-                  onChange={(e) => changeVolume(e.target)}
-                />
-                <div className="bar-hoverbox">
-                  <div classame="bar">
-                    <div classame="bar-fill"></div>
-                  </div>
-                </div>
-                <div>
-                  <button
-                    id="mute-button"
-                    className="curved-box"
-                    onClick={handleMuteButton}
-                  >
-                    {mute ? "Unmute" : "Mute"}
-                  </button>
-                </div>
-                {/* <div>
-                  <button
-                    id="mute-button"
-                    className="curved-box"
-                    onClick={joinChannelAsHost}
-                  >
-                    Host
-                  </button>
-                </div>
-                <div>
-                  <button
-                    id="mute-button"
-                    className="curved-box"
-                    onClick={joinChannelAsAudience}
-                  >
-                    Audience
-                  </button>
-                </div> */}
-              </div>
-              <div id="pay-button">
-                <button className=" curved-box">$</button>
-                <div>Pay</div>
-              </div>
-              <div id="amount">$25</div>
-              <div id="timer">00:00</div>
-            </div>
-          </div>
-          <div id="auction">
-            {/* <button className="curved-box">Auction ended</button> */}
-          </div>
-        </div>
-      </div>
+     <StreamingBase />
     </div>
   );
 }
