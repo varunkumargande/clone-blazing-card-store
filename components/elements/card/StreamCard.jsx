@@ -1,10 +1,11 @@
 import React from "react";
 
-function StreamCard() {
+function StreamCard({audience}) {
+  parseInt(JSON.stringify(audience))
   return (
     <div>
       <div className="container-1">
-        <a href="/streaming">
+        <a href={`/streaming/?audience=${audience}`}>
           <div data-key="livestream1" className="container-2">
             <div className="container-3"></div>
             <div className="container-4">

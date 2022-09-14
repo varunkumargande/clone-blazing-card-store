@@ -11,7 +11,7 @@ export default function Logo() {
   <Link href="/">
               <a className="ps-logo">
                 <div className="logo-div">
-                  {logopaths&&logopaths&&  <img
+                  {/* {logopaths&&logopaths&&  <img
                         src={
                           imageUrl +
                           "?path=" +
@@ -21,7 +21,7 @@ export default function Logo() {
                           "&width=220&height=50"
                         }
                          alt="picco"
-                      />}
+                      />} */}
               
                  
                 </div>

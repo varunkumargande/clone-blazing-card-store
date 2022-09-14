@@ -13,8 +13,8 @@ const StyleSheets = () => (
         <meta name="format-detection" content="telephone=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="author" content="nouthemes" />
-        <meta name="keywords" content="Martfury, React, eCommerce, Template" />
-        <meta name="description" content="Martfury - React eCommerce Template" />
+        <meta name="keywords" content="BLAZING-CARD Stream" />
+        <meta name="description" content="BLAZING-CARD Blaze, cards, streaming" />
         <link
             href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
             rel="stylesheet"
