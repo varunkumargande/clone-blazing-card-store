@@ -1,11 +1,9 @@
-import { login } from "../../store/auth/action";
+
 import { cartListApi } from "../cart/cartList";
 import getProfileApi from "../home/getInfo";
 import APIServices from '../../services'
-import { addItemToWishlist } from "../../store/wishlist/action";
 import { modalSuccess, modalWarning } from "../intercept";
 
-import { addItem } from '../../store/cart/action'
 
 export async function UserLogin(email, password, loginType, Router, setLoginError, dispatch, setMail, setPassword, setLoadImg) {
     const data = JSON.stringify({
