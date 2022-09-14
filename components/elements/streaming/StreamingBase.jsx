@@ -3,7 +3,6 @@ import { getToken } from "../../../api/stream/agora";
 import AgoraRTM from "agora-rtm-sdk";
 import { useRouter } from "next/router";
 import Timer from "./Timer";
-import { func } from "prop-types";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
@@ -17,6 +16,7 @@ function StreamingBase() {
   const [options, setoptions] = useState(null);
   const userType = hostId ? "host" : "audience";
   const [channel, setChannel] = useState(null);
+  
   useEffect(() => {
     if (!options) {
       setoptions({
@@ -31,6 +31,7 @@ function StreamingBase() {
       console.log(joinChannel());
     }
   }, [options]);
+
   const joinChannel = async () => {
     const client = AgoraRTM.createInstance(options.appID);
     const token = await getRtmToken(options[userType]);
@@ -44,35 +45,34 @@ function StreamingBase() {
     });
     return channel;
   };
+
   const getRtmToken = async (uuid) => {
     const url = `/stream/getStreamToken?token=RTM&uid=${uuid}`;
     const response = await getToken(url);
     return response.rtmToken;
+  };
+  useEffect(() => {
+    if(channel){
+      channel.on("ChannelMessage", function (message, memberId) {
+        const {bidAmount,amountToBid} = JSON.parse(message.text);
+        setBidAmount(bidAmount);
+        setAmountToBid(amountToBid);
+      });
+    }
+  }, [channel])
+  const handleConfirmBid = async () => {
+    setOpen(false);
+    setBidAmount(amountToBid);
+    setAmountToBid(amountToBid + 2);
+    let message = JSON.stringify({bidAmount:amountToBid, amountToBid: amountToBid+2});
+    await channel.sendMessage({ text: message, type: "text" });
   };
   /*****End notifications *****/
   const handleMuteButton = () => {};
   const handleCustomBid = () => {
     setOpen(true);
   };
-  const handleConfirmBid = async () => {
-    setOpen(false);
-    setBidAmount(amountToBid);
-      setAmountToBid(amountToBid + 2);
-    let message = String(amountToBid);
-    await channel.sendMessage({ text: message, type: "text" }).then(() => {
-      console.log("message", message);
-    });
-
-    channel.on("ChannelMessage", function (message, memberId) {
-      console.log("hehehehheh");
-      console.log(
-        "message:" +
-          JSON.stringify(message) +
-          "received from memeber:" +
-          memberId
-      );
-    });
-  };
+ 
   useEffect(() => {
     let minutes = 0;
     let seconds = 30;
