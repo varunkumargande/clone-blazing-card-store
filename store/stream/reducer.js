@@ -1,4 +1,4 @@
-import { actionTypes } from "./action";
+import { actionTypes, streamData } from "./action";
 
 export const initState = {
   appId: null,
@@ -6,7 +6,8 @@ export const initState = {
   userType: null,
   audience: null,
   rtcToken: null,
-  rtmToken: null
+  rtmToken: null,
+  streamData: null
 };
 
 function reducer(state = initState, action) {
@@ -23,10 +24,10 @@ function reducer(state = initState, action) {
           rtmToken: action.payload
         },
       };
-    case actionTypes.GET_WISHLIST_LIST_ERROR:
+    case actionTypes.ADD_STREAM_DETAILS:
       return {
         ...state,
-        ...{ error: action.error },
+        ...{ streamData: action.payload },
       };
     case actionTypes.ADD_ITEM_WISHLISH:
       return {

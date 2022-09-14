@@ -1,3 +1,5 @@
+import { getStreamData } from "../../api/stream/stream";
+
 export const actionTypes = {
   ADD_STREAM_DETAILS: 'ADD_STREAM_DETAILS',
   ADD_USER: 'ADD_USER_TYPE',
@@ -9,6 +11,17 @@ export const actionTypes = {
   GET_RTM_TOKEN: 'GET_RTM_TOKEN',
   GET_RTC_TOKEN: 'GET_RTC_TOKEN',
 
+};
+
+
+export const streamData =  (streamUuid) => {
+  return async dispatch => {
+
+    const result = await getStreamData(streamUuid)
+    if(result) {
+      dispatch(addStreamDetails(result))
+    }
+  };
 };
 
 export function getStreamDetails(data) {
@@ -39,7 +52,7 @@ export function getRtcToken(data) {
 };
 }
 
-export function addStreamDetails() {
+export function addStreamDetails(payload) {
   return {
     type: actionTypes.ADD_STREAM_DETAILS,
     payload:payload,

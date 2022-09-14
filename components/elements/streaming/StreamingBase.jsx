@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import StreamingElement from "./StreamingElement";
 import Timer from "./Timer";
 
 function StreamingBase() {
@@ -41,7 +42,8 @@ function StreamingBase() {
     }, 1000);
   }, []);
   return (
-    <div className="streaming-base">
+    < >
+      < StreamingElement />
       <span>38</span>
       <div className="stream-wrapper">
         <div className="overlay">
@@ -151,7 +153,7 @@ function StreamingBase() {
           <></>
         )}
       </div>
-    </div>
+    </>
   );
 }
 export default StreamingBase;

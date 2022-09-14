@@ -11,7 +11,7 @@ function Index(){
         <div className='wrapper'>
             <LeftDiv/>
             <CenterDiv/>
-            <RightDiv/>
+            {/* <RightDiv/> */}
         </div>
     )
 }

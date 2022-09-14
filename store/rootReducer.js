@@ -8,6 +8,7 @@ import auth from './auth/reducer';
 import wishlist from './wishlist/reducer';
 import collection from './collection/reducer';
 import palette from './colorPalette/reducer';
+import stream from './stream/reducer'
 
 
 export default combineReducers({
@@ -19,6 +20,6 @@ export default combineReducers({
     compare,
     wishlist,
     collection,
-    palette
- 
+    palette,
+    stream
 });
