@@ -1,22 +1,21 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { getToken } from "../../../api/stream/agora";
 import AgoraRTM from "agora-rtm-sdk";
 import { useRouter } from "next/router";
 import Timer from "./Timer";
 import { func } from "prop-types";
 
-
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
   const [bidAmount, setBidAmount] = React.useState(25);
-  const [amountToBid, setAmountToBid] = React.useState(bidAmount+2);
+  const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
   const [timer, setTimer] = useState("00:00");
   /*****For notifications *****/
   const router = useRouter();
   const hostId = router.query["hostId"];
   const audienceId = router.query["audienceId"];
   const [options, setoptions] = useState(null);
-  const userType = hostId ? 'host' : 'audience';
+  const userType = hostId ? "host" : "audience";
   const [channel, setChannel] = useState(null);
   useEffect(() => {
     if (!options) {
@@ -40,8 +39,8 @@ function StreamingBase() {
     console.log(channel);
     await channel.join();
     setChannel(channel);
-    channel.on('Member Joined', function(memberId){
-        console.log(memberId+"JOined")
+    channel.on("Member Joined", function (memberId) {
+      console.log(memberId + "JOined");
     });
     return channel;
   };
@@ -51,25 +50,29 @@ function StreamingBase() {
     return response.rtmToken;
   };
   /*****End notifications *****/
-  const handleMuteButton = () => {
-  };
+  const handleMuteButton = () => {};
   const handleCustomBid = () => {
     setOpen(true);
   };
   const handleConfirmBid = async () => {
     setOpen(false);
-    let message = String(amountToBid)
-    await channel.sendMessage({text: message, type: "text"}).then(()=>{
-        console.log("message", message)
-    })
+    setBidAmount(amountToBid);
+      setAmountToBid(amountToBid + 2);
+    let message = String(amountToBid);
+    await channel.sendMessage({ text: message, type: "text" }).then(() => {
+      console.log("message", message);
+    });
 
-    channel.on('ChannelMessage', function(message, memberId){
-        console.log("hehehehheh")
-        console.log("message:" + JSON.stringify(message) + "received from memeber:" + memberId)
-        setBidAmount(amountToBid);
-        setAmountToBid(amountToBid+2);
-    })
-  }
+    channel.on("ChannelMessage", function (message, memberId) {
+      console.log("hehehehheh");
+      console.log(
+        "message:" +
+          JSON.stringify(message) +
+          "received from memeber:" +
+          memberId
+      );
+    });
+  };
   useEffect(() => {
     let minutes = 0;
     let seconds = 30;
@@ -77,12 +80,12 @@ function StreamingBase() {
       if (minutes >= 0) {
         if (seconds >= 0 && seconds < 60) {
           seconds = seconds - 1;
-         
+
           if (seconds === -1) {
             minutes = minutes - 1;
             seconds = 59;
-            if(minutes== -1 && seconds==59){
-                return "00:00"
+            if (minutes == -1 && seconds == 59) {
+              return "00:00";
             }
           }
         }
@@ -94,13 +97,13 @@ function StreamingBase() {
     }, 1000);
   }, []);
   return (
-    <div className="streaming-base">
+    <>
       <span>38</span>
       <div className="stream-wrapper">
         <div className="overlay">
           <div className="product-info">
             <div id="winning-buyer-info">winner won!</div>
-            <div className="product-detail">Product name</div>
+            <div id="product-name">Name</div>
             <div id="shipping-details">Shipping and tax</div>
           </div>
           <div className="video-info">
@@ -143,7 +146,11 @@ function StreamingBase() {
           >
             Custom
           </button>
-          <button className="curved-box general-button-style" id="bid-button" onClick={handleConfirmBid}>
+          <button
+            className="curved-box general-button-style"
+            id="bid-button"
+            onClick={handleConfirmBid}
+          >
             Bid ${amountToBid}
           </button>
         </div>
@@ -163,7 +170,7 @@ function StreamingBase() {
                     00:00
                 </h2>
               </div> */}
-              <Timer time={timer}/>
+              <Timer time={timer} />
               <div id="adjust-bidding-amount">
                 <div>
                   <button
@@ -204,7 +211,7 @@ function StreamingBase() {
           <></>
         )}
       </div>
-    </div>
+    </>
   );
 }
 export default StreamingBase;
