@@ -1,10 +1,27 @@
-import React from "react";
+import React,{useState,useEffect,useRef} from "react";
 import Link from "next/link";
 import Logo from "../../Icons/Logo";
 import IconMessage from "../../Icons/IconMessage";
 import IconNotification from "../../Icons/IconNotification";
 import IconDropdown from "../../Icons/IconDropdown";
+import IconSearch from "../../Icons/IconSearch";
 export default function Header(){
+    const [active, setActive] = useState(false);
+    const wrapperRef = useRef(null);
+    const handleOnClick = () => {
+        setActive(!active);
+    };
+    const handleClickOutside = (event) => {
+		if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+			setActive(false)
+		}
+	}
+    useEffect(() => {
+		document.addEventListener('click', handleClickOutside, false)
+		return () => {
+			document.removeEventListener('click', handleClickOutside, false)
+		}
+	}, [])
     return(
         <header>
             <div className="inner-container flex flex-wrap flex-center space-between">
@@ -14,6 +31,7 @@ export default function Header(){
                     </div>
                     <div className="Search">
                         <input type="search" id="search" name="search" />
+                        <button className="search-btn"><IconSearch /></button>
                     </div>
                 </div>
                 <div className="right flex flex-wrap flex-center">
@@ -29,15 +47,17 @@ export default function Header(){
                                 </span>
                             </span>
                         </label>
-                        <button className="message"><IconMessage /></button>
-                        <button className="Notification"><IconNotification /></button>
-                        <button className="profile"><img src="/static/images/profile.png" alt="Profile" /><IconDropdown /></button>
+                        {/* <Link href="/"><a className="primary-btn flex flex-center justify-center onlyMobile">Sign In</a></Link> */}
+                        {/* <Link href="/"><a className="border-btn flex flex-center justify-center">Become a Seller</a></Link> */}
+                        <button className="message flex flex-center justify-center"><IconMessage /></button>
+                        <button className="Notification flex flex-center justify-center"><IconNotification /></button>
+                        <button className="profile">
+                            <span onClick={handleOnClick} ref={wrapperRef}><img src="/static/images/profile.png" alt="Profile" /><IconDropdown /></span>
+                            <ul  className= {active ? "dropDown active" : "dropDown"} >
+                                <li className="active">Logout</li>
+                            </ul>
+                        </button>
                     </div>
-                    {/* <div className="withoutLogedIn flex flex-center">
-                        <Link href="/"><a>Become a Seller</a></Link>
-                        <button className="signIn border-btn">Sign In</button>
-                        <button className="signUp primary-btn">Sign Up</button>                        
-                    </div> */}
                 </div>
             </div>
         </header>
