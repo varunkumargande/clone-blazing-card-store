@@ -6,7 +6,6 @@ import { modalSuccess, modalWarning } from "../intercept";
 
 
 export async function UserLogin(email, password, loginType, Router, setLoginError, dispatch, setMail, setPassword, setLoadImg) {
-
     const data = JSON.stringify({
         emailId: email,
         password: password,

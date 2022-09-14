@@ -13,6 +13,9 @@
     },
     "dependencies": {
         "@ant-design/icons": "^4.7.0",
+        "agora-rtc-sdk": "^3.6.11",
+        "agora-rtc-sdk-ng": "^4.13.0",
+        "agora-rtm-sdk": "^1.5.1",
         "antd": "^4.21.3",
         "axios": "^0.24.0",
         "bifrost-cors": "^1.0.4",
@@ -54,9 +57,6 @@
         "redux-thunk": "^2.3.0",
         "sass": "^1.49.9",
         "slick-carousel": "^1.8.1",
-        "styled-components": "^5.3.5",
-        "agora-rtc-sdk": "^3.6.11",
-        "agora-rtm-sdk": "^1.5.1",
-        "agora-rtc-sdk-ng": "^4.13.0"
+        "styled-components": "^5.3.5"
     }
 }

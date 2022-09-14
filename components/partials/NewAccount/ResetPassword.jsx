@@ -23,6 +23,9 @@ export default function SentMail(){
                 <div className="submitWrap mb32 mt16">
                     <button type="submit" className="primary-btn">Reset Password</button>
                 </div>
+                <div className="copyright flex flex-center justify-center">
+                    © Blazing Cards. 2022, All Rights Reserved
+                </div>
             </form>
         </div>
     );

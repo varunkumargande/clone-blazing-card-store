@@ -7,8 +7,6 @@ import ResetPassword from "../../components/partials/NewAccount/ResetPassword";
 import Success from "../../components/partials/NewAccount/Success";
 import SentMail from "../../components/partials/NewAccount/SentMail";
 export default function NewAccount(){
-
-
     return(
         <main className="form-wrapper flex space-between">
             <div className="login-left flex justify-center text-center">
@@ -18,9 +16,9 @@ export default function NewAccount(){
                 {/* <Login/> */}
                 {/* <Signup /> */}
                 {/* <ForgetPassword /> */}
-                <ResetPassword />
+                {/* <ResetPassword /> */}
                 {/* <Success /> */}
-                {/* <SentMail /> */}
+                <SentMail />
             </div>
         </main>
     );

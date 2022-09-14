@@ -6,16 +6,16 @@ import BreadCrumb from '../../components/elements/BreadCrumb';
 import HeaderMobile from '../../components/shared/headers/HeaderMobile';
 import NavigationList from '../../components/shared/navigation/NavigationList';
 import useNetwork from '../../components/reusable/NetworkCheck';
-import Router from 'next/router';
+import  Router  from 'next/router';
 
 const ForgotPasswordPage = () => {
-    const network = useNetwork()
+    const network=useNetwork()
 
-    useEffect(() => {
-        if (network === false) { Router.push('/network-error') }
-    }, [])
+    useEffect(()=>{
+        if(network===false){ Router.push('/network-error')  }
+    },[])
 
-
+    
 
     const breadCrumb = [
         {
@@ -33,8 +33,9 @@ const ForgotPasswordPage = () => {
             <NavigationList />
             <div className="ps-page--simple">
                 <BreadCrumb breacrumb={breadCrumb} />
-                <ForgotPassword />
+                <ForgotPassword/>
             </div>
+            {/* <Newsletters layout="container" /> */}
             <FooterDefault />
         </div>
     );

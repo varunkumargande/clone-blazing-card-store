@@ -3,21 +3,16 @@ import React, { Component } from 'react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, connect } from 'react-redux';
 import AccountNav from '../../elements/AccountNav';
-import { Radio, Space } from 'antd';
-import FormAddressAddEdit from './modules/FormAddress';
-import { countryListApi, editAddressApi, UserAddAddress } from '../../../api';
-import { zoneListApi } from '../../../api/account/zoneList';
-import { useTranslation } from '../../../i18n'
-import Select from "react-select";
+import APIServices from '../../../services'
+import { modalSuccess, modalWarning } from "../../../api/intercept";
 
 function CustomAddCardDetail({ type, addressId }) {
     const [cardNumber, setCardNumber] = useState("")
     const [country, setCountry] = useState("")
     const [expiary, setExpiary] = useState("")
     const [cvc, setCVC] = useState("")
-
 
     const [cardNumberError, setCardNumberError] = useState("")
     const [countryError, setCountryError] = useState("")
@@ -26,16 +21,16 @@ function CustomAddCardDetail({ type, addressId }) {
 
     useEffect(() => {
         validate()
-    }, [cardNumber, country, expiary, cvc])
+    }, [cardNumber, expiary, cvc])
 
     const options = [
         { value: 'Usa', label: 'USA' },
         { value: 'UK', label: 'UK' },
-      ];
+    ];
 
     const validate = () => {
 
-        let validateObj = { cardNumber: true, country: true, expiary: true, cvc: true }
+        let validateObj = { cardNumber: true, expiary: true, cvc: true }
         if (cardNumber === "") {
             setCardNumberError("Card Number is required")
             validateObj.cardNumber = false;
@@ -44,16 +39,6 @@ function CustomAddCardDetail({ type, addressId }) {
             setCardNumberError("")
             validateObj.cardNumber = true;
         }
-
-        if (country === "") {
-            setCountryError("Country is required")
-            validateObj.country = false;
-        }
-        else {
-            setCountryError("")
-            validateObj.country = true;
-        }
-
 
         if (expiary === "") {
             setExpiaryError("Expiary Date is required")
@@ -72,17 +57,36 @@ function CustomAddCardDetail({ type, addressId }) {
             setCVCError("")
             validateObj.cvc = true;
         }
-
-
-        if (validateObj.cardNumber && validateObj.country && validateObj.cvc && validateObj.expiary) {
+        if (validateObj.cardNumber && validateObj.cvc && validateObj.expiary) {
             return true
         } else {
             return false
         }
     }
 
-    const apiCallAdd = () => {
-        console.log(validate())
+    const apiCallAdd = async () => {
+        let expDate = ""
+        let year = expiary.split("-")[0].slice(-2)
+        let month = expiary.split("-")[1]
+        expDate = month + "/" + year
+        if (validate()) {
+            const data = JSON.stringify({
+                "cardNumber": cardNumber,
+                "expireDate": expDate,
+                "cvc": cvc,
+                "customerId": String(JSON.parse(sessionStorage.getItem("spurtUser")).id),
+                "name": JSON.parse(sessionStorage.getItem("spurtUser")).firstName,
+                "emailId": JSON.parse(sessionStorage.getItem("spurtUser")).email
+            })
+            const result = await APIServices.create('customer-card-details/addCard', data)
+            if (result.status == 200) {
+                modalSuccess('success', result.data.message)
+                Router.push('/account/card-details');
+            } else {
+                modalWarning('error', result.data.message)
+            }
+            console.log(result.data.data)
+        }
     }
 
     const CancelClick = () => {
@@ -91,7 +95,6 @@ function CustomAddCardDetail({ type, addressId }) {
 
     return (
         <section className="cus-account-container">
-
             <div className="cus-account-subcontainer">
                 <div className="cus-position-container">
                     <AccountNav keyValue={"0"} />
@@ -103,7 +106,7 @@ function CustomAddCardDetail({ type, addressId }) {
                                     <div className="aa-input-container">
                                         <p>Card Number*</p>
                                         <input
-                                        onChange={(e) => setCardNumber(e.target.value)}
+                                            onChange={(e) => setCardNumber(e.target.value)}
                                             placeholder="XXXX XXXX XXXX XXXX"
                                         // value={fname}
                                         // onChange={(e) => validNameFill(e.target.value)}
@@ -114,30 +117,11 @@ function CustomAddCardDetail({ type, addressId }) {
                                         <span className="error-span">{cardNumberError}</span>
                                     )}
                                 </div>
-
-                                <div className="aa-input-main">
-                                    <div className="aa-input-container">
-                                        <p>Country*</p>
-                                        <Select
-                                            placeholder="Country *"
-                                            options={options}
-                                            isSearchable={true}
-                                            onChange={(e) => setCountry(e.value)}
-                                        />
-                                    </div>
-                                    {countryError !== "" && (
-                                        <span className="error-span">{countryError}</span>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="aa-form-container">
                                 <div className="aa-input-main">
                                     <div className="aa-input-container">
                                         <p>Expiary Date*</p>
                                         <input
                                             type="month"
-                                            placeholder="XXXX XXXX XXXX XXXX"
                                             onChange={(e) => setExpiary(e.target.value)}
                                         // value={fname}
                                         // onChange={(e) => validNameFill(e.target.value)}
@@ -148,6 +132,9 @@ function CustomAddCardDetail({ type, addressId }) {
                                         <span className="error-span">{expiaryError}</span>
                                     )}
                                 </div>
+                            </div>
+
+                            <div className="aa-form-container">
 
                                 <div className="aa-input-main">
                                     <div className="aa-input-container">
@@ -156,9 +143,6 @@ function CustomAddCardDetail({ type, addressId }) {
                                             type="text"
                                             placeholder="XXXX"
                                             onChange={(e) => setCVC(e.target.value)}
-                                        // value={fname}
-                                        // onChange={(e) => validNameFill(e.target.value)}
-                                        // style={{ border: submit === 1 && fnameError !== "" && "1px solid red" }}
                                         />
                                     </div>
                                     {cvcError !== "" && (
@@ -191,4 +175,9 @@ function CustomAddCardDetail({ type, addressId }) {
         </section>
     )
 }
-export default CustomAddCardDetail;
+
+const mapStateToProps = state => {
+    return state.setting;
+
+}
+export default connect(mapStateToProps)(CustomAddCardDetail);

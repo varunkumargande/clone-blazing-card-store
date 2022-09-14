@@ -9,6 +9,9 @@ import { MoreOutlined } from '@ant-design/icons';
 import {addressListApi, delAddressApi} from '../../../api';
 import {editDetail} from '../../../store/setting/action';
 import Head from 'next/head'
+import APIServices from '../../../services'
+
+
 function AddressNewComp() {
     const [addressData,setAddressData]=useState()
     const [delStatus,setDelStatus]=useState(0)

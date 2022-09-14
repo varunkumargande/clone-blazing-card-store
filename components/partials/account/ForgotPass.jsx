@@ -5,9 +5,7 @@ import { useState,useEffect } from 'react';
 import {forgotApi} from '../../../api/auth/forgotPassword'
 import  Router  from "next/router";
 import Link from 'next/link';
-import ForgetPassword from '../NewAccount/ForgetPassword';
-import Head from 'next/head';
-import LeftPannel from '../NewAccount/LeftPannel';
+
 
 function ForgotPassword(){
     const [mail,setMail]=useState("")
@@ -28,21 +26,80 @@ function ForgotPassword(){
     }
 
     return(
-      <>
-        <div className="ps-my-account" onKeyPress={e => enterKeyEvent(e)}>
-            <Head>
-                <title>Login</title>
-            </Head>
-            <main className="form-wrapper flex space-between">
-            <div className="login-left flex justify-center text-center">
-                <LeftPannel />
+      <div className='forgot-wrapper'>
+          {forgotSuccess?<h4 
+           style={{display: "flex",
+           justifyContent: "center",
+           alignItems: "center",
+           height: "300px"}}
+          >Reset Password link has been sent to your email inbox.</h4>:(
+                <div className="ps-order-tracking">
+                <div className="container">
+                    
+                    <div className="ps-section__content">
+                    <Form className="ps-form--account"
+
+                    
+                                validateMessages={validateMessages}
+                                onFinish={handleSubmit}
+                                >
+                                    <h3>Forgot Password</h3>
+                        <p>Enter your Registered email ID below. We will sent the link to reset your password</p>
+                            {/* <div className="form-group">
+                                <label>Order ID</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    placeholder="Found in your order confimation email"
+                                />
+                            </div> */}
+                            <div className="form-group">
+                                            <Form.Item
+                                                name="Email"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        type:"email",
+                                                    
+                                                        // message:
+                                                        // 'Email Id is required'
+                                                     
+                                                    
+                                                       
+                                                        
+                                                    },
+                                                ]}>
+                                                <Input
+                                                    className="form-control"
+                                                    type="email"    
+                                                    placeholder="Email address"
+                                                    value={mail}
+                                                    onChange={e=>setMail(e.target.value)}
+                                                />
+                                            </Form.Item>
+                                        </div>
+                            {/* <div className="form-group">
+                                <label>Email</label>
+                                <input className="form-control" type="text" placeholder="" />
+                            </div> */}
+                            <div className="form-group submit">
+                                <button className="ps-btn ps-btn--fullwidth"  type="submit">Submit</button>
+                            </div>
+                            <p className='backlogin'>
+                                <Link href="/account/login">
+                                <a >Go Back To Login</a>
+                                </Link>
+                                </p>
+                        </Form>
+                    </div>
+                </div>
             </div>
-            <div className="login-right flex justify-center">
-                <ForgetPassword />
-            </div>
-        </main>
-        </div>
-      </>
+
+          )
+
+          }
+      
+    </div>
     )
 }
 
