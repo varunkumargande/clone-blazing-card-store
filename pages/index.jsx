@@ -8,7 +8,6 @@ import { featuredApi } from "../api";
 import { categoryListApi } from "../api";
 import useNetwork from "../components/reusable/NetworkCheck";
 import Router from "next/router";
-import { ManufacturerApi } from "../api";
 import getPageApi from "../api/home/getPage";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import HeaderMobile from "../components/shared/headers/HeaderMobile";
@@ -42,9 +41,7 @@ function Index(props) {
     }
   }, []);
 
-
- 
-
+  
   useEffect(() => {
     // ManufacturerApi(dispatch);
     categoryListApi(dispatch);
