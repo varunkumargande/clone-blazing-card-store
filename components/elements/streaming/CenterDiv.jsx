@@ -3,6 +3,7 @@ import { Col, Row } from 'antd';
 import Link from 'next/link';
 import PaymentCard from "./Payment/PaymentCard"
 import ShippmentCard from './Payment/ShippmentCard';
+import StreamingBase from './StreamingBase';
 
 function CenterDiv() {
     const [open, setOpen] = React.useState(false)
@@ -68,7 +69,8 @@ function CenterDiv() {
                 </div>
             </div>
             <div className='streaming-base'>
-                <span className='span'>
+                <StreamingBase />
+                {/* <span className='span'>
                     38
                 </span>
                 <div className='stream-wrapper'>
@@ -87,9 +89,9 @@ function CenterDiv() {
                         <div className='video-info'>
                             <div className="volume">
                                 <input type="range" min="0" max="100" value="50" className="volume-range" />
-                                {/* <div class="icon">
+                                <div class="icon">
                                     <i class="fa fa-volume-up icon-size" aria-hidden="true"></i>
-                                </div> */}
+                                </div>
                                 <div className="bar-hoverbox">
                                     <div classame="bar">
                                         <div classame="bar-fill"></div>
@@ -114,7 +116,7 @@ function CenterDiv() {
                     <div id='auction'>
                         <button className='curved-box'>Auction ended</button>
                     </div>
-                </div>
+                </div> */}
 
 
                 {open ? (
@@ -139,7 +141,7 @@ function CenterDiv() {
                                                     <h4 className='option-payment'>Payment</h4>
                                                 </Col>
                                                 <Col span={12} push={7}>
-                                                    <button className='option_event' onClick={handlePaymentMethod}> > </button>
+                                                    <button className='option_event' onClick={handlePaymentMethod}>"-" </button>
                                                 </Col>
                                             </Row>
                                         </div>
@@ -153,7 +155,7 @@ function CenterDiv() {
                                                     <h4 className='option-shippment'>Shippment</h4>
                                                 </Col>
                                                 <Col span={10} push={7}>
-                                                    <button className='option_event' onClick={handleShippmentMethod}> > </button>
+                                                    <button className='option_event' onClick={handleShippmentMethod}>"-" </button>
                                                 </Col>
                                             </Row>
                                         </div>

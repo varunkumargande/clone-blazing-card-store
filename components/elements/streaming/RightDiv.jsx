@@ -32,19 +32,19 @@ function RightDiv() {
     }
 
     if (options) {
-      joinChannel();
+      // joinChannel();
     }
   }, [options]);
 
   useEffect(() => {
     if (channel) {
-      sendAndUpdateMessage("JOINED");
-      channel.on("ChannelMessage", (message, peerId) => {
-        if (message.messageType === "TEXT") {
-          const messageObject = { message: message.text, userId: peerId };
-          setMessages(messages => [...messages, messageObject]);
-        }
-      });
+      // sendAndUpdateMessage("JOINED");
+      // channel.on("ChannelMessage", (message, peerId) => {
+      //   if (message.messageType === "TEXT") {
+      //     const messageObject = { message: message.text, userId: peerId };
+      //     setMessages(messages => [...messages, messageObject]);
+      //   }
+      // });
     }
   }, [channel]);
 
@@ -97,7 +97,7 @@ function RightDiv() {
 
   return (
     <div className="streaming-div-right">
-      {getMessages()}
+      {/* {getMessages()} */}
       <div className="streaming-chat-box">
         <Input
           style={{ width: "calc(100% - 200px)" }}
@@ -105,9 +105,9 @@ function RightDiv() {
           value={inputValue}
           onChange={(e) => inputChange(e)}
         />
-        <Button onClick={() => sendAndUpdateMessage(null)} type="primary">
+        {/* <Button onClick={() => sendAndUpdateMessage(null)} type="primary">
           Submit
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
