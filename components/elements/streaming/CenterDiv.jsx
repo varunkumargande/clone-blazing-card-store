@@ -63,7 +63,7 @@ function CenterDiv() {
                     className="curved-box"
                     onClick={handleMuteButton}
                   >
-                    {mute ? "Unmute" : "Mute"}
+                    {/* {mute ? "Unmute" : "Mute"} */}
                   </button>
                 </div>
             </div>
