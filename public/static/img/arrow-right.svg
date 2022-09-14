@@ -2,7 +2,7 @@
     <defs>
         <path id="prefix__a" d="M0.59 11.34L5.17 6.75 0.59 2.16 2 0.75 8 6.75 2 12.75z"/>
     </defs>
-    <g fill="none" fill-rule="evenodd" transform="translate(8 6)">
+    <g fill="none" fillRule="evenodd" transform="translate(8 6)">
         <mask id="prefix__b" fill="#fff">
             <use xlink:href="#prefix__a"/>
         </mask>

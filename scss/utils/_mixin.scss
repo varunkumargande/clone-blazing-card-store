@@ -142,3 +142,27 @@
         padding: 35px 0;
     }
 }
+// Positional mixins
+@mixin pos(
+	$pos: static,
+	$top: null,
+	$right: null,
+	$bottom: null,
+	$left: null,
+	$z-index: null
+) {
+	@if (($pos==relative) or ($pos==re)) {
+		position: relative;
+	} @else if (($pos==absolute) or ($pos==ab)) {
+		position: absolute;
+	} @else if (($pos==fixed) or ($pos==fi)) {
+		position: fixed;
+	} @else if ($pos==static) {
+		position: static;
+	}
+	top: $top;
+	right: $right;
+	bottom: $bottom;
+	left: $left;
+	z-index: $z-index;
+}

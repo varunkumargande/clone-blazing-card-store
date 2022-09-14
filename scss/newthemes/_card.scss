@@ -1,0 +1,229 @@
+
+.overflow-wrap{
+    flex-wrap: nowrap;
+    width:100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { 
+        height: 0;  
+    }
+}
+.card-wrapper{
+    background-color: $home-bg;
+    padding: 24px 0;
+}
+.card-inner{
+    padding-bottom: 24px;
+}
+.card-wrap,.Category-list-wrap{
+    flex-wrap: nowrap;
+}
+.title-wrap{
+    margin-bottom: 16px;
+    .title{
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+    .seeAll{
+        a{
+            font-size: 12px;
+            line-height: 18px;
+            color:$blue-color;
+            font-weight: 700;
+        }
+    }
+}
+.card-list{
+    flex:0 0 253px;
+    margin-right: 16px;
+    background-color: $white-color;
+    border-radius: 16px;
+    overflow: hidden;
+    .image{
+        position: relative;
+        img{
+            width: 100%;
+        }
+        .tme-wrap{
+            font-size: 12px;
+            line-height: 18px;
+            position: absolute;
+            top:8px;
+            left: 8px;
+            background: rgba($white-color, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 18px;
+            color:$white-color;
+            width: 104px;
+            height: 24px;
+            svg{
+                max-width: 14px;
+                text-align: center;
+                .icon{
+                    fill: $white-color;
+                }
+            }
+            span{
+                padding: 0 3px 0 2px;
+            }
+            .live{
+                font-size: 12px;
+                width: 49px;
+                height: 20px;
+                border-radius: 14px;
+                color:$white-color;
+                background-color: $red-color;
+                list-style: disc;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                padding-left: 12px;
+                &:before{
+                    content: "";
+                    position: absolute;
+                    left:8px;
+                    top:8px;
+                    width: 3px;
+                    height: 3px;
+                    background-color: $white-color;
+                    border-radius: 50%;
+                }
+            }
+        }
+        .like{
+            position: absolute;
+            top:8px;
+            right: 8px;
+            background-color: $white-color;
+            border-radius: 50%;
+            width:24px;
+            height: 24px;
+            svg{
+                width:14px;
+            }
+            .icon{
+                transition: all .25s;
+            }
+            &:hover,&.liked{
+                .icon{
+                    fill: $red-color;
+                    stroke: $red-color;
+                }
+            }
+        }
+    }
+    .text{
+        padding: 8px;
+        .title{
+            font-size: 14px;
+            line-height: 21px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            img{
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                margin-right: 5px;
+                object-fit: cover;
+            }
+        }
+        .disc{
+            font-size: 14px;
+            line-height: 21px;
+            margin-bottom: 5px;
+            color:$disc-color;
+        }
+        .cate-btn{
+            font-size: 14px;
+            color:$green-color;
+            background-color: rgba($green-color,.08);
+            width: 90px;
+            height: 29px;
+            border-radius: 15px;
+        }
+    }
+}
+.category-btn-wrap{
+    position: relative;
+    
+}
+.category-list{
+    flex-wrap: nowrap;
+}
+@media all and (min-width:768px){
+    .card-wrapper{
+        padding: 40px 0;
+    }
+    .card-inner{
+        padding-bottom: 32px;
+    }
+    .title-wrap{
+        margin-bottom: 24px;
+        .title{
+            font-size: 24px;
+            line-height: 24px;
+        }
+        .seeAll{
+            a{
+                font-size: 18px;
+                line-height: 24px;
+            }
+        }
+    }  
+    .card-list{
+        flex:0 0 296px;
+        margin-right: 32px;
+        .image{
+            .tme-wrap{
+                font-size: 16px;
+                width: 136px;
+                height: 32px;
+                svg{
+                    max-width: 18px;
+                }
+                span{
+                    padding: 0 6px 0 2px;
+                }
+                .live{
+                    font-size: 14px;
+                    width: 53px;
+                    height: 24px;
+                    &:before{
+                        top:11px;
+                        width: 4px;
+                        height: 4px;
+                    }
+                }
+            }
+            .like{
+                width:32px;
+                height: 32px;
+                svg{
+                    width: 18px;
+                }
+            }
+        }
+        .text{
+            padding: 8px;
+            .title{
+                font-size: 16px;
+                line-height: 21px;
+                img{
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+            .disc{
+                font-size: 16px;
+                line-height: 24px;
+            }
+        }    
+    }
+}
+
