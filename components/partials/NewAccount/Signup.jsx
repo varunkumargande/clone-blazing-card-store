@@ -9,6 +9,7 @@ import Router from 'next/router';
 import { connect, useDispatch } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
 import { modalSuccess, modalWarning } from "../../../api/intercept";
+import { registerConstant } from "../../Constants/register"
 
 function Signup(auth) {
 
@@ -36,8 +37,6 @@ function Signup(auth) {
     }, []);
 
     const handleSubmit = e => {
-
-        console.log(policyCheck)
         e.preventDefault()
         if (policyCheck == true) {
             setSubmit(1)
@@ -46,42 +45,37 @@ function Signup(auth) {
                 UserRegister(name, mail, pass, cpass, number, Router)
             }
         } else {
-            modalWarning("error", "PLease select term and policy")
+            modalWarning("error", registerConstant["policyError"])
         }
-
     };
-
 
     const validMessage = () => {
         let validateObj = { nameValid: false, mailValid: false, passValid: false, cpassValid: false, numValid: false, lastName: false }
 
         if (name.length < 3 && name.length !== 0) {
-            setNameValid("Minimum of 3 characters")
+            setNameValid(registerConstant["firstLastLimitValidate"])
             validateObj.nameValid = false;
         }
         else if (name.length === 0) {
-            setNameValid("First name is required")
+            setNameValid(registerConstant["requiredFirstName"])
             validateObj.nameValid = false;
         }
         else {
             setNameValid("")
             validateObj.nameValid = true;
         }
-
-
         if (lastName.length < 3 && lastName.length !== 0) {
-            setLastNameValid("Minimum of 3 characters")
+            setLastNameValid(registerConstant["lastNameLimitValidate"])
             validateObj.nameValid = false;
         }
         else if (lastName.length === 0) {
-            setLastNameValid("Last name is required")
+            setLastNameValid(registerConstant["requiredLastName"])
             validateObj.nameValid = false;
         }
         else {
             setLastNameValid("")
             validateObj.nameValid = true;
         }
-
         if (mail) {
             let emailCheck = EmailValidator(mail)
             if (emailCheck) {
@@ -89,37 +83,32 @@ function Signup(auth) {
                 validateObj.mailValid = true
             }
             else {
-                setMailValid("Invalid email address")
+                setMailValid(registerConstant["validateEmail"])
                 validateObj.mailValid = false;
             }
         }
         else {
-            setMailValid("Email is required")
-
+            setMailValid(registerConstant["requiredEmail"])
         }
-
-
         if (pass === "") {
-            setPassValid(["Password is required"])
+            setPassValid([registerConstant["requiredPassword"]])
             validateObj.passValid = false
-
-
         } else {
             let arrayValue = []
             if (!upperPresent(pass)) {
-                arrayValue.push("Must contain at least 1 in capital case!")
+                arrayValue.push(registerConstant["passCapValidate"])
             }
             if (!numPresent(pass)) {
-                arrayValue.push("Must have at least 1 number")
+                arrayValue.push(registerConstant["passNumValidate"])
             }
             if (!lowerPresent(pass)) {
-                arrayValue.push("Must contain at least 1 lower case!")
+                arrayValue.push(registerConstant["passLowValidate"])
             }
             if (!specialPresent(pass)) {
-                arrayValue.push("Must contain at least 1 special characters!")
+                arrayValue.push(registerConstant["passSpeValidate"])
             }
             if (pass.length < 8) {
-                arrayValue.push("Must be at least 8 characters!")
+                arrayValue.push(registerConstant["passCharValidate"])
             }
             if (arrayValue.length > 0) {
                 validateObj.passValid = false
@@ -132,7 +121,7 @@ function Signup(auth) {
 
         if (cpass) {
             if (cpass && cpass !== pass) {
-                setCpassValid(" Passwords do not match")
+                setCpassValid(registerConstant["validateConfirmPassword"])
                 validateObj.cpassValid = false
             }
             else {
@@ -143,16 +132,14 @@ function Signup(auth) {
         else {
             setCpassValid()
         }
-
         if (number) {
             setNumValid("")
             validateObj.numValid = true
         }
         else {
-            setNumValid("Phone number is required")
+            setNumValid(registerConstant["requiredContact"])
             validateObj.numValid = false
         }
-
         if (validateObj.numValid && validateObj.passValid && validateObj.nameValid && validateObj.cpassValid && validateObj.mailValid) {
             return true;
         }
@@ -171,16 +158,17 @@ function Signup(auth) {
         }
         if (submit) {
             if (t.length < 3 && t.length !== 0) {
-                setNameValid("Minimum of 3 characters")
+                setNameValid(registerConstant["firstNameLimitValidate"])
             }
             else if (t.length === 0) {
-                setNameValid("Full name is required")
+                setNameValid(registerConstant["requiredFirstName"])
             }
             else {
                 setNameValid("")
             }
         }
     }
+
     const validnumber = (value) => {
         var roleExpression = /[^0-9]/g;
         var regex = new RegExp(roleExpression);
@@ -190,15 +178,13 @@ function Signup(auth) {
         }
         if (submit) {
             if (t.length === 0) {
-                setNumValid("Phone number is required")
+                setNumValid(registerConstant["requiredContact"])
             }
             else {
                 setNumValid("")
             }
         }
-
     }
-
 
     const registerOnChange = (e) => {
         const { name, value } = e.target;
@@ -208,12 +194,11 @@ function Signup(auth) {
             if (submit) {
 
                 if (value.length < 3 && value.length !== 0) {
-                    setNameValid("Minimum of 3 characters")
+                    setNameValid(registerConstant["firstNameLimitValidate"])
                 }
                 else if (value.length === 0) {
-                    setNameValid("Full name is required")
+                    setNameValid(registerConstant["requiredFirstName"])
                 }
-
                 else {
                     setNameValid("")
                 }
@@ -225,12 +210,11 @@ function Signup(auth) {
             if (submit) {
 
                 if (value.length < 3 && value.length !== 0) {
-                    setLastNameValid("Minimum of 3 characters")
+                    setLastNameValid(registerConstant["firstNameLimitValidate"])
                 }
                 else if (value.length === 0) {
-                    setLastNameValid("Full name is required")
+                    setLastNameValid(registerConstant["requiredLastName"])
                 }
-
                 else {
                     setLastNameValid("")
                 }
@@ -247,11 +231,11 @@ function Signup(auth) {
                         setMailValid("")
                     }
                     else {
-                        setMailValid("Invalid email address")
+                        setMailValid(registerConstant["validateEmail"])
                     }
                 }
                 else {
-                    setMailValid("Email is required")
+                    setMailValid(registerConstant["requiredEmail"])
                 }
             }
         }
@@ -259,27 +243,26 @@ function Signup(auth) {
 
         if (name === "password") {
             if (value === "") {
-                setPassValid(["New password is required"])
+                setPassValid([registerConstant["requiredPassword"]])
                 setpass(value)
             }
             else {
-
                 setpass(value)
                 let arrayValue = []
                 if (!upperPresent(value)) {
-                    arrayValue.push("Must contain at least 1 in capital case!")
+                    arrayValue.push(registerConstant["passCapValidate"])
                 }
                 if (!numPresent(value)) {
-                    arrayValue.push("Must have at least 1 number")
+                    arrayValue.push(registerConstant["passNumValidate"])
                 }
                 if (!lowerPresent(value)) {
-                    arrayValue.push("Must contain at least 1 lower case!")
+                    arrayValue.push(registerConstant["passLowValidate"])
                 }
                 if (!specialPresent(value)) {
-                    arrayValue.push("Must contain at least 1 special characters!")
+                    arrayValue.push(registerConstant["passSpeValidate"])
                 }
                 if (value.length < 8) {
-                    arrayValue.push("Must be at least 8 characters!")
+                    arrayValue.push(registerConstant["passCharValidate"])
                 }
                 if (arrayValue.length > 0) {
                     setPassValid(arrayValue)
@@ -290,19 +273,16 @@ function Signup(auth) {
             }
         }
 
-
-
         if (name == "cpass") {
             setCpass(e.target.value)
 
             if (value && value !== pass) {
-                setCpassValid(" Passwords do not match")
+                setCpassValid(registerConstant["validateConfirmPassword"])
             }
             else {
                 setCpassValid("")
             }
         }
-
 
         if (name === "number") {
             value.length <= 15 && setNumber(e.target.value)
@@ -311,23 +291,11 @@ function Signup(auth) {
                     setNumValid("")
                 }
                 else {
-                    setNumValid("Phone number is required")
+                    setNumValid(registerConstant["requiredContact"])
                 }
             }
         }
     }
-
-
-    const validateMessages = {
-        required: '${name} is required!',
-        types: {
-            email: 'Please enter a valid email',
-
-        },
-    };
-
-
-
 
     const enterKeyEvent = e => {
         if (e.key === 'Enter') {
@@ -374,22 +342,22 @@ function Signup(auth) {
                 <div className="input-control wd50">
                     <label>First Name</label>
                     <input type="text" name="firstname" placeholder={"First Name"} ref={FullNameInputRef} value={name} maxlength="30"
-                        onChange={e => validNameFill(e.target.value)} style={{ borderColor: nameValid && "red" }} />
-                    <div className="errorText">{nameValid !== "" && <span>{nameValid}</span>}</div>
+                        onChange={e => validNameFill(e.target.value)}  />
+                    <div className="errorText">{nameValid !== "" ? <span>{nameValid}</span> : ""}</div>
                 </div>
                 <div className="input-control wd50">
                     <label>Last Name</label>
                     <input type="text" name="lastname" placeholder={"Last Name"} value={lastName}
-                        onChange={e => registerOnChange(e)} style={{ borderColor: mailValid && "red" }} />
-                    <div className="errorText">{lastNameValid !== "" && <span>{lastNameValid}</span>}</div>
+                        onChange={e => registerOnChange(e)} />
+                    <div className="errorText">{lastNameValid !== "" ? <span>{lastNameValid}</span> : ""}</div>
                 </div>
                 <div className="input-control">
                     <label>Email Address</label>
                     <input type="email" name="email" placeholder={"Email Address"}
                         value={mail}
                         onChange={e => registerOnChange(e)}
-                        style={{ borderColor: mailValid && "red" }} />
-                    <div className="errorText">{mailValid !== "" && <span>{mailValid}</span>}</div>
+                        />
+                    <div className="errorText">{mailValid !== "" ? <span>{mailValid}</span> : ""}</div>
                 </div>
 
                 <div className="input-control">
@@ -398,8 +366,8 @@ function Signup(auth) {
                         value={number}
                         onChange={e => validnumber(e.target.value)}
                         maxlength="15"
-                        style={{ borderColor: numValid && "red" }} />
-                    <div className="errorText">{numValid !== "" && <span>{numValid}</span>}</div>
+                         />
+                    <div className="errorText">{numValid !== "" ? <span>{numValid}</span> : ""}</div>
                 </div>
 
                 <div className="input-control wd50">
@@ -407,9 +375,9 @@ function Signup(auth) {
                     <input name="password" placeholder={"Password"} type={passShow ? "text" : "password"}
                         value={pass}
                         onChange={e => registerOnChange(e)}
-                        style={{ borderColor: passValid.length == !0 ? "red" : "" }} />
+                        />
                     {passShow ? <button className="show-hide" onClick={e => setPassShow(!passShow)}><IconEye /></button> : (<> <button className="show-hide" onClick={e => setPassShow(!passShow)}><IconEye /></button> </>)}
-                    <div className="errorText">{passValid !== "" && <span>{passValid}</span>}</div>
+                    <div className="errorText">{passValid !== "" ? <span>{passValid}</span> : ""}</div>
 
                 </div>
 
@@ -418,10 +386,10 @@ function Signup(auth) {
                     <input name="cpass" placeholder={"Confirm Password"} type={conpassShow ? "text" : "password"}
                         value={cpass}
                         onChange={e => registerOnChange(e)}
-                        style={{ borderColor: cpassValid === "" ? "" : cpassValid === undefined ? "red" : "" }} />
+                         />
                     {conpassShow ? <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> : (<> <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> </>)}
 
-                    <div className="errorText">{cpassValid !== "" && <span>{cpassValid}</span>}</div>
+                    <div className="errorText">{cpassValid !== "" ? <span>{cpassValid}</span> : ""}</div>
 
                 </div>
 
