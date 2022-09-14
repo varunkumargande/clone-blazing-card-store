@@ -1,36 +1,149 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import IconGoogle from '../../Icons/IconGoogle';
 import IconEye from '../../Icons/IconEye';
-export default function Login(){
-    return(
+import { EmailValidator } from '../../helper/emailValidator';
+import { UserLogin } from '../../../api';
+import { connect, useDispatch } from 'react-redux';
+import Router from 'next/router';
+import { GoogleLogin } from 'react-google-login';
+
+import { loginConstant } from "../../Constants/login"
+
+function Login(props) {
+
+    const dispatch = useDispatch()
+    const [mail, setMail] = useState("")
+    const [password, setPassword] = useState("")
+    const [loginError, setLoginError] = useState("")
+    const [loginType, setLoginType] = useState("normal")
+    const [emailValid, setEmailValid] = useState("");
+    const [passValid, setPassValid] = useState("")
+    const [passShow, setPassShow] = useState(false)
+    const [loadImg, setLoadImg] = useState(false)
+    const [googleId, setgoogleId] = useState("")
+    const [googlePath, setgooglePath] = useState("")
+    const [conpassShow, setConPassShow] = useState(false)
+
+    console.log()
+
+    const emailInputRef = React.useRef(null);
+    useEffect(() => {
+        emailInputRef.current.focus();
+    }, []);
+
+    useEffect(() => {
+        if (props.isLoggedIn === true) {
+            Router.push('/');
+        }
+    }, [props])
+
+    const handleFeatureWillUpdate = (type) => {
+        setLoginType(type)
+        GoogleLoginApi(mail, password, type, setgoogleId, setgooglePath)
+    }
+
+    const handleLoginSubmit = e => {
+        e.preventDefault()
+        if (mail !== "" && password !== "" && emailValid === "" && passValid === "") {
+            setLoadImg(true)
+            UserLogin(mail, password, loginType, Router, setLoginError, dispatch, setMail, setPassword, setLoadImg)
+        } else if (mail == "" && password == "") {
+            setEmailValid(loginConstant["requiredEmail"])
+            setPassValid(loginConstant["requiredPassword"])
+        } else if (mail == "" || password == !"" && mail == !"" || password == "") {
+        } else if (emailValid == !"") {
+        } else {
+            setEmailValid(loginConstant["validateEmail"])
+        }
+    };
+
+    const responseGoogle = (response) => {
+        GoogleLoginApi(mail, password, "gmail", setgoogleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
+    }
+
+    const loginOnChange = (e) => {
+        const { name, value } = e.target;
+
+        if (name === "email") {
+            setMail(value)
+            if (value) {
+                let emailCheck = EmailValidator(value)
+                if (emailCheck) {
+                    setEmailValid("")
+                }
+                else {
+                    setEmailValid(loginConstant["validateEmail"])
+                }
+            }
+            else {
+                setEmailValid(loginConstant["requiredEmail"])
+            }
+        }
+        if (name === "password") {
+            setPassword(e.target.value)
+            if (value) {
+                if (value.length) {
+                    setPassValid("")
+                }
+            }
+            else {
+                setPassValid(loginConstant["requiredPassword"])
+            }
+        }
+    }
+    
+    const enterKeyEvent = e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            handleLoginSubmit()
+        }
+    }
+
+    return (
         <div className="login-wrapper">
             <h1 className="title mb32">Sign in to Blazing Cards</h1>
-            <button className="google-btn mb42"><IconGoogle />Sign in with Gooogle</button>
+            <GoogleLogin
+                clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
+                render={renderProps => (
+                    <button className="google-btn mb42" onClick={renderProps.onClick}><IconGoogle />Sign in with Gooogle</button>
+                )}
+                buttonText="Login"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                isSignedIn={false}
+            />
             <div className="or mb32 flex flex-center justify-center"><span>Or</span></div>
             <form className="login flex space-between">
                 <div className="input-control">
                     <label>Email Address or Username</label>
-                    <input type="text" placeholder="Enter here" />
+                    <input name="email" placeholder={"Email"} ref={emailInputRef} value={mail}
+                        onChange={e => loginOnChange(e)} className="errorBorder" />
+                    {emailValid !== "" ? <span className="errorMessage">{emailValid}</span> : ""}
                 </div>
                 <div className="input-control">
                     <label>Password</label>
-                    <input type="password" placeholder="Enter here" />
-                    <button className="show-hide"><IconEye /></button>
+                    <input name="password" placeholder={"Password"} type={conpassShow ? "text" : "password"} value={password}
+                        className="errorBorder" onChange={e => loginOnChange(e)} />
+                    {passValid !== "" ? <span className="errorMessage">{passValid}</span> : ""}
+                    {conpassShow ? <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> : (<> <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> </>)}
                     <div className="flex justify-right mb16 forget mb32">
-                        <Link href="/forget-password"><a>Forget Password</a></Link> 
+                        <Link href="/account/forgot-password"><a>Forget Password</a></Link>
                     </div>
                 </div>
                 <div className="submitWrap mb32">
-                    <button type="submit" className="primary-btn">Sign in</button>
+                    <button className="primary-btn" onClick={e => handleLoginSubmit(e)}>Sign in</button>
                 </div>
                 <div className="text-center mb16 already">
-                    Don’t have an account yet?  <Link href="/signup"><a>Sign Up</a></Link> 
-                </div>
-                <div className="copyright flex flex-center justify-center">
-                    © Blazing Cards. 2022, All Rights Reserved
+                    Don’t have an account yet?  <Link href="/account/register"><a>Sign Up</a></Link>
                 </div>
             </form>
         </div>
     );
 }
+
+const mapStateToProps = state => {
+    return state.auth;
+};
+export default connect(mapStateToProps)(Login);
