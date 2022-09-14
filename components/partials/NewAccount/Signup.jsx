@@ -8,6 +8,7 @@ import { UserRegister } from '../../../api';
 import Router from 'next/router';
 import { connect, useDispatch } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
+import { modalSuccess, modalWarning } from "../../../api/intercept";
 
 function Signup(auth) {
 
@@ -27,8 +28,7 @@ function Signup(auth) {
     const [submit, setSubmit] = useState(0)
     const [passShow, setPassShow] = useState(false)
     const [conpassShow, setConPassShow] = useState(false)
-
-
+    const [policyCheck, setPolicyCheck] = useState(false)
 
     const FullNameInputRef = React.useRef(null);
     useEffect(() => {
@@ -36,12 +36,19 @@ function Signup(auth) {
     }, []);
 
     const handleSubmit = e => {
+
+        console.log(policyCheck)
         e.preventDefault()
-        setSubmit(1)
-        validMessage()
-        if (validMessage()) {
-            UserRegister(name, mail, pass, cpass, number, Router)
+        if (policyCheck == true) {
+            setSubmit(1)
+            validMessage()
+            if (validMessage()) {
+                UserRegister(name, mail, pass, cpass, number, Router)
+            }
+        } else {
+            modalWarning("error", "PLease select term and policy")
         }
+
     };
 
 
@@ -189,10 +196,8 @@ function Signup(auth) {
                 setNumValid("")
             }
         }
-        // }
 
     }
-    // /^[0-9\b]+$/
 
 
     const registerOnChange = (e) => {
@@ -289,8 +294,7 @@ function Signup(auth) {
 
         if (name == "cpass") {
             setCpass(e.target.value)
-            // if(value) {
-            // if (submit) {
+
             if (value && value !== pass) {
                 setCpassValid(" Passwords do not match")
             }
@@ -298,10 +302,7 @@ function Signup(auth) {
                 setCpassValid("")
             }
         }
-        // else {
-        //     setCpassValid()
-        // }
-        // }
+
 
         if (name === "number") {
             value.length <= 15 && setNumber(e.target.value)
@@ -336,12 +337,19 @@ function Signup(auth) {
         }
     }
 
+    console.log(policyCheck)
+
+    const handlePolicyCheck = () => {
+        if (policyCheck) {
+            setPolicyCheck(false)
+        } else {
+            setPolicyCheck(true)
+        }
+    }
+
 
     const responseGoogle = (response) => {
         GoogleLoginApi(mail, password, "gmail", setgoogleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
-        //    if(googleId){
-        // UserOauthLogin(response.profileObj, Router,response,googleId,googlePath)
-        //    }
     }
 
     return (
@@ -419,20 +427,19 @@ function Signup(auth) {
 
                 <div className="checkbox-wrap mb32">
                     <label className="checkbox">
-                        <input type="checkbox" />
+                        <input type="checkbox" onClick={handlePolicyCheck} />
                         <span class="checkmark"></span>
                         I’ve read and agree with Terms of Service & Privacy Policy
                     </label>
                 </div>
+
                 <div className="submitWrap mb32">
                     <button onClick={e => handleSubmit(e)} className="primary-btn">Sign Up</button>
                 </div>
+
                 <div className="text-center mb16 already">
                     Already have an account? <Link href="/account/login"><a>Sign In</a></Link>
                 </div>
-                {/* <div className="copyright flex flex-center justify-center">
-                    © Blazing Cards. 2022, All Rights Reserved
-                </div> */}
             </form>
         </div>
     );

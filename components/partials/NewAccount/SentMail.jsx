@@ -14,7 +14,7 @@ export default function SendMail(props){
                     Don’t receive the email? <Link href="/reset-password"><a>Click to resend</a></Link> 
                 </div>
                 <div className="already">
-                    Go Back to <Link href="/login"><a>Sign In</a></Link> 
+                    Go Back to <Link href="/account/login"><a>Sign In</a></Link> 
                 </div>
                 <div className="copyright flex flex-center justify-center">
                     © Blazing Cards. 2022, All Rights Reserved

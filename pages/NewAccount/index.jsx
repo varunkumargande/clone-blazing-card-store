@@ -8,7 +8,6 @@ import Success from "../../components/partials/NewAccount/Success";
 import SentMail from "../../components/partials/NewAccount/SentMail";
 export default function NewAccount(){
 
-    
 
     return(
         <main className="form-wrapper flex space-between">

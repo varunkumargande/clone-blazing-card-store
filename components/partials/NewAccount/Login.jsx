@@ -56,9 +56,6 @@ function Login(props) {
 
     const responseGoogle = (response) => {
         GoogleLoginApi(mail, password, "gmail", setgoogleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
-        //    if(googleId){
-        // UserOauthLogin(response.profileObj, Router,response,googleId,googlePath)
-        //    }
     }
 
     const loginOnChange = (e) => {
@@ -123,14 +120,15 @@ function Login(props) {
                 </div>
                 <div className="input-control">
                     <label>Password</label>
-                    <input name="password" placeholder={"Password"} type={passShow ? "text" : "password"} value={password}
+                    <input name="password" placeholder={"Password"} type={conpassShow ? "text" : "password"} value={password}
                         style={{ border: passValid && "1px solid red" }} onChange={e => loginOnChange(e)} />
                     {passValid !== "" && <span style={{ color: "#ff5252" }}>{passValid}</span>}
 
-                    <button className="show-hide"><IconEye /></button>
+                    {conpassShow ? <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> : (<> <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> </>)}
+                    
 
                     <div className="flex justify-right mb16 forget mb32">
-                        <Link href="/forget-password"><a>Forget Password</a></Link>
+                        <Link href="/account/forgot-password"><a>Forget Password</a></Link>
                     </div>
                 </div>
                 <div className="submitWrap mb32">
@@ -139,9 +137,6 @@ function Login(props) {
                 <div className="text-center mb16 already">
                     Don’t have an account yet?  <Link href="/account/register"><a>Sign Up</a></Link>
                 </div>
-                {/* <div className="copyright flex flex-center justify-center">
-                    © Blazing Cards. 2022, All Rights Reserved
-                </div> */}
             </form>
         </div>
     );
