@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 
 function Timer(props) {
-  const {time} = props;
+  console.log(props)
+  const {minutes, seconds} = props.time;
+  // console.log(minutes, seconds)
   return (
     <div className="timer">
-      <h2>{time}</h2>
+      <h2>{minutes}:{seconds}</h2>
     </div>
   );
 }

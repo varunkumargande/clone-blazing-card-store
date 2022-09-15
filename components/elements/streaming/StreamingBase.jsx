@@ -8,7 +8,7 @@ function StreamingBase() {
   const [open, setOpen] = React.useState(false);
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
-  const [timer, setTimer] = useState("00:00");
+  const [timer, setTimer] = useState({minutes: "00", seconds:"10"});
   /*****For notifications *****/
   const router = useRouter();
   const hostId = router.query["hostId"];
@@ -37,7 +37,6 @@ function StreamingBase() {
     const token = await getRtmToken(options[userType]);
     await client.login({ uid: options[userType], token });
     const channel = await client.createChannel(options.channel);
-    console.log(channel);
     await channel.join();
     setChannel(channel);
     channel.on("Member Joined", function (memberId) {
@@ -61,40 +60,58 @@ function StreamingBase() {
     }
   }, [channel])
   const handleConfirmBid = async () => {
+    let message;
+    let {minutes, seconds} = timer;
+    console.log(minutes, seconds)
     setOpen(false);
     setBidAmount(amountToBid);
     setAmountToBid(amountToBid + 2);
-    let message = JSON.stringify({bidAmount:amountToBid, amountToBid: amountToBid+2});
-    await channel.sendMessage({ text: message, type: "text" });
+    if(seconds < 10){
+      message = {bidAmount:amountToBid, amountToBid: amountToBid+2, lastMinutes: seconds};
+    }else{
+      message = {bidAmount:amountToBid, amountToBid: amountToBid+2};
+    }
+    console.log(message)
+    message = JSON.stringify({bidAmount:amountToBid, amountToBid: amountToBid+2});
+    // await channel.sendMessage({ text: message, type: "text" });
   };
   /*****End notifications *****/
   const handleMuteButton = () => {};
   const handleCustomBid = () => {
     setOpen(true);
   };
- 
-  useEffect(() => {
-    let minutes = 0;
-    let seconds = 30;
-    const updateTime = () => {
-      if (minutes >= 0) {
-        if (seconds >= 0 && seconds < 60) {
-          seconds = seconds - 1;
-
-          if (seconds === -1) {
-            minutes = minutes - 1;
-            seconds = 59;
-            if (minutes == -1 && seconds == 59) {
-              return "00:00";
-            }
-          }
+  function updateTimer(minutes,seconds){
+    console.log("updtatesecond",seconds)
+    if(minutes >=0){
+      if(seconds>=0 && seconds<=59){
+        seconds=seconds-1;
+        if(seconds===-1){
+          minutes=minutes-1
+          seconds=59
         }
-        return minutes + ":" + seconds;
       }
-    };
-    setInterval(() => {
-      setTimer(updateTime);
-    }, 1000);
+    }
+    let time={}
+    time.upminutes=String(minutes);time.upseconds=String(seconds)
+    return time
+  }
+
+  function startTimer(){
+    const interval=setInterval(() => {
+      setTimer((prevTimer) => {
+        let {upminutes,upseconds} = updateTimer(prevTimer.minutes,prevTimer.seconds)
+        if((upminutes==0 || upminutes=='00') && (upseconds==0 || upseconds=='0')){
+          clearInterval(interval)
+        }
+        prevTimer.minutes=upminutes,
+        prevTimer.seconds=upseconds
+        return prevTimer;
+      })
+    },1000)
+  }
+  
+  useEffect(() => {
+  //  startTimer()
   }, []);
   return (
     <>
@@ -135,6 +152,7 @@ function StreamingBase() {
               <div>Pay</div>
             </div>
             <div className="bidded-amount">$ {bidAmount}</div>
+            
             <Timer time={timer} />
           </div>
         </div>
