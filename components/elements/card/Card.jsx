@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import CardCarousel from "../carousel/CardCarousel";
-import AccordionMenu from "../category/AccordionMenu";
-import Filter from "./Filter";
+import AccordionMenu from "../Category/AccordionMenu";
+
 import StreamCard from "./StreamCard";
 
 function Card() {
   return (
     <>
-      <div>
+      
         <div className="contain1">
           <div className="filter">
-            <span>category </span>
+            <span>Categories </span>
             <div className="line"></div>
 
             <div className="cat-1"></div>
@@ -37,7 +37,7 @@ function Card() {
             </div>
           </div>
         </div>
-      </div>
+     
     </>
   );
 }

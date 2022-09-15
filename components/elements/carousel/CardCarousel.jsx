@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import StreamCard from "../card/StreamCard";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { streamDetailApi } from "../../../api/stream/streamDetail";
+import axios from "axios";
 
 export default function CardCarousel() {
+  const streamDetail = useSelector((state) => state?.stream?.streamdetails);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    streamDetailApi(dispatch);
+  }, []);
+
+  console.log(streamDetail);
+
   const settings = {
     className: "center",
     infinite: true,
@@ -10,18 +23,22 @@ export default function CardCarousel() {
     slidesToShow: 7,
     swipeToSlide: true,
   };
+
+  const getStreamCards = () => {
+    return streamDetail?.map((x) => {
+      return (
+        <StreamCard
+          audience={x.id}
+        />
+      );
+    });
+  }
+
   return (
-    <div>
+    <>
       <Slider {...settings}>
-        <StreamCard audience="1"/>
-        <StreamCard audience="2"/>
-        <StreamCard audience="3"/>
-        <StreamCard audience="4"/>
-        <StreamCard audience="5"/>
-        <StreamCard audience="6"/>
-        <StreamCard audience="7"/>
-        <StreamCard audience="8"/>
+        {getStreamCards()}
       </Slider>
-    </div>
+    </>
   );
 }

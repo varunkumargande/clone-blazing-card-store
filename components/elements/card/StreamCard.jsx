@@ -1,6 +1,14 @@
-import React from "react";
+
+import React, { useState } from "react";
+
 
 function StreamCard({audience}) {
+  
+  // const streamDetail = useSelector((state)=>state.streamdetails)
+
+
+
+
   parseInt(JSON.stringify(audience))
   return (
     <div>

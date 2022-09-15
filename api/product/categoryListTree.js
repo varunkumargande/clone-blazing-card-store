@@ -9,7 +9,6 @@ export async function categoryListApi(dispatch) {
     //     dispatch(getProductCategories(json.data)); 
           
     // })
-
     const result = await APIServices.getAll('list/category-list')
 
     if(result && result.data && result.data.data){
