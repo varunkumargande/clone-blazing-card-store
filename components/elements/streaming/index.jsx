@@ -14,7 +14,7 @@ function Index(){
         <div className='wrapper'>
             <LeftDiv open={open} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId}/>
             <CenterDiv open={open} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId}/>
-            <RightDiv/>
+            {/* <RightDiv/> */}
         </div>
     )
 }
