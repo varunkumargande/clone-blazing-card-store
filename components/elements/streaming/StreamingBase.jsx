@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getToken } from "../../../api/stream/agora";
+import { getToken } from "../../../api/stream/getToken";
 import AgoraRTM from "agora-rtm-sdk";
 import { useRouter } from "next/router";
 import Timer from "./Timer";
+import { createBid } from "../../../api/stream/createBid";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
@@ -20,7 +21,7 @@ function StreamingBase() {
   useEffect(() => {
     if (!options) {
       setoptions({
-        appID: "eddb3849590747d989047b5b2e213c96",
+        appID: "b87550aad4dc4aadb5219b7487c973fd",
         channel: "POKEMON",
         host: "HOST",
         audience: "guest" + audienceId,
@@ -34,7 +35,7 @@ function StreamingBase() {
 
   const joinChannel = async () => {
     const client = AgoraRTM.createInstance(options.appID);
-    const token = await getRtmToken(options[userType]);
+    const token = await getToken("RTM",options.channel, options[userType],"userAccount","audience")
     await client.login({ uid: options[userType], token });
     const channel = await client.createChannel(options.channel);
     await channel.join();
@@ -43,12 +44,6 @@ function StreamingBase() {
       console.log(memberId + "JOined");
     });
     return channel;
-  };
-
-  const getRtmToken = async (uuid) => {
-    const url = `/stream/getStreamToken?token=RTM&uid=${uuid}`;
-    const response = await getToken(url);
-    return response.rtmToken;
   };
   useEffect(() => {
     if(channel){
@@ -62,8 +57,9 @@ function StreamingBase() {
   const handleConfirmBid = async () => {
     let message;
     let {minutes, seconds} = timer;
-    console.log(minutes, seconds)
+    let auctionId=1;
     setOpen(false);
+    createBid(auctionId, audienceId, amountToBid);
     setBidAmount(amountToBid);
     setAmountToBid(amountToBid + 2);
     if(seconds < 10){
@@ -71,9 +67,8 @@ function StreamingBase() {
     }else{
       message = {bidAmount:amountToBid, amountToBid: amountToBid+2};
     }
-    console.log(message)
     message = JSON.stringify({bidAmount:amountToBid, amountToBid: amountToBid+2});
-    // await channel.sendMessage({ text: message, type: "text" });
+    await channel.sendMessage({ text: message, type: "text" });
   };
   /*****End notifications *****/
   const handleMuteButton = () => {};
