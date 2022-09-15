@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { fetchProducts, fetchCardDetails, fetchAddress } from "../../../api/stream/streams_api";
+import { useSelector, useDispatch } from 'react-redux'
+import { loginSuccess } from '../../../store/auth/action'
 
 function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
   const TOGGLE_STATES = {
@@ -19,7 +21,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
 
   // User State
   const [user, setUser] = useState();
-  const [isLoggedIn, setSsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
 
   // Card Data State
@@ -35,6 +37,13 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
 
   const POST_ORDER = "";
 
+  // using selector to get userId from redux
+  const dispatch = useDispatch()
+  dispatch(loginSuccess(user?.id));
+  let user_id = useSelector((s) => s.auth.userId);
+  console.log( `User ID is ${user_id}`);
+
+  
   // Handle Tabs Change Functionality
   console.log("===========================On load state", toggleState);
   const toggleTab = (index) => {
@@ -231,14 +240,15 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
     if (userDetails) {
       setUser(userDetails);
       setUserId(user?.id);
-      setSsLoggedIn(true);
+      setIsLoggedIn(true);
+      // dispatch(loginSuccess(user?.id));
     }
-   
   }, []);
   // console.log(`==========${user}`);
   // console.log(`==========${user.id}`);
   // console.log(`==========${userId}`);
   // console.log(`==========${isLoggedIn}`);
+
 
   // If user successfully added payment info and shipping info then will close the pop-up and move towards payment
     useEffect(() => {
@@ -322,3 +332,4 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
 }
 
 export default LeftDiv;
+

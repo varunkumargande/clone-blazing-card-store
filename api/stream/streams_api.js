@@ -26,9 +26,9 @@ import axios from 'axios';
       setIsLoading(false);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
-        console.log(err.response.status);
-        console.log(error.response.header);
+        // console.log(error.response.data);
+        // console.log(err.response.status);
+        // console.log(error.response.header);
         setIsLoading(false);
       } else {
         console.log(`Error: ${error.message}`);
@@ -49,14 +49,14 @@ import axios from 'axios';
       // console.log(data[0].card);
       setAddress(data[0].billing_details);
       setCard(data[0].card);
-        setCustomerId(data[0].customer);
+      setCustomerId(data[0].customer);
       setToken(data[0].customer);
       setCardData(data[0]);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
-        console.log(err.response.status);
-        console.log(error.response.header);
+        // console.log(error.response.data);
+        // console.log(err.response.status);
+        // console.log(error.response.header);
         // setIsLoading(false);
       } else {
         console.log(`Error: ${error.message}`);
@@ -83,9 +83,9 @@ import axios from 'axios';
       // console.log(data);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.header);
+        // console.log(error.response.data);
+        // console.log(error.response.status);
+        // console.log(error.response.header);
         // setIsLoading(false);
       } else {
         console.log(`Error: ${error.message}`);

@@ -42,7 +42,7 @@ http.interceptors.request.use((config) => {
 
   (error) => {
   
-    switch (error.response.status) {
+    switch (error?.response?.status) {
      
       // case 400:
 
