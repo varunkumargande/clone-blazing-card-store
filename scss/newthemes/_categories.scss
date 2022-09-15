@@ -1,0 +1,137 @@
+.category-wrapper{
+    .category-btn-wrap{
+        position: relative;
+        margin-left: 8px;
+    }
+    .category-btn{
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background-color: $search-bg;
+    }
+    .dropDown{
+        position: absolute;
+        left:0;
+        top: calc(100% + 12px);
+        background-color: $white-color;
+        width:152px;
+        border-radius: 12px;
+        box-shadow: 0px 8px 24px $search-bg;
+        padding: 0 10px;
+        z-index: 2;
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        transition: all .25s;
+        &.active{
+            height: auto;
+            visibility: visible;
+            opacity: 1;
+        }
+        li{
+            font-size: 14px;
+            line-height: 21px;
+            color:$disc-color;
+            list-style: none;
+            padding: 10px 0;
+            cursor: pointer;
+            border-bottom: 1px solid $border-color;
+            &.active{
+                color:$blue-color;
+            }
+            &:last-child{
+                border-bottom: none;
+            }
+        }
+    }
+    .category-like{
+        height: 32px;
+        padding-right: 12px;
+        position: relative;
+        &:after{
+            content: "";
+            width: 1px;
+            height: 22px;
+            background-color: $border-color;
+            position: absolute;
+            top:50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+        .Like{
+            width: 32px;
+            height: 32px;
+            background-color: $search-bg;
+            border-radius: 50%;
+            .icon{ 
+                fill:$red-color;
+                stroke: $red-color;
+            }
+        }
+    }
+    .category-list{
+        .title{
+            font-size: 14px;
+            line-height: 21px;
+            padding: 5px 11px 12px;
+            color:$primary-color;
+            font-weight: 500;
+            position: relative;
+            &:after{
+                content: "";
+                position: absolute;
+                left:50%;
+                bottom: 0;
+                transform: translateX(-50%);
+                height: 2px;
+                width: 40px;
+                background-color: transparent;
+            }
+            &.active{
+                font-weight: 700;
+                color: $blue-color;
+                &:after{
+                    background-color: $blue-color;
+                }
+            }
+        }
+    }
+}
+
+@media all and (min-width:768px){
+    .category-wrapper{
+        .category-btn-wrap{
+            margin-left: 12px;
+        }
+        .category-like{
+            padding-right: 20px;
+        }
+        .category-list{
+            .title{
+                font-size: 20px;
+                padding: 5px 20px 15px;
+                &:after{
+                    height: 4px;
+                }
+            }
+        }
+    }    
+}
+
+@media all and (min-width:320px) and (max-width:1024px){
+    .category-wrapper{
+        position: relative;
+        .category-btn-wrap{
+            position: absolute;
+            right: 15px;
+            top:-68px;
+            .category-btn{
+                border-radius: 8px;
+            }
+            .dropDown{
+                left: auto;
+                right: 0;
+            }
+        }
+    }
+}
