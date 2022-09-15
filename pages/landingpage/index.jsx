@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../../components/partials/Landingpage/Header";
+import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import Category from "../../components/partials/Landingpage/Category";
 import LiveShow from "../../components/partials/Landingpage/LiveShow";
 import ScheduledShow from "../../components/partials/Landingpage/ScheduledShow";
@@ -11,6 +12,7 @@ export default function landingpage(){
     return(
         <div className="home-container">
             <Header />
+            <MobileHeader/>
             <Category />
             <div className="card-wrapper">
                 <LiveShow />

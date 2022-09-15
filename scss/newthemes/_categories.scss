@@ -6,7 +6,7 @@
     .category-btn{
         width: 42px;
         height: 42px;
-        border-radius: 50%;
+        border-radius: 8px;
         background-color: $search-bg;
     }
     .dropDown{
@@ -97,8 +97,14 @@
         }
     }
 }
-
-@media all and (min-width:768px){
+@media all and (min-width:320px) and (max-width:1024px){
+    .category-wrapper{
+        .category-btn{
+            display: none;
+        }
+    }
+}
+@media all and (min-width:1025px){
     .category-wrapper{
         .category-btn-wrap{
             margin-left: 12px;
@@ -116,22 +122,4 @@
             }
         }
     }    
-}
-
-@media all and (min-width:320px) and (max-width:1024px){
-    .category-wrapper{
-        position: relative;
-        .category-btn-wrap{
-            position: absolute;
-            right: 15px;
-            top:-68px;
-            .category-btn{
-                border-radius: 8px;
-            }
-            .dropDown{
-                left: auto;
-                right: 0;
-            }
-        }
-    }
 }
