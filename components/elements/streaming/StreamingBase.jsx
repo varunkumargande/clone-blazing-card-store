@@ -10,6 +10,7 @@ function StreamingBase() {
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
   const [timer, setTimer] = useState({minutes: "00", seconds:"10"});
+  console.log("timer+++++",timer)
   /*****For notifications *****/
   const router = useRouter();
   const hostId = router.query["hostId"];
@@ -21,7 +22,7 @@ function StreamingBase() {
   useEffect(() => {
     if (!options) {
       setoptions({
-        appID: "b87550aad4dc4aadb5219b7487c973fd",
+        appID: "eddb3849590747d989047b5b2e213c96",
         channel: "POKEMON",
         host: "HOST",
         audience: "guest" + audienceId,
@@ -36,10 +37,12 @@ function StreamingBase() {
   const joinChannel = async () => {
     const client = AgoraRTM.createInstance(options.appID);
     const token = await getToken("RTM",options.channel, options[userType],"userAccount","audience")
+    console.log("===========",token);
     await client.login({ uid: options[userType], token });
     const channel = await client.createChannel(options.channel);
     await channel.join();
-    setChannel(channel);
+    console.log(setChannel(channel));
+    console.log(channel)
     channel.on("Member Joined", function (memberId) {
       console.log(memberId + "JOined");
     });
@@ -75,38 +78,70 @@ function StreamingBase() {
   const handleCustomBid = () => {
     setOpen(true);
   };
-  function updateTimer(minutes,seconds){
-    console.log("updtatesecond",seconds)
-    if(minutes >=0){
-      if(seconds>=0 && seconds<=59){
-        seconds=seconds-1;
-        if(seconds===-1){
-          minutes=minutes-1
-          seconds=59
+  // function updateTimer(minutes,seconds){
+  //   console.log("updtatesecond",seconds)
+  //   if(minutes >=0){
+  //     if(seconds>=0 && seconds<=59){
+  //       seconds=seconds-1;
+  //       if(seconds===-1){
+  //         minutes=minutes-1
+  //         seconds=59
+  //       }
+  //     }
+  //   }
+  //   let time={}
+  //   time.upminutes=String(minutes);time.upseconds=String(seconds)
+  //   return time
+  // }
+
+  // function startTimer(){
+  //   // console.log(timer)
+  //   const interval=setInterval(() => {
+  //     setTimer((prevTimer) => {
+  //       let {upminutes,upseconds} = updateTimer(prevTimer.minutes,prevTimer.seconds)
+  //       if((upminutes==0 || upminutes=='00') && (upseconds==0 || upseconds=='0')){
+  //         clearInterval(interval)
+  //       }
+  //       prevTimer.minutes=upminutes,
+  //       prevTimer.seconds=upseconds
+  //       return prevTimer;
+  //     })
+  //   },1000)
+  // }
+  
+  // useEffect(() => {
+  //  startTimer()
+  // }, []);
+  const updateTime = () => {
+    let minutes =timer.minutes;
+      let seconds =timer.seconds;
+    if (minutes >= 0) {
+      if (seconds >= 0 && seconds < 60) {
+        seconds = seconds - 1;
+
+        if (seconds === -1) {
+          minutes = minutes - 1;
+          seconds = 59;
+          if (minutes == -1 && seconds == 59) {
+            minutes="00"
+            seconds="00"
+            return {minutes,seconds}
+          }
         }
       }
+      
+      return {minutes,seconds};
     }
-    let time={}
-    time.upminutes=String(minutes);time.upseconds=String(seconds)
-    return time
-  }
-
-  function startTimer(){
-    const interval=setInterval(() => {
-      setTimer((prevTimer) => {
-        let {upminutes,upseconds} = updateTimer(prevTimer.minutes,prevTimer.seconds)
-        if((upminutes==0 || upminutes=='00') && (upseconds==0 || upseconds=='0')){
-          clearInterval(interval)
-        }
-        prevTimer.minutes=upminutes,
-        prevTimer.seconds=upseconds
-        return prevTimer;
-      })
-    },1000)
-  }
-  
+  };
   useEffect(() => {
-  //  startTimer()
+   const interval= setInterval(() => {
+      let {minutes, seconds} =updateTime();
+      console.log("-----------",minutes,seconds)
+      setTimer({minutes: minutes, seconds:seconds});
+      if(timer.minutes=="00" && timer.seconds == "00"){
+        clearInterval(interval)
+      }
+    }, 1000);
   }, []);
   return (
     <>
