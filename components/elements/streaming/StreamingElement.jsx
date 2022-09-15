@@ -5,7 +5,7 @@ import AgoraRTC from "agora-rtc-sdk-ng";
 
 const StreamingElement = () => {
   const dispatch = useDispatch();
-  const streamingDetails = useSelector(state => state);
+  const streamingDetails = useSelector(state => state?.stream?.streamData);
   const [volumeLevel, setVolumeLevel] = useState(100);
   const [mute, setMute] = useState(false);
   const [rtc, setRtc] = useState({});
@@ -16,6 +16,7 @@ const StreamingElement = () => {
     audience: "audience"
   }
 
+  console.log(streamingDetails, 'streamingDetails')
   const options = {appID: "cb08a368d17648e9ab2886e3d1100a5e",
   channel: "PIKACHU",
   host: String(Math.floor(Math.random() * 232)),
