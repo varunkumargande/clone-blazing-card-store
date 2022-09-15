@@ -10,7 +10,10 @@ import FormAddressAddEdit from './modules/FormAddress';
 import {countryListApi, editAddressApi, UserAddAddress} from '../../../api';
 import {zoneListApi} from '../../../api/account/zoneList';
 import { useTranslation } from '../../../i18n'
+
+
 function CustomAddAddress({type,addressId}){
+
     const [fname,setFname]=useState("")
     const [email,setEmail]=useState("")
     const [address,setAddress]=useState("")

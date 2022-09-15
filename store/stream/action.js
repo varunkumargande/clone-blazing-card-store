@@ -11,10 +11,10 @@ export const actionTypes = {
 
 };
 
-export function getStreamDetails(data) {
+export function getStreamDetails(payload) {
   return {
     type: actionTypes.GET_STREAM_DETAILS,
-    data,
+    payload:payload,
 };
 }
 

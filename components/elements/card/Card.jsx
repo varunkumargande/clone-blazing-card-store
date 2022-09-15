@@ -1,40 +1,35 @@
 import React, { useState } from "react";
 import CardCarousel from "../carousel/CardCarousel";
-import AccordionMenu from "../category/AccordionMenu";
-import Filter from "./Filter";
-import StreamCard from "./StreamCard";
+import AccordionMenu from "../Category/AccordionMenu";
 
 function Card() {
   return (
     <>
-      <div>
-        <div className="contain1">
-          <div className="filter">
-            <span>category </span>
-            <div className="line"></div>
+      <div className="contain1">
+        <div className="filter">
+          <span>Categories </span>
+          <div className="line"></div>
 
-            <div className="cat-1"></div>
-            {/* <Filter /> */}
-            <AccordionMenu />
+          <div className="cat-1"></div>
+          <AccordionMenu />
+        </div>
+        <div className="card-container">
+          <div className="cardItem-1">
+            <div className="btn-group">
+              <div>
+                <a href="#">Live shows</a> <a>scheduled</a>
+              </div>
+              <a href="#">Auction</a>
+            </div>
+            <CardCarousel />
           </div>
-          <div className="card-container">
-            <div className="cardItem-1">
-              <div className="btn-group">
-                <div>
-                  <a href="#">Live shows</a> <a>scheduled</a>
-                </div>
-                <a href="#">Auction</a>
+          <div className="cardItem-1">
+            <div className="btn-group">
+              <div>
+                <a href="#">Pokemon</a>
               </div>
-              <CardCarousel />
             </div>
-            <div className="cardItem-1">
-              <div className="btn-group">
-                <div>
-                  <a href="#">Pokemon</a>
-                </div>
-              </div>
-              <CardCarousel />
-            </div>
+            <CardCarousel />
           </div>
         </div>
       </div>

@@ -1,0 +1,19 @@
+
+.header{
+    padding: 10px;
+}
+.content{
+   margin-left:10px ;
+    padding: 10px;
+    font-size: 12px;
+}
+.haeder-item{
+    display: flex;
+    justify-content: space-between;
+    >div>img{
+       
+        height: 16px;
+        width: 16px;
+    }
+
+}

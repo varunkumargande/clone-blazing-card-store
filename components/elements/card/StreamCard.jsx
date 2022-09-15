@@ -1,6 +1,8 @@
+
 import React from "react";
 
-function StreamCard({audience}) {
+
+function StreamCard({audience,description,title}) {
   parseInt(JSON.stringify(audience))
   return (
     <div>
@@ -47,12 +49,12 @@ function StreamCard({audience}) {
             </div>
             <div className="container-13"></div>
             <div className="container-14">
-              Lamelo &amp; Antman RC Giveaway $1 NBA/NFL Singles
+              {description}
             </div>
           </div>
         </a>
         <div className="container-15">
-          <a href="/category/basketball_cards">Basketball Cards</a>
+          <a href="/category/basketball_cards">{title}</a>
         </div>
       </div>
     </div>
