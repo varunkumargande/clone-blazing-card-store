@@ -12,9 +12,6 @@ export default function CardCarousel() {
   useEffect(() => {
     streamDetailApi(dispatch);
   }, []);
-
-  console.log(streamDetail);
-
   const settings = {
     className: "center",
     infinite: true,
@@ -22,7 +19,6 @@ export default function CardCarousel() {
     slidesToShow: 7,
     swipeToSlide: true,
   };
-
   const getStreamCards = () => {
     return streamDetail?.map((detail) => {
       return (

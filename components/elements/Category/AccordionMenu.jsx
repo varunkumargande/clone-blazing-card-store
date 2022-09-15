@@ -19,8 +19,6 @@ export default function AccordionMenu() {
   useEffect(() => {
     categoryApi(dispatch);
   }, []);
-  console.log(categories, "here is the object");
-
   const handleClick = () => {
     return setToggle(!toggle);
   };
