@@ -5,12 +5,13 @@ import { useRouter } from "next/router";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
 
+
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
-  const [timer, setTimer] = useState({minutes: "00", seconds:"10"});
-  console.log("timer+++++",timer)
+  const [ minutes, setMinutes ] = useState(0);
+  const [seconds, setSeconds ] =  useState(15);
   /*****For notifications *****/
   const router = useRouter();
   const hostId = router.query["hostId"];
@@ -37,14 +38,12 @@ function StreamingBase() {
   const joinChannel = async () => {
     const client = AgoraRTM.createInstance(options.appID);
     const token = await getToken("RTM",options.channel, options[userType],"userAccount","audience")
-    console.log("===========",token);
     await client.login({ uid: options[userType], token });
     const channel = await client.createChannel(options.channel);
     await channel.join();
     console.log(setChannel(channel));
     console.log(channel)
     channel.on("Member Joined", function (memberId) {
-      console.log(memberId + "JOined");
     });
     return channel;
   };
@@ -59,18 +58,18 @@ function StreamingBase() {
   }, [channel])
   const handleConfirmBid = async () => {
     let message;
-    let {minutes, seconds} = timer;
     let auctionId=1;
     setOpen(false);
     createBid(auctionId, audienceId, amountToBid);
     setBidAmount(amountToBid);
     setAmountToBid(amountToBid + 2);
-    if(seconds < 10){
-      message = {bidAmount:amountToBid, amountToBid: amountToBid+2, lastMinutes: seconds};
+    if(seconds < 20){
+      setSeconds(sec => sec+2)
+      message = {bidAmount:amountToBid, amountToBid: amountToBid+2, lastMinutes: seconds+2};
     }else{
       message = {bidAmount:amountToBid, amountToBid: amountToBid+2};
     }
-    message = JSON.stringify({bidAmount:amountToBid, amountToBid: amountToBid+2});
+    message = JSON.stringify(message);
     await channel.sendMessage({ text: message, type: "text" });
   };
   /*****End notifications *****/
@@ -78,71 +77,25 @@ function StreamingBase() {
   const handleCustomBid = () => {
     setOpen(true);
   };
-  // function updateTimer(minutes,seconds){
-  //   console.log("updtatesecond",seconds)
-  //   if(minutes >=0){
-  //     if(seconds>=0 && seconds<=59){
-  //       seconds=seconds-1;
-  //       if(seconds===-1){
-  //         minutes=minutes-1
-  //         seconds=59
-  //       }
-  //     }
-  //   }
-  //   let time={}
-  //   time.upminutes=String(minutes);time.upseconds=String(seconds)
-  //   return time
-  // }
-
-  // function startTimer(){
-  //   // console.log(timer)
-  //   const interval=setInterval(() => {
-  //     setTimer((prevTimer) => {
-  //       let {upminutes,upseconds} = updateTimer(prevTimer.minutes,prevTimer.seconds)
-  //       if((upminutes==0 || upminutes=='00') && (upseconds==0 || upseconds=='0')){
-  //         clearInterval(interval)
-  //       }
-  //       prevTimer.minutes=upminutes,
-  //       prevTimer.seconds=upseconds
-  //       return prevTimer;
-  //     })
-  //   },1000)
-  // }
   
-  // useEffect(() => {
-  //  startTimer()
-  // }, []);
-  const updateTime = () => {
-    let minutes =timer.minutes;
-      let seconds =timer.seconds;
-    if (minutes >= 0) {
-      if (seconds >= 0 && seconds < 60) {
-        seconds = seconds - 1;
-
-        if (seconds === -1) {
-          minutes = minutes - 1;
-          seconds = 59;
-          if (minutes == -1 && seconds == 59) {
-            minutes="00"
-            seconds="00"
-            return {minutes,seconds}
-          }
-        }
-      }
-      
-      return {minutes,seconds};
-    }
-  };
-  useEffect(() => {
-   const interval= setInterval(() => {
-      let {minutes, seconds} =updateTime();
-      console.log("-----------",minutes,seconds)
-      setTimer({minutes: minutes, seconds:seconds});
-      if(timer.minutes=="00" && timer.seconds == "00"){
-        clearInterval(interval)
-      }
-    }, 1000);
-  }, []);
+  useEffect(()=>{
+    let myInterval = setInterval(() => {
+            if (seconds > 0) {
+                setSeconds(seconds - 1);
+            }
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(myInterval)
+                } else if(seconds <60){
+                    setMinutes(minutes - 1);
+                    setSeconds(59);
+                }
+            } 
+        }, 1000)
+        return ()=> {
+            clearInterval(myInterval);
+          };
+    });
   return (
     <>
       <span>38</span>
@@ -183,7 +136,7 @@ function StreamingBase() {
             </div>
             <div className="bidded-amount">$ {bidAmount}</div>
             
-            <Timer time={timer} />
+            <Timer minutes={minutes} seconds={seconds} />
           </div>
         </div>
         <div className="buyer-buttons">
@@ -213,12 +166,7 @@ function StreamingBase() {
                 <div className="product-detail">Product name</div>
                 <div className="product-detail">${bidAmount}</div>
               </div>
-              {/* <div className="timer">
-                <h2>
-                    00:00
-                </h2>
-              </div> */}
-              <Timer time={timer} />
+              <Timer minutes={minutes} seconds={seconds} />
               <div id="adjust-bidding-amount">
                 <div>
                   <button

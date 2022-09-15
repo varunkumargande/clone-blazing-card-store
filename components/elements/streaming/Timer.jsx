@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 
 function Timer(props) {
-  console.log(props)
-  const {minutes, seconds} = props.time;
-  // console.log(minutes, seconds)
+  const {minutes, seconds} = props;
   return (
     <div className="timer">
       <h2>{minutes}:{seconds}</h2>
