@@ -4,7 +4,6 @@ import StreamCard from "../card/StreamCard";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { streamDetailApi } from "../../../api/stream/streamDetail";
-import axios from "axios";
 
 export default function CardCarousel() {
   const streamDetail = useSelector((state) => state?.stream?.streamdetails);
@@ -25,20 +24,20 @@ export default function CardCarousel() {
   };
 
   const getStreamCards = () => {
-    return streamDetail?.map((x) => {
+    return streamDetail?.map((detail) => {
       return (
         <StreamCard
-          audience={x.id}
+          audience={detail.id}
+          description={detail.description}
+          title={detail.title}
         />
       );
     });
-  }
+  };
 
   return (
     <>
-      <Slider {...settings}>
-        {getStreamCards()}
-      </Slider>
+      <Slider {...settings}>{getStreamCards()}</Slider>
     </>
   );
 }

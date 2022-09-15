@@ -10,57 +10,35 @@ import {
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { categoryApi } from "../../../api/category/category";
-// import "react-accessible-accordion/dist/fancy-example.css";
 
 export default function AccordionMenu() {
-  const categories = useSelector((state) => state.category.categories.data);
-  const [category, setCategory] = useState([
-    { name: "Trading Card Games", subtitle: ["football", "cricket", "tennis"] },
-    { name: "Sports", subtitle: ["football", "cricket", "tennis"] },
-    { name: "Toys", subtitle: ["football", "cricket", "tennis"] },
-    { name: "Action Figures", subtitle: ["football", "cricket", "tennis"] },
-    { name: " Comics & Manga", subtitle: ["football", "cricket", "tennis"] },
-    {
-      name: "Sneakers & Streetwear",
-      subtitle: ["football", "cricket", "tennis"],
-    },
-    {
-      name: "Vintage & Thrift Clothing",
-      subtitle: ["football", "cricket", "tennis"],
-    },
-    { name: "Bags & Accessories", subtitle: ["football", "cricket", "tennis"] },
-    { name: "Jewelry", subtitle: ["football", "cricket", "tennis"] },
-    { name: "Watches", subtitle: ["football", "cricket", "tennis"] },
-    { name: "Video Games", subtitle: ["football", "cricket", "tennis"] },
-    { name: "NFTs", subtitle: ["football", "cricket", "tennis"] },
-    { name: " Coins & Money", subtitle: ["football", "cricket", "tennis"] },
-    { name: " Music", subtitle: ["football", "cricket", "tennis"] },
-    { name: " Electronics", subtitle: ["football", "cricket", "tennis"] },
-    { name: " Arts & Crafts", subtitle: ["football", "cricket", "tennis"] },
-    {
-      name: "Estate Sales and Vintage Decor",
-      subtitle: ["football", "cricket", "tennis"],
-    },
-    { name: " Disneyana", subtitle: ["football", "cricket", "tennis"] },
-  ]);
-  const [children] = useState(["football","cricket","tennis"])
+  const categories = useSelector((state) => state?.category?.categories);
   const [toggle, setToggle] = useState(false);
   const dispatch = useDispatch({});
 
   useEffect(() => {
     categoryApi(dispatch);
   }, []);
-  console.log(categories,"here is the object");
-  // console.log(category);
+  console.log(categories, "here is the object");
+
   const handleClick = () => {
     return setToggle(!toggle);
   };
 
+  const getSubCat = (subcat) => {
+    return subcat?.map((title) => {
+      return <p>{title.name}</p>;
+    });
+  };
+
   return (
     <>
-
-      <Accordion className="menu-container" allowMultipleExpanded allowZeroExpanded>
-        {category.map(( cat) => (
+      <Accordion
+        className="menu-container"
+        allowMultipleExpanded
+        allowZeroExpanded
+      >
+        {categories.map((cat) => (
           <div>
             {" "}
             <AccordionItem>
@@ -78,13 +56,10 @@ export default function AccordionMenu() {
                   </div>
                 </AccordionItemButton>
               </AccordionItemHeading>
-                  {children.map((sub)=>{
-                <AccordionItemPanel className="content">
-             
-                <p>{sub}</p>
-           
+
+              <AccordionItemPanel className="content">
+                {getSubCat(cat?.children)}
               </AccordionItemPanel>
-                })} 
             </AccordionItem>
           </div>
         ))}

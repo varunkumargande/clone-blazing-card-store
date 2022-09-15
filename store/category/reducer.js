@@ -1,21 +1,20 @@
-import { actionTypes } from './action';
+import { actionTypes } from "./action";
 
 export const initialState = {
-    categories: []
- 
+  categories: [],
 };
 
 function reducer(state = initialState, action) {
-    switch (action.type) {
-        case actionTypes.GET_CATEGORIES:
-            return {
-                ...state,
-                ...{ categories: action.payload },
-            };
-        
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case actionTypes.GET_CATEGORIES:
+      return {
+        ...state,
+        ...{ categories: action.payload },
+      };
+
+    default:
+      return state;
+  }
 }
 
 export default reducer;
