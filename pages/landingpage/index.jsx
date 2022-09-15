@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Header from "../../components/partials/Landingpage/Header";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import Category from "../../components/partials/Landingpage/Category";
@@ -9,10 +9,19 @@ import Jewellery from "../../components/partials/Landingpage/Jewellery";
 import Footer from "../../components/partials/LandingPage/Footer";
 
 export default function landingpage(){
+    const [windowWidth, setWindowWidth] = useState(0);
+    let resizeWindow = () => {
+      setWindowWidth(window.innerWidth);
+    };
+  
+    useEffect(() => {
+      resizeWindow();
+      window.addEventListener("resize", resizeWindow);
+      return () => window.removeEventListener("resize", resizeWindow);
+    }, []);
     return(
         <div className="home-container">
-            <Header />
-            <MobileHeader/>
+            {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
             <Category />
             <div className="card-wrapper">
                 <LiveShow />
