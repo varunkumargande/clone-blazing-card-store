@@ -11,16 +11,17 @@ import { Menu, Button } from 'antd';
 import Link from 'next/link';
 import  Router  from 'next/router';
 import QuotationList from '../../pages/account/quotation-list';
-import {patch} from 'react-redux';
+
 import {logOut} from '../../store/auth/action';
 import {getWishlistList} from '../../store/wishlist/action';
 import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux';
 
 function AccountNav({keyValue}){
     
     const router = useRouter()
 
-    const dispatch=patch()
+    const dispatch = useDispatch()
 
     const AccountInfoRoute = () => {
         Router.push("/account/information")

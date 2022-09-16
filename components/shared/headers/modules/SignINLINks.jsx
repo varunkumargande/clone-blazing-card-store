@@ -11,10 +11,10 @@ function SignINLINks() {
       <a className="btn" href="/account/login">
         Start Selling
       </a>
-      <a className="btn" href="/account/login" target="_blank">
+      <a className="btn" href="/account/login">
         Sign In
       </a>
-      <a className="btn" href="/account/register" target="_blank">
+      <a className="btn" href="/account/register">
         Sign Up
       </a>
     </>

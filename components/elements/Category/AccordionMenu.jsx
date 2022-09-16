@@ -36,7 +36,7 @@ export default function AccordionMenu() {
         allowMultipleExpanded
         allowZeroExpanded
       >
-        {categories.map((cat) => (
+        {categories?.map((cat) => (
           <div>
             {" "}
             <AccordionItem>
