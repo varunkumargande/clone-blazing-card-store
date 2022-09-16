@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import Link from 'next/link';
 import {
   Accordion,
   AccordionItem,
@@ -23,9 +24,11 @@ export default function AccordionMenu() {
     return setToggle(!toggle);
   };
 
-  const getSubCat = (subcat) => {
+  const getSubCat = (subcat,id) => {
     return subcat?.map((title) => {
-      return <p>{title.name}</p>;
+      return <Link href={`/category?id=${title.categoryId}&catId=${id}`}>
+          <a><p>{title.name}</p></a>
+        </Link>;
     });
   };
 
@@ -36,7 +39,7 @@ export default function AccordionMenu() {
         allowMultipleExpanded
         allowZeroExpanded
       >
-        {categories.map((cat) => (
+        {categories?.map((cat) => (
           <div>
             {" "}
             <AccordionItem>
@@ -56,7 +59,7 @@ export default function AccordionMenu() {
               </AccordionItemHeading>
 
               <AccordionItemPanel className="content">
-                {getSubCat(cat?.children)}
+                {getSubCat(cat?.children,cat?.categoryId)}
               </AccordionItemPanel>
             </AccordionItem>
           </div>
