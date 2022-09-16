@@ -7,24 +7,25 @@ import { getStreamingShippmentDetail } from '../../../../api/stream/shippmentApi
 import { countryListApi } from "../../../../api"
 
 function ShippmentCard(props) {
-    const [open, setOpen] = React.useState(false)
-    const [openOptions, setOpenOptions] = React.useState(true)
-    const [paymentForm, setPaymentFormOpen] = React.useState(false)
-    const [shippmentForm, setShippmentFormOpen] = React.useState(false)
+    const { setShippmentFormOpen, setAddShippInfo } = props;
+    // const [open, setOpen] = React.useState(false)
+    // const [openOptions, setOpenOptions] = React.useState(true)
+    // const [paymentForm, setPaymentFormOpen] = React.useState(false)
+    // const [shippmentForm, setShippmentFormOpen] = React.useState(false)
 
     const [name, setName] = React.useState("")
     const [address, setAddress] = React.useState("")
-    const [country, setCountry] = React.useState("")
-    const [postal, setPostal] = React.useState("")
-    const [state, setState] = React.useState("")
+    const [postal, setPostal] = React.useState(null)
     const [city, setCity] = React.useState("")
+    const [state, setState] = React.useState("")
+    const [country, setCountry] = React.useState("")
 
     const [nameError, setNameError] = React.useState("")
     const [addressError, setAddressError] = React.useState("")
-    const [countryError, setCountryError] = React.useState("")
     const [postalError, setPostalError] = React.useState("")
-    const [stateError, setStateError] = React.useState("")
     const [cityError, setCityError] = React.useState("")
+    const [stateError, setStateError] = React.useState("")
+    const [countryError, setCountryError] = React.useState("")
 
     const [addressList, setAddressList] = React.useState([])
     const [addressDetail, setAddressDetail] = React.useState(null)

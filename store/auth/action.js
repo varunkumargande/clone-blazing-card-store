@@ -10,8 +10,11 @@ export function login() {
     return { type: actionTypes.LOGIN_REQUEST};
 }
 
-export function loginSuccess() {
-    return { type: actionTypes.LOGIN_SUCCESS };
+export function loginSuccess(payload) {
+    return { 
+        type: actionTypes.LOGIN_SUCCESS,
+        payload:payload
+    };
 }
 
 export function logOut() {

@@ -21,7 +21,7 @@ async function getProfileInfoApi(dispatch) {
                 if (result&&result.data&&result.data.status === 1) {
                    
                     sessionStorage.setItem("spurtUser",JSON.stringify(result.data.data))
-                    dispatch(addItem(1))
+                    // dispatch(addItem(1))
                 }
                   
                 }
