@@ -27,7 +27,6 @@ const LoginPage = () => {
             <ThemeChanger/>
             <NavigationList />
             <div className="ps-page--my-account">
-                
                 <Login />
             </div>
            

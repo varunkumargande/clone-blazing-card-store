@@ -16,7 +16,6 @@ export const actionTypes = {
 
 export const streamData =  (streamUuid) => {
   return async dispatch => {
-
     const result = await getStreamData(streamUuid)
     if(result) {
       dispatch(addStreamDetails(result))
@@ -24,10 +23,10 @@ export const streamData =  (streamUuid) => {
   };
 };
 
-export function getStreamDetails(data) {
+export function getStreamDetails(payload) {
   return {
     type: actionTypes.GET_STREAM_DETAILS,
-    data,
+    payload:payload,
 };
 }
 

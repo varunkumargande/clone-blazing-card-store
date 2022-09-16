@@ -7,10 +7,12 @@ export const initState = {
   audience: null,
   rtcToken: null,
   rtmToken: null,
-  streamData: null
+  streamData: null,
+  streamdetails:null
 };
 
 function reducer(state = initState, action) {
+ 
   switch (action.type) {
     case actionTypes.ADD_RTC_TOKEN:
       return {
@@ -57,6 +59,12 @@ function reducer(state = initState, action) {
           ...state,
           ...{ banners: action.payload },
         };
+        case actionTypes.GET_STREAM_DETAILS:
+          return{
+            ...state,
+            ...{streamdetails: action.payload}
+          }
+
 
     default:
       return state;

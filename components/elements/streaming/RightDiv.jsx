@@ -18,13 +18,14 @@ function RightDiv() {
   const [options, setoptions] = useState(null);
   const router = useRouter();
   const hostId = router.query["host"];
-  const audienceId = router.query["audience"];
+  const audienceId = router.query["stream"];
   const userType = hostId ? 'host' : 'audience';
 
   useEffect(() => {
     if (!options) {
       setoptions({
         appID: "cb08a368d17648e9ab2886e3d1100a5e",
+        //appID: "b87550aad4dc4aadb5219b7487c973fd",
         channel: "POKEMON",
         host: "HOST",
         audience: "guest" + audienceId,
@@ -32,19 +33,19 @@ function RightDiv() {
     }
 
     if (options) {
-      joinChannel();
+      // joinChannel();
     }
   }, [options]);
 
   useEffect(() => {
     if (channel) {
-      sendAndUpdateMessage("JOINED");
-      channel.on("ChannelMessage", (message, peerId) => {
-        if (message.messageType === "TEXT") {
-          const messageObject = { message: message.text, userId: peerId };
-          setMessages(messages => [...messages, messageObject]);
-        }
-      });
+      // sendAndUpdateMessage("JOINED");
+      // channel.on("ChannelMessage", (message, peerId) => {
+      //   if (message.messageType === "TEXT") {
+      //     const messageObject = { message: message.text, userId: peerId };
+      //     setMessages(messages => [...messages, messageObject]);
+      //   }
+      // });
     }
   }, [channel]);
 
@@ -97,7 +98,7 @@ function RightDiv() {
 
   return (
     <div className="streaming-div-right">
-      {getMessages()}
+      {/* {getMessages()} */}
       <div className="streaming-chat-box">
         <Input
           style={{ width: "calc(100% - 200px)" }}
@@ -105,9 +106,9 @@ function RightDiv() {
           value={inputValue}
           onChange={(e) => inputChange(e)}
         />
-        <Button onClick={() => sendAndUpdateMessage(null)} type="primary">
+        {/* <Button onClick={() => sendAndUpdateMessage(null)} type="primary">
           Submit
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

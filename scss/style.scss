@@ -167,11 +167,12 @@
 //card section
 @import './elements/card';
 
-// filter category
-@import './elements/filtercat';
+//accordion menu
+@import './elements/accordionmenu';
 
 // streaming card
 @import './elements/streamcard';
+
 
 
 /* Chrome, Safari, Edge, Opera */
@@ -1601,3 +1602,7 @@ align-items: left;
 @import './newthemes/fonts';
 @import './newthemes/common';
 @import './newthemes/form';
+@import  './newthemes/header';
+@import './newthemes/categories';
+@import './newthemes/card';
+@import './newthemes/footer';
