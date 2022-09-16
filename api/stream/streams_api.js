@@ -45,3 +45,24 @@ import APIServices from "../../services"
       }
     }
   };
+
+  export const buyProduct = async (body) => {
+    try {
+      const url = "https://blazing-card-backend-dev.kellton.net/api/orders/customer-pay";
+      const response = await APIServices.create(url, body);
+      // const response = await axios.get(
+      //   "https://blazing-card-backend-dev.kellton.net/api/address/get-address",
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+      return response.data.data;
+    } catch (error) {
+      if (error.response) {
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
+  };

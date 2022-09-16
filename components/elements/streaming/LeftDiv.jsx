@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { getProducts, getCardDetails, getAddress } from "../../../api/stream/streams_api";
+import { getProducts, getCardDetails, getAddress, buyProduct } from "../../../api/stream/streams_api";
 import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 
@@ -184,9 +184,8 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
       customerStripeRefId: cardData.id,
       paymentMethodId: cardData.id,
     };
-
     try {
-      const res = await axios.post(POST_ORDER, orderBody);
+      const res = await buyProduct(orderBody);
       console.log(res);
     } catch (error) {
       if (error.response) {
@@ -201,17 +200,18 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
     }
   };
 
+
   // Handle Buy_now Item
     const handleClick = async (product) => {
     fetchCardDetails();
     fetchAddress();
-
     };
 
   // First fetching auction and buynow product details
   useEffect(() => {
     console.log('running')
     fetchProducts();
+    postOrderDetails();
   }, [toggleState]);
 
   useEffect(() => {
