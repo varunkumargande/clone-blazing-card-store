@@ -32,7 +32,7 @@ function StreamingBase() {
     }
 
     if (options) {
-      console.log(joinChannel());
+      joinChannel();
     }
   }, [options]);
 
@@ -42,8 +42,7 @@ function StreamingBase() {
     await client.login({ uid: options[userType], token });
     const channel = await client.createChannel(options.channel);
     await channel.join();
-    console.log(setChannel(channel));
-    console.log(channel)
+    setChannel(channel);
     channel.on("Member Joined", function (memberId) {
     });
     return channel;
@@ -52,7 +51,6 @@ function StreamingBase() {
     if(channel){
       channel.on("ChannelMessage", function (message, memberId) {
         const {bidAmount,amountToBid, restartSeconds} = JSON.parse(message.text);
-        console.log(message)
         if(restartSeconds!=0) setSeconds(restartSeconds);
         setBidAmount(bidAmount);
         setAmountToBid(amountToBid);
@@ -74,7 +72,6 @@ function StreamingBase() {
         message = {bidAmount:amountToBid, amountToBid: amountToBid+2, restartSeconds: seconds};
       }
     }
-    console.log(message)
     message = JSON.stringify(message);
     await channel.sendMessage({ text: message, type: "text" });
   };
