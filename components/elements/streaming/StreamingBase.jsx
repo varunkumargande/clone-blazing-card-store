@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { getToken } from "../../../api/stream/agora";
+import { getToken } from "../../../api/stream/getToken";
 import AgoraRTM from "agora-rtm-sdk";
 import { useRouter } from "next/router";
 import Timer from "./Timer";
+import { createBid } from "../../../api/stream/createBid";
+
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
-  const [timer, setTimer] = useState("00:00");
+  const [ minutes, setMinutes ] = useState(0);
+  const [seconds, setSeconds ] =  useState(25);
+  const [disableBid, setDisableBid] = useState(false)
   /*****For notifications *****/
   const router = useRouter();
   const hostId = router.query["hostId"];
-  const audienceId = router.query["audienceId"];
+  const audienceId = Math.floor(Math.random()*20)
   const [options, setoptions] = useState(null);
   const userType = hostId ? "host" : "audience";
   const [channel, setChannel] = useState(null);
@@ -28,43 +32,47 @@ function StreamingBase() {
     }
 
     if (options) {
-      console.log(joinChannel());
+      joinChannel();
     }
   }, [options]);
 
   const joinChannel = async () => {
     const client = AgoraRTM.createInstance(options.appID);
-    const token = await getRtmToken(options[userType]);
+    const token = await getToken("RTM",options.channel, options[userType],"userAccount","audience")
     await client.login({ uid: options[userType], token });
     const channel = await client.createChannel(options.channel);
-    console.log(channel);
     await channel.join();
     setChannel(channel);
     channel.on("Member Joined", function (memberId) {
-      console.log(memberId + "JOined");
     });
     return channel;
-  };
-
-  const getRtmToken = async (uuid) => {
-    const url = `/stream/getStreamToken?token=RTM&uid=${uuid}`;
-    const response = await getToken(url);
-    return response.rtmToken;
   };
   useEffect(() => {
     if(channel){
       channel.on("ChannelMessage", function (message, memberId) {
-        const {bidAmount,amountToBid} = JSON.parse(message.text);
+        const {bidAmount,amountToBid, restartSeconds} = JSON.parse(message.text);
+        if(restartSeconds!=0) setSeconds(restartSeconds);
         setBidAmount(bidAmount);
         setAmountToBid(amountToBid);
       });
     }
   }, [channel])
   const handleConfirmBid = async () => {
+    let message;
+    let auctionId=2;
     setOpen(false);
+    createBid(auctionId, Number(audienceId), amountToBid);
     setBidAmount(amountToBid);
     setAmountToBid(amountToBid + 2);
-    let message = JSON.stringify({bidAmount:amountToBid, amountToBid: amountToBid+2});
+    if(seconds > 0){
+      if(seconds < 20){
+        setSeconds(sec => sec+2)
+        message = {bidAmount:amountToBid, amountToBid: amountToBid+2, restartSeconds: seconds+2};
+      }else{
+        message = {bidAmount:amountToBid, amountToBid: amountToBid+2, restartSeconds: seconds};
+      }
+    }
+    message = JSON.stringify(message);
     await channel.sendMessage({ text: message, type: "text" });
   };
   /*****End notifications *****/
@@ -72,30 +80,26 @@ function StreamingBase() {
   const handleCustomBid = () => {
     setOpen(true);
   };
- 
-  useEffect(() => {
-    let minutes = 0;
-    let seconds = 30;
-    const updateTime = () => {
-      if (minutes >= 0) {
-        if (seconds >= 0 && seconds < 60) {
-          seconds = seconds - 1;
-
-          if (seconds === -1) {
-            minutes = minutes - 1;
-            seconds = 59;
-            if (minutes == -1 && seconds == 59) {
-              return "00:00";
+  
+  useEffect(()=>{
+    let myInterval = setInterval(() => {
+            if (seconds > 0) {
+                setSeconds(seconds - 1);
             }
-          }
-        }
-        return minutes + ":" + seconds;
-      }
-    };
-    setInterval(() => {
-      setTimer(updateTime);
-    }, 1000);
-  }, []);
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(myInterval)
+                    setDisableBid(true)
+                } else if(seconds <60){
+                    setMinutes(minutes - 1);
+                    setSeconds(59);
+                }
+            } 
+        }, 1000)
+        return ()=> {
+            clearInterval(myInterval);
+          };
+    });
   return (
     <>
       <span>38</span>
@@ -135,10 +139,28 @@ function StreamingBase() {
               <div>Pay</div>
             </div>
             <div className="bidded-amount">$ {bidAmount}</div>
-            <Timer time={timer} />
+            
+            <Timer minutes={minutes} seconds={seconds} />
           </div>
         </div>
-        <div className="buyer-buttons">
+        {disableBid ? (
+          <div className="buyer-buttons">
+          <button
+            className="curved-box general-button-style disabled"
+            id="custom-bid"
+          >
+            Custom
+          </button>
+          <button
+            className="curved-box general-button-style disabled"
+            id="bid-button"
+          >
+            Bid ${amountToBid}
+          </button>
+        </div>
+        ) : (
+          <>
+            <div className="buyer-buttons">
           <button
             className="curved-box general-button-style"
             id="custom-bid"
@@ -154,6 +176,8 @@ function StreamingBase() {
             Bid ${amountToBid}
           </button>
         </div>
+          </>
+        )}
 
         {open ? (
           <>
@@ -165,12 +189,7 @@ function StreamingBase() {
                 <div className="product-detail">Product name</div>
                 <div className="product-detail">${bidAmount}</div>
               </div>
-              {/* <div className="timer">
-                <h2>
-                    00:00
-                </h2>
-              </div> */}
-              <Timer time={timer} />
+              <Timer minutes={minutes} seconds={seconds} />
               <div id="adjust-bidding-amount">
                 <div>
                   <button

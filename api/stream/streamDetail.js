@@ -7,3 +7,12 @@ export async function streamDetailApi(dispatch) {
     dispatch(getStreamDetails(result?.data?.data));
     
 }
+
+
+export async function getStreamData(uuid) {
+    const url = `stream/getStream?uuid=${uuid}`;
+    const response = await APIServices.getAll(url);
+    if(response.data.data) {
+      return response.data.data;
+    }
+}

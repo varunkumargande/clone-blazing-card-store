@@ -23,7 +23,8 @@ export default function CardCarousel() {
     return streamDetail?.map((detail) => {
       return (
         <StreamCard
-          audience={detail.id}
+          streamId={detail.id}
+          uuid={detail.uuid}
           description={detail.description}
           title={detail.title}
         />
