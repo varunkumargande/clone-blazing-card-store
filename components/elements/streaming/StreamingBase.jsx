@@ -27,7 +27,6 @@ function StreamingBase() {
         audience: "guest" + audienceId,
       });
     }
-
     if (options) {
       console.log(joinChannel());
     }
@@ -37,7 +36,7 @@ function StreamingBase() {
     const client = AgoraRTM.createInstance(options.appID);
     const token = await getRtmToken(options[userType]);
     await client.login({ uid: options[userType], token });
-    const channel = await client.createChannel(options.channel);
+    const channel = client.createChannel(options.channel);
     console.log(channel);
     await channel.join();
     setChannel(channel);

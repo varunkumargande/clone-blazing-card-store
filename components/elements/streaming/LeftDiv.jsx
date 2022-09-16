@@ -5,7 +5,7 @@ import { getProducts, getCardDetails, getAddress, buyProduct } from "../../../ap
 import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",

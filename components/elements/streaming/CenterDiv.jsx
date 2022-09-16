@@ -12,8 +12,7 @@ function CenterDiv({
   setOpen,
   setAddShippInfo,
   setAddPayInfo,
-  customerId,
-  streamDetails
+  customerId
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
