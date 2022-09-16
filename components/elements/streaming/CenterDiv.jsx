@@ -326,6 +326,7 @@ function CenterDiv({
           </button>
         </div>
       </div>
+
       <div className="streaming-base">
         <StreamingBase />
 
@@ -383,15 +384,10 @@ function CenterDiv({
               <div>
                 <Row>
                   <Col span={14}>
-                    <h3 className="payment_header">Payment Info</h3>
+                    <h3 className='payment_header'>Payment Info</h3>
                   </Col>
                   <Col span={1} push={7}>
-                    <button
-                      className="payment_close"
-                      onClick={() => setOpen(false)}
-                    >
-                      X
-                    </button>
+                    <button className='payment_close' onClick={() => setOpen(false)}>X</button>
                   </Col>
                 </Row>
               </div>
@@ -401,15 +397,10 @@ function CenterDiv({
                     <div>
                       <Row>
                         <Col span={9}>
-                          <h4 className="option-payment">Payment</h4>
+                          <h4 className='option-payment'>Payment</h4>
                         </Col>
                         <Col span={12} push={7}>
-                          <button
-                            className="option_event"
-                            onClick={handlePaymentMethod}
-                          >
-                            "-"{" "}
-                          </button>
+                          <button className='option_event' onClick={handlePaymentMethod}>"-" </button>
                         </Col>
                       </Row>
                     </div>
@@ -420,52 +411,40 @@ function CenterDiv({
                     <div>
                       <Row>
                         <Col span={10}>
-                          <h4 className="option-shippment">Shippment</h4>
+                          <h4 className='option-shippment'>Shippment</h4>
                         </Col>
                         <Col span={10} push={7}>
-                          <button
-                            className="option_event"
-                            onClick={handleShippmentMethod}
-                          >
-                            "-"{" "}
-                          </button>
+                          <button className='option_event' onClick={handleShippmentMethod}>"-" </button>
                         </Col>
                       </Row>
                     </div>
                   </div>
                 </>
               ) : (
-                <></>
+                <>
+                </>
               )}
             </div>
           </>
         ) : (
-          <></>
+          <>
+          </>
         )}
-
         {paymentForm == true ? (
           <>
-            <PaymentCard
-              close={setPaymentFormOpen}
-              setPayment={setPaymentData}
-              shipData={shipData}
-              payData={paymentData}
-            />
+            <PaymentCard close={setPaymentFormOpen} setPayment={setPaymentData} shipData={shipData} payData={paymentData} />
           </>
         ) : (
-          <></>
+          <>
+          </>
         )}
-
         {shippmentForm ? (
           <>
-            <ShippmentCard
-              close={setShippmentFormOpen}
-              setShip={setShipData}
-              data={shipData}
-            />
+            <ShippmentCard close={setShippmentFormOpen} setShip={setShipData} data={shipData} />
           </>
         ) : (
-          <></>
+          <>
+          </>
         )}
       </div>
     </div>

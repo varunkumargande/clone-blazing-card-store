@@ -98,7 +98,7 @@ function ShippmentCard(props) {
                                 defaultValue={
                                     1
                                 }>
-                                <option value={null}>Select An Existing Card</option>
+                                <option value={null}>Select An Shipping Address</option>
                                 {addressList.map((item, index) => {
                                     return (
                                         <>
@@ -196,9 +196,6 @@ function ShippmentCard(props) {
                                                     <div className='col-6'>
                                                         <button className='payment_submit' type="submit">Submit</button>
                                                     </div>
-                                                    <div className='col-6' align="left">
-                                                        <button className='payment_submit'>Add Card</button>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </form>
@@ -206,7 +203,6 @@ function ShippmentCard(props) {
                                 )}
 
                             </Formik>
-
 
                         </>
                     ) : (

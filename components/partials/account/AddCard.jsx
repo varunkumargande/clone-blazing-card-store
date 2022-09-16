@@ -13,7 +13,7 @@ import APIServices from '../../../services'
 import { modalWarning } from "../../../api/intercept";
 
 function AddCard() {
-    const [cardData, setCardData] = useState()
+    const [cardData, setCardData] = useState(null)
     const [delStatus, setDelStatus] = useState(0)
     const [addressLoader, setAddressLoader] = useState(true)
     const [mousehowedit, setmousehowedit] = useState(true)
@@ -35,7 +35,6 @@ function AddCard() {
     }
 
     const editAddess = (detail) => {
-
         dispatch(editDetail(detail));
         Router.push('/account/addaddresses_edit/[eaid]', `/account/addaddresses_edit/${detail.addressId}`)
     }
@@ -51,6 +50,7 @@ function AddCard() {
             setAddressLoader(false)
         } else {
             modalWarning('error', result.data.message)
+            setAddressLoader(false)
         }
     }
 
@@ -66,38 +66,43 @@ function AddCard() {
                         <div className="adr-subcontainer">
                             <div className="adr-main-contain">
                                 <button onClick={e => Router.push('/account/addcarddetails')}>+ ADD NEW CARD</button>
-
                                 <div className="adr-list-container">
-
                                     {addressLoader ? (
                                         <>
                                             <h3>....... loading .......</h3>
                                         </>
                                     ) : (
                                         <>
-                                            {cardData && cardData.map((data, index) => (
-                                                <div className="adr-card-container" key={index}>
-                                                    <h4>
-                                                        <span className="homeorwork">{data.type}</span>
-                                                    </h4>
-                                                    <div className="adr-card-content">
-                                                        <h4> {data.card.brand} : XXXX XXXX XXXX {data.card.last4}
-                                                            <div className="adr-card-more-btn">
-                                                                <MoreOutlined onMouseOver={e => mouseOverFunc()} style={{ fontSize: "24px" }} />
-                                                                <div className="adr-edit-delete">
-                                                                    {mousehowedit && <ul>
-                                                                        <li className="adr-ed-list" onClick={e => deleteAddress(data.addressId)}>Delete</li>
-                                                                    </ul>
-                                                                    }
-                                                                </div>
-                                                            </div></h4>
-                                                        <p> expiary Date : {data.card.exp_month + "/" + data.card.exp_year}, country: {data.card.country}  </p>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                            {cardData != null ? (
+                                                <>
+                                                    {cardData && cardData.map((data, index) => (
+                                                        <div className="adr-card-container" key={index}>
+                                                            <h4>
+                                                                <span className="homeorwork">{data.type}</span>
+                                                            </h4>
+                                                            <div className="adr-card-content">
+                                                                <h4> {data.card.brand} : XXXX XXXX XXXX {data.card.last4}
+                                                                    <div className="adr-card-more-btn">
+                                                                        <MoreOutlined onMouseOver={e => mouseOverFunc()} style={{ fontSize: "24px" }} />
+                                                                        <div className="adr-edit-delete">
+                                                                            {mousehowedit && <ul>
+                                                                                <li className="adr-ed-list" onClick={e => deleteAddress(data.addressId)}>Delete</li>
+                                                                            </ul>
+                                                                            }
+                                                                        </div>
+                                                                    </div></h4>
+                                                                <p> expiary Date : {data.card.exp_month + "/" + data.card.exp_year}, country: {data.card.country}  </p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </>
+                                            ) : (
+                                                <>
+                                                    No Card Found .
+                                                </>
+                                            )}
                                         </>
                                     )}
-
                                 </div>
                             </div>
                         </div>
