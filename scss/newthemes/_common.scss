@@ -1,5 +1,6 @@
 body{
   @include Inter;
+  font-size: 14px;
   color: $primary-color;
 }
 button{
@@ -212,6 +213,12 @@ label{
 .cheackboxWrap{
   width: 100%;
 }
+.br50{
+  border-radius: 50%;
+}
+.nowrap{
+  flex-wrap: nowrap;
+}
 .primary-btn{
   font-size: 16px;
   font-weight: 500;
@@ -309,6 +316,9 @@ label{
 			}
 		}
 	}
+}
+#container.visible{
+  display: none;
 }
 @media all and (min-width:768px){
   .wd50{
