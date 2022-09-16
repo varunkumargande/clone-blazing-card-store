@@ -1,8 +1,7 @@
 import React from "react";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { fetchProducts, fetchCardDetails, fetchAddress } from "../../../api/stream/streams_api";
+import { getProducts, getCardDetails, getAddress } from "../../../api/stream/streams_api";
 import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 
@@ -50,101 +49,91 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
     setToggleState(index);
   };
 
-  // Get Auction Product
-  // const fetchProducts = async () => {
-  //   try {
-  //     // const response = await axios.get('http://52.72.64.43:9000/api/stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=auction');
-  //     const url = "";
-  //     switch (toggleState) {
-  //       case TOGGLE_STATES.AUCTION:
-  //         url =
-  //           "https://blazing-card-backend-dev.kellton.net/api/stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=auction";
-  //         break;
-  //       case TOGGLE_STATES.BUYNOW:
-  //         url =
-  //           "https://blazing-card-backend-dev.kellton.net/api/stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=buy_now";
-  //         break;
-  //       case TOGGLE_STATES.GIVEAWAY:
-  //         break;
-  //       case TOGGLE_STATES.SOLD:
-  //         break;
-  //     }
+  /**
+   * Method to get All products of a stream
+   */
+  const fetchProducts = async () => {
+    try {
+      const url = "";
+      switch (toggleState) {
+        case TOGGLE_STATES.AUCTION:
+          url =
+            "stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=auction";
+          break;
+        case TOGGLE_STATES.BUYNOW:
+          url =
+            "stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=buy_now";
+          break;
+        case TOGGLE_STATES.GIVEAWAY:
+            url =
+            "stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=auction";
+          break;
+        case TOGGLE_STATES.SOLD:
+            url =
+            "stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=auction";
+          break;
+      }
+      const data = await getProducts(url);
+      console.log(data);
+      setProductListing(data);
+      setIsLoading(false);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(err.response.status);
+        console.log(error.response.header);
+        setIsLoading(false);
+      } else {
+        console.log(`Error: ${error.message}`);
+        setIsLoading(false);
+      }
+    }
+  };
 
-  //     const response = await axios.get(url);
 
-  //     const data = response?.data?.data;
-  //     setProductListing(data);
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     if (error.response) {
-  //       console.log(error.response.data);
-  //       console.log(err.response.status);
-  //       console.log(error.response.header);
-  //       setIsLoading(false);
-  //     } else {
-  //       console.log(`Error: ${error.message}`);
-  //       setIsLoading(false);
-  //     }
-  //   }
-  // };
+  /**
+   * Method to get All saved cards of a user
+   */
+  const fetchCardDetails = async () => {
+    try {
+      const data = await getCardDetails(userId, "customer-card-details/listCard")
 
-
-  // Get user card details
-  // const fetchCardDetails = async () => {
-  //   try {
-  //     // const response = await axios.get('http://52.72.64.43:9000/api/customer-card-details/listCard/13');
-  //     const response = await axios.get(
-  //       "https://blazing-card-backend-dev.kellton.net/api/customer-card-details/listCard/13"
-  //     );
-  //     const data = response.data.data;
-  //     // console.log(data[0].billing_details);
-  //     // console.log(data[0].card);
-  //     setAddress(data[0].billing_details);
-  //     setCard(data[0].card);
-  //       setCustomerId(data[0].customer);
-  //     setToken(data[0].customer);
-  //     setCardData(data[0]);
-  //   } catch (error) {
-  //     if (error.response) {
-  //       console.log(error.response.data);
-  //       console.log(err.response.status);
-  //       console.log(error.response.header);
-  //       // setIsLoading(false);
-  //     } else {
-  //       console.log(`Error: ${error.message}`);
-  //       // setIsLoading(false)
-  //     }
-  //   }
-  // };
+      setAddress(data[0].billing_details);
+      setCard(data[0].card);
+      setCustomerId(data[0].customer);
+      setToken(data[0].customer);
+      setCardData(data[0]);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(err.response.status);
+        console.log(error.response.header);
+        // setIsLoading(false);
+      } else {
+        console.log(`Error: ${error.message}`);
+        // setIsLoading(false)
+      }
+    }
+  };
 
   // Get user address details
-  // const fetchAddress = async () => {
-  //   // addressListApi(setAddressData,setAddressLoader);
-  //   //console.log(`addressListApi res is ${res}`)
-  //   try {
-  //     const response = await axios.get(
-  //       "https://blazing-card-backend-dev.kellton.net/api/address/get-address",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     const data = response.data.data;
-  //     setAddressData(data);
-  //     // console.log(data);
-  //   } catch (error) {
-  //     if (error.response) {
-  //       console.log(error.response.data);
-  //       console.log(error.response.status);
-  //       console.log(error.response.header);
-  //       // setIsLoading(false);
-  //     } else {
-  //       console.log(`Error: ${error.message}`);
-  //       // setIsLoading(false)
-  //     }
-  //   }
-  // };
+  const fetchAddress = async () => {
+    try {
+      const data = await getAddress(userId);
+      setAddressData(data);
+      // console.log(data);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.header);
+        // setIsLoading(false);
+      } else {
+        console.log(`Error: ${error.message}`);
+        // setIsLoading(false)
+      }
+    }
+  };
 
   // Posting user details to payment api
   const postOrderDetails = async (product) => {
@@ -213,41 +202,27 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
   };
 
   // Handle Buy_now Item
-    const handleClick = (product) => {
-      // alert(`item with id- ${id} and name-${name} is clicked`)
-      fetchCardDetails(userId, setAddress, setCard, setCardData, setToken);
-      fetchAddress(setAddressData);
-      // if(address.postal_code === null || card?.checks?.cvv_checks !== 'pass') {
-      //     setOpen(true);
-      // }
-      if (card?.exp_month === null) {
-      //   setOpen(true);
-      } else {
-        // Moving towards payment...
-        // postOrderDetails();
-      }
+    const handleClick = async (product) => {
+    fetchCardDetails();
+    fetchAddress();
+
     };
 
   // First fetching auction and buynow product details
   useEffect(() => {
-    fetchProducts(setProductListing, setIsLoading);
+    console.log('running')
+    fetchProducts();
   }, [toggleState]);
 
   useEffect(() => {
-    // Access user details value from session storage
     let userDetails = sessionStorage.getItem("spurtUser");
     userDetails = JSON.parse(userDetails);
     if (userDetails) {
       setUser(userDetails);
       setUserId(user?.id);
       setIsLoggedIn(true);
-      // dispatch(loginSuccess(user?.id));
     }
   }, []);
-  // console.log(`==========${user}`);
-  // console.log(`==========${user.id}`);
-  // console.log(`==========${userId}`);
-  // console.log(`==========${isLoggedIn}`);
 
 
   // If user successfully added payment info and shipping info then will close the pop-up and move towards payment
@@ -255,7 +230,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
       if (addPayInfo && addShippInfo) {
         setOpen(false);
         alert("Moving towards payment");
-        // handleClick();
       }
     }, [addPayInfo, addShippInfo]);
 
@@ -265,7 +239,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
         <>
           <h5>
             {/* <Link href="streaming/#"> */}
-              <span
+              <span key={`tabs-${element}`}
                 className={
                   toggleState ===
                   TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
@@ -317,14 +291,12 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
       </div>
       <div className="product-list content-tabs">
         <div className={toggleState ? "content  active-content" : "content"}>
-          <p>
             {isLoading ? <p>Loading products...</p> : <></>}
             {isLoading === false && productListing?.length === 0 ? (
               <p>0 products</p>
             ) : (
               getProductList()
             )}
-          </p>
         </div>
       </div>
     </div>

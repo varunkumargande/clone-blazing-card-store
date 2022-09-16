@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Link from 'next/link';
 import { Col, Row } from 'antd';
 import PaymentCard from "./Payment/PaymentCard"
@@ -10,6 +10,7 @@ function CenterDiv({open, setOpen, setAddShippInfo, setAddPayInfo, customerId}){
     const [openOptions, setOpenOptions] = React.useState(true)
     const [paymentForm, setPaymentFormOpen] = React.useState(false)
     const [shippmentForm, setShippmentFormOpen] = React.useState(false)
+
 
     const handleMuteButton = ()=>{
         console.log("here");
@@ -32,6 +33,7 @@ function CenterDiv({open, setOpen, setAddShippInfo, setAddPayInfo, customerId}){
     // const handleMuteButton = () => {
     //     console.log("here");
     // }
+
    
     return(
         <div className='streaming-div-center'>
@@ -54,7 +56,7 @@ function CenterDiv({open, setOpen, setAddShippInfo, setAddPayInfo, customerId}){
             <div className='social-presence'>
                 <div>
                     <span id="link-address" >
-                        <input placeholder="www.blazingcard.com/" className='curved-box'></input>    
+                        <input value='www.blazingcard.com' readOnly={true} className='curved-box'></input>    
                     </span>
                     <span id="copy-link">
                         <button className='curved-box'>Copy</button>
@@ -83,7 +85,7 @@ function CenterDiv({open, setOpen, setAddShippInfo, setAddPayInfo, customerId}){
                         </div>
                         <div className='video-info'>
                             <div className="volume">
-                                <input type="range" min="0" max="100" value="50" className="volume-range"/>
+                                <input type="range" min="0" max="100" onChange={handleMuteButton}  value="50" className="volume-range"/>
                                  {/* <div class="icon">
                                     <i class="fa fa-volume-up icon-size" aria-hidden="true"></i>
                                 </div> */}
