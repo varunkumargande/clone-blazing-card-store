@@ -11,7 +11,8 @@ function StreamingBase() {
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
   const [ minutes, setMinutes ] = useState(0);
-  const [seconds, setSeconds ] =  useState(15);
+  const [seconds, setSeconds ] =  useState(25);
+  const [disableBid, setDisableBid] = useState(false)
   /*****For notifications *****/
   const router = useRouter();
   const hostId = router.query["hostId"];
@@ -50,7 +51,8 @@ function StreamingBase() {
   useEffect(() => {
     if(channel){
       channel.on("ChannelMessage", function (message, memberId) {
-        const {bidAmount,amountToBid} = JSON.parse(message.text);
+        const {bidAmount,amountToBid, restartSeconds} = JSON.parse(message.text);
+        setSeconds(restartSeconds)
         setBidAmount(bidAmount);
         setAmountToBid(amountToBid);
       });
@@ -63,11 +65,13 @@ function StreamingBase() {
     createBid(auctionId, audienceId, amountToBid);
     setBidAmount(amountToBid);
     setAmountToBid(amountToBid + 2);
-    if(seconds < 20){
-      setSeconds(sec => sec+2)
-      message = {bidAmount:amountToBid, amountToBid: amountToBid+2, lastMinutes: seconds+2};
-    }else{
-      message = {bidAmount:amountToBid, amountToBid: amountToBid+2};
+    if(seconds > 0){
+      if(seconds < 20){
+        setSeconds(sec => sec+2)
+        message = {bidAmount:amountToBid, amountToBid: amountToBid+2, restartSeconds: seconds+2};
+      }else{
+        message = {bidAmount:amountToBid, amountToBid: amountToBid+2};
+      }
     }
     message = JSON.stringify(message);
     await channel.sendMessage({ text: message, type: "text" });
@@ -86,6 +90,7 @@ function StreamingBase() {
             if (seconds === 0) {
                 if (minutes === 0) {
                     clearInterval(myInterval)
+                    setDisableBid(true)
                 } else if(seconds <60){
                     setMinutes(minutes - 1);
                     setSeconds(59);
@@ -139,7 +144,24 @@ function StreamingBase() {
             <Timer minutes={minutes} seconds={seconds} />
           </div>
         </div>
-        <div className="buyer-buttons">
+        {disableBid ? (
+          <div className="buyer-buttons">
+          <button
+            className="curved-box general-button-style disabled"
+            id="custom-bid"
+          >
+            Custom
+          </button>
+          <button
+            className="curved-box general-button-style disabled"
+            id="bid-button"
+          >
+            Bid ${amountToBid}
+          </button>
+        </div>
+        ) : (
+          <>
+            <div className="buyer-buttons">
           <button
             className="curved-box general-button-style"
             id="custom-bid"
@@ -155,6 +177,8 @@ function StreamingBase() {
             Bid ${amountToBid}
           </button>
         </div>
+          </>
+        )}
 
         {open ? (
           <>
