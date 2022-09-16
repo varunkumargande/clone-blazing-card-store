@@ -159,7 +159,7 @@
         .general-button-style{
           width: 50%;
           padding: 10px;
-          margin: 0 5px
+          margin: 0 5px;
         }
         #product-name,#amount,#timer{
           display: flex;
@@ -168,6 +168,11 @@
           text-align: center;
           width: 100px;
           font-size: 15px;
+        }
+        .buyer-buttons{
+          color: black;
+          font-size: 12px;
+          display: flex;
         }
         #custom-bid-popup {
           border: 1px solid white;
@@ -185,20 +190,19 @@
             display: flex;
             justify-content: space-between;
             color: rgb(22, 148, 238);
+            font-size: 15px;
           }
           #adjust-bidding-amount{
             display: flex;
             justify-content: space-between;
             font-size: 20px;
+            padding: 10px;
             button{
               background-color: white;
               border-radius: 50%;
               width: 40px;
               color: black;
             }
-          }
-          .buyer-buttons{
-            color: black
           }
         }
         .bidded-amount{
@@ -469,7 +473,7 @@
 }
 
 .payment_submit {
-  margin-left: 10px;
+  margin-left: 30px;
   border-radius: 5px;
   width:100px;
   color: black;
@@ -493,7 +497,6 @@
 }
 .shippment_address {
   background-color: white;
-  margin-top: 10px;
   margin-left: 10px;
   width: 94%;
   height: 30px;
@@ -501,7 +504,7 @@
 }
 .shippment_country {
   background-color: white;
-  margin-top: 10px;
+  // margin-top: 10px;
   margin-left: 24px;
   width: 86%;
   height: 30px;
@@ -509,7 +512,7 @@
 }
 .shippment_city {
   background-color: white;
-  margin-top: 10px;
+  // margin-top: 10px;
   margin-left: 24px;
   width: 86%;
   height: 30px;
@@ -517,7 +520,7 @@
 }
 .shippment_state {
   background-color: white;
-  margin-top: 10px;
+  // margin-top: 10px;
   // margin-left: 24px;
   width: 86%;
   height: 30px;
@@ -525,7 +528,7 @@
 }
 .shippment_postal {
   background-color: white;
-  margin-top: 10px;
+  // margin-top: 10px;
   // margin-left: 24px;
   width: 86%;
   height: 30px;
@@ -536,9 +539,9 @@
   font-size: 12px;
   color: red;
   padding-left: 10px;
-  padding-bottom: -1px !important;
+  // padding-bottom: -1px !important;
   line-height: .12em;
-  padding-top: 6px;
+  padding-top: 4px;
 }
 
 .field-error-row {

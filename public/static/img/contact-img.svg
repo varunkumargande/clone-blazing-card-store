@@ -5,7 +5,7 @@
     </clipPath>
     <radialGradient id="radial-gradient" cx="0.109" cy="0.359" r="0.627" gradientTransform="translate(0.159) scale(0.683 1)" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#fff"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#fff" stopOpacity="0"/>
     </radialGradient>
     <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#ffd71d"/>
