@@ -6,13 +6,16 @@ import { useSelector } from "react-redux";
 import { substreamDetailApi } from "../../../api/stream/subStreamDetail";
 import { useRouter } from "next/router";
 
-export default function CategoryCard(props) {
+export default function CategoryCard() {
   const streamDetail = useSelector((state) => state?.stream?.streamdetails);
+  const { query } = useRouter();
+  const [params,setparams] = useState(query.id)
+ 
 
   const dispatch = useDispatch();
   useEffect(() => {
-    substreamDetailApi(dispatch);
-  }, []);
+    substreamDetailApi(dispatch,query.catId,query.id);
+  }, [params]);
   const settings = {
     className: "center",
     infinite: true,
@@ -27,6 +30,7 @@ export default function CategoryCard(props) {
           audience={detail.id}
           description={detail.description}
           title={detail.title}
+
         />
       );
     });
@@ -34,6 +38,7 @@ export default function CategoryCard(props) {
 
   return (
     <>
+
       <Slider {...settings}>{getStreamCards()}</Slider>
     </>
   );

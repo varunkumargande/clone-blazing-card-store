@@ -21,7 +21,7 @@ function category() {
           <div className="cardItem-1">
             <div className="btn-group">
               <div>
-                <a href="#">Live shows</a> <a>scheduled</a>
+                
               </div>
               <a href="#">Auction</a>
             </div>
