@@ -18,7 +18,7 @@ function RightDiv() {
   const [options, setoptions] = useState(null);
   const router = useRouter();
   const hostId = router.query["host"];
-  const audienceId = router.query["audience"];
+  const audienceId = router.query["stream"];
   const userType = hostId ? 'host' : 'audience';
 
   useEffect(() => {

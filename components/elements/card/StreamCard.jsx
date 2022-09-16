@@ -2,12 +2,11 @@
 import React from "react";
 
 
-function StreamCard({audience,description,title}) {
-  parseInt(JSON.stringify(audience))
+function StreamCard({streamId,description,title}) {
   return (
     <div>
       <div className="container-1">
-        <a href={`/streaming/?audience=${audience}`}>
+        <a href={`/streaming/?stream=${streamId}`}>
           <div data-key="livestream1" className="container-2">
             <div className="container-3"></div>
             <div className="container-4">
