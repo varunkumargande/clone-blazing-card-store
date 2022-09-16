@@ -60,9 +60,9 @@ function StreamingBase() {
   }, [channel])
   const handleConfirmBid = async () => {
     let message;
-    let auctionId=1;
+    let auctionId=2;
     setOpen(false);
-    createBid(auctionId, audienceId, amountToBid);
+    createBid(auctionId, Number(audienceId), amountToBid);
     setBidAmount(amountToBid);
     setAmountToBid(amountToBid + 2);
     if(seconds > 0){
