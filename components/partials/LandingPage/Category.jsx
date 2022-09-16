@@ -1,7 +1,6 @@
 import React,{useState,useEffect,useRef} from "react";
 import Link from "next/link";
 import IconCategoryDrop from '../../Icons/IconCategoryDrop';
-import IconBack from "../../Icons/IconBack";
 import IconLike from "../../Icons/IconLike"
 export default function Category(){
     const [active, setActive] = useState(false);

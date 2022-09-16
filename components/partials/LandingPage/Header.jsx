@@ -35,8 +35,8 @@ export default function Header(){
                     </div>
                 </div>
                 <div className="right flex flex-wrap flex-center">
-                    <div className="logedIn flex flex-center">
-                        <label className="switch toggle-switch darkBlue">
+                    <div className="logedIn flex flex-center justify-right">
+                        {/* <label className="switch toggle-switch darkBlue">
                             <input type="checkbox" id="togBtn" />
                             <span className="toogle-slide round">
                                 <span className="on">
@@ -46,9 +46,9 @@ export default function Header(){
                                     Seller
                                 </span>
                             </span>
-                        </label>
-                        {/* <Link href="/"><a className="primary-btn flex flex-center justify-center onlyMobile">Sign In</a></Link> */}
-                        {/* <Link href="/"><a className="border-btn flex flex-center justify-center">Become a Seller</a></Link> */}
+                        </label> */}
+                        
+                        <Link href="/"><a className="border-btn flex flex-center justify-center become">Become a Seller</a></Link>
                         <button className="message flex flex-center justify-center"><IconMessage /></button>
                         <button className="Notification flex flex-center justify-center"><IconNotification /></button>
                         <button className="profile">
@@ -58,6 +58,11 @@ export default function Header(){
                             </ul>
                         </button>
                     </div>
+                    {/* <div className="withotLogedIn flex flex-center justify-right">
+                        <Link href="/"><a className="link">Become a Seller</a></Link>
+                        <Link href="/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
+                        <Link href="/signup"><a className="border-btn flex flex-center justify-center ml24">Sign up</a></Link>
+                    </div> */}
                 </div>
             </div>
         </header>

@@ -30,6 +30,9 @@ button,input{
 .justify-left{
   justify-content: flex-start;
 }
+.flex-top{
+  align-items: flex-start;
+}
 .flex-center{
   align-items: center;
 }
@@ -68,6 +71,9 @@ button,input{
 .mt16{
   margin-top: 16px;
 }
+.ml24{
+  margin-left: 24px;
+}
 // common input
 .input-control{
   margin-bottom: 16px;
@@ -97,7 +103,7 @@ button,input{
           color: $light-grey-color;
       }
   }
-  .errorText{
+  .errorText,.errorMessage{
       font-size: 14px;
       line-height: 21px;
       font-weight: 500;
@@ -105,20 +111,23 @@ button,input{
       margin-top: 6px;
   }
   input,select{
-      height: 48px;
+      height: 42px;
   }
   textarea{
       height: 100px;
   }
   .show-hide{
-      width: 18px;
-      height: 17px;
+      width: 24px;
       position: absolute;
       top:40px;
-      right: 17px;
+      right: 10px;
       border:none;
       cursor: pointer;
       background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
   }
 }
 // common forget
@@ -215,6 +224,21 @@ label{
   justify-content: center;
   align-items: center;
   border:none;
+  &:hover{
+    color: $white-color;
+  }
+}
+.border-btn{
+  font-size: 16px;
+  height: 48px;
+  color:#1877F2;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid#1877F2;
+  padding: 0 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 // Toggle switch
 .switch {
@@ -290,6 +314,14 @@ label{
   .wd50{
     width: calc(50% - 8px);
   }
+  .input-control{
+    input,select{
+        height: 48px;
+    }
+    .show-hide{
+        top:44px;
+    }
+  }  
 }
 
 @media all and (min-width:1280px){
