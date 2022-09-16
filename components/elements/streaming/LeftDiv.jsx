@@ -5,7 +5,7 @@ import { getProducts, getCardDetails, getAddress, buyProduct } from "../../../ap
 import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -58,11 +58,11 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
       switch (toggleState) {
         case TOGGLE_STATES.AUCTION:
           url =
-            "stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=auction";
+            "stream/streamProductList?streamuuid=cdcdb4f2-6474-44a3-b217-980b60a27b61&sellType=auction";
           break;
         case TOGGLE_STATES.BUYNOW:
           url =
-            "stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=buy_now";
+            "stream/streamProductList?streamuuid=cdcdb4f2-6474-44a3-b217-980b60a27b61&sellType=buy_now";
           break;
         case TOGGLE_STATES.GIVEAWAY:
             url =
@@ -211,7 +211,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
   useEffect(() => {
     console.log('running')
     fetchProducts();
-    postOrderDetails();
+    // postOrderDetails();
   }, [toggleState]);
 
   useEffect(() => {
@@ -263,8 +263,8 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
   };
 
   const getProductList = () => {
-    return productListing?.map((product) =>
-      returnv(
+    return productListing?.map((product) => {
+      return (
         <>
           <div key={product?.productId}>
             <p>
@@ -274,6 +274,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
           </div>
         </>
       )
+    }
     );
   };
 

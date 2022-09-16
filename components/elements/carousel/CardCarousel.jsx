@@ -24,6 +24,7 @@ export default function CardCarousel() {
       return (
         <StreamCard
           streamId={detail.id}
+          uuid={detail.uuid}
           description={detail.description}
           title={detail.title}
         />
