@@ -16,7 +16,7 @@ function StreamingBase() {
   /*****For notifications *****/
   const router = useRouter();
   const hostId = router.query["hostId"];
-  const audienceId = router.query["audienceId"];
+  const audienceId = Math.floor(Math.random()*20)
   const [options, setoptions] = useState(null);
   const userType = hostId ? "host" : "audience";
   const [channel, setChannel] = useState(null);
@@ -52,7 +52,8 @@ function StreamingBase() {
     if(channel){
       channel.on("ChannelMessage", function (message, memberId) {
         const {bidAmount,amountToBid, restartSeconds} = JSON.parse(message.text);
-        setSeconds(restartSeconds)
+        console.log(message)
+        if(restartSeconds!=0) setSeconds(restartSeconds);
         setBidAmount(bidAmount);
         setAmountToBid(amountToBid);
       });
@@ -70,9 +71,10 @@ function StreamingBase() {
         setSeconds(sec => sec+2)
         message = {bidAmount:amountToBid, amountToBid: amountToBid+2, restartSeconds: seconds+2};
       }else{
-        message = {bidAmount:amountToBid, amountToBid: amountToBid+2};
+        message = {bidAmount:amountToBid, amountToBid: amountToBid+2, restartSeconds: seconds};
       }
     }
+    console.log(message)
     message = JSON.stringify(message);
     await channel.sendMessage({ text: message, type: "text" });
   };
