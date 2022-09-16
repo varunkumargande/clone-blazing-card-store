@@ -2,6 +2,7 @@ import { actionTypes } from './action';
 
 export const initState = {
     isLoggedIn: false,
+    userId: "",
 };
 
 function reducer(state = initState, action) {
@@ -9,7 +10,7 @@ function reducer(state = initState, action) {
         case actionTypes.LOGIN_SUCCESS:
             return {
                 ...state,
-                ...{ isLoggedIn: true },
+                ...{ userId: action.payload, isLoggedIn: true },
             };
             case actionTypes.LOGIN_REQUEST:
                 return {
@@ -19,7 +20,7 @@ function reducer(state = initState, action) {
         case actionTypes.LOGOUT:
             return {
                 ...state,
-                ...{ isLoggedIn: false },
+                ...{ userId: "", isLoggedIn: false },
             };
         default:
             return state;

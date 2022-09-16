@@ -25,6 +25,7 @@ function RightDiv() {
     if (!options) {
       setoptions({
         appID: "cb08a368d17648e9ab2886e3d1100a5e",
+        //appID: "b87550aad4dc4aadb5219b7487c973fd",
         channel: "POKEMON",
         host: "HOST",
         audience: "guest" + audienceId,
