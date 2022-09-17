@@ -30,7 +30,6 @@ function StreamingBase() {
         audience: "guest" + audienceId,
       });
     }
-
     if (options) {
       joinChannel();
     }

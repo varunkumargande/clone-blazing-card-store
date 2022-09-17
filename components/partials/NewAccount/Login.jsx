@@ -7,7 +7,8 @@ import { UserLogin } from '../../../api';
 import { connect, useDispatch } from 'react-redux';
 import Router from 'next/router';
 import { GoogleLogin } from 'react-google-login';
-
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import { loginConstant } from "../../Constants/login"
 
 function Login(props) {
@@ -24,10 +25,9 @@ function Login(props) {
     const [googleId, setgoogleId] = useState("")
     const [googlePath, setgooglePath] = useState("")
     const [conpassShow, setConPassShow] = useState(false)
-
-    console.log()
-
     const emailInputRef = React.useRef(null);
+
+
     useEffect(() => {
         emailInputRef.current.focus();
     }, []);
@@ -43,63 +43,14 @@ function Login(props) {
         GoogleLoginApi(mail, password, type, setgoogleId, setgooglePath)
     }
 
-    const handleLoginSubmit = e => {
-        e.preventDefault()
-        if (mail !== "" && password !== "" && emailValid === "" && passValid === "") {
-            setLoadImg(true)
-            UserLogin(mail, password, loginType, Router, setLoginError, dispatch, setMail, setPassword, setLoadImg)
-        } else if (mail == "" && password == "") {
-            setEmailValid(loginConstant["requiredEmail"])
-            setPassValid(loginConstant["requiredPassword"])
-        } else if (mail == "" || password == !"" && mail == !"" || password == "") {
-        } else if (emailValid == !"") {
-        } else {
-            setEmailValid(loginConstant["validateEmail"])
-        }
-    };
-
     const responseGoogle = (response) => {
         GoogleLoginApi(mail, password, "gmail", setgoogleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
     }
 
-    const loginOnChange = (e) => {
-        const { name, value } = e.target;
-
-        if (name === "email") {
-            setMail(value)
-            if (value) {
-                let emailCheck = EmailValidator(value)
-                if (emailCheck) {
-                    setEmailValid("")
-                }
-                else {
-                    setEmailValid(loginConstant["validateEmail"])
-                }
-            }
-            else {
-                setEmailValid(loginConstant["requiredEmail"])
-            }
-        }
-        if (name === "password") {
-            setPassword(e.target.value)
-            if (value) {
-                if (value.length) {
-                    setPassValid("")
-                }
-            }
-            else {
-                setPassValid(loginConstant["requiredPassword"])
-            }
-        }
-    }
-    
-    const enterKeyEvent = e => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            e.stopPropagation();
-            handleLoginSubmit()
-        }
-    }
+    const loginSchema = Yup.object().shape({
+        email: Yup.string().required('Required'),
+        password: Yup.string().required('Required'),
+    });
 
     return (
         <div className="login-wrapper">
@@ -115,30 +66,50 @@ function Login(props) {
                 isSignedIn={false}
             />
             <div className="or mb32 flex flex-center justify-center"><span>Or</span></div>
-            <form className="login flex space-between">
-                <div className="input-control">
-                    <label>Email Address or Username</label>
-                    <input name="email" placeholder={"Email"} ref={emailInputRef} value={mail}
-                        onChange={e => loginOnChange(e)} className="errorBorder" />
-                    {emailValid !== "" ? <span className="errorMessage">{emailValid}</span> : ""}
-                </div>
-                <div className="input-control">
-                    <label>Password</label>
-                    <input name="password" placeholder={"Password"} type={conpassShow ? "text" : "password"} value={password}
-                        className="errorBorder" onChange={e => loginOnChange(e)} />
-                    {passValid !== "" ? <span className="errorMessage">{passValid}</span> : ""}
-                    {conpassShow ? <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> : (<> <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> </>)}
-                    <div className="flex justify-right mb16 forget mb32">
-                        <Link href="/account/forgot-password"><a>Forget Password</a></Link>
-                    </div>
-                </div>
-                <div className="submitWrap mb32">
-                    <button className="primary-btn" onClick={e => handleLoginSubmit(e)}>Sign in</button>
-                </div>
-                <div className="text-center mb16 already">
-                    Don’t have an account yet?  <Link href="/account/register"><a>Sign Up</a></Link>
-                </div>
-            </form>
+            <Formik
+                initialValues={{ email:'', password:'' }}
+                validationSchema={loginSchema}
+                onSubmit={(values) => {
+                    UserLogin(values.email, values.password, loginType, Router, setLoginError, dispatch, setMail, setPassword, setLoadImg)
+                }}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                }) => (
+                    <>
+                        <form className="login flex space-between" onSubmit={handleSubmit}>
+                            <div className="input-control">
+                                <label>Email Address</label>
+                                <input name="email" placeholder={"Email"} ref={emailInputRef} value={values.email}
+                                    onChange={handleChange} className="errorBorder" />
+                                <span className="errorMessage">{errors.email}</span>
+                            </div>
+                            <div className="input-control">
+                                <label>Password</label>
+                                <input name="password" placeholder={"Password"} type={conpassShow ? "text" : "password"} value={values.password}
+                                    className="errorBorder" onChange={handleChange} />
+                                <span className="errorMessage">{errors.password}</span>
+                                {conpassShow ? <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> : (<> <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> </>)}
+                                <div className="flex justify-right mb16 forget mb32">
+                                    <Link href="/account/forgot-password"><a>Forget Password</a></Link>
+                                </div>
+                            </div>
+                            <div className="submitWrap mb32">
+                                <button type="submit" className="primary-btn">Sign in</button>
+                            </div>
+                            <div className="text-center mb16 already">
+                                Don’t have an account yet?  <Link href="/account/register"><a>Sign Up</a></Link>
+                            </div>
+                        </form>
+                    </>
+                )}
+            </Formik>
         </div>
     );
 }

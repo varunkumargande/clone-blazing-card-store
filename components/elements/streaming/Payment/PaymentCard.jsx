@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import Link from 'next/link';
-import axios from 'axios';
-
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import { getStreamingCardDetail } from '../../../../api/stream/cardApi';
+import { addCardDetail } from '../../../../api/stream/payment';
 
 function PaymentCard(props) {
     const { setPaymentFormOpen, setAddPayInfo, customerId } = props;
@@ -13,12 +14,14 @@ function PaymentCard(props) {
     const [cardList, setCardList] = useState([])
     const [cardDetail, setCardDetail] = useState(null)
 
+    const [open, setOpen] = useState(false)
+
     useEffect(() => {
         getCardList()
     }, [])
 
     const getCardList = () => {
-        getStreamingCardDetail(setCardList)
+        // getStreamingCardDetail(setCardList)
     }
 
     const handleSelectCardDetail = (e) => {
@@ -29,6 +32,25 @@ function PaymentCard(props) {
 
     const handleSubmitCard = () => {
         console.log(cardDetail)
+    }
+
+    const handleOpenNewCard = () => {
+        if (open == false) {
+            setOpen(true)
+        } else {
+            setOpen(false)
+        }
+    }
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
+    const addPaySchema = Yup.object().shape({
+        cardNumber: Yup.string().required('Required').matches(phoneRegExp, "Invalid Card Number").max(16),
+        expiary: Yup.string().required('Required'),
+        cvc: Yup.string().required('Required'),
+    });
+
+    const submitCardDetail = async (data) => {
+        addCardDetail(setOpen, data)
     }
 
     return (
@@ -48,58 +70,113 @@ function PaymentCard(props) {
                     <div align="left">
                         <h3 className='payment_method_header'>Payment Method</h3>
                     </div>
-                    <div className="row">
-                        <div className="col-12">
-                            <select
-                                className="form-control stream_payment_card_select"
-                                onChange={handleSelectCardDetail}
-                                defaultValue={
-                                    1
-                                }>
-                                <option>Select An Existing Card</option>
-                                {cardList.map((item, index) => {
-                                    return (
+                    {open ? (
+                        <>
+                            <div className="row">
+                                <Formik
+                                    initialValues={{ cardNumber: '', expiary: '', cvc: '' }}
+                                    validationSchema={addPaySchema}
+                                    onSubmit={(values) => {
+                                        submitCardDetail(values)
+                                    }}
+                                >
+                                    {({
+                                        values,
+                                        errors,
+                                        touched,
+                                        handleChange,
+                                        handleBlur,
+                                        handleSubmit,
+                                        isSubmitting,
+                                    }) => (
                                         <>
-                                            <option value={index}>{item.card.brand} : XXXX XXXX XXXX {item.card.last4}</option>
+                                            <form onSubmit={handleSubmit}>
+                                                <div className="row">
+                                                    <div className='col-12' align={"center"}>
+                                                        <input onChange={handleChange} type="string" value={values.cardNumber} name="cardNumber" placeholder='Card Number' className="form-control stream_payment_card_input" />
+                                                        <p className='field-error'>{errors.cardNumber}</p>
+                                                    </div>
+                                                    <div className='col-6' align={"center"}>
+                                                        <input onChange={handleChange} type="month" value={values.expiary} name="expiary" className="form-control stream_payment_card_expiary" />
+                                                        <p className='field-error'>{errors.expiary}</p>
+                                                    </div>
+                                                    <div className='col-6'>
+                                                        <input onChange={handleChange} type="number" value={values.cvc} name="cvc" className="form-control stream_payment_card_cvc" placeholder='XXX' />
+                                                        <p className='field-error'>{errors.cvc}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="row">
+                                                    <div className='col-4' align="left">
+                                                        <button type="submit" className='payment_submit'>Submit</button>
+                                                    </div>
+                                                    <div className='col-8' align="left">
+                                                        <button type="button" className='payment_submit' onClick={() => setOpen(false)}>Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </>
-                                    )
-                                })}
+                                    )}
 
-                            </select>
-                            {countryError !== "" && <p className='field-error-row-country'>{countryError}</p>}
-                        </div>
-
-                        {cardDetail != null ? (
-                            <>
-                                <div className="row">
-                                    <div className='col-6'>
-                                        <input type="text" disabled value={cardDetail.card.exp_month + "/" + cardDetail.card.exp_year} className="form-control stream_payment_card_expiary" />
-                                    </div>
-                                    <div className='col-6'>
-                                        <input type="number" className="form-control stream_payment_card_cvc" placeholder='XXX' disabled />
-                                    </div>
-                                </div>
-                                <div className='col-12'>
+                                </Formik>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="row">
+                                <div className="col-12">
                                     <select
-                                        className="form-control stream_payment_card_select" disabled>
-                                        <option value={cardDetail.card.country}>{cardDetail.card.country}</option>
+                                        className="form-control stream_payment_card_select"
+                                        onChange={handleSelectCardDetail}
+                                        defaultValue={
+                                            1
+                                        }>
+                                        <option>Select An Existing Card</option>
+                                        {cardList.map((item, index) => {
+                                            return (
+                                                <>
+                                                    <option value={index}>{item.card.brand} : XXXX XXXX XXXX {item.card.last4}</option>
+                                                </>
+                                            )
+                                        })}
+
                                     </select>
                                 </div>
-                                <div className='col-4' align="left">
-                                    <button className='payment_submit'>Submit</button>
+                                {cardDetail != null ? (
+                                    <>
+                                        <div className="row">
+                                            <div className='col-6'>
+                                                <input type="text" disabled value={cardDetail.card.exp_month + "/" + cardDetail.card.exp_year} className="form-control stream_payment_card_expiary" />
+                                            </div>
+                                            <div className='col-6'>
+                                                <input type="number" className="form-control stream_payment_card_cvc" placeholder='XXX' disabled />
+                                            </div>
+                                        </div>
+                                        <div className='col-12'>
+                                            <select
+                                                className="form-control stream_payment_card_select" disabled>
+                                                <option value={cardDetail.card.country}>{cardDetail.card.country}</option>
+                                            </select>
+                                        </div>
+                                        <div className='col-4' align="left">
+                                            <button className='payment_submit'>Submit</button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                    </>
+                                )}
+                                <div className='col-8' align="left">
+                                    <button className='payment_submit' onClick={handleOpenNewCard}>Add Card</button>
                                 </div>
-                            </>
-                        ) : (
-                            <>
+                            </div>
+                        </>
+                    )}
 
-                            </>
-                        )}
 
-                        <div className='col-8' align="left">
-                            <button className='payment_submit'>Add Card</button>
-                        </div>
 
-                    </div>
+
+
                 </div>
             </div>
         </>
