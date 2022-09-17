@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { getStreamingCardDetail } from '../../../../api/stream/cardApi';
-import { modalSuccess, modalWarning } from "../../../../api/intercept";
-import APIServices from '../../../../services'
+import { addCardDetail } from '../../../../api/stream/payment';
 
 function PaymentCard(props) {
     const { setPaymentFormOpen, setAddPayInfo, customerId } = props;
@@ -51,26 +50,7 @@ function PaymentCard(props) {
     });
 
     const submitCardDetail = async (data) => {
-        let expDate = ""
-        let year = data.expiary.split("-")[0].slice(-2)
-        let month = data.expiary.split("-")[1]
-        expDate = month + "/" + year
-
-        const data = JSON.stringify({
-            "cardNumber": data.cardNumber,
-            "expireDate": expDate,
-            "cvc": data.cvc,
-            "customerId": String(JSON.parse(sessionStorage.getItem("spurtUser")).id),
-            "name": JSON.parse(sessionStorage.getItem("spurtUser")).firstName,
-            "emailId": JSON.parse(sessionStorage.getItem("spurtUser")).email
-        })
-        const result = await APIServices.create('customer-card-details/addCard', data)
-        if (result.status == 200) {
-            modalSuccess('success', result.data.message)
-            setOpen(false)
-        } else {
-            modalWarning('error', result.data.message)
-        }
+        addCardDetail(setOpen, data)
     }
 
     return (
