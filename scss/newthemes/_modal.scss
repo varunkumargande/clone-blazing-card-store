@@ -1,0 +1,149 @@
+.modalOverlay{
+    @include pos(fixed,0,null,null,0);
+    background: rgba(#000, 0.4);
+    backdrop-filter: blur(2px);
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    .modal{
+        @include pos(static);
+        width: 100%;
+        max-width: 356px;
+        background-color: $white-color;
+        border-radius: 24px;
+        display: block;
+        height: auto;
+    }
+    .modal-header{
+        height: 56px;
+        padding: 0 16px;
+        background-color: $modal-header-bg;
+    }
+    .modal-title{
+        font-size: 20px;
+        line-height: 21px;
+    }
+    .close{
+        padding: 0;
+        margin: 0;
+        width: 14px;
+        height: 14px;
+        opacity: 1;
+        outline: none;
+        &:hover{
+            opacity: 1;
+        }
+        .icon{
+            fill:$grey-color;
+        }
+    }
+    .modal-body{
+        max-height: calc(100vh - 70px);
+        padding: 16px 18px 20px;
+        overflow: auto;
+        h6{
+            font-size: 16px;
+            line-height: 24px;
+            margin-bottom: 4px;
+            color:$blue-color;
+            font-weight: 500;
+        }
+        p{
+            font-size: 14px;
+            line-height: 18px;
+            margin-bottom: 16px;
+            color:$grey-color;      
+            &:last-of-type{
+                &:last-child{
+                    margin-bottom: 8px;
+                }
+            }      
+        }
+    }
+    .social-link{
+        margin-bottom: 16px;
+        button{
+            padding: 0;
+            margin:0 16px;
+        }
+    }
+    .copy{
+        background-color: $border2-color;
+        height: 36px;
+        border-radius: 8px;
+        background: rgba(0, 8, 25, 0.05);
+        border: 1px solid $border2-color;
+        border-radius: 8px;
+        span{
+            background:none;
+            color:$grey-color;
+            font-size: 12px;
+            font-weight: 500;
+            width:calc(100% - 60px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 8px;
+        }
+        button{
+            width: 48px;
+            border-left: 1px solid $border2-color;
+            color:$blue-color;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 0;
+            height: 100%;
+        }
+    }
+    .bid-status{
+        > div{
+            max-width: 128px;
+        }
+        strong{
+            font-weight: 500;
+        }
+        span{
+            color:$blue-color;
+            font-weight:500;
+        }
+    }
+    .increment {
+        button{
+            width: 48px;
+            height: 48px;
+            border:1px solid $border2-color;
+            background-color: rgba($white-color,.2);
+            font-size: 32px;
+            line-height: 10px;
+            border-radius: 8px;
+        }
+        input{
+            background: rgba(0, 8, 25, 0.05);
+            border: 1px solid $border2-color;
+            border-radius: 8px;
+            width: calc(100% - 124px);
+            font-size: 32px;
+            font-weight: 500;
+            color:$primary-color;
+            height: 48px;
+            ::placeholder { 
+                color: $primary-color;
+                opacity: 1;
+            }
+            
+            :-ms-input-placeholder { 
+                color: $primary-color;
+                opacity: 1;
+            }
+            
+            ::-ms-input-placeholder {
+                color: $primary-color;
+                opacity: 1;
+            }
+        }
+    }
+    .btn-wrap{
+        button{
+            width: calc(50% - 9px);
+        }
+    }
+}

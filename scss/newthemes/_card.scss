@@ -116,6 +116,10 @@
     color:$white-color;
     width: 104px;
     height: 24px;
+    &.end{
+        width: auto;
+        padding: 0 8px;
+    }
     svg{
         max-width: 14px;
         text-align: center;

@@ -197,6 +197,14 @@
     flex:0 0 40%; 
     @include pos(re);
     height: calc(100vh - 90px);
+    .inner-wrapper{
+        width:100%;
+        height: 100%;
+        @include pos(ab,0,null,null,0);
+        &.disable{
+            background-color: rgba(#000,.6);
+        }
+    }
     .stream-image-video{
         img,video{
             width: 100%;
@@ -234,12 +242,16 @@
         @include pos(ab,null,null,0,0);
         padding: 0 16px;
         button{
-            width:130px;
+            width:150px;
             max-width: calc(50% - 8px);
             &.border-btn{
                 border-color: $white-color;
                 color:$white-color;
                 background-color: rgba($white-color,.2);
+            }
+            &.disable{
+                max-width: 100%;
+                opacity: .6;
             }
         }
         .btn-wrap{
@@ -264,6 +276,44 @@
                 background-color: $white-color;
                 margin-left: 2px;
             }
+        }
+    }
+    .auction-end-text{
+        @include pos(ab,240px,null,null,50%);
+        transform: translateX(-50%);
+        h3{
+            font-size: 32px;
+            line-height: 26px;
+            margin-bottom: 20px;
+            color:$white-color;
+            font-weight: 500
+        }
+        p{
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 0;
+            color:$white-color;
+            font-weight: 500
+        }
+    }
+    .winner-profile{
+        @include pos(ab,null,null,98px,16px);
+        min-width: 205px;
+        max-width: 215px;
+        background-color: rgba($white-color,.2);
+        height: 42px;
+        border-radius: 21px;
+        padding: 0 3px;
+        font-weight: 700;
+        span{
+            color: $success-color;
+            font-weight: 400;
+        }
+        .pf{
+            width: 36px;
+            height: 36px;
+            border:3px solid $white-color;
+            margin-right: 4px;
         }
     }
 }
