@@ -7,7 +7,7 @@ export default function LoginPage(props) {
 
 
     return (
-        <div className="ps-my-account" onKeyPress={e => enterKeyEvent(e)}>
+        <div className="ps-my-account" >
             <Head>
                 <title>Login</title>
             </Head>

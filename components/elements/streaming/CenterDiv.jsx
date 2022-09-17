@@ -4,6 +4,7 @@ import { Col, Row } from "antd";
 import PaymentCard from "./Payment/PaymentCard";
 import ShippmentCard from "./Payment/ShippmentCard";
 import StreamingBase from "./StreamingBase";
+import { useSelector } from "react-redux";
 import { buyProduct } from "../../../api/stream/buyProductApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept";
 
@@ -13,10 +14,10 @@ function CenterDiv({
   openPayment,
   open,
   setOpen,
+  streamingDetails,
   setAddShippInfo,
   setAddPayInfo,
   customerId,
-  streamDetails
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
@@ -24,12 +25,6 @@ function CenterDiv({
 
   const [paymentData, setPaymentData] = React.useState(null);
   const [shipData, setShipData] = React.useState(null);
-
-  const handleMuteButton = () => {
-    console.log("here");
-  };
-
-  console.log(productDetail)
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -64,9 +59,10 @@ function CenterDiv({
   }
 
   return (
-    <div className="streaming-div-center">
+
+      <div className="streaming-div-center">
       <div className="seller-info">
-        <div id="seller-name">Seller's name</div>
+        <div id="seller-name">{ streamingDetails?.vendorDetails ? streamingDetails?.vendorDetails?.username : 'Seller'}</div>
         <div id="seller-rating">
           <span>4.96 169 Ratings</span>
         </div>
@@ -87,15 +83,6 @@ function CenterDiv({
           <span id="copy-link">
             <button className="curved-box">Copy</button>
           </span>
-        </div>
-        <div>
-          <button
-            id="mute-button"
-            className="curved-box"
-            onClick={handleMuteButton}
-          >
-            {/* {mute ? "Unmute" : "Mute"} */}
-          </button>
         </div>
       </div>
       <div className="streaming-base">

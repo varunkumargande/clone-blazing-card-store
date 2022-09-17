@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 import { useRouter } from "next/router";
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails, openPayment, productDetail }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails, openPayment, productDetail, streamingDetails }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -48,7 +48,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
 
 
   // Handle Tabs Change Functionality
-  console.log("===========================On load state", toggleState);
   const toggleTab = (index) => {
     setToggleState(index);
   };
@@ -78,7 +77,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
           break;
       }
       const data = await getProducts(url);
-      console.log(data);
       setProductListing(data);
       setIsLoading(false);
     } catch (error) {
@@ -125,16 +123,16 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
     try {
       const data = await getAddress(userId);
       setAddressData(data);
-      // console.log(data);
+
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.header);
-        // setIsLoading(false);
+
       } else {
         console.log(`Error: ${error.message}`);
-        // setIsLoading(false)
+
       }
     }
   };
@@ -213,7 +211,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
 
   // First fetching auction and buynow product details
   useEffect(() => {
-    console.log('running')
     fetchProducts();
     // postOrderDetails();
   }, [toggleState]);
@@ -290,7 +287,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
 
   return (
     <div className="streaming-div-left">
-      <h1>STREAM NAME</h1>
+      <h1>{streamingDetails?.title}</h1>
       <button onClick={() => openPayment(true)}> Buy </button>
       <div className="stream-nav">{getToggles()}</div>
 
