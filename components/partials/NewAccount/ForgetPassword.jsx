@@ -42,7 +42,7 @@ export default function ForgetPassword() {
                         <button type="submit" className="primary-btn" onClick={handleSubmit}>Reset Password</button>
                     </div>
                     <div className="text-center mb16 already">
-                        Go Back to <Link href="/login"><a>Sign In</a></Link>
+                        Go Back to <Link href="/account/login"><a>Sign In</a></Link>
                     </div>
                 </>
             )}

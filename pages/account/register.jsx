@@ -23,16 +23,16 @@ const RegisterPage = () => {
 
     return (
         <div className="site-content">
-            <HeaderDefault />
+            {/* <HeaderDefault />
             <HeaderMobile />
-            <NavigationList />
+            <NavigationList /> */}
             <ThemeChanger/>
             <div className="ps-page--my-account">
                
                 <Register />
             </div>
            
-            <FooterFullwidth />
+            {/* <FooterFullwidth /> */}
         </div>
     );
 };

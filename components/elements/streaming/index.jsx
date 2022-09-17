@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import LeftDiv from './LeftDiv';
-import RightDiv from './RightDiv';
-import CenterDiv from './CenterDiv';
-import { useRouter } from 'next/router';
-import { getStreamData } from '../../../api/stream/streamDetail';
+import React, { useEffect, useState } from "react";
+import LeftDiv from "./LeftDiv";
+import RightDiv from "./RightDiv";
+import CenterDiv from "./CenterDiv";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { streamData } from "../../../store/stream/action";
 
 function Index(){
     const [open, setOpen] = useState(false);
@@ -13,23 +14,34 @@ function Index(){
     const [selectedStream, setSelectedStream] = useState()
     const router = useRouter();
     const uuid = router.query["uuid"];
+    const [openPayment, setOpenPayment] = useState(false);
+    const [productDetail, setProductDetail] = useState([]);
+    const dispatch = useDispatch();
+  const streamingDetails = useSelector((state) => {
+    return state?.stream?.streamData
+  });
+  
+  useEffect(() => {
+    dispatch(streamData(uuid));
+  }, []);
 
-    useEffect(() => {
-        if(uuid) {
-            const data = getStreamData(uuid)
-            if(data) {
-                setSelectedStream(data);
-            }
-        }
-    }, [])
+    console.log(productDetail)
 
     return(
-        <div className='wrapper'>
-            <LeftDiv open={open} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamDetails={selectedStream}/>
-            <CenterDiv open={open} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId} streamDetails={selectedStream}/>
-            <RightDiv/>
+        <>
+        { streamingDetails?.uuid ? <>
+            <div className='wrapper'>
+            <LeftDiv open={open} productDetail={setProductDetail} openPayment = {setOpenPayment} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamDetails={selectedStream}/>
+            <CenterDiv open={open} productDetail={productDetail} isPayment={openPayment} openPayment = {setOpenPayment} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId} streamDetails={selectedStream}/>
+            <RightDiv streamingDetails={streamingDetails} />
         </div>
+            </>  : null
+
+        }
+        </>
+        
     )
+
 }
 
 export default Index;

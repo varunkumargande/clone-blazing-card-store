@@ -4,14 +4,20 @@ import { Col, Row } from "antd";
 import PaymentCard from "./Payment/PaymentCard";
 import ShippmentCard from "./Payment/ShippmentCard";
 import StreamingBase from "./StreamingBase";
+import { useSelector } from "react-redux";
+import { buyProduct } from "../../../api/stream/buyProductApi";
+import { modalSuccess, modalWarning } from "../../../api/intercept";
 
 function CenterDiv({
+  productDetail,
+  isPayment,
+  openPayment,
   open,
   setOpen,
+  streamingDetails,
   setAddShippInfo,
   setAddPayInfo,
   customerId,
-  streamDetails
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
@@ -19,10 +25,6 @@ function CenterDiv({
 
   const [paymentData, setPaymentData] = React.useState(null);
   const [shipData, setShipData] = React.useState(null);
-
-  const handleMuteButton = () => {
-    console.log("here");
-  };
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -37,270 +39,36 @@ function CenterDiv({
     setShippmentFormOpen(true);
   };
 
-  // const handleMuteButton = () => {
-  //     console.log("here");
-  // }
+  const handleSubmitBuyProduct = () => {
+    if (paymentData != null && shipData != null) {
+      buyProduct(paymentData, shipData, productDetail)
+    } else {
+      setOpen(true);
+      modalWarning("error", "Please select your card detail and shippment address")
+    }
+  }
 
-  let countries = [
-    "United States",
-    "Canada",
-    "Afghanistan",
-    "Albania",
-    "Algeria",
-    "American Samoa",
-    "Andorra",
-    "Angola",
-    "Anguilla",
-    "Antarctica",
-    "Antigua and/or Barbuda",
-    "Argentina",
-    "Armenia",
-    "Aruba",
-    "Australia",
-    "Austria",
-    "Azerbaijan",
-    "Bahamas",
-    "Bahrain",
-    "Bangladesh",
-    "Barbados",
-    "Belarus",
-    "Belgium",
-    "Belize",
-    "Benin",
-    "Bermuda",
-    "Bhutan",
-    "Bolivia",
-    "Bosnia and Herzegovina",
-    "Botswana",
-    "Bouvet Island",
-    "Brazil",
-    "British Indian Ocean Territory",
-    "Brunei Darussalam",
-    "Bulgaria",
-    "Burkina Faso",
-    "Burundi",
-    "Cambodia",
-    "Cameroon",
-    "Cape Verde",
-    "Cayman Islands",
-    "Central African Republic",
-    "Chad",
-    "Chile",
-    "China",
-    "Christmas Island",
-    "Cocos (Keeling) Islands",
-    "Colombia",
-    "Comoros",
-    "Congo",
-    "Cook Islands",
-    "Costa Rica",
-    "Croatia (Hrvatska)",
-    "Cuba",
-    "Cyprus",
-    "Czech Republic",
-    "Denmark",
-    "Djibouti",
-    "Dominica",
-    "Dominican Republic",
-    "East Timor",
-    "Ecudaor",
-    "Egypt",
-    "El Salvador",
-    "Equatorial Guinea",
-    "Eritrea",
-    "Estonia",
-    "Ethiopia",
-    "Falkland Islands (Malvinas)",
-    "Faroe Islands",
-    "Fiji",
-    "Finland",
-    "France",
-    "France, Metropolitan",
-    "French Guiana",
-    "French Polynesia",
-    "French Southern Territories",
-    "Gabon",
-    "Gambia",
-    "Georgia",
-    "Germany",
-    "Ghana",
-    "Gibraltar",
-    "Greece",
-    "Greenland",
-    "Grenada",
-    "Guadeloupe",
-    "Guam",
-    "Guatemala",
-    "Guinea",
-    "Guinea-Bissau",
-    "Guyana",
-    "Haiti",
-    "Heard and Mc Donald Islands",
-    "Honduras",
-    "Hong Kong",
-    "Hungary",
-    "Iceland",
-    "India",
-    "Indonesia",
-    "Iran (Islamic Republic of)",
-    "Iraq",
-    "Ireland",
-    "Israel",
-    "Italy",
-    "Ivory Coast",
-    "Jamaica",
-    "Japan",
-    "Jordan",
-    "Kazakhstan",
-    "Kenya",
-    "Kiribati",
-    "Korea, Democratic People's Republic of",
-    "Korea, Republic of",
-    "Kosovo",
-    "Kuwait",
-    "Kyrgyzstan",
-    "Lao People's Democratic Republic",
-    "Latvia",
-    "Lebanon",
-    "Lesotho",
-    "Liberia",
-    "Libyan Arab Jamahiriya",
-    "Liechtenstein",
-    "Lithuania",
-    "Luxembourg",
-    "Macau",
-    "Macedonia",
-    "Madagascar",
-    "Malawi",
-    "Malaysia",
-    "Maldives",
-    "Mali",
-    "Malta",
-    "Marshall Islands",
-    "Martinique",
-    "Mauritania",
-    "Mauritius",
-    "Mayotte",
-    "Mexico",
-    "Micronesia, Federated States of",
-    "Moldova, Republic of",
-    "Monaco",
-    "Mongolia",
-    "Montserrat",
-    "Morocco",
-    "Mozambique",
-    "Myanmar",
-    "Namibia",
-    "Nauru",
-    "Nepal",
-    "Netherlands",
-    "Netherlands Antilles",
-    "New Caledonia",
-    "New Zealand",
-    "Nicaragua",
-    "Niger",
-    "Nigeria",
-    "Niue",
-    "Norfork Island",
-    "Northern Mariana Islands",
-    "Norway",
-    "Oman",
-    "Pakistan",
-    "Palau",
-    "Panama",
-    "Papua New Guinea",
-    "Paraguay",
-    "Peru",
-    "Philippines",
-    "Pitcairn",
-    "Poland",
-    "Portugal",
-    "Puerto Rico",
-    "Qatar",
-    "Reunion",
-    "Romania",
-    "Russian Federation",
-    "Rwanda",
-    "Saint Kitts and Nevis",
-    "Saint Lucia",
-    "Saint Vincent and the Grenadines",
-    "Samoa",
-    "San Marino",
-    "Sao Tome and Principe",
-    "Saudi Arabia",
-    "Senegal",
-    "Seychelles",
-    "Sierra Leone",
-    "Singapore",
-    "Slovakia",
-    "Slovenia",
-    "Solomon Islands",
-    "Somalia",
-    "South Africa",
-    "South Georgia South Sandwich Islands",
-    "South Sudan",
-    "Spain",
-    "Sri Lanka",
-    "St. Helena",
-    "St. Pierre and Miquelon",
-    "Sudan",
-    "Suriname",
-    "Svalbarn and Jan Mayen Islands",
-    "Swaziland",
-    "Sweden",
-    "Switzerland",
-    "Syrian Arab Republic",
-    "Taiwan",
-    "Tajikistan",
-    "Tanzania, United Republic of",
-    "Thailand",
-    "Togo",
-    "Tokelau",
-    "Tonga",
-    "Trinidad and Tobago",
-    "Tunisia",
-    "Turkey",
-    "Turkmenistan",
-    "Turks and Caicos Islands",
-    "Tuvalu",
-    "Uganda",
-    "Ukraine",
-    "United Arab Emirates",
-    "United Kingdom",
-    "United States minor outlying islands",
-    "Uruguay",
-    "Uzbekistan",
-    "Vanuatu",
-    "Vatican City State",
-    "Venezuela",
-    "Vietnam",
-    "Virigan Islands (British)",
-    "Virgin Islands (U.S.)",
-    "Wallis and Futuna Islands",
-    "Western Sahara",
-    "Yemen",
-    "Yugoslavia",
-    "Zaire",
-    "Zambia",
-    "Zimbabwe",
-  ];
+  const submitCardDetail = (data) => {
+    setPaymentData(data)
+    modalSuccess("success", "Card Detail added")
+  }
+
+  const submitShipDetail = (data) => {
+    setShipData(data)
+    modalSuccess("success", "Shippment Detail added")
+  }
 
   return (
-    <div className="streaming-div-center">
+
+      <div className="streaming-div-center">
       <div className="seller-info">
-        <div id="seller-name">Seller's name</div>
+        <div id="seller-name">{ streamingDetails?.vendorDetails ? streamingDetails?.vendorDetails?.username : 'Seller'}</div>
         <div id="seller-rating">
           <span>4.96 169 Ratings</span>
         </div>
         <div id="followers">1,214 Followers</div>
         <button id="follow-button" className="curved-box">
           Follow
-        </button>
-        <button
-          className=" curved-box"
-          onClick={handlePaymentAndShippmentModal}
-        >
-          $
         </button>
       </div>
       <div className="social-presence">
@@ -315,15 +83,6 @@ function CenterDiv({
           <span id="copy-link">
             <button className="curved-box">Copy</button>
           </span>
-        </div>
-        <div>
-          <button
-            id="mute-button"
-            className="curved-box"
-            onClick={handleMuteButton}
-          >
-            {/* {mute ? "Unmute" : "Mute"} */}
-          </button>
         </div>
       </div>
       <div className="streaming-base">
@@ -377,21 +136,16 @@ function CenterDiv({
                     </div>
                 </div> */}
 
-        {open ? (
+        {isPayment ? (
           <>
             <div className="payment_popup">
               <div>
                 <Row>
                   <Col span={14}>
-                    <h3 className="payment_header">Payment Info</h3>
+                    <h3 className='payment_header'>Payment Info</h3>
                   </Col>
                   <Col span={1} push={7}>
-                    <button
-                      className="payment_close"
-                      onClick={() => setOpen(false)}
-                    >
-                      X
-                    </button>
+                    <button className='payment_close' onClick={() => openPayment(false)}>X</button>
                   </Col>
                 </Row>
               </div>
@@ -401,71 +155,67 @@ function CenterDiv({
                     <div>
                       <Row>
                         <Col span={9}>
-                          <h4 className="option-payment">Payment</h4>
+                          <h4 className='option-payment'>Payment</h4>
                         </Col>
                         <Col span={12} push={7}>
-                          <button
-                            className="option_event"
-                            onClick={handlePaymentMethod}
-                          >
-                            "-"{" "}
-                          </button>
+                          <button className='option_event' onClick={handlePaymentMethod}> - </button>
                         </Col>
                       </Row>
                     </div>
                     <div align="center">
                       <div class="nav-bar" />
                     </div>
-
                     <div>
                       <Row>
                         <Col span={10}>
-                          <h4 className="option-shippment">Shippment</h4>
+                          <h4 className='option-shippment'>Shippment</h4>
                         </Col>
                         <Col span={10} push={7}>
-                          <button
-                            className="option_event"
-                            onClick={handleShippmentMethod}
-                          >
-                            "-"{" "}
-                          </button>
+                          <button className='option_event' onClick={handleShippmentMethod}> - </button>
+                        </Col>
+                      </Row>
+                    </div>
+                    <div>
+                      <Row>
+                        <Col span={12} align="left">
+                          {paymentData != null && shipData != null ? (
+                            <>
+                              <button type="submit" onClick={handleSubmitBuyProduct} className='payment_submit'>Pay</button>
+                            </>
+                          ) : (
+                            <>
+                            </>
+                          )}
                         </Col>
                       </Row>
                     </div>
                   </div>
                 </>
               ) : (
-                <></>
+                <>
+                </>
               )}
             </div>
           </>
         ) : (
-          <></>
+          <>
+          </>
         )}
-
         {paymentForm == true ? (
           <>
-            <PaymentCard
-              close={setPaymentFormOpen}
-              setPayment={setPaymentData}
-              shipData={shipData}
-              payData={paymentData}
-            />
+            <PaymentCard close={setPaymentFormOpen} setPayment={submitCardDetail} shipData={shipData} payData={paymentData} />
           </>
         ) : (
-          <></>
+          <>
+          </>
         )}
-
         {shippmentForm ? (
           <>
-            <ShippmentCard
-              close={setShippmentFormOpen}
-              setShip={setShipData}
-              data={shipData}
-            />
+            <ShippmentCard close={setShippmentFormOpen} setShip={submitShipDetail} data={shipData} />
           </>
         ) : (
-          <></>
+          <>
+          </>
         )}
       </div>
     </div>

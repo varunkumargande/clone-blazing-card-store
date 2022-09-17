@@ -180,4 +180,4 @@ const mapStateToProps = state => {
     return state.setting;
 
 }
-export default connect(mapStateToProps)(CustomAddCardDetail);
+    export default connect(mapStateToProps)(CustomAddCardDetail);

@@ -1,107 +1,127 @@
 import React, { useState, useEffect } from "react";
+import StreamingElement from "./StreamingElement";
 import { getToken } from "../../../api/stream/getToken";
 import AgoraRTM from "agora-rtm-sdk";
-import { useRouter } from "next/router";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
-
+import { useSelector } from "react-redux";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
-  const [ minutes, setMinutes ] = useState(0);
-  const [seconds, setSeconds ] =  useState(25);
-  const [disableBid, setDisableBid] = useState(false)
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(25);
+  const [disableBid, setDisableBid] = useState(false);
   /*****For notifications *****/
-  const router = useRouter();
-  const hostId = router.query["hostId"];
-  const audienceId = Math.floor(Math.random()*20)
-  const [options, setoptions] = useState(null);
-  const userType = hostId ? "host" : "audience";
+  const audienceId = Math.floor(Math.random() * 20);
   const [channel, setChannel] = useState(null);
-  
-  useEffect(() => {
-    if (!options) {
-      setoptions({
-        appID: "eddb3849590747d989047b5b2e213c96",
-        channel: "POKEMON",
-        host: "HOST",
-        audience: "guest" + audienceId,
-      });
-    }
+  const COUNT_INC = 2;
+  const [volumeLevel, setVolumeLevel] = useState(100);
+  const [isMute, setIsMute] = useState(false);
+  const stream = useSelector((state) => state.stream)
 
-    if (options) {
+
+  useEffect(() => {
       joinChannel();
-    }
-  }, [options]);
+  }, []);
 
   const joinChannel = async () => {
-    const client = AgoraRTM.createInstance(options.appID);
-    const token = await getToken("RTM",options.channel, options[userType],"userAccount","audience")
-    await client.login({ uid: options[userType], token });
-    const channel = await client.createChannel(options.channel);
+    const options = stream?.streamPageData?.option;
+    const client = AgoraRTM.createInstance(options.appId);
+    const token = await getToken(
+      options.rtm,
+      options.notificationChannel,
+      options.audience,
+      options.accountType,
+      options.userType
+    );
+    await client.login({ uid: options.audience, token });
+    const channel = client.createChannel(options.notificationChannel);
     await channel.join();
     setChannel(channel);
-    channel.on("Member Joined", function (memberId) {
-    });
+    channel.on("Member Joined", function (memberId) {});
     return channel;
   };
+
   useEffect(() => {
-    if(channel){
+    if (channel) {
       channel.on("ChannelMessage", function (message, memberId) {
-        const {bidAmount,amountToBid, restartSeconds} = JSON.parse(message.text);
-        if(restartSeconds!=0) setSeconds(restartSeconds);
+        const { bidAmount, amountToBid, restartSeconds } = JSON.parse(
+          message.text
+        );
+        if (restartSeconds != 0) setSeconds(restartSeconds);
         setBidAmount(bidAmount);
         setAmountToBid(amountToBid);
       });
     }
-  }, [channel])
+  }, [channel]);
+
   const handleConfirmBid = async () => {
     let message;
-    let auctionId=2;
+    let auctionId = 2;
     setOpen(false);
     createBid(auctionId, Number(audienceId), amountToBid);
     setBidAmount(amountToBid);
-    setAmountToBid(amountToBid + 2);
-    if(seconds > 0){
-      if(seconds < 20){
-        setSeconds(sec => sec+2)
-        message = {bidAmount:amountToBid, amountToBid: amountToBid+2, restartSeconds: seconds+2};
-      }else{
-        message = {bidAmount:amountToBid, amountToBid: amountToBid+2, restartSeconds: seconds};
+    setAmountToBid(amountToBid + COUNT_INC);
+    if (seconds > 0) {
+      if (seconds < 20) {
+        setSeconds((sec) => sec + COUNT_INC);
+        message = {
+          bidAmount: amountToBid,
+          amountToBid: amountToBid + COUNT_INC,
+          restartSeconds: seconds + COUNT_INC,
+        };
+      } else {
+        message = {
+          bidAmount: amountToBid,
+          amountToBid: amountToBid + COUNT_INC,
+          restartSeconds: seconds,
+        };
       }
     }
     message = JSON.stringify(message);
     await channel.sendMessage({ text: message, type: "text" });
   };
   /*****End notifications *****/
-  const handleMuteButton = () => {};
+  const handleMuteButton = () => {
+    setIsMute(!isMute)
+  };
   const handleCustomBid = () => {
     setOpen(true);
   };
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     let myInterval = setInterval(() => {
-            if (seconds > 0) {
-                setSeconds(seconds - 1);
-            }
-            if (seconds === 0) {
-                if (minutes === 0) {
-                    clearInterval(myInterval)
-                    setDisableBid(true)
-                } else if(seconds <60){
-                    setMinutes(minutes - 1);
-                    setSeconds(59);
-                }
-            } 
-        }, 1000)
-        return ()=> {
-            clearInterval(myInterval);
-          };
-    });
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(myInterval);
+          setDisableBid(true);
+        } else if (seconds < 60) {
+          setMinutes(minutes - 1);
+          setSeconds(59);
+        }
+      }
+    }, 1000);
+    return () => {
+      clearInterval(myInterval);
+    };
+  });
+
+  const changeVolumeLevel = (event) => {
+    event.preventDefault();
+    const changedVolume = event?.target?.value;
+    if(changedVolume) {
+      setVolumeLevel(changedVolume);
+    }
+  }
+
   return (
     <>
+      <StreamingElement volume={volumeLevel} isMute={isMute} />
       <span>38</span>
       <div className="stream-wrapper">
         <div className="overlay">
@@ -116,8 +136,9 @@ function StreamingBase() {
                 type="range"
                 min="0"
                 max="100"
-                value="50"
+                value={volumeLevel}
                 className="volume-range"
+                onChange={(e)=>{changeVolumeLevel(e)}}
               />
               <div className="bar-hoverbox">
                 <div classame="bar">
@@ -139,43 +160,43 @@ function StreamingBase() {
               <div>Pay</div>
             </div>
             <div className="bidded-amount">$ {bidAmount}</div>
-            
+
             <Timer minutes={minutes} seconds={seconds} />
           </div>
         </div>
         {disableBid ? (
           <div className="buyer-buttons">
-          <button
-            className="curved-box general-button-style disabled"
-            id="custom-bid"
-          >
-            Custom
-          </button>
-          <button
-            className="curved-box general-button-style disabled"
-            id="bid-button"
-          >
-            Bid ${amountToBid}
-          </button>
-        </div>
+            <button
+              className="curved-box general-button-style disabled"
+              id="custom-bid"
+            >
+              Custom
+            </button>
+            <button
+              className="curved-box general-button-style disabled"
+              id="bid-button"
+            >
+              Bid ${amountToBid}
+            </button>
+          </div>
         ) : (
           <>
             <div className="buyer-buttons">
-          <button
-            className="curved-box general-button-style"
-            id="custom-bid"
-            onClick={handleCustomBid}
-          >
-            Custom
-          </button>
-          <button
-            className="curved-box general-button-style"
-            id="bid-button"
-            onClick={handleConfirmBid}
-          >
-            Bid ${amountToBid}
-          </button>
-        </div>
+              <button
+                className="curved-box general-button-style"
+                id="custom-bid"
+                onClick={handleCustomBid}
+              >
+                Custom
+              </button>
+              <button
+                className="curved-box general-button-style"
+                id="bid-button"
+                onClick={handleConfirmBid}
+              >
+                Bid ${amountToBid}
+              </button>
+            </div>
           </>
         )}
 

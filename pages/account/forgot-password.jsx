@@ -4,7 +4,7 @@ import HeaderDefault from '../../components/shared/headers/HeaderDefault';
 import ForgotPassword from '../../components/partials/account/ForgotPass';
 import BreadCrumb from '../../components/elements/BreadCrumb';
 import HeaderMobile from '../../components/shared/headers/HeaderMobile';
-import NavigationList from '../../components/shared/navigation/NavigationList';
+// import NavigationList from '../../components/shared/navigation/NavigationList';
 import useNetwork from '../../components/reusable/NetworkCheck';
 import Router from 'next/router';
 
@@ -28,14 +28,14 @@ const ForgotPasswordPage = () => {
     ];
     return (
         <div className="site-content">
-            <HeaderDefault />
+            {/* <HeaderDefault />
             <HeaderMobile />
-            <NavigationList />
+            <NavigationList /> */}
             <div className="ps-page--simple">
-                <BreadCrumb breacrumb={breadCrumb} />
+                {/* <BreadCrumb breacrumb={breadCrumb} /> */}
                 <ForgotPassword />
             </div>
-            <FooterDefault />
+            {/* <FooterDefault /> */}
         </div>
     );
 };
