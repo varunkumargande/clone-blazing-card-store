@@ -98,7 +98,6 @@ function CenterDiv({
           </button>
         </div>
       </div>
-
       <div className="streaming-base">
         <StreamingBase />
 
@@ -179,7 +178,6 @@ function CenterDiv({
                     <div align="center">
                       <div class="nav-bar" />
                     </div>
-
                     <div>
                       <Row>
                         <Col span={10}>
@@ -190,8 +188,6 @@ function CenterDiv({
                         </Col>
                       </Row>
                     </div>
-
-
                     <div>
                       <Row>
                         <Col span={12} align="left">
@@ -201,7 +197,6 @@ function CenterDiv({
                             </>
                           ) : (
                             <>
-
                             </>
                           )}
                         </Col>

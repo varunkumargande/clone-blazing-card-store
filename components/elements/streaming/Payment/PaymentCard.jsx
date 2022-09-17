@@ -128,9 +128,7 @@ function PaymentCard(props) {
                                     <select
                                         className="form-control stream_payment_card_select"
                                         onChange={handleSelectCardDetail}
-                                        defaultValue={
-                                            1
-                                        }>
+                                        defaultValue={1}>
                                         <option>Select An Existing Card</option>
                                         {cardList.map((item, index) => {
                                             return (
