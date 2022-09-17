@@ -1,7 +1,7 @@
 import APIServices from '../../services'
 import { modalSuccess, modalWarning } from "../intercept";
 
-async function buyProduct(paymentData, shipData) {
+async function buyProduct(paymentData, shipData, productDetail) {
     const userData = JSON.parse(sessionStorage.getItem("spurtUser"))
     const jsonData = {
         "shippingLastName": "",
@@ -19,18 +19,18 @@ async function buyProduct(paymentData, shipData) {
         "shippingCountryId": shipData.country,
         "productDetails": [
             {
-                "productId": 541,
-                "quantity": 1,
-                "price": 25200,
-                "basePrice": 25200,
-                "model": "AMBITION Professional Black Drum Kit - 9 Pcs",
-                "name": "AMBITION Professional Black Drum Kit - 9 Pcs()",
+                "productId": productDetail.product_id,
+                "quantity": productDetail.quantity,
+                "price": productDetail.price,
+                "basePrice": productDetail.price,
+                "model": productDetail.name,
+                "name": productDetail.name,
                 "productVarientOptionId": "",
                 "taxType": null,
                 "taxValue": null,
                 "varientName": "",
-                "skuName": "AWE00UI6",
-                "vendorId": 0
+                "skuName": productDetail.sku,
+                "vendorId": productDetail.stream_product_id
             },
         ],
         "paymentMethod": 6,

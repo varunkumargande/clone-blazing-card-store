@@ -8,6 +8,7 @@ import { buyProduct } from "../../../api/stream/buyProductApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept";
 
 function CenterDiv({
+  productDetail,
   isPayment,
   openPayment,
   open,
@@ -24,10 +25,11 @@ function CenterDiv({
   const [paymentData, setPaymentData] = React.useState(null);
   const [shipData, setShipData] = React.useState(null);
 
-
   const handleMuteButton = () => {
     console.log("here");
   };
+
+  console.log(productDetail)
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -42,13 +44,9 @@ function CenterDiv({
     setShippmentFormOpen(true);
   };
 
-  // const handleMuteButton = () => {
-  //     console.log("here");
-  // }
-
   const handleSubmitBuyProduct = () => {
     if (paymentData != null && shipData != null) {
-      buyProduct(paymentData, shipData)
+      buyProduct(paymentData, shipData, productDetail)
     } else {
       setOpen(true);
       modalWarning("error", "Please select your card detail and shippment address")
