@@ -21,7 +21,7 @@ function PaymentCard(props) {
     }, [])
 
     const getCardList = () => {
-        // getStreamingCardDetail(setCardList)
+        getStreamingCardDetail(setCardList)
     }
 
     const handleSelectCardDetail = (e) => {
@@ -31,7 +31,7 @@ function PaymentCard(props) {
     }
 
     const handleSubmitCard = () => {
-        console.log(cardDetail)
+        props.setPayment(cardDetail)
     }
 
     const handleOpenNewCard = () => {
@@ -128,9 +128,7 @@ function PaymentCard(props) {
                                     <select
                                         className="form-control stream_payment_card_select"
                                         onChange={handleSelectCardDetail}
-                                        defaultValue={
-                                            1
-                                        }>
+                                        defaultValue={1}>
                                         <option>Select An Existing Card</option>
                                         {cardList.map((item, index) => {
                                             return (
@@ -159,7 +157,7 @@ function PaymentCard(props) {
                                             </select>
                                         </div>
                                         <div className='col-4' align="left">
-                                            <button className='payment_submit'>Submit</button>
+                                            <button className='payment_submit' onClick={handleSubmitCard}>Submit</button>
                                         </div>
                                     </>
                                 ) : (
