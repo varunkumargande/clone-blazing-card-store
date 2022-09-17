@@ -1,5 +1,5 @@
 import APIServices from '../../services'
-import { modalSuccess, modalWarning } from "../../../../api/intercept";
+// import { modalSuccess, modalWarning } from "../../../../api/intercept";
 
 async function addCardDetail(setOpen, data) {
     let expDate = ""
@@ -7,7 +7,7 @@ async function addCardDetail(setOpen, data) {
     let month = data.expiary.split("-")[1]
     expDate = month + "/" + year
 
-    const data = JSON.stringify({
+    const jsondata = JSON.stringify({
         "cardNumber": data.cardNumber,
         "expireDate": expDate,
         "cvc": data.cvc,
@@ -15,12 +15,12 @@ async function addCardDetail(setOpen, data) {
         "name": JSON.parse(sessionStorage.getItem("spurtUser")).firstName,
         "emailId": JSON.parse(sessionStorage.getItem("spurtUser")).email
     })
-    const result = await APIServices.create('customer-card-details/addCard', data)
+    const result = await APIServices.create('customer-card-details/addCard', jsondata)
     if (result.status == 200) {
-        modalSuccess('success', result.data.message)
+        // modalSuccess('success', result.data.message)
         setOpen(false)
     } else {
-        modalWarning('error', result.data.message)
+        // modalWarning('error', result.data.message)
     }
 }
 

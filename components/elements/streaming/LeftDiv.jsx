@@ -5,7 +5,7 @@ import { getProducts, getCardDetails, getAddress, buyProduct } from "../../../ap
 import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails, openPayment }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -281,6 +281,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
   return (
     <div className="streaming-div-left">
       <h1>STREAM NAME</h1>
+      <button onClick={() => openPayment(true)}> Buy </button>
       <div className="stream-nav">{getToggles()}</div>
 
       <div className="product-quick-search">
