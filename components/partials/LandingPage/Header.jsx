@@ -48,7 +48,7 @@ export default function Header(){
                             </span>
                         </label> */}
                         
-                        <Link href="/"><a className="border-btn flex flex-center justify-center become">Become a Seller</a></Link>
+                        <Link href="/account/login"><a className="border-btn flex flex-center justify-center become">Become a Seller</a></Link>
                         <button className="message flex flex-center justify-center"><IconMessage /></button>
                         <button className="Notification flex flex-center justify-center"><IconNotification /></button>
                         <button className="profile">
