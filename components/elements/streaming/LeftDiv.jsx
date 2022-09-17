@@ -4,8 +4,9 @@ import axios from "axios";
 import { getProducts, getCardDetails, getAddress, buyProduct } from "../../../api/stream/streams_api";
 import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
+import { useRouter } from "next/router";
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamingDetails }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails, openPayment, productDetail, streamingDetails }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -34,14 +35,18 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
   const [token, setToken] = useState("");
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
 
+  const router = useRouter();
+  const streamUuid = router.query["uuid"];
+
   const POST_ORDER = "";
 
   // using selector to get userId from redux
   const dispatch = useDispatch()
   dispatch(loginSuccess(user?.id));
   let user_id = useSelector((s) => s.auth.userId);
+  console.log(`User ID is ${user_id}`);
 
-  
+
   // Handle Tabs Change Functionality
   const toggleTab = (index) => {
     setToggleState(index);
@@ -56,19 +61,19 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
       switch (toggleState) {
         case TOGGLE_STATES.AUCTION:
           url =
-            "stream/streamProductList?streamuuid=cdcdb4f2-6474-44a3-b217-980b60a27b61&sellType=auction";
+            `stream/streamProductList?streamuuid=${streamUuid}&sellType=auction`;
           break;
         case TOGGLE_STATES.BUYNOW:
           url =
-            "stream/streamProductList?streamuuid=cdcdb4f2-6474-44a3-b217-980b60a27b61&sellType=buy_now";
+            `stream/streamProductList?streamuuid=${streamUuid}&sellType=buy_now`;
           break;
         case TOGGLE_STATES.GIVEAWAY:
-            url =
-            "stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=auction";
+          url =
+            `stream/streamProductList?streamuuid=${streamUuid}&sellType=auction`;
           break;
         case TOGGLE_STATES.SOLD:
-            url =
-            "stream/streamProductList?streamuuid=563c7ecb-176a-4258-b0d4-119b8b804d60&sellType=auction";
+          url =
+            `stream/streamSoldProductList?streamuuid=${streamUuid}`;
           break;
       }
       const data = await getProducts(url);
@@ -199,10 +204,10 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
 
 
   // Handle Buy_now Item
-    const handleClick = async (product) => {
+  const handleClick = async (product) => {
     fetchCardDetails();
     fetchAddress();
-    };
+  };
 
   // First fetching auction and buynow product details
   useEffect(() => {
@@ -222,12 +227,12 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
 
 
   // If user successfully added payment info and shipping info then will close the pop-up and move towards payment
-    useEffect(() => {
-      if (addPayInfo && addShippInfo) {
-        setOpen(false);
-        alert("Moving towards payment");
-      }
-    }, [addPayInfo, addShippInfo]);
+  useEffect(() => {
+    if (addPayInfo && addShippInfo) {
+      setOpen(false);
+      alert("Moving towards payment");
+    }
+  }, [addPayInfo, addShippInfo]);
 
   const getToggles = () => {
     return TOGGLES.map((element) => {
@@ -235,22 +240,22 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
         <>
           <h5>
             {/* <Link href="streaming/#"> */}
-              <span key={`tabs-${element}`}
-                className={
-                  toggleState ===
+            <span key={`tabs-${element}`}
+              className={
+                toggleState ===
                   TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
-                    ? "tabs active-tabs"
-                    : "tabs"
-                }
-                onClick={() =>
-                  toggleTab(
-                    TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
-                  )
-                }
-              >
-                {" "}
-                {element}
-              </span>
+                  ? "tabs active-tabs"
+                  : "tabs"
+              }
+              onClick={() =>
+                toggleTab(
+                  TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
+                )
+              }
+            >
+              {" "}
+              {element}
+            </span>
             {/* </Link> */}
           </h5>
         </>
@@ -258,14 +263,20 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
     });
   };
 
+  const handleBuyNow =(product)=>{
+    productDetail(product)
+    openPayment(true)
+  }
+
   const getProductList = () => {
     return productListing?.map((product) => {
       return (
         <>
           <div key={product?.productId}>
-            <p>
-              {product?.productId}-{product?.name}-{product?.quantity}
-            </p>
+            <li>
+              {product?.name}
+              {toggleState == "buynow" ? <span><button onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></>}
+            </li>
             <hr />
           </div>
         </>
@@ -277,6 +288,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
   return (
     <div className="streaming-div-left">
       <h1>{streamingDetails?.title}</h1>
+      <button onClick={() => openPayment(true)}> Buy </button>
       <div className="stream-nav">{getToggles()}</div>
 
       <div className="product-quick-search">
@@ -288,12 +300,12 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
       </div>
       <div className="product-list content-tabs">
         <div className={toggleState ? "content  active-content" : "content"}>
-            {isLoading ? <p>Loading products...</p> : <></>}
-            {isLoading === false && productListing?.length === 0 ? (
-              <p>0 products</p>
-            ) : (
-              getProductList()
-            )}
+          {isLoading ? <p>Loading products...</p> : <></>}
+          {isLoading === false && productListing?.length === 0 ? (
+            <p>0 products</p>
+          ) : (
+            getProductList()
+          )}
         </div>
       </div>
     </div>

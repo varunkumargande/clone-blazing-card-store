@@ -5,53 +5,43 @@ import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { streamData } from "../../../store/stream/action";
-import StreamingElement from "./StreamingElement";
 
-
-function Index() {
-  const [open, setOpen] = useState(false);
-  const [addShippInfo, setAddShippInfo] = useState(false);
-  const [addPayInfo, setAddPayInfo] = useState(false);
-  const [customerId, setCustomerId] = useState("");
-  const router = useRouter();
-  const uuid = router.query["uuid"];
-  const dispatch = useDispatch();
+function Index(){
+    const [open, setOpen] = useState(false);
+    const [addShippInfo, setAddShippInfo] = useState(false);
+    const [addPayInfo, setAddPayInfo] = useState(false);
+    const [customerId, setCustomerId] = useState("");
+    const [selectedStream, setSelectedStream] = useState()
+    const router = useRouter();
+    const uuid = router.query["uuid"];
+    const [openPayment, setOpenPayment] = useState(false);
+    const [productDetail, setProductDetail] = useState([]);
+    const dispatch = useDispatch();
   const streamingDetails = useSelector((state) => {
     return state?.stream?.streamData
   });
-
+  
   useEffect(() => {
     dispatch(streamData(uuid));
   }, []);
 
+    console.log(productDetail)
 
-  return (
-    <>
-      {streamingDetails?.uuid ? (
+    return(
         <>
-          <div className="wrapper">
-            <LeftDiv
-              open={open}
-              setOpen={setOpen}
-              addShippInfo={addShippInfo}
-              addPayInfo={addPayInfo}
-              setCustomerId={setCustomerId}
-              streamingDetails={streamingDetails}
-            />
-            <CenterDiv
-              open={open}
-              setOpen={setOpen}
-              setAddShippInfo={setAddShippInfo}
-              setAddPayInfo={setAddPayInfo}
-              customerId={customerId}
-              streamingDetails={streamingDetails}
-            />
+        { streamingDetails?.uuid ? <>
+            <div className='wrapper'>
+            <LeftDiv open={open} productDetail={setProductDetail} openPayment = {setOpenPayment} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamDetails={selectedStream}/>
+            <CenterDiv open={open} productDetail={productDetail} isPayment={openPayment} openPayment = {setOpenPayment} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId} streamDetails={selectedStream}/>
             <RightDiv streamingDetails={streamingDetails} />
-          </div>
+        </div>
+            </>  : null
+
+        }
         </>
-      ) : null}
-    </>
-  );
+        
+    )
+
 }
 
 export default Index;

@@ -20,8 +20,8 @@ function RightDiv({streamDetails}) {
   useEffect(() => {
     if (!options) {
       setoptions({
-        appID: "cb08a368d17648e9ab2886e3d1100a5e",
-        //appID: "b87550aad4dc4aadb5219b7487c973fd",
+        // appID: "cb08a368d17648e9ab2886e3d1100a5e",
+        appID: "b87550aad4dc4aadb5219b7487c973fd",
         channel: streamDetails?.vendorDetails?.message_channel ?? "POKEMON",
         audience: userDetails?.lastName ? userDetails?.lastName : "guest" + Math.floor(Math.random()*20),
       });
@@ -104,9 +104,9 @@ function RightDiv({streamDetails}) {
           value={inputValue}
           onChange={(e) => inputChange(e)}
         />
-        {/* <Button onClick={() => sendAndUpdateMessage(null)} type="primary">
+        <Button onClick={() => sendAndUpdateMessage(null)} type="primary">
           Submit
-        </Button> */}
+        </Button>
       </div>
     </div>
   );
