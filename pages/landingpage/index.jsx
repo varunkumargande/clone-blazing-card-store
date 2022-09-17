@@ -10,6 +10,7 @@ import Footer from "../../components/partials/LandingPage/Footer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { categoryApi } from "../../api/category/category";
+import Electronic from "../../components/partials/LandingPage/Electronic";
 
 
 export default function landingpage(){
@@ -17,9 +18,9 @@ export default function landingpage(){
     let resizeWindow = () => {
       setWindowWidth(window.innerWidth);
     };
-    const categories = useSelector((state)=>console.log(state))
+    const categories = useSelector((state)=>state?.category?.categories)
     const dispatch = useDispatch();
-
+    console.log("landing page", categories)
     useEffect(() => {
       resizeWindow();
       window.addEventListener("resize", resizeWindow);
@@ -30,6 +31,14 @@ export default function landingpage(){
       console.log(categories,"landingpage")
       categoryApi(dispatch);
     },[])
+
+    // const getCatStream=()=>{
+    //   return categories?.map((cat)=>{
+    //     return <div className="card-wrapper">
+    //     <LiveShow name={cat?.name} catId={cat?.categoryId}/>
+    // </div>
+    //   })
+    // }
     return(
         <div className="home-container">
             {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
@@ -37,9 +46,10 @@ export default function landingpage(){
             <div className="card-wrapper">
                 <LiveShow />
                 <ScheduledShow />
-                <Pokeman />
+                <Electronic />
                 <Jewellery />
             </div>
+            {/* {getCatStream()} */}
             <Footer />
         </div>
     );
