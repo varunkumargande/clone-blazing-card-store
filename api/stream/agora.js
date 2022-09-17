@@ -2,7 +2,7 @@ import Axios from "axios";
 import { modalSuccess } from "../intercept";
 import { apiUrl } from "../url";
 
-async function getToken(url) {
+async function agoraGettToken(url) {
 
   const http = Axios.create({
     baseURL: apiUrl,
@@ -20,4 +20,4 @@ async function getToken(url) {
 
 }
 
-export { getToken };
+export { agoraGettToken };

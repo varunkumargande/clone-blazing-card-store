@@ -1,127 +1,91 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../../../api/stream/agora";
+import { agoraGettToken } from "../../../api/stream/agora";
 import AgoraRTC from "agora-rtc-sdk-ng";
 
-const StreamingElement = () => {
-  const dispatch = useDispatch();
-  const streamingDetails = useSelector((state) => state?.stream?.streamData);
-  const [volumeLevel, setVolumeLevel] = useState(100);
-  const [mute, setMute] = useState(false);
-  const [rtc, setRtc] = useState({});
+const StreamingElement = ({ volume, isMute }) => {
+  const options = useSelector((state) => state?.stream?.streamPageData.option);
+  const [volumeLevel, setVolumeLevel] = useState(volume);
+  const rtc = useRef({});
   const [remoteUser, setRemoteUser] = useState(null);
-  const [userType, setuserType] = useState("");
-  const TYPES = {
-    host: "host",
-    audience: "audience",
-  };
-
-  console.log(streamingDetails, "streamingDetails");
-  const options = {
-    appID: "b87550aad4dc4aadb5219b7487c973fd",
-    channel: "PIKACHU",
-    host: String(Math.floor(Math.random() * 232)),
-    audience: String(Math.floor(Math.random() * 232)),
-  };
 
   useEffect(() => {
-    const volumeLevel = mute ? 0 : 100;
+    console.log(
+      rtc,
+      "1st rtc client ==============================================",
+      remoteUser
+    );
+    const volumeLevel = !!isMute ? 0 : 100;
     setVolumeLevel(Number(volumeLevel));
-    if (rtc.localAudioTrack) {
-      rtc?.localAudioTrack?.setVolume(volumeLevel);
-    }
-    if (remoteUser) {
+    if (!!remoteUser?.audioTrack) {
       remoteUser?.audioTrack?.setVolume(volumeLevel);
     }
-  }, [mute]);
+  }, [isMute]);
 
   useEffect(() => {
-    if (!Object.keys(rtc)) {
-      initiateRTCObject();
+    rtc.current.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
+    joinChannelAsAudience();
+    return async () => {
+      await client.leave();
     }
-    if (Object.keys(rtc)) {
-      rtc.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
-      joinChannelAsAudience();
-      console.log('rtc useEffect');
-    }
-  }, [rtc]);
+  }, []);
 
-  const handleMuteButton = () => {
-    setMute(!mute);
-  };
 
-  const initiateRTCObject = () => {
-    setRtc({
-      client: null,
-      localAudioTrack: null,
-      localVideoTrack: null,
-      joined: false,
-      published: false,
-      localStream: null,
-      remoteStream: [],
-      params: {},
+  const joinChannelAsAudience = async () => {
+
+    rtc.current.client.setClientRole(options.userType);
+
+    const token = await getRtcToken(options.audienceId, options.userType, 'uid')
+
+    await rtc.current.client.join(options.appId, options.streamChannel, token, options.audienceId);
+
+    rtc.current.client.on("user-published", async (user, mediaType) => {
+      // Subscribe to a remote user.
+      await rtc.current.client.subscribe(user, mediaType);
+      setRemoteUser(user)
+      // If the subscribed track is video.
+      if (mediaType === "video") {
+        // Get `RemoteVideoTrack` in the `user` object.
+        const remoteVideoTrack = user.videoTrack;
+        remoteVideoTrack.play('local_stream');
+      }
+
+      // If the subscribed track is audio.
+      if (mediaType === "audio") {
+        // Get `RemoteAudioTrack` in the `user` object.
+        const remoteAudioTrack = user.audioTrack;
+        // Play the audio track. No need to pass any DOM element.
+        remoteAudioTrack.play();
+      }
+      // setuserType(TYPES.audience);
+
+    });
+
+    rtc.current.client.on("user-unpublished", user => {
+      // Get the dynamically created DIV container.
+      const remotePlayerContainer = document.getElementById('local_stream');
+      // Destroy the container.
+      remotePlayerContainer = "";
     });
   };
 
-  const joinChannelAsAudience = async () => {
-    if (options.appID) {
-      rtc.client.setClientRole(TYPES.audience);
-      const token = await getRtcToken(options.audience, TYPES.audience, "uid");
-      await rtc?.client?.join(
-        options.appID,
-        options.channel,
-        token,
-        options.audience
-      );
-      rtc?.client?.on("user-published", async (user, mediaType) => {
-        await rtc?.client?.subscribe(user, mediaType);
-        setRemoteUser(user);
-        if (mediaType === "video") {
-          const remoteVideoTrack = user.videoTrack;
-          remoteVideoTrack?.play("local_stream");
-        }
-        if (mediaType === "audio") {
-          const remoteAudioTrack = user.audioTrack;
-          user?.audioTrack?.setVolume(volumeLevel);
-          remoteAudioTrack?.play();
-        }
-        setuserType(TYPES.audience);
-      });
-
-      rtc.client.on("user-unpublished", (user) => {
-        const remotePlayerContainer = document.getElementById("local_stream");
-        remotePlayerContainer = "";
-      });
-    }
-  };
-
   const getRtcToken = async (uid, role, tokenType) => {
-    const url = `/stream/getStreamToken?token=RTC&channel=${options.channel}&role=${role}&tokentype=${tokenType}&uid=${uid}`;
-    console.log(url);
-    const response = await getToken(url);
+    const url = `/stream/getStreamToken?token=RTC&channel=${options.streamChannel}&role=${role}&tokentype=${tokenType}&uid=${uid}`;
+    const response = await agoraGettToken(url);
+    console.log(response, "token response.");
     return response.rtcToken;
   };
 
-  const changeVolume = ({ value }) => {
-    if (value == "" || value == undefined) return;
-    if (rtc.localAudioTrack) {
-      rtc.localAudioTrack.setVolume(volumeLevel);
-    }
-    if (remoteUser) {
-      remoteUser.audioTrack.setVolume(volumeLevel);
-    }
-    setVolumeLevel(Number(value));
-  };
   return (
     <>
-      <div>
-        <p>Hi hello Streaming</p>
+      {" "}
+      {remoteUser ? (
         <div
           id="local_stream"
           className="local_stream"
           style={{ width: "510px", height: "600px" }}
         ></div>
-      </div>
+      ) : null}
     </>
   );
 };

@@ -5,7 +5,7 @@ import { getProducts, getCardDetails, getAddress, buyProduct } from "../../../ap
 import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamingDetails }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -40,11 +40,9 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
   const dispatch = useDispatch()
   dispatch(loginSuccess(user?.id));
   let user_id = useSelector((s) => s.auth.userId);
-  console.log( `User ID is ${user_id}`);
 
   
   // Handle Tabs Change Functionality
-  console.log("===========================On load state", toggleState);
   const toggleTab = (index) => {
     setToggleState(index);
   };
@@ -74,7 +72,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
           break;
       }
       const data = await getProducts(url);
-      console.log(data);
       setProductListing(data);
       setIsLoading(false);
     } catch (error) {
@@ -121,16 +118,16 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
     try {
       const data = await getAddress(userId);
       setAddressData(data);
-      // console.log(data);
+
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.header);
-        // setIsLoading(false);
+
       } else {
         console.log(`Error: ${error.message}`);
-        // setIsLoading(false)
+
       }
     }
   };
@@ -209,7 +206,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
 
   // First fetching auction and buynow product details
   useEffect(() => {
-    console.log('running')
     fetchProducts();
     // postOrderDetails();
   }, [toggleState]);
@@ -280,7 +276,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId }) {
 
   return (
     <div className="streaming-div-left">
-      <h1>STREAM NAME</h1>
+      <h1>{streamingDetails?.title}</h1>
       <div className="stream-nav">{getToggles()}</div>
 
       <div className="product-quick-search">
