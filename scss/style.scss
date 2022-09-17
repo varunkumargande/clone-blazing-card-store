@@ -203,7 +203,6 @@ input[type=number] {
   height: 200px;
   
   display:block;
-   vertical-align:middle; 
    text-align:center;
 
    img {
@@ -617,29 +616,9 @@ input[type=number] {
 
   }
 
-  .split-custom {
   
-  }
   
-  /* Control the left side */
-  .left-custom-divider {
-    // left: 0;
-    // background-color: #111;
-    // width: 50%;
-    // float: left;
-    // border: solid;
-
-  }
   
-  /* Control the right side */
-  .right-custom-divider {
-    // right: 0;
-    // float: left;
-    // width: 50%;
-    // border: solid;
-
-    // background-color: red;   
-  }
 
   .card-custom-content{
     
@@ -1606,3 +1585,5 @@ align-items: left;
 @import './newthemes/categories';
 @import './newthemes/card';
 @import './newthemes/footer';
+@import './newthemes/streaming';
+@import './newthemes/modal';

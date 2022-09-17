@@ -1,10 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import IconBack from "../../Icons/IconBack";
 import IconEye from "../../Icons/IconEye";
 import IconLike from "../../Icons/IconLike"
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { streamDetailApi } from "../../../api/stream/streamDetail";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";

@@ -87,7 +87,7 @@
                     list-style: none;
                     padding: 14px 0;
                     cursor: pointer;
-                    border-bottom: 1px solid $border-color;
+                    border-bottom: 1px solid $border2-color;
                     position: relative;
                     &:after{
                         content: "";
@@ -229,7 +229,6 @@
     header{
         background: $white-color;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02);
-        margin-bottom: 32px;
         .ml24{
             margin-left: 12px;
         }

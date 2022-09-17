@@ -35,7 +35,7 @@
             list-style: none;
             padding: 10px 0;
             cursor: pointer;
-            border-bottom: 1px solid $border-color;
+            border-bottom: 1px solid $border2-color;
             &.active{
                 color:$blue-color;
             }
@@ -52,7 +52,7 @@
             content: "";
             width: 1px;
             height: 22px;
-            background-color: $border-color;
+            background-color: $border2-color;
             position: absolute;
             top:50%;
             right: 0;
