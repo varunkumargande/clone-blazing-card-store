@@ -31,14 +31,6 @@ function ShippmentCard(props) {
     const [addressDetail, setAddressDetail] = React.useState(null)
     const [countryData, setCountryData] = React.useState([])
 
-    const validateShippmentForm = () => {
-
-    }
-
-    const submitShippment = () => {
-        console.log(body)
-    }
-
     useEffect(() => {
         countryListApi(setCountryData);
         getStreamingShippmentDetail(setAddressList)
@@ -54,7 +46,10 @@ function ShippmentCard(props) {
         name: Yup.string()
             .min(2, 'Too Short!')
             .required('Required'),
-        address: Yup.string()
+        address1: Yup.string()
+            .min(2, 'Too Short!')
+            .required('Required'),
+        address2: Yup.string()
             .min(2, 'Too Short!')
             .required('Required'),
         country: Yup.string()
@@ -113,10 +108,10 @@ function ShippmentCard(props) {
                     {addressDetail != null ? (
                         <>
                             <Formik
-                                initialValues={{ name: addressDetail.company, address: addressDetail.address1, country: addressDetail.country, postcode: addressDetail.postcode, city: addressDetail.city, state: addressDetail.state }}
+                                initialValues={{ name: addressDetail.company, address1: addressDetail.address1, address2: addressDetail.address2, country: addressDetail.country, postcode: addressDetail.postcode, city: addressDetail.city, state: addressDetail.state }}
                                 validationSchema={shipSchema}
                                 onSubmit={(values) => {
-                                    console.log(values)
+                                    props.setShip(values)
                                 }}
                             >
                                 {({
@@ -137,8 +132,12 @@ function ShippmentCard(props) {
                                                     <p className='field-error'>{errors.name}</p>
                                                 </div>
                                                 <div className='col-12' align="left">
-                                                    <input type="text" value={values.address} onChange={handleChange} name="address" placeholder='Address' className="form-control shippment_address" />
-                                                    <p className='field-error'>{errors.address}</p>
+                                                    <input type="text" value={values.address1} onChange={handleChange} name="address1" placeholder='Address 1' className="form-control shippment_address" />
+                                                    <p className='field-error'>{errors.address1}</p>
+                                                </div>
+                                                <div className='col-12' align="left">
+                                                    <input type="text" value={values.address2} onChange={handleChange} name="address2" placeholder='Address 2' className="form-control shippment_address" />
+                                                    <p className='field-error'>{errors.address2}</p>
                                                 </div>
                                                 <div className="row">
                                                     <div className='col-6' align="left">
@@ -158,7 +157,7 @@ function ShippmentCard(props) {
                                                                             </>
                                                                         ) : (
                                                                             <>
-                                                                                <option value="">Country</option>
+                                                                                <option value={item.countryId}>{item.name}</option>
                                                                             </>
                                                                         )}
 

@@ -47,7 +47,7 @@ export default function LiveShow({name,catId}){
                     <div className="flex flex-center">
                         <h3 className="title">Live</h3>
                     </div>
-                    <div className="seeAll"><Link href="/"><a className="flex flex-center">See All</a></Link></div>
+                    <div className="seeAll"><Link href="/categoryStream?catname=live"><a className="flex flex-center">See All</a></Link></div>
                 </div>
                 <div className="overflow-wrap">
                     <div className="card-wrap flex inner-container">

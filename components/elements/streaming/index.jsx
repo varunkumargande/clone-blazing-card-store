@@ -13,6 +13,8 @@ function Index(){
     const [selectedStream, setSelectedStream] = useState()
     const router = useRouter();
     const uuid = router.query["uuid"];
+    const [openPayment, setOpenPayment] = useState(false);
+    const [productDetail, setProductDetail] = useState([]);
 
     useEffect(() => {
         if(uuid) {
@@ -23,13 +25,16 @@ function Index(){
         }
     }, [])
 
+    console.log(productDetail)
+
     return(
         <div className='wrapper'>
-            <LeftDiv open={open} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamDetails={selectedStream}/>
-            <CenterDiv open={open} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId} streamDetails={selectedStream}/>
+            <LeftDiv open={open} productDetail={setProductDetail} openPayment = {setOpenPayment} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamDetails={selectedStream}/>
+            <CenterDiv open={open} productDetail={productDetail} isPayment={openPayment} openPayment = {setOpenPayment} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId} streamDetails={selectedStream}/>
             <RightDiv/>
         </div>
     )
+
 }
 
 export default Index;

@@ -9,9 +9,9 @@ export default function Jewellery(){
             <div className="inner-container">
                 <div className="title-wrap flex space-between flex-center">
                     <div className="flex flex-center">
-                        <h3 className="title">Jewellery</h3>
+                        <h3 className="title"> BABY & KIDS</h3>
                     </div>
-                    <div className="seeAll"><Link href="/"><a className="flex flex-center">See All</a></Link></div>
+                    <div className="seeAll"><Link href="/categoryStream?catname=Baby"><a className="flex flex-center">See All</a></Link></div>
                 </div>
                 <div className="overflow-wrap">
                     <div className="card-wrap flex inner-container">
@@ -24,7 +24,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
@@ -36,7 +36,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>                    
                         <div className="card-list flex flex-center">
@@ -48,7 +48,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
@@ -60,7 +60,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>                    
                         <div className="card-list flex flex-center">
@@ -72,7 +72,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
@@ -84,7 +84,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>                    
                         <div className="card-list flex flex-center">
@@ -96,7 +96,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
@@ -108,7 +108,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>                    
                         <div className="card-list flex flex-center">
@@ -120,7 +120,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
@@ -132,7 +132,7 @@ export default function Jewellery(){
                             <div className="text">
                                 <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> Marie Woodey</h3>
                                 <div className="disc">$15 Pokemon Mystry Bags w/MIKE</div>
-                                <button className="cate-btn">Pokemon</button>
+                                <button className="cate-btn"> BABY & KIDS</button>
                             </div>
                         </div>  
                     </div>                  

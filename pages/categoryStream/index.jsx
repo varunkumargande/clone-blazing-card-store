@@ -58,7 +58,7 @@ export default function categoryStream(){
             <div className="inner-container">
                 <div className="title-wrap flex space-between flex-center">
                     <div className="flex flex-center">
-                        <h3 className="title">Live</h3>
+                        <h3 className="title"></h3>
                     </div>
                     <div className="seeAll"></div>
                 </div>
