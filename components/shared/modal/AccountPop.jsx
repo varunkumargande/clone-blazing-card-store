@@ -57,7 +57,6 @@ function AccountPopUp({showPop,setShowPop}) {
     }
 
     const handleLogout = e => {
-      
         e.preventDefault();
         sessionStorage.clear()
         dispatch(logOut());
@@ -68,11 +67,7 @@ function AccountPopUp({showPop,setShowPop}) {
 
     useEffect(()=>{
         let a =  JSON.parse(sessionStorage.getItem("spurtUser"))
-            if(a !=null){
-
-           
-            
-            
+            if(a !=null){            
             setFname(JSON.parse(sessionStorage.getItem("spurtUser")).firstName)
             setEmail(JSON.parse(sessionStorage.getItem("spurtUser")).email)
             JSON.parse(sessionStorage.getItem("spurtUser")).avatar ? setAimg(imageUrl+"?path="+JSON.parse(sessionStorage.getItem("spurtUser")).avatarPath+"&name="+JSON.parse(sessionStorage.getItem("spurtUser")).avatar+"&width=500&height=500") : setAimg("/static/img/no-image.png")
@@ -89,7 +84,6 @@ return (
   >
       <div className="ap-header">
           <img src={aimg}/>
-         
           <p>{fname} <br></br> <small>{email} </small></p>
       </div>
       <div className="ap-divider"></div>

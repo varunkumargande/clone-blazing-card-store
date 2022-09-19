@@ -5,9 +5,9 @@ import FooterDefault from '../../components/shared/footers/FooterDefault';
 import HeaderDefault from '../../components/shared/headers/HeaderDefault';
 import BreadCrumb from '../../components/elements/BreadCrumb';
 import AddAddress from '../../components/partials/account/AddAddress';
-import HeaderMobile from '../../components/shared/headers/HeaderMobile';
-import NavigationList from '../../components/shared/navigation/NavigationList';
-
+import MobileHeader from '../../components/shared/headers/MobileHeader';
+import Header from '../../components/shared/headers/modules/Header';
+import Category from '../../components/partials/LandingPage/Category';
 
 const MyAccountPage = () => {
     const breadCrumb = [
@@ -21,9 +21,8 @@ const MyAccountPage = () => {
     ];
     return (
         <div className="site-content">
-            <HeaderDefault />
-            <HeaderMobile />
-            <NavigationList />
+           {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
+            <Category />
             <div className="ps-page--my-account">
                 <BreadCrumb breacrumb={breadCrumb} />
                 <AddAddress/>
