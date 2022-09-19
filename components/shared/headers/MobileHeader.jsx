@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Logo from "../../Icons/Logo";
 import IconSearch from "../../Icons/IconSearch";
@@ -10,13 +10,33 @@ import IconInstagram from '../../Icons/IconInstagram';
 import IconLinkedin from '../../Icons/IconLinkedin';
 import IconYoutube from '../../Icons/IconYoutube';
 import IconTwiiter from '../../Icons/IconTwiiter';
+import { useTranslation } from "../../../i18n";
+import { categoryListApi } from "../../../api";
+import { useRouter } from "next/router";
+import { login } from '../../../store/auth/action';
+import { connect } from 'react-redux';
+import Router from 'next/router';
+import { modalSuccess } from "../../../api/intercept";
+import { logOut } from '../../../store/auth/action';
+import { useSelector, useDispatch } from "react-redux";
 
-export default function MobileHeader(){
+function MobileHeader({ auth }) {
     const [active, setActive] = useState(false);
-
     const [mobActive, mobSetActive] = useState(false);
-
     const wrapperRef = useRef(null);
+    const dispatch = useDispatch();
+    const { t } = useTranslation("common");
+    const authFunc = () => {
+        if (sessionStorage.getItem("spurtToken") !== null) {
+            dispatch(login())
+        }
+    }
+
+    useEffect(() => {
+        categoryListApi(dispatch);
+        authFunc()
+        // getServiceApi(dispatch);
+    }, []);
 
     const handleOnClick = () => {
         setActive(!active);
@@ -25,17 +45,28 @@ export default function MobileHeader(){
         mobSetActive(!mobActive);
     };
     const handleClickOutside = (event) => {
-		if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-			setActive(false)
-		}
-	}
+        if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+            setActive(false)
+        }
+    }
     useEffect(() => {
-		document.addEventListener('click', handleClickOutside, false)
-		return () => {
-			document.removeEventListener('click', handleClickOutside, false)
-		}
-	}, [])
-    return(
+        document.addEventListener('click', handleClickOutside, false)
+        return () => {
+            document.removeEventListener('click', handleClickOutside, false)
+        }
+    }, [])
+
+
+    const handleLogout = e => {
+        e.preventDefault();
+        sessionStorage.clear()
+        dispatch(logOut());
+        Router.push("/")
+        modalSuccess('success', "successfully logged out")
+    };
+
+
+    return (
         <div className="mobile-header">
             <div className="mobile-inner flex flex-wrap flex-center space-between">
                 <div className="left flex flex-wrap flex-center">
@@ -45,7 +76,12 @@ export default function MobileHeader(){
                     </div>
                 </div>
                 <div className="right flex flex-wrap flex-center">
-                    <Link href="/account/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
+                    {auth.isLoggedIn ? "" : (
+                        <>
+                            <Link href="/account/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
+                        </>
+                    )}
+
                 </div>
             </div>
             <div className="search-wrap flex space-between flex-top">
@@ -55,7 +91,7 @@ export default function MobileHeader(){
                 </div>
                 <div className="category-btn-wrap">
                     <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
-                    <div className= {active ? "dropDown active" : "dropDown"}>
+                    <div className={active ? "dropDown active" : "dropDown"}>
                         <h4>Sort By</h4>
                         <ul>
                             <li className="active">Creator</li>
@@ -67,7 +103,7 @@ export default function MobileHeader(){
             </div>
 
             {/* Menu open html */}
-            <div className= {mobActive ? "menu-open active" : "menu-open"}>
+            <div className={mobActive ? "menu-open active" : "menu-open"}>
                 <div className="mobile-inner flex flex-wrap flex-center space-between">
                     <div className="left flex flex-wrap flex-center">
                         <div className="logo">
@@ -87,28 +123,32 @@ export default function MobileHeader(){
                         <div className="category-btn-wrap">
                             <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
                         </div>
-                    </div>  
+                    </div>
                     <div className="flex flex-wrap btn-wrapper column">
-
-
-                        <Link href="/account/login"><a className="primary-btn flex flex-center justify-center">Sign In</a></Link>
-                        <Link href="/account/register"><a className="border-btn flex flex-center justify-center">Sign up</a></Link>  
-
-                        <Link href="/account/login"><a className="primary-btn flex flex-center justify-center"></a></Link>
-                        <Link href="/account/register"><a className="border-btn flex flex-center justify-center">Sign up</a></Link>                        
-                    
-                    </div>        
+                        {auth.isLoggedIn ? (
+                            <>
+                                <Link href="/account/myorders"><a className="border-btn flex flex-center justify-center"><span>{t('OrderHistory')}</span></a></Link>
+                                <Link href="/account/dashboard"><a className="border-btn flex flex-center justify-center"><span>{t('AccountSettings')}</span></a></Link>
+                                <Link href="#"><a className="border-btn flex flex-center justify-center active" onClick={e => handleLogout(e)}>Logout</a></Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/account/login"><a className="primary-btn flex flex-center justify-center">Sign In</a></Link>
+                                <Link href="/account/register"><a className="border-btn flex flex-center justify-center">Sign up</a></Link>
+                            </>
+                        )}
+                    </div>
                     <div className="or flex flex-center justify-center"><span>Or</span></div>
                     <div className="text-center become-seller">
-                        Want to sell? <Link href="/seller"><a>Become a Seller</a></Link>
-                    </div>    
+                        Want to sell? <Link href=""><a>Become a Seller</a></Link>
+                    </div>
                     <div className="mob-navigation">
                         <ul>
                             <li><Link href="/about-us"><a>About Us</a></Link></li>
                             <li><Link href="/faqs"><a>FAQ's</a></Link></li>
                             <li><Link href="/contact-us"><a>Contact Us</a></Link></li>
                         </ul>
-                    </div>  
+                    </div>
                     <div className="social-icon-wrap">
                         <h3 className="follow mb20">Follow Us</h3>
                         <div className="social flex flex-center space-between">
@@ -125,3 +165,9 @@ export default function MobileHeader(){
         </div>
     );
 }
+
+const mapStateToProps = state => {
+    return state;
+};
+
+export default connect(mapStateToProps)(MobileHeader);

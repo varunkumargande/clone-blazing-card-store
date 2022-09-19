@@ -22,9 +22,14 @@ function CenterDiv({
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
-
   const [paymentData, setPaymentData] = React.useState(null);
+  
+  const [shipIndex, setShipIndex] = React.useState(null);
   const [shipData, setShipData] = React.useState(null);
+  
+  const [cardIndex, setCardIndex] = useState(null)
+  const [cardDetail, setCardDetail] = useState(null)
+
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -48,11 +53,6 @@ function CenterDiv({
     }
   }
 
-  const submitCardDetail = (data) => {
-    setPaymentData(data)
-    modalSuccess("success", "Card Detail added")
-  }
-
   const submitShipDetail = (data) => {
     setShipData(data)
     modalSuccess("success", "Shippment Detail added")
@@ -60,9 +60,9 @@ function CenterDiv({
 
   return (
 
-      <div className="streaming-div-center">
+    <div className="streaming-div-center">
       <div className="seller-info">
-        <div id="seller-name">{ streamingDetails?.vendorDetails ? streamingDetails?.vendorDetails?.username : 'Seller'}</div>
+        <div id="seller-name">{streamingDetails?.vendorDetails ? streamingDetails?.vendorDetails?.username : 'Seller'}</div>
         <div id="seller-rating">
           <span>4.96 169 Ratings</span>
         </div>
@@ -178,7 +178,7 @@ function CenterDiv({
                     <div>
                       <Row>
                         <Col span={12} align="left">
-                          {paymentData != null && shipData != null ? (
+                          {cardDetail != null && shipData != null ? (
                             <>
                               <button type="submit" onClick={handleSubmitBuyProduct} className='payment_submit'>Pay</button>
                             </>
@@ -203,7 +203,7 @@ function CenterDiv({
         )}
         {paymentForm == true ? (
           <>
-            <PaymentCard close={setPaymentFormOpen} setPayment={submitCardDetail} shipData={shipData} payData={paymentData} />
+            <PaymentCard cardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} payData={paymentData} />
           </>
         ) : (
           <>
@@ -211,7 +211,7 @@ function CenterDiv({
         )}
         {shippmentForm ? (
           <>
-            <ShippmentCard close={setShippmentFormOpen} setShip={submitShipDetail} data={shipData} />
+            <ShippmentCard setShipIndex={setShipIndex} shipIndex={shipIndex} setShipData={setShipData} shipData={shipData}  close={setShippmentFormOpen} setShip={submitShipDetail} />
           </>
         ) : (
           <>
