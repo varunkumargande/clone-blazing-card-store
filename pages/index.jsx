@@ -4,7 +4,6 @@ import MobileHeader from "../components/partials/LandingPage/MobileHeader";
 import Category from "../components/partials/LandingPage/Category";
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
-import Jewellery from "../components/partials/LandingPage/Jewellery";
 import Footer from "../components/partials/LandingPage/Footer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -31,13 +30,6 @@ export default function landingpage() {
     categoryApi(dispatch);
   }, []);
 
-  // const getCatStream=()=>{
-  //   return categories?.map((cat)=>{
-  //     return <div className="card-wrapper">
-  //     <LiveShow name={cat?.name} catId={cat?.categoryId}/>
-  // </div>
-  //   })
-  // }
   if (categories) {
     console.log("landing page categories", categories);
   }
@@ -59,10 +51,7 @@ export default function landingpage() {
         <LiveShow />
         <ScheduledShow />
         {getAllCategoriesCard()}
-        {/* <Electronic /> */}
-        {/* <Jewellery /> */}
       </div>
-      {/* {getCatStream()} */}
       <Footer />
     </div>
   );

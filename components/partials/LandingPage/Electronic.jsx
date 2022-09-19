@@ -6,7 +6,6 @@ import IconLike from "../../Icons/IconLike";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { streamDetailApi } from "../../../api/stream/streamDetail";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";
 import { stringFormatter } from "../../../utilities/utils";
 
@@ -15,15 +14,9 @@ export default function Electronic({categoryData}) {
   useEffect(() => {
     subcatstreamDetailApi(dispatch);
   }, []);
-//   const categories = useSelector(
-//     (state) => state?.stream?.streamdetails?.category
-//   );
-
-
-
   const getStreamCards = () => {
     if (categoryData) {
-    console.log(stringFormatter('HELLO'))
+    
       return categoryData[1]?.map((detail) => {
         return (
           <div className="card-list flex flex-center">
@@ -61,7 +54,7 @@ export default function Electronic({categoryData}) {
             <h3 className="title">{stringFormatter(categoryData[0])}</h3>
           </div>
           <div className="seeAll">
-            <Link href="/categoryStream?catname=Electronics">
+            <Link href={`/categoryStream?catname=${categoryData[0]}`}>
               <a className="flex flex-center">See All</a>
             </Link>
           </div>
