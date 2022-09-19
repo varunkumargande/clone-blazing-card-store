@@ -32,24 +32,24 @@ export default function landingpage(){
       categoryApi(dispatch);
     },[])
 
-    // const getCatStream=()=>{
-    //   return categories?.map((cat)=>{
-    //     return <div className="card-wrapper">
-    //     <LiveShow name={cat?.name} catId={cat?.categoryId}/>
-    // </div>
-    //   })
-    // }
+    const getCatStream=()=>{
+      return categories?.map((cat)=>{
+        return <div className="card-wrapper">
+        <LiveShow name={cat?.name} catId={cat?.categoryId}/>
+    </div>
+      })
+    }
     return(
         <div className="home-container">
             {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
             <Category />
             <div className="card-wrapper">
-                <LiveShow />
+                {/* <LiveShow />
                 <ScheduledShow />
                 <Electronic />
-                <Jewellery />
+                <Jewellery /> */}
             </div>
-            {/* {getCatStream()} */}
+            {getCatStream()}
             <Footer />
         </div>
     );
