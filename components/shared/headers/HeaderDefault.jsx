@@ -1,67 +1,135 @@
-import React from "react";
-//import {ConnectPlugin} from '../../connectPlugins';
-import NavigationDefault from "../navigation/NavigationDefault";
-import HeaderActions from "./modules/HeaderActions";
-
-import SearchHeader from "./modules/SearchHeader";
+import React, { useState } from "react";
+import Link from "next/link";
+import Logo from "../../Icons/Logo";
+import IconMessage from "../../Icons/IconMessage";
+import IconNotification from "../../Icons/IconNotification";
+import IconDropdown from "../../Icons/IconDropdown";
+import IconSearch from "../../Icons/IconSearch";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "../../../i18n";
 import { categoryListApi } from "../../../api";
-import { getServiceApi } from "../../../api";
-import LanguageSwicher from "./modules/LanguageSwicher";
 import { useRouter } from "next/router";
-import Logo from "./modules/Logo";
+import { login } from '../../../store/auth/action';
+import { connect } from 'react-redux';
+import Router from 'next/router';
+import { modalSuccess } from "../../../api/intercept";
+import { logOut } from '../../../store/auth/action';
 
-function HeaderDefault() {
+function HeaderDefault({ auth }) {
   const router = useRouter();
-
+  const [active, setActive] = useState(false);
   let category = useSelector((s) => s.product);
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   let currentColor = useSelector((s) => s.palette.currentColor);
+  const [fname, setFname] = useState("")
+  const [aimg, setAimg] = useState("")
+  const [email, setEmail] = useState("")
+
+  const authFunc = () => {
+    if (sessionStorage.getItem("spurtToken") !== null) {
+      dispatch(login())
+    }
+  }
+
+  const handleOnClick = () => {
+    setActive(!active);
+  };
 
   useEffect(() => {
     categoryListApi(dispatch);
+    authFunc()
     // getServiceApi(dispatch);
   }, []);
 
+
+  useEffect(() => {
+    let userData = JSON.parse(sessionStorage.getItem("spurtUser"))
+    if (userData != null) {
+      setFname(JSON.parse(sessionStorage.getItem("spurtUser")).firstName)
+      setEmail(JSON.parse(sessionStorage.getItem("spurtUser")).email)
+      JSON.parse(sessionStorage.getItem("spurtUser")).avatar ? setAimg(imageUrl + "?path=" + JSON.parse(sessionStorage.getItem("spurtUser")).avatarPath + "&name=" + JSON.parse(sessionStorage.getItem("spurtUser")).avatar + "&width=500&height=500") : setAimg("/static/img/no-image.png")
+    }
+  }, [])
+
+  const handleLogout = e => {
+    e.preventDefault();
+    sessionStorage.clear()
+    dispatch(logOut());
+    Router.push("/")
+    modalSuccess('success', "successfully logged out")
+  };
+
+  console.log(aimg)
+
   return (
-    <header className="header header--1" data-sticky="true" id="headerSticky">
-      <div className={`header__top ${currentColor}`}>
-        <div className="ps-container">
-          <div className="header__left">
-            <Logo />
-            <div className="menu--product-categories">
-              <div className="menu__toggle">
-                <i className="icon-menu"></i>
-                <span> {t("soc")}</span>
-              </div>
-            </div>
+    <header>
+      <div className="inner-container flex flex-wrap flex-center space-between">
+        <div className="left flex flex-wrap flex-center">
+          <div className="logo">
+            <Link href="/"><a><Logo /></a></Link>
           </div>
-          <div className="header-menu-main ">
-            <div className="header__center">
-              <SearchHeader />
-              <div
-                className="header__newtheme_language"
-                style={{
-                  paddingLeft: "0px",
-                  height: "30px",
-                  padding: "0px 0px",
-                  marginLeft: "21px",
-                }}
-              >
-                <LanguageSwicher />
-              </div>
-            </div>
-            <HeaderActions />
+          <div className="Search">
+            <input type="search" id="search" name="search" />
+            <button className="search-btn"><IconSearch /></button>
+          </div>
+        </div>
+        <div className="right flex flex-wrap flex-center">
+          <div className="logedIn flex flex-center justify-right">
+            {/* <label className="switch toggle-switch darkBlue">
+                    <input type="checkbox" id="togBtn" />
+                    <span className="toogle-slide round">
+                        <span className="on">
+                            Store
+                        </span>
+                        <span className="off">
+                            Seller
+                        </span>
+                    </span>
+                </label> */}
+            <Link href=""><a className="border-btn flex flex-center justify-center become">Become a Seller</a></Link>
+
+            {auth.isLoggedIn ? (
+              <>
+                <button className="message flex flex-center justify-center"><IconMessage /></button>
+                <button className="Notification flex flex-center justify-center"><IconNotification /></button>
+                <button className="profile">
+                  <span onClick={handleOnClick}><img src={aimg} alt="Profile" /><IconDropdown /></span>
+                  <ul className={active ? "dropDown active" : "dropDown"} >
+                    <li>
+                      <Link href="/account/myorders"><a className="active">
+                        <span>{t('OrderHistory')}</span></a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/account/dashboard"><a className="active">
+                        <span>{t('AccountSettings')}</span></a>
+                      </Link>
+                    </li>
+
+                    <li className="active" onClick={e => handleLogout(e)}>Logout</li>
+                  </ul>
+                </button>
+              </>
+            ) : (
+              <>
+                {/* <div className="withotLogedIn flex flex-center justify-right"> */}
+                <Link href="account/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
+                <Link href="account/register"><a className="border-btn flex flex-center justify-center ml24">Sign up</a></Link>
+                {/* </div> */}
+              </>
+            )}
           </div>
         </div>
       </div>
-      <NavigationDefault />
     </header>
   );
-  // }
 }
 
-export default HeaderDefault;
+
+const mapStateToProps = state => {
+  return state;
+};
+
+export default connect(mapStateToProps)(HeaderDefault);

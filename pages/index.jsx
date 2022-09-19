@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
-import Header from "../components/partials/LandingPage/Header";
-import MobileHeader from "../components/partials/LandingPage/MobileHeader";
+import Header from "../components/shared/headers/modules/Header";
+import MobileHeader from "../components/shared/headers/MobileHeader";
 import Category from "../components/partials/LandingPage/Category";
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
@@ -10,16 +10,18 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { categoryApi } from "../api/category/category";
 import Electronic from "../components/partials/LandingPage/Electronic";
+import { connect } from 'react-redux';
+import HeaderDefault from '../components/shared/headers/HeaderDefault';
 
+function landingpage(props){
 
-export default function landingpage(){
     const [windowWidth, setWindowWidth] = useState(0);
     let resizeWindow = () => {
       setWindowWidth(window.innerWidth);
     };
     const categories = useSelector((state)=>state?.category?.categories)
     const dispatch = useDispatch();
-    console.log("landing page", categories)
+    console.log("landing page", dispatch)
     useEffect(() => {
       resizeWindow();
       window.addEventListener("resize", resizeWindow);
@@ -38,9 +40,10 @@ export default function landingpage(){
     // </div>
     //   })
     // }
+
     return(
         <div className="home-container">
-            {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
+            {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
             <Category />
             <div className="card-wrapper">
                 <LiveShow />
@@ -53,3 +56,9 @@ export default function landingpage(){
         </div>
     );
 }
+
+const mapStateToProps = state => {
+  return state;
+};
+
+export default connect(mapStateToProps)(landingpage);

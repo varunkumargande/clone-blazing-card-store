@@ -57,13 +57,11 @@ function ShippmentCard(props) {
         postcode: Yup.string()
             .min(4, 'Invalide PinCode')
             .required('Required'),
-
         city: Yup.string()
             .required('Required'),
         state: Yup.string()
             .required('Required'),
     });
-
 
 
     return (
@@ -189,11 +187,6 @@ function ShippmentCard(props) {
                                                     <div className='col-6' align="left" >
                                                         <input type="text" value={values.state} onChange={handleChange} name="state" className="form-control shippment_state" placeholder='State' />
                                                         <p className='field-error-row'>{errors.state}</p>
-                                                    </div>
-                                                </div>
-                                                <div className='row'>
-                                                    <div className='col-6'>
-                                                        <button className='payment_submit' type="submit">Submit</button>
                                                     </div>
                                                 </div>
                                             </div>

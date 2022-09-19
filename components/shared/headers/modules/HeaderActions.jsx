@@ -13,8 +13,6 @@ import AuthSignIN from './AuthSignIN';
 import getProfileInfoApi from '../../../../api/home/getInfo';
 
 
-
-
 function HeaderActions({ auth, compare }) {
 
     const { t } = useTranslation('common');
@@ -33,7 +31,6 @@ function HeaderActions({ auth, compare }) {
     const authFunc = () => {
         if (TokenAuth !== null) {
             dispatch(login())
-
         }
     }
 
