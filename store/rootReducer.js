@@ -23,6 +23,4 @@ export default combineReducers({
     palette,
     category,
     stream
-    
- 
 });

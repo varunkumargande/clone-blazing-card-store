@@ -24,7 +24,7 @@ export default function LiveShow({name,catId}){
         return streamDetail?.scheduled?.map((detail) => {
           return (
             <div className="card-list flex flex-center">
-            <a href={`/streaming/?stream=${detail.id}&uuid=${detail.uuid}`}><div className="image">
+            <a href={`/streaming?stream=${detail.id}&uuid=${detail.uuid}`}><div className="image">
                 <img src="/static/images/card.png" alt="Card" />
 
                 <button className="like flex flex-center justify-center"><IconLike /></button>
