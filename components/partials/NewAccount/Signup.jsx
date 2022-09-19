@@ -58,15 +58,19 @@ function Signup(auth) {
             setPolicyCheck(false)
         } else {
             setPolicyCheck(true)
-        }
+        } 
     }
 
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
     const registerSchema = Yup.object().shape({
-        firstname: Yup.string().required('Required'),
-        lastname: Yup.string().required('Required'),
-        email: Yup.string().required('Required'),
-        number: Yup.string().required('Required'),
-        password: Yup.string().required('Required'),
+        firstname: Yup.string().matches(/^[A-Za-z ]*$/, 'Please enter valid name').max(40).required('Required'),
+        lastname: Yup.string().matches(/^[A-Za-z ]*$/, 'Please enter valid name').max(40).required('Required'),
+        email: Yup.string().email('Invalid email format').required('Required'),
+        number: Yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Required'),
+        password: Yup.string().matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+          ).required('Required'),
         cpass: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match')
     });
 
