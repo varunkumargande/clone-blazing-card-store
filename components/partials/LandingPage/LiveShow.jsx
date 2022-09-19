@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import IconBack from "../../Icons/IconBack";
 import IconEye from "../../Icons/IconEye";
@@ -27,7 +26,7 @@ export default function LiveShow({name,catId}){
             <div className="card-list flex flex-center">
             <a href={`/streaming/?stream=${detail.id}&uuid=${detail.uuid}`}><div className="image">
                 <img src="/static/images/card.png" alt="Card" />
-                <div className="tme-wrap flex flex-center justify-center"><IconEye /><span>1.2K</span> <button className="live">live</button></div>
+
                 <button className="like flex flex-center justify-center"><IconLike /></button>
             </div></a>
             <div className="text">
