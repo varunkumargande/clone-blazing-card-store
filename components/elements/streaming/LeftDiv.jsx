@@ -39,6 +39,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
   const streamUuid = router.query["uuid"];
 
   const POST_ORDER = "";
+  
 
   // using selector to get userId from redux
   const dispatch = useDispatch()
@@ -275,7 +276,11 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
           <div key={product?.productId}>
             <li>
               {product?.name}
-              {toggleState == "buynow" ? <span><button onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></>}
+              {user_id ? 
+              toggleState == "buynow" ? <span><button className="btn btn-primary" onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></> :
+              toggleState == "buynow" ? <span><button className="btn btn-secondary" disabled >Buy now</button></span> : <></>
+              }
+              
             </li>
             <hr />
           </div>
