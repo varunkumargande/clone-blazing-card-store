@@ -57,7 +57,6 @@ function AccountPopUp({showPop,setShowPop}) {
     }
 
     const handleLogout = e => {
-      
         e.preventDefault();
         sessionStorage.clear()
         dispatch(logOut());
