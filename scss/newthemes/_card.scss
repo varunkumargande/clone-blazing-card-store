@@ -44,9 +44,13 @@
     background-color: $white-color;
     border-radius: 16px;
     overflow: hidden;
+    align-content: flex-start;
+    a{
+        width: 100%;
+    }
     .image{
         position: relative;
-        img{
+        > img{
             width: 100%;
         }
         .tme-wrap{
@@ -101,9 +105,9 @@
             font-size: 14px;
             color:$green-color;
             background-color: rgba($green-color,.08);
-            width: 90px;
             height: 29px;
             border-radius: 15px;
+            padding: 0 10px;
         }
     }
 }
@@ -157,10 +161,87 @@
 }
 .category-btn-wrap{
     position: relative;
-    
 }
 .category-list{
     flex-wrap: nowrap;
+}
+.card-wrapper{
+    .title-wrap {
+        .title{
+            span{
+                font-weight: 500;
+                color:#5C646C;
+            }
+        }
+    }
+}
+.overflow-none{
+    .card-wrap {
+        padding: 0;
+        flex-wrap: wrap;
+    }
+}
+.dropdownlist{
+    @include pos(re);
+    .dropDownBtn{
+        width: 164px;
+        background-color: $white-color;
+        height: 42px;
+        border-radius: 8px;
+        color:$primary-color;
+        padding: 0 10px;
+    }
+    .jwelleryList{
+        @include pos(ab,100%,0,null,null);
+        padding: 0;
+        position: absolute;
+        top: calc(100% + 12px);
+        background-color: $white-color;
+        width:164px;
+        border-radius: 12px;
+        box-shadow: 0px 8px 24px $search-bg;
+        padding: 0 10px;
+        z-index: 2;
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        transition: all .25s;
+        &.active{
+            height: auto;
+            visibility: visible;
+            opacity: 1;
+        }
+        li{
+            font-size: 14px;
+            line-height: 21px;
+            color:$primary-color;
+            list-style: none;
+            padding: 10px 0;
+            cursor: pointer;
+            text-align: left;
+            border-bottom: 1px solid $border-color;
+            &.active{
+                color:$blue-color;
+            }
+            &:last-child{
+                border-bottom: none;
+            }
+        }
+
+    }
+}
+@media all and (min-width:320px) and (max-width:1024px){
+    .overflow-none{
+        .card-wrap {
+            .card-list{ 
+                flex:0 0 calc(50% - 8px);
+                margin:0 16px 16px 0;
+                &:nth-child(2n){
+                    margin-right: 0;
+                }
+            }
+        }
+    }
 }
 @media all and (min-width:1025px){
     .category-wrapper{
@@ -231,6 +312,19 @@
                 top:11px;
                 width: 4px;
                 height: 4px;
+            }
+        }
+    }
+    .overflow-none{
+        .card-wrap {
+            padding: 0;
+            flex-wrap: wrap;
+            .card-list{ 
+                flex:0 0 calc(25% - 22.5px);
+                margin:0 30px 30px 0;
+                &:nth-child(4n + 4){
+                    margin-right: 0;
+                }
             }
         }
     }
