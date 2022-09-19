@@ -192,16 +192,12 @@
         padding: 0 10px;
     }
     .jwelleryList{
-        @include pos(ab,100%,0,null,null);
-        padding: 0;
-        position: absolute;
-        top: calc(100% + 12px);
+        @include pos(ab,calc(100% - 8px),0,null,null,2);
+        padding: 8px 0 0;
         background-color: $white-color;
         width:164px;
-        border-radius: 12px;
-        box-shadow: 0px 8px 24px $search-bg;
-        padding: 0 10px;
-        z-index: 2;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0px 8px 10px $search-bg;
         visibility: hidden;
         opacity: 0;
         height: 0;
@@ -216,10 +212,10 @@
             line-height: 21px;
             color:$primary-color;
             list-style: none;
-            padding: 10px 0;
+            padding: 10px 15px;
             cursor: pointer;
             text-align: left;
-            border-bottom: 1px solid $border-color;
+            border-bottom: 1px solid rgba($border-color,.2);
             &.active{
                 color:$blue-color;
             }
