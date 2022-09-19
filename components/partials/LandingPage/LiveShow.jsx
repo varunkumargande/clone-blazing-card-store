@@ -25,7 +25,7 @@ export default function LiveShow({name,catId}){
             <div className="card-list flex flex-center">
             <a href={`/streaming?stream=${detail.id}&uuid=${detail.uuid}`}><div className="image">
                 <img src="/static/images/card.png" alt="Card" />
-                <div className="tme-wrap flex flex-center justify-center"><IconEye /><span>1.2K</span> <button className="live"></button></div>
+                <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
                 <button className="like flex flex-center justify-center"><IconLike /></button>
             </div></a>
             <div className="text">

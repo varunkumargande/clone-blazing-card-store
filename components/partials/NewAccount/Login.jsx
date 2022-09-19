@@ -48,8 +48,11 @@ function Login(props) {
     }
 
     const loginSchema = Yup.object().shape({
-        email: Yup.string().required('Required'),
-        password: Yup.string().required('Required'),
+        email: Yup.string().email('Invalid email format').required('Required'),
+        password: Yup.string().matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+          ).required('Required'),
     });
 
     return (
