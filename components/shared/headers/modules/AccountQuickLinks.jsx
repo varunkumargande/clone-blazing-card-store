@@ -12,8 +12,6 @@ function AccountQuickLinks(props) {
     const [showPop, setShowPop] = useState(false)
     const { t } = useTranslation('common');
 
-
-
     useEffect(() => {
         if (showPop) {
             document.body.classList.add("scroll-block-home")
@@ -21,7 +19,6 @@ function AccountQuickLinks(props) {
             document.body.classList.remove("scroll-block-home")
         }
     }, [showPop])
-
 
     const eventToVendorAdminPanel = async () => {
         let id = JSON.parse(sessionStorage.getItem("spurtUser")).id
@@ -47,22 +44,20 @@ function AccountQuickLinks(props) {
                 <AccountPopUp showPop={showPop} setShowPop={setShowPop} />
                 <div className="account-looginin-view">
                     <i className="icon-user" style={{ color: "white" }}></i>
+                    
                     <a onClick={e => setShowPop(!showPop)}>Account</a>
+
                     <i class="fa fa-angle-down" aria-hidden="true"></i>
                     {/* <span><CaretDownOutlined style={{color:"white",textAlign:"center",fontSize:"10px"}} /></span> */}
-
                     <div onClick={eventToVendorAdminPanel}>
                         <a style={{ padding: "0 4px", color: "#fff" }}><h5> {t('Vendor')}</h5></a>
                     </div>
-
                 </div>
-
             </div>
         );
     } else {
         return (
             <div className="ps-block--user-header">
-
                 <div className="ps-block__left">
                     <i className="icon-user"></i>
                 </div>

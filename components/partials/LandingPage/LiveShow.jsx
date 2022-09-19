@@ -1,8 +1,14 @@
-import React from "react";
 import Link from "next/link";
+import IconBack from "../../Icons/IconBack";
 import IconEye from "../../Icons/IconEye";
+<<<<<<< HEAD
 import IconLike from "../../Icons/IconLike";
 import { useSelector, useDispatch } from "react-redux";
+=======
+import IconLike from "../../Icons/IconLike"
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+>>>>>>> pre-dev
 import { useEffect } from "react";
 import { streamDetailApi } from "../../../api/stream/streamDetail";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";
@@ -16,6 +22,7 @@ export default function LiveShow({ name, catId }) {
   );
   console.log("stream detail", streamDetail);
 
+<<<<<<< HEAD
   const getStreamCards = () => {
     return streamDetail?.scheduled?.map((detail) => {
       return (
@@ -30,6 +37,32 @@ export default function LiveShow({ name, catId }) {
               <button className="like flex flex-center justify-center">
                 <IconLike />
               </button>
+=======
+    
+   
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        subcatstreamDetailApi(dispatch,catId)
+    },[])
+    const streamDetail= useSelector((state)=>state?.stream?.streamdetails?.stream)
+    console.log("stream detail",streamDetail)
+//    if(!!streamDetail?.category)console.log(Object.keys( streamDetail?.category))
+
+    const getStreamCards = () => {
+       
+        return streamDetail?.scheduled?.map((detail) => {
+          return (
+            <div className="card-list flex flex-center">
+            <a href={`/streaming?stream=${detail.id}&uuid=${detail.uuid}`}><div className="image">
+                <img src="/static/images/card.png" alt="Card" />
+
+                <button className="like flex flex-center justify-center"><IconLike /></button>
+            </div></a>
+            <div className="text">
+                <h3 className="title flex flex-center"><img src="/static/images/profile.png" alt="Card" /> {detail.title},{catId}</h3>
+                <div className="disc">{detail.description}</div>
+                <button className="cate-btn">{detail.category_name}</button>
+>>>>>>> pre-dev
             </div>
           </a>
           <div className="text">

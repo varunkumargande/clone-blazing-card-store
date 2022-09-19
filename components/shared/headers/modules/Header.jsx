@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Logo from "../../Icons/Logo";
-import IconMessage from "../../Icons/IconMessage";
-import IconNotification from "../../Icons/IconNotification";
-import IconDropdown from "../../Icons/IconDropdown";
-import IconSearch from "../../Icons/IconSearch";
+import Logo from "../../../Icons/Logo";
+import IconMessage from "../../../Icons/IconMessage";
+import IconNotification from "../../../Icons/IconNotification";
+import IconDropdown from "../../../Icons/IconDropdown";
+import IconSearch from "../../../Icons/IconSearch";
 import { connect, useSelector, useDispatch } from 'react-redux';
 
-function Header(props) {
+function Header({ auth }) {
     const [active, setActive] = useState(false);
-
-    const dispatch = useDispatch();
-
     const wrapperRef = useRef(null);
     const handleOnClick = () => {
         setActive(!active);
@@ -28,6 +25,8 @@ function Header(props) {
             document.removeEventListener('click', handleClickOutside, false)
         }
     }, [])
+
+    console.log(auth)
 
     return (
         <header>
@@ -74,21 +73,15 @@ function Header(props) {
                             </>
                         ) : (
                             <>
-                                <Link href="/account/login" className={"login_btn"}>
-                                    <a className="border-btn flex flex-center justify-center">Login</a>
-                                </Link>
-                                <Link href="/account/register">
-                                    <a className="border-btn flex flex-center justify-center">Register</a>
-                                </Link>
+                                {/* <div className="withotLogedIn flex flex-center justify-right"> */}
+                                    <Link href="account//login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
+                                    <Link href="account/register"><a className="border-btn flex flex-center justify-center ml24">Sign up</a></Link>
+                                {/* </div> */}
                             </>
                         )}
 
                     </div>
-                    {/* <div className="withotLogedIn flex flex-center justify-right">
-                        <Link href="/"><a className="link">Become a Seller</a></Link>
-                        <Link href="/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
-                        <Link href="/signup"><a className="border-btn flex flex-center justify-center ml24">Sign up</a></Link>
-                    </div> */}
+
                 </div>
             </div>
         </header>
