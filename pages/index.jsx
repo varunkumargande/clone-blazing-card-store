@@ -19,7 +19,7 @@ export default function landingpage(){
     };
     const categories = useSelector((state)=>state?.category?.categories)
     const dispatch = useDispatch();
-    console.log("landing page", categories)
+  
     useEffect(() => {
       resizeWindow();
       window.addEventListener("resize", resizeWindow);
@@ -27,17 +27,18 @@ export default function landingpage(){
     }, []);
 
     useEffect(()=>{
-      console.log(categories,"landingpage")
+      
       categoryApi(dispatch);
     },[])
 
-    // const getCatStream=()=>{
-    //   return categories?.map((cat)=>{
-    //     return <div className="card-wrapper">
-    //     <LiveShow name={cat?.name} catId={cat?.categoryId}/>
-    // </div>
-    //   })
-    // }
+    const getCatStream=()=>{
+      return categories?.map((cat)=>{
+        return <div className="card-wrapper">
+        <Electronic name={cat?.name} catId={cat?.categoryId}/>
+    </div>
+      })
+    }
+
     return(
         <div className="home-container">
             {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
@@ -45,10 +46,11 @@ export default function landingpage(){
             <div className="card-wrapper">
                 <LiveShow />
                 <ScheduledShow />
-                <Electronic />
-                <Jewellery />
+                {/* <Electronic />
+                <Jewellery /> */}
+                 {getCatStream()}
             </div>
-            {/* {getCatStream()} */}
+           
             <Footer />
         </div>
     );

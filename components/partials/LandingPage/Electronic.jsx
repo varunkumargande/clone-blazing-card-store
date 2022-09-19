@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { streamDetailApi } from "../../../api/stream/streamDetail";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";
-export default function Electronic(){
+export default function Electronic({name}){
 
     
    
@@ -17,8 +17,8 @@ export default function Electronic(){
         subcatstreamDetailApi(dispatch)
     },[])
     const streamDetail= useSelector((state)=>state?.stream?.streamdetails?.category)
-    console.log("stream detail",streamDetail)
-//    if(!!streamDetail?.category)console.log(Object.keys( streamDetail?.category))
+    console.log(Object.entries(streamDetail))
+
 
     const getStreamCards = () => {
        
@@ -47,7 +47,7 @@ export default function Electronic(){
                     <div className="flex flex-center">
                         <h3 className="title">Electronics</h3>
                     </div>
-                    <div className="seeAll"><Link href="/categoryStream?catname=Electronics"><a className="flex flex-center">See All</a></Link></div>
+                    <div className="seeAll"><Link href={`/categoryStream?catname=${name}`}><a className="flex flex-center">See All</a></Link></div>
                 </div>
                 <div className="overflow-wrap">
                     <div className="card-wrap flex inner-container">
