@@ -89,6 +89,7 @@
                     cursor: pointer;
                     border-bottom: 1px solid $border2-color;
                     position: relative;
+                    text-align: left;
                     &:after{
                         content: "";
                         width: 21px;
@@ -309,6 +310,7 @@
                     list-style: none;
                     padding: 10px 0;
                     cursor: pointer;
+                    text-align: left;
                     border-bottom: 1px solid $border-color;
                     &.active{
                         color:$blue-color;
