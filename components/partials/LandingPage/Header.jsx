@@ -1,28 +1,35 @@
-import React,{useState,useEffect,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Logo from "../../Icons/Logo";
 import IconMessage from "../../Icons/IconMessage";
 import IconNotification from "../../Icons/IconNotification";
 import IconDropdown from "../../Icons/IconDropdown";
 import IconSearch from "../../Icons/IconSearch";
-export default function Header(){
+import { connect, useSelector, useDispatch } from 'react-redux';
+
+function Header(props) {
     const [active, setActive] = useState(false);
+
+    const dispatch = useDispatch();
+
     const wrapperRef = useRef(null);
     const handleOnClick = () => {
         setActive(!active);
     };
     const handleClickOutside = (event) => {
-		if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-			setActive(false)
-		}
-	}
+        if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+            setActive(false)
+        }
+    }
+
     useEffect(() => {
-		document.addEventListener('click', handleClickOutside, false)
-		return () => {
-			document.removeEventListener('click', handleClickOutside, false)
-		}
-	}, [])
-    return(
+        document.addEventListener('click', handleClickOutside, false)
+        return () => {
+            document.removeEventListener('click', handleClickOutside, false)
+        }
+    }, [])
+
+    return (
         <header>
             <div className="inner-container flex flex-wrap flex-center space-between">
                 <div className="left flex flex-wrap flex-center">
@@ -47,16 +54,35 @@ export default function Header(){
                                 </span>
                             </span>
                         </label> */}
-                        
+
+
+
                         <Link href="/account/login"><a className="border-btn flex flex-center justify-center become">Become a Seller</a></Link>
+
                         <button className="message flex flex-center justify-center"><IconMessage /></button>
                         <button className="Notification flex flex-center justify-center"><IconNotification /></button>
-                        <button className="profile">
-                            <span onClick={handleOnClick} ref={wrapperRef}><img src="/static/images/profile.png" alt="Profile" /><IconDropdown /></span>
-                            <ul  className= {active ? "dropDown active" : "dropDown"} >
-                                <li className="active">Logout</li>
-                            </ul>
-                        </button>
+
+
+                        {auth.isLoggedIn ? (
+                            <>
+                                <button className="profile">
+                                    <span onClick={handleOnClick} ref={wrapperRef}><img src="/static/images/profile.png" alt="Profile" /><IconDropdown /></span>
+                                    <ul className={active ? "dropDown active" : "dropDown"} >
+                                        <li className="active">Logout</li>
+                                    </ul>
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/account/login" className={"login_btn"}>
+                                    <a className="border-btn flex flex-center justify-center">Login</a>
+                                </Link>
+                                <Link href="/account/register">
+                                    <a className="border-btn flex flex-center justify-center">Register</a>
+                                </Link>
+                            </>
+                        )}
+
                     </div>
                     {/* <div className="withotLogedIn flex flex-center justify-right">
                         <Link href="/"><a className="link">Become a Seller</a></Link>
@@ -68,3 +94,9 @@ export default function Header(){
         </header>
     );
 }
+
+const mapStateToProps = state => {
+    return state;
+};
+
+export default connect(mapStateToProps)(Header);

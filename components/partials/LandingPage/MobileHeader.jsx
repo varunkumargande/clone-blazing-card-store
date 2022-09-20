@@ -45,7 +45,7 @@ export default function MobileHeader(){
                     </div>
                 </div>
                 <div className="right flex flex-wrap flex-center">
-                    <Link href="/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
+                    <Link href="/account/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
                 </div>
             </div>
             <div className="search-wrap flex space-between flex-top">
@@ -89,8 +89,14 @@ export default function MobileHeader(){
                         </div>
                     </div>  
                     <div className="flex flex-wrap btn-wrapper column">
-                        <Link href="/login"><a className="primary-btn flex flex-center justify-center">Sign In</a></Link>
-                        <Link href="/signup"><a className="border-btn flex flex-center justify-center">Sign up</a></Link>                        
+
+
+                        <Link href="/account/login"><a className="primary-btn flex flex-center justify-center">Sign In</a></Link>
+                        <Link href="/account/register"><a className="border-btn flex flex-center justify-center">Sign up</a></Link>  
+
+                        <Link href="/account/login"><a className="primary-btn flex flex-center justify-center"></a></Link>
+                        <Link href="/account/register"><a className="border-btn flex flex-center justify-center">Sign up</a></Link>                        
+                    
                     </div>        
                     <div className="or flex flex-center justify-center"><span>Or</span></div>
                     <div className="text-center become-seller">

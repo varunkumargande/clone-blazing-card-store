@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { categoryApi } from "../../api/category/category";
 import Electronic from "../../components/partials/LandingPage/Electronic";
-
+import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 
 export default function landingpage(){
     const [windowWidth, setWindowWidth] = useState(0);
@@ -32,24 +32,24 @@ export default function landingpage(){
       categoryApi(dispatch);
     },[])
 
-    // const getCatStream=()=>{
-    //   return categories?.map((cat)=>{
-    //     return <div className="card-wrapper">
-    //     <LiveShow name={cat?.name} catId={cat?.categoryId}/>
-    // </div>
-    //   })
-    // }
+    const getCatStream=()=>{
+      return categories?.map((cat)=>{
+        return <div className="card-wrapper">
+        <LiveShow name={cat?.name} catId={cat?.categoryId}/>
+    </div>
+      })
+    }
     return(
         <div className="home-container">
-            {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
+            {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
             <Category />
             <div className="card-wrapper">
-                <LiveShow />
+                {/* <LiveShow />
                 <ScheduledShow />
                 <Electronic />
-                <Jewellery />
+                <Jewellery /> */}
             </div>
-            {/* {getCatStream()} */}
+            {getCatStream()}
             <Footer />
         </div>
     );

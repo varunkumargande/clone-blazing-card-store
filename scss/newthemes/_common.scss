@@ -34,7 +34,7 @@ button,input{
 .justify-left{
   justify-content: flex-start;
 }
-.flex-top{
+.flex-top,.flex-start{
   align-items: flex-start;
 }
 .flex-center{
@@ -342,6 +342,26 @@ label{
 #container.visible{
   display: none;
 }
+// Breadcrumb css changes
+.breadcrumbs-wrapper{
+  margin-top: 30px;
+}
+.breadcrumbs{
+  color: $search-color;
+  padding: 0;
+  li{
+    list-style: none;
+    padding: 0 4px 0 4px;
+    cursor: pointer;
+    &:first-child{
+      padding-left: 0;
+    }
+    &.current{
+      color: $blue-color;
+      cursor: unset;
+    }
+  }
+}
 @media all and (min-width:768px){
   .wd50{
     width: calc(50% - 8px);
@@ -359,5 +379,14 @@ label{
 @media all and (min-width:1280px){
   .inner-container{
     max-width: calc(100% - 160px);
+    .inner-container{
+      padding: 0 24px;
+    }
+    .overflow-none{
+      .card-wrap {
+        max-width: 100%;
+      }
+    }
   }
+
 }

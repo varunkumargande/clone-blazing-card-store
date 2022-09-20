@@ -4,7 +4,7 @@ import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import StreamingLeft from "../../components/partials/streaming/StreamingLeft";
 import StreamingLive from "../../components/partials/streaming/StreamingLive";
 import StreamingRIght from "../../components/partials/streaming/StreamingRIght";
-
+import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 
 export default function LiveStreaming(){
     const [windowWidth, setWindowWidth] = useState(0);
@@ -20,7 +20,7 @@ export default function LiveStreaming(){
 
     return(
         <>
-            {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
+            {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
             <div className="streaming-page flex space-between">
                 <StreamingLeft />
                 <StreamingLive />

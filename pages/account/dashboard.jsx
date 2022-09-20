@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Newsletters from '../../components/partials/commons/Newletters';
 import FooterDefault from '../../components/shared/footers/FooterDefault';
@@ -12,14 +12,35 @@ import useNetwork from '../../components/reusable/NetworkCheck';
 import  Router  from 'next/router';
 import FooterFullwidth from '../../components/shared/footers/FooterFullwidth';
 
+import MobileHeader from '../../components/shared/headers/MobileHeader';
+import Category from '../../components/partials/LandingPage/Category';
+import { categoryApi } from "../../api/category/category";
+import { connect, useSelector, useDispatch } from 'react-redux';
+
 const UserInformationPage = () => {
     const network=useNetwork()
+
+    const [windowWidth, setWindowWidth] = useState(0);
+    let resizeWindow = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    const categories = useSelector((state)=>state?.category?.categories)
+    const dispatch = useDispatch();
+    console.log("landing page", dispatch)
+    useEffect(() => {
+      resizeWindow();
+      window.addEventListener("resize", resizeWindow);
+      return () => window.removeEventListener("resize", resizeWindow);
+    }, []);
+
+    useEffect(()=>{
+      console.log(categories,"landingpage")
+      categoryApi(dispatch);
+    },[])
 
     useEffect(()=>{
         if(network===false){ Router.push('/network-error')  }
     },[])
-
-    
 
     const breadCrumb = [
         {
@@ -33,9 +54,7 @@ const UserInformationPage = () => {
 
     return (
         <div className="site-content">
-            <HeaderDefault />
-            <HeaderMobile />
-            <NavigationList />
+           {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
             <ThemeChanger/>
             <div className="ps-page--my-account">
                 <div style={{backgroundColor:"#f1f1f1",padding:"16px"}}>

@@ -42,10 +42,10 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
   
 
   // using selector to get userId from redux
-  const dispatch = useDispatch()
-  dispatch(loginSuccess(user?.id));
-  let user_id = useSelector((s) => s.auth.userId);
-  console.log(`User ID is ${user_id}`);
+  // const dispatch = useDispatch()
+  // dispatch(loginSuccess(user?.id));
+  // let user_id = useSelector((s) => s.auth.userId);
+  // console.log(`User ID is ${user_id}`);
 
 
   // Handle Tabs Change Functionality
@@ -216,15 +216,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
     // postOrderDetails();
   }, [toggleState]);
 
-  useEffect(() => {
-    let userDetails = sessionStorage.getItem("spurtUser");
-    userDetails = JSON.parse(userDetails);
-    if (userDetails) {
-      setUser(userDetails);
-      setUserId(user?.id);
-      setIsLoggedIn(true);
-    }
-  }, []);
 
 
   // If user successfully added payment info and shipping info then will close the pop-up and move towards payment

@@ -39,31 +39,84 @@
     }
 }
 .card-list{
-    flex:0 0 253px;
-    margin-right: 16px;
+    flex:0 0 170px;
+    margin-right: 12px;
     background-color: $white-color;
-    border-radius: 16px;
+    border-radius: 8px;
     overflow: hidden;
+    align-content: flex-start;
+    padding: 4px;
+    a{
+        width: 100%;
+    }
+    .tme-wrap{
+        font-size: 12px;
+        line-height: 18px;
+        background: rgba($white-color, 0.4);
+        backdrop-filter: blur(8px);
+        border-radius: 18px;
+        color:$white-color;
+        width: 104px;
+        height: 28px;
+        &.live{
+            width: 60px;
+            height: 28px;
+            flex-direction: row-reverse;
+            font-size: 12px;
+            .live{
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background-color: transparent;
+                border:2px solid rgba($red-color,.3);
+                padding: 0;
+                margin-right: 2px;
+                &:before{
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background-color: $red-color;
+                    left: 2px;
+                    top:2px;
+                }
+            }
+        }
+        &.end{
+            width: auto;
+            padding: 0 8px;
+        }
+        svg{
+            max-width: 14px;
+            text-align: center;
+            .icon{
+                fill: $white-color;
+            }
+        }
+        span{
+            padding: 0 3px 0 2px;
+        }
+    }
     .image{
         position: relative;
-        img{
+        > img{
             width: 100%;
+            border-radius: 8px;
         }
         .tme-wrap{
             position: absolute;
-            top:8px;
-            left: 8px;
+            top:4px;
+            left: 4px;
         }
         .like{
             position: absolute;
-            top:8px;
-            right: 8px;
+            top:4px;
+            right: 4px;
             background-color: $white-color;
             border-radius: 50%;
-            width:24px;
-            height: 24px;
+            width:28px;
+            height: 28px;
             svg{
-                width:14px;
+                width:16px;
             }
             .icon{
                 transition: all .25s;
@@ -84,26 +137,24 @@
             font-weight: 500;
             margin-bottom: 5px;
             img{
-                width: 24px;
-                height: 24px;
+                width: 25px;
+                height: 25px;
                 border-radius: 50%;
                 margin-right: 5px;
                 object-fit: cover;
+                border:1px solid$white-color;
+                border-radius:50%;
             }
         }
         .disc{
-            font-size: 14px;
-            line-height: 21px;
+            font-size: 12px;
+            line-height: 18px;
             margin-bottom: 5px;
-            color:$disc-color;
         }
         .cate-btn{
             font-size: 14px;
-            color:$green-color;
-            background-color: rgba($green-color,.08);
-            width: 90px;
+            color:$blue-color;
             height: 29px;
-            border-radius: 15px;
         }
     }
 }
@@ -157,10 +208,108 @@
 }
 .category-btn-wrap{
     position: relative;
-    
 }
 .category-list{
     flex-wrap: nowrap;
+}
+.card-wrapper{
+    .title-wrap {
+        .title{
+            span{
+                font-weight: 500;
+                color:#5C646C;
+            }
+        }
+    }
+}
+.overflow-none{
+    .card-wrap {
+        padding: 0;
+        flex-wrap: wrap;
+    }
+}
+.dropdownlist{
+    @include pos(re);
+    .dropDownBtn{
+        width: 164px;
+        background-color: $white-color;
+        height: 42px;
+        border-radius: 8px;
+        color:$primary-color;
+        padding: 0 10px;
+        @include pos(re);
+        z-index: 2;
+    }
+    .jwelleryList{
+        @include pos(ab,calc(100% - 8px),0,null,null,1);
+        padding: 8px 0 0;
+        background-color: $white-color;
+        width:164px;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 8px 8px rgba($primary-color,.2);
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        transition: all .25s;
+        &.active{
+            height: auto;
+            visibility: visible;
+            opacity: 1;
+        }
+        li{
+            font-size: 14px;
+            line-height: 21px;
+            color:$primary-color;
+            list-style: none;
+            padding: 10px 10px;
+            cursor: pointer;
+            text-align: left;
+            border-bottom: 1px solid rgba($border-color,.2);
+            &.active{
+                color:$blue-color;
+            }
+            &:last-child{
+                border-bottom: none;
+            }
+        }
+
+    }
+}
+@media all and (min-width:320px) and (max-width:1024px){
+    .card-list{
+        @include pos(re);
+        .text{
+            @include pos(ab,null,null,4px,4px);
+            width:calc(100% - 8px);
+            border-radius: 0 0 8px 8px;
+            padding:25px 4px 0;
+            background:linear-gradient(180deg, rgba(#000,0) 0%, #000 100%);
+            .title{
+                flex-direction: column;
+                align-items: flex-start;
+                img{
+                    margin-bottom: 4px;
+                }
+            }
+            .title,.disc{
+                color:#fff;
+            }
+            .cate-btn{
+                padding: 0;
+            }
+        }
+    }
+    .overflow-none{
+        .card-wrap {
+            .card-list{ 
+                flex:0 0 calc(50% - 4px);
+                margin:0 8px 8px 0;
+                &:nth-child(2n){
+                    margin-right: 0;
+                }
+            }
+        }
+    }
 }
 @media all and (min-width:1025px){
     .category-wrapper{
@@ -186,32 +335,28 @@
         }
     }  
     .card-list{
-        flex:0 0 296px;
-        margin-right: 32px;
-        .image{
-            .like{
-                width:32px;
-                height: 32px;
-                svg{
-                    width: 18px;
-                }
+        flex:0 0 191px;
+        margin-right: 24px;
+        
+        .text{
+            padding: 6px;
+        }    
+        .title{ 
+        @include pos(re);
+            img{
+                @include pos(ab,-28px,null,null,0);
             }
         }
-        .text{
-            padding: 8px;
-            .title{
-                font-size: 16px;
-                line-height: 21px;
-                img{
-                    width: 28px;
-                    height: 28px;
-                }
-            }
-            .disc{
-                font-size: 16px;
-                line-height: 24px;
-            }
-        }    
+        .disc{
+            color:$grey-color;
+        }
+        .cate-btn{
+            font-size: 12px;
+            height: 26px;
+            background-color: rgba($blue-color,.2);
+            border-radius: 13px;
+            padding: 0 8px;
+        }
     }
     .tme-wrap{
         font-size: 16px;
@@ -231,6 +376,62 @@
                 top:11px;
                 width: 4px;
                 height: 4px;
+            }
+        }
+    }
+    .overflow-none{
+        .card-wrap {
+            padding: 0;
+            flex-wrap: wrap;
+            .card-list{ 
+                flex:0 0 calc(calc(100% / 6) - calc(140px / 6));
+                margin:0 28px 28px 0;
+                &:nth-child(6n + 6){
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+    .aside-content-wrap{
+        aside{
+            max-width: 296px;
+            width: 100%;
+            background-color: $white-color;
+        }
+        .category-wrapper{
+            width: 100%;
+            overflow: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            margin-top: 0;
+            &::-webkit-scrollbar { 
+                height: 0;  
+            }
+            .overflow-wrap{
+                max-width: 100%;
+                margin-left:0;
+                transform:none;
+                padding: 0;
+            }
+            .Category-list-wrap{
+                max-width: 100%;
+                margin-left:0;
+                transform:none;
+                padding: 0;
+            }
+        }
+        .overflow-none{
+            max-width: calc(100% - 326px);
+            .card-wrap {
+                padding: 0;
+                flex-wrap: wrap;
+                .card-list{ 
+                    flex:0 0 calc(calc(100% / 4) - calc(84px / 4));
+                    margin:0 28px 28px 0;
+                    &:nth-child(4n + 4){
+                        margin-right: 0;
+                    }
+                }
             }
         }
     }
