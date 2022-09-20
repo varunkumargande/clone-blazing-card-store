@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { categoryApi } from "../api/category/category";
 import Electronic from "../components/partials/LandingPage/Electronic";
-
+import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import { element } from "prop-types";
 
 export default function landingpage() {
@@ -49,7 +49,7 @@ export default function landingpage() {
 
   return (
     <div className="home-container">
-      {windowWidth <= 1024 ? <MobileHeader /> : <Header />}
+      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
       <Category />
       <div className="card-wrapper">
         <LiveShow />
