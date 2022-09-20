@@ -102,8 +102,8 @@ function Signup(auth) {
                 validationSchema={registerSchema}
                 onSubmit={(values) => {
                     if (policyCheck == true) {
-                        let name = values.firstname + " " + values.lastname
-                        UserRegister(name, values.email, values.password, values.cpass, values.number, Router)
+                        // let name = values.firstname + " " + values.lastname
+                        UserRegister(values.firstname, values.lastname, values.email, values.password, values.cpass, values.number, Router)
                     } else {
                         modalWarning("error", "Please select term and condition")
                     }
