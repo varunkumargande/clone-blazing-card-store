@@ -1,0 +1,370 @@
+.streaming-page{
+    background-color: $stream-bg;
+    color: $white-color;
+    min-height: calc(100vh - 177px);
+    .search,.input-chat{
+        @include pos(re);
+        input{
+            font-size: 14px;
+            background: none;
+            border:1px solid rgba($border-color,.2);
+            padding: 0 35px 0 15px;
+            border-radius: 24px;
+            color:$search-color;
+            width:100%;
+            height: 42px;
+        }
+        button{
+            width: 26px;
+            height: 26px;
+            background-color: $white-color;
+            @include pos(ab,50%,10px,null,null);
+            transform: translateY(-50%);
+        }
+    }
+}
+.streaming-left{
+    padding: 24px 24px 24px;
+}
+.streaming-left,.streaming-right{
+    width: 100%;
+    flex:0 0 30%;
+    height: calc(100vh - 90px);
+}
+//Stream Left
+.streaming-left{
+    .profile-wrapper{
+        padding: 0 10px;
+        margin-bottom: 22px;
+        .profile-wrap{
+            margin-right: 8px;
+        }
+        .image{
+            margin-right: 7px;
+        }
+        .name{
+            font-size: 20px;
+            line-height: 21px;
+            font-weight: 500;
+        }
+        .followrs-count{
+            font-weight: 500;
+        }
+        .primary-btn{
+            font-size: 14px;
+            width: 75px;
+            height: 32px;
+            padding: 0 16px;
+            &.following{
+                border:1px solid $blue-color;
+                color:$blue-color;
+                background-color: $white-color;
+            }
+        }
+    }
+    .leftdata-wrapper{
+        padding: 24px 16px;
+        border-radius: 24px;
+        background-color: rgba($white-color,.05);
+        height: calc(100vh - 200px);
+        .title{
+            font-size: 20px;
+            line-height: 24px;
+            color:$white-color;
+            font-weight: 700;
+            margin-bottom: 28px;
+            padding: 0 8px;
+        }
+    }
+    .tab-wrapper{
+        padding: 0 8px;
+        margin-bottom: 16px;
+        .tab-link{
+            @include pos(re);
+            cursor: pointer;
+            line-height: 17px;
+            padding-bottom: 11px;
+            margin-right: 32px;
+            &.active{
+                color: $blue-color;
+                &:after{
+                    background-color: $blue-color;
+                }
+            }
+            &:after{
+                content: '';
+                width: 40px;
+                height: 2px;
+                @include pos(ab,null,null,0,50%);
+                transform: translateX(-50%);
+            }
+            &:last-child{
+                margin-right: 0;
+            }
+        }
+    }
+    .search{
+        margin-bottom: 24px;
+    }
+    .product-count{
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 600;
+        padding: 0 8px;
+        margin-bottom: 8px;
+    }
+    .product-list{
+        padding: 0;
+        list-style: none;
+        padding: 0 8px;
+        margin: 0;
+    }
+    .product-list{
+        height: calc(100vh - 444px);
+        overflow: auto;
+        padding: 0 8px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar { 
+            height: 0;  
+        }
+        li{
+            @include pos(re);
+            padding: 13px 26px 13px 16px;
+            color: $light-grey-color;
+            border-bottom: 1px solid rgba($border2-color,.1);
+            &.pined{
+                background-color: rgba($primary-color,.2);
+                color:$blue-color;
+                background:url('/static/images/pined.svg') no-repeat calc(100% - 15px) center;
+            }
+        }
+        .list{
+            padding: 12px 16px 20px;
+            border-bottom: 1px solid rgba($border2-color,.1);
+            .border-btn{
+                width: 82px;
+                height: 32px;
+                font-size: 12px;
+                margin-bottom: 2px;
+                &.selected{
+                    color:$blue-color;
+                    border-color: $white-color;
+                    background-color: $white-color;
+                }
+            }
+            strong{
+                font-size: 12px;
+                line-height: 20px;
+                font-weight: 600;
+            }
+            span,.piece{
+                font-size: 12px;
+                line-height: 20px;
+                font-weight: 500;
+            }
+        }
+        .list-data{
+            padding: 13px 16px 13px;
+            border-bottom: 1px solid rgba($border2-color,.1);
+            strong{
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 600;
+                color: $light-grey-color;
+            }
+            span{
+                font-size: 12px;
+                line-height: 20px;
+                font-weight: 500;
+                color: $light-grey-color;
+                a{
+                    color: $blue-color;
+                }
+            }
+            .amount{
+                font-size: 14px;
+                font-weight: 600;
+                color:$blue-color;
+            }
+        }
+    }
+}
+
+// Stream center
+.streaming-live{
+    width: 100%;
+    flex:0 0 40%; 
+    @include pos(re);
+    height: calc(100vh - 90px);
+    .inner-wrapper{
+        width:100%;
+        height: 100%;
+        @include pos(ab,0,null,null,0);
+        &.disable{
+            background-color: rgba(#000,.6);
+        }
+    }
+    .stream-image-video{
+        img,video{
+            width: 100%;
+            height: calc(100vh - 90px);
+            object-fit: cover;
+        }
+    }
+    .stream-header{
+        @include pos(ab,0,null,null,null,0);
+        width: 100%;
+        height: 128px;
+        padding: 26px 16px 0;
+        background:  linear-gradient(180deg, rgba(#000819,.4) 0%, rgba(0, 8, 25, 0) 129.69%);
+        backdrop-filter: opacity(0.4);
+    }
+    .head-title{
+        font-size: 24px;
+        line-height: 32px;
+        font-weight: 700;
+    }
+    .video-icon{
+        width: 42px;
+        @include pos(ab,null,16px,96px,null,null);
+        button{
+            width:42px;
+            height: 42px;
+            background-color: rgba($white-color,.2);
+            margin-bottom: 16px;
+            padding: 0;
+        }
+    }
+    .stream-footer{
+        width: 100%;
+        height: 96px;
+        @include pos(ab,null,null,0,0);
+        padding: 0 16px;
+        button{
+            width:150px;
+            max-width: calc(50% - 8px);
+            &.border-btn{
+                border-color: $white-color;
+                color:$white-color;
+                background-color: rgba($white-color,.2);
+            }
+            &.disable{
+                max-width: 100%;
+                opacity: .6;
+            }
+        }
+        .btn-wrap{
+            width: 50%;
+            max-width: 276px;
+        }
+        .time-left,.bid-status{
+            font-size: 14px;
+            line-height: 21px;
+            font-weight: 600;
+        }
+        .time-left{
+            margin-bottom: 6px;
+        }
+        .bid-status{
+            span{
+                width: 15px;
+                height: 15px;
+                font-size: 10px;
+                line-height: 10px;
+                color: $primary-color;
+                background-color: $white-color;
+                margin-left: 2px;
+            }
+        }
+    }
+    .auction-end-text{
+        @include pos(ab,240px,null,null,50%);
+        transform: translateX(-50%);
+        h3{
+            font-size: 32px;
+            line-height: 26px;
+            margin-bottom: 20px;
+            color:$white-color;
+            font-weight: 500
+        }
+        p{
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 0;
+            color:$white-color;
+            font-weight: 500
+        }
+    }
+    .winner-profile{
+        @include pos(ab,null,null,98px,16px);
+        min-width: 205px;
+        max-width: 215px;
+        background-color: rgba($white-color,.2);
+        height: 42px;
+        border-radius: 21px;
+        padding: 0 3px;
+        font-weight: 700;
+        span{
+            color: $success-color;
+            font-weight: 400;
+        }
+        .pf{
+            width: 36px;
+            height: 36px;
+            border:3px solid $white-color;
+            margin-right: 4px;
+        }
+    }
+}
+// Stream right
+.streaming-right{
+    @include pos(re);
+    padding-top: 50px;
+    &:after{
+        content: '';
+        width: 100%;
+        height: calc(50% - 120px);
+        @include pos(ab,40px,null,null,0,1);
+        background-image: linear-gradient(rgba($stream-bg,1), rgba($stream-bg,.1));
+    }
+    .chat-wrap{
+        height: calc(100% - 88px);
+        overflow:auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        padding: 0 45px;
+        &::-webkit-scrollbar { 
+            height: 0;  
+        }
+        > .chat{
+            margin-top: 24px;
+        }
+        .chat-img{
+            width: 36px;
+            height: 36px;
+            border:3px solid $white-color;
+            margin-right: 5px;
+        }
+        .name{
+            font-size: 14px;
+            line-height: 17px;
+            margin-bottom: 2px;
+            font-weight:700;
+        }
+        .chat{
+            font-size: 14px;
+            line-height: 17px;
+            font-weight: 500;
+        }
+    }
+    .input-chat{
+        @include pos(ab,null,null,24px,45px);
+        width:calc(100% - 90px)
+    }
+}
+@media all and (min-width:1025px){
+    .streaming-page{
+        min-height: calc(100vh - 90px);
+    }
+}

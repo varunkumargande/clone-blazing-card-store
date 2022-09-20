@@ -22,16 +22,15 @@ const LoginPage = () => {
     ];
     return (
         <div className="site-content">
-            <HeaderDefault />
-            <HeaderMobile />
+            {/* <HeaderDefault />
+            <HeaderMobile /> */}
             <ThemeChanger/>
-            <NavigationList />
+            {/* <NavigationList /> */}
             <div className="ps-page--my-account">
-                
                 <Login />
             </div>
            
-            <FooterFullwidth />
+            {/* <FooterFullwidth /> */}
         </div>
     );
 };

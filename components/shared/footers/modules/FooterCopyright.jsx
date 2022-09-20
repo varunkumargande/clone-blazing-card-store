@@ -19,8 +19,8 @@ const FooterCopyright = () => (
         <div className="foot-img-para">
             <img src="/static/img/help.svg"/>
             <p> Help Center </p>
-        </div> */}
-        <p className="footer-color" style={{marginLeft:"40px"}}>© 2007-2020 Spurtcommerce.com</p>
+        </div> */}      
+        <p className="footer-color" style={{marginLeft:"40px"}}>© 2022 BLAZING-CARD </p>
         </div>
         <div></div>
     </div>

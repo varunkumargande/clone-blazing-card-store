@@ -11,13 +11,14 @@ import {
     SettingFilled,
     FileTextFilled
   } from '@ant-design/icons';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {logOut} from '../../../store/auth/action';
 import {getWishlistList} from '../../../store/wishlist/action';
 import {useEffect} from 'react';
 import  Router  from 'next/router';
 
 function AccountPopUp({showPop,setShowPop}) {
+  let reloadedheader=useSelector(s=>s.cart.addproduct)
     const { t } = useTranslation('common');
     const dispatch=useDispatch()
     const [fname,setFname] = useState("")
@@ -56,7 +57,6 @@ function AccountPopUp({showPop,setShowPop}) {
     }
 
     const handleLogout = e => {
-      
         e.preventDefault();
         sessionStorage.clear()
         dispatch(logOut());
@@ -67,20 +67,12 @@ function AccountPopUp({showPop,setShowPop}) {
 
     useEffect(()=>{
         let a =  JSON.parse(sessionStorage.getItem("spurtUser"))
-            if(a !=null){
-
-           
-            
-            
+            if(a !=null){            
             setFname(JSON.parse(sessionStorage.getItem("spurtUser")).firstName)
             setEmail(JSON.parse(sessionStorage.getItem("spurtUser")).email)
             JSON.parse(sessionStorage.getItem("spurtUser")).avatar ? setAimg(imageUrl+"?path="+JSON.parse(sessionStorage.getItem("spurtUser")).avatarPath+"&name="+JSON.parse(sessionStorage.getItem("spurtUser")).avatar+"&width=500&height=500") : setAimg("/static/img/no-image.png")
-        }else{
-            setAccepted(accepted +1) 
-
-        
         }
-    },[accepted])
+    },[reloadedheader])
 
 
 return (
@@ -92,7 +84,6 @@ return (
   >
       <div className="ap-header">
           <img src={aimg}/>
-         
           <p>{fname} <br></br> <small>{email} </small></p>
       </div>
       <div className="ap-divider"></div>

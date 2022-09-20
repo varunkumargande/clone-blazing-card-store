@@ -1,134 +1,62 @@
-import React from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { getCollections } from "../store/collection/action";
-import { useState, useEffect } from "react";
-import { dealOfDayApi } from "../api";
-import { homeBannerApi } from "../api";
-import { featuredApi } from "../api";
-import { categoryListApi } from "../api";
-import useNetwork from "../components/reusable/NetworkCheck";
-import Router from "next/router";
-import { ManufacturerApi } from "../api";
-import getPageApi from "../api/home/getPage";
+
+
+import React,{useState,useEffect} from "react";
+import Header from "../components/shared/headers/modules/Header";
+import MobileHeader from "../components/shared/headers/MobileHeader";
+
+import Category from "../components/partials/LandingPage/Category";
+import LiveShow from "../components/partials/LandingPage/LiveShow";
+import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
+import Footer from "../components/partials/LandingPage/Footer";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { categoryApi } from "../api/category/category";
+import Electronic from "../components/partials/LandingPage/Electronic";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
-import HeaderMobile from "../components/shared/headers/HeaderMobile";
-import NavigationList from "../components/shared/navigation/NavigationList";
-import ThemeChanger from "../components/elements/color/themeControl";
-import SubscribePopup from "../components/shared/modal/SubscribePopup";
-import HomeBanner from "../components/partials/homepage/home-default/HomeBanner";
-import HomeDefaultDealOfDay from "../components/partials/homepage/home-default/HomeDefaultDealOfDay";
-import ConumerElectronics from "../components/partials/homepage/home-default/ConumerElectronics";
-import FooterFullwidth from "../components/shared/footers/FooterFullwidth";
-import { WidgetApi } from "../api/home/widgetsapi";
-import TopSelling from "../components/partials/homepage/home-default/TopSelling";
+import { element } from "prop-types";
 
-
-
-function Index(props) {
-  const [subscribe, setSubscribe] = useState(false);
-  // const [banner, setBanner] = useState([]);
-  // const [brands, setBrands] = useState([]);
-  const [wightdata, setDeals]=useState([])
+export default function landingpage() {
+  const [windowWidth, setWindowWidth] = useState(0);
+  let resizeWindow = () => {
+    setWindowWidth(window.innerWidth);
+  };
+  const categories = useSelector(
+    (state) => state?.stream?.streamdetails?.category
+  );
   const dispatch = useDispatch();
-  let deals = useSelector((s) => s.collection);
-  let banner=useSelector(s=>s.wishlist.banners)
-
-  const network = useNetwork();
-
   useEffect(() => {
-    if (network === false) {
-      Router.push("/network-error");
-    }
+    resizeWindow();
+    window.addEventListener("resize", resizeWindow);
+    return () => window.removeEventListener("resize", resizeWindow);
   }, []);
 
-
- 
-
   useEffect(() => {
-    // ManufacturerApi(dispatch);
-    categoryListApi(dispatch);
-    dealOfDayApi(dispatch);
-    homeBannerApi(dispatch);
-    featuredApi(dispatch);
-    WidgetApi(dispatch,setDeals);
-    getPageApi(dispatch);
-
-    const { querys } = props;
-    if (querys) {
-      const collectionsSlug = [
-        "deal_of_the_day",
-        "consumer_electronics",
-        "clothings",
-        "garden_and_kitchen",
-        "new_arrivals_products",
-      ];
-      dispatch(getCollections(collectionsSlug));
-    }
+    categoryApi(dispatch);
   }, []);
-  console.log(wightdata,'wightdata')
+
+  if (categories) {
+    console.log("landing page categories", categories);
+  }
+
+  const getAllCategoriesCard = () => {
+    if (categories) {
+      const categoriesData = Object.entries(categories);
+      return categoriesData.map((element) => {
+        return <Electronic categoryData={element} />;
+      });
+    }
+  };
+
   return (
-    <div className="site-content">
-      <HeaderDefault />
-     <HeaderMobile />
-      <NavigationList />
-     <ThemeChanger />
-
-
-        <SubscribePopup active={subscribe} />
-      
-      <main id="homepage-1">
-        <HomeBanner data={banner} />
-        {deals &&
-          deals.collections !== [] &&
-          
-            <HomeDefaultDealOfDay
-              collectionSlug="deal_of_the_day"
-              data={deals.collections}
-            />
-          }
-          
-        {deals &&
-          deals.collections !== [] &&
-          
-            <ConumerElectronics
-              collectionSlug="consumer_electronics"
-              data={deals.collection}
-            />
-          }
-
-        <div className="ps-container">
-          <div className="banner-container">
-            <div className="banner-width">
-              <img src="/static/img/banner-sm1.jpg" alt="" />
-            </div>
-            <div className="banner-width banner-width-sec">
-              <img src="/static/img/banner-sm2.jpg" alt="" />
-            </div>
-            <div className="banner-width">
-              <img src="/static/img/banner-sm3.jpg" alt="" />
-            </div>
-          </div>
-        </div>
-        {wightdata &&
-          wightdata &&
-          wightdata.map((deal, index)  => (
-                   
-                 <TopSelling collectionSlug="top-selling" data={deal.items} coreData={deal}/>
-          
-           ))}
-             
-       
-       
-       
-      </main>
-   
-
-      <FooterFullwidth />
-
-
-      
+    <div className="home-container">
+      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      <Category />
+      <div className="card-wrapper">
+        <LiveShow />
+        <ScheduledShow />
+        {getAllCategoriesCard()}
+      </div>
+      <Footer />
     </div>
   );
 }
-
-export default connect((state) => state.collection)(Index);

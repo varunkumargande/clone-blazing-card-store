@@ -1,0 +1,121 @@
+.category-wrapper{
+    position: relative;
+    .cover-btn{
+        position: absolute;
+        right: 70px;
+        bottom: 24px;
+        height: 36px;
+        color: $white-color;
+        border-color: $white-color;
+    }
+}
+.card-wrap{
+    margin-top: 35px;
+}
+.card-wrapper{
+    position: relative;
+}
+.aside-content-wrap{
+    .aside-wrapper{
+        border-radius: 8px;
+         overflow: hidden;
+        .aside-container{
+            padding: 0;
+            
+            li{
+                list-style: none;
+                font-size: 20px;
+                line-height: 1.1;
+                font-weight: 500;
+                padding: 20px 21px;
+                border-bottom:  1px solid $border2-color;
+                transition: all 0.3s;
+               position: relative;
+               &:last-child{
+                border: none;
+               }
+
+               &.active{
+                color: $blue-color;
+                &:after{
+                    content: '';
+                    width: 4px;
+                    height: 40px;
+                    background-color: $blue-color;
+                    border-radius: 2px;
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                   }
+               } 
+            }
+        } 
+// start of aside-proflie
+    }
+}
+
+.profile-wrapper{
+    .profile-aside{
+        border-radius: 16px;
+        overflow: hidden;
+        margin-top: -120px;
+  .profile-container{
+    text-align: center;
+    padding: 24px 16px 35px 16px;
+    .profile-icon{
+        width: 105px;
+        height: 123px;
+        margin: 0 auto;
+        img{
+            width: 100%;
+            overflow: hidden;
+            object-fit: cover;
+        }
+    }
+    .title{
+        font-size: 20px;
+        line-height: 1.2;
+        font-weight: 600;
+        color: $primary-color;
+        margin: 24px 0;
+        span{
+            font-size: 16px;
+        }
+    }
+    .follow-btn{
+        width: 81px;
+        height: 37px;
+        margin: 0 auto;
+    }
+    .edit-profile-btn{
+        width: 115px;
+        margin: 0 auto;
+    }
+    }
+    .description{
+        text-align: left;
+        color: $primary-color;
+        margin-top: 24px;
+    }
+    .social-icons-wrapper{
+        padding: 20px;
+        .social-border{
+            max-width: 181px;
+            margin: 0 auto;
+            border: 1px solid $social-border-color;
+            margin-bottom: 24px;
+        }
+        .social-icons{
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            padding: 0;
+            li{
+                border: none;
+                padding: 0;
+            }
+        }
+    }
+}
+    }

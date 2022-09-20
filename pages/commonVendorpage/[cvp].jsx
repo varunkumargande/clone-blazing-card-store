@@ -38,7 +38,7 @@ const commonvendorproduct = () => {
 
          
                         
-            <Commonvendorproductlist Productslug={Productslug} />
+            {/* <Commonvendorproductlist Productslug={Productslug} /> */}
                         
 
               {/* <commonvendorproduct /> */}
