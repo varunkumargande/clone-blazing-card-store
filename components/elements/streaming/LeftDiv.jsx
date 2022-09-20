@@ -21,7 +21,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
 
   // User State
   const [user, setUser] = useState();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
 
   // Card Data State
@@ -39,6 +39,9 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
   const streamUuid = router.query["uuid"];
 
   const POST_ORDER = "";
+  const stream = useSelector((state) => state.stream)
+  const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn
+
 
   // using selector to get userId from redux
   // const dispatch = useDispatch()
