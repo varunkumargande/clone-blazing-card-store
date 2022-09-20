@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 import { useRouter } from "next/router";
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openPayment, productDetail,streamingDetails }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails, openPayment, productDetail, streamingDetails }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -39,7 +39,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
   const streamUuid = router.query["uuid"];
 
   const POST_ORDER = "";
-  
 
   // using selector to get userId from redux
   // const dispatch = useDispatch()
@@ -78,7 +77,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
           break;
       }
       const data = await getProducts(url);
-      setProductListing(data.products);
+      setProductListing(data);
       setIsLoading(false);
     } catch (error) {
       if (error.response) {
@@ -267,11 +266,11 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
           <div key={product?.productId}>
             <li>
               {product?.name}
-              {/* {user_id ? 
-              toggleState == "buynow" ? <span><button className="btn btn-primary" onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></> : */}
+               {isLoggedIn ? 
+              toggleState == "buynow" ? <span><button className="btn btn-primary" onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></> :
               toggleState == "buynow" ? <span><button className="btn btn-secondary" onClick={() => handleBuyNow(product)} >Buy now</button></span> : <></>
-              {/* } */}
-              
+              }
+
             </li>
             <hr />
           </div>
