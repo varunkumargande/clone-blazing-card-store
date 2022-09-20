@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Newsletters from '../../components/partials/commons/Newletters';
 import FooterDefault from '../../components/shared/footers/FooterDefault';
@@ -19,6 +19,15 @@ const MyAccountPage = () => {
             text: 'Add address',
         },
     ];
+    const [windowWidth, setWindowWidth] = useState(0);
+    let resizeWindow = () => {
+        setWindowWidth(window.innerWidth);
+    };
+    useEffect(() => {
+        resizeWindow();
+        window.addEventListener("resize", resizeWindow);
+        return () => window.removeEventListener("resize", resizeWindow);
+    }, []);
     return (
         <div className="site-content">
            {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
