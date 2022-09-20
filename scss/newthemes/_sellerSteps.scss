@@ -16,10 +16,11 @@
         font-size: 20px;
         width: 44px;
         height: 44px;
+        max-height: 44px;
         line-height: 1;
         margin-right: 16px;
         color:$search-color;
-        border:1px solid $step-line-color;
+        border:2px solid $step-line-color;
         @include pos(re);
         &:before{
             content: "";
@@ -43,7 +44,6 @@
     &.process{
         color:$primary-color;
         .count{
-            border-width: 2px;
             color:$step-success-color;
             border-color: $step-success-color;
             font-weight: 600;
@@ -78,6 +78,19 @@
         line-height: 24px;
         margin-bottom: 24px;
         color: $primary-color;
+    }
+    .submit-wrapper{
+        margin-top: 40px;
+        max-width: 254px;
+        .border-btn{
+            width: 97px;
+        }
+        .primary-btn{
+            max-width: 137px;
+            .disable{
+                opacity: .44;
+            }
+        }
     }
     
 }

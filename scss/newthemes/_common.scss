@@ -52,6 +52,13 @@ button,input{
   padding: 0 15px;
   max-width: 1310px;
   margin: 0 auto;
+  .overflow-wrap{
+    .inner-container{
+      padding: 0 15px;
+      max-width: 1310px;
+      margin: 0 auto;
+    }
+  }
 }
 .mb8{
   margin-bottom: 8px;
@@ -83,8 +90,8 @@ button,input{
 .ml24{
   margin-left: 24px;
 }
-.mt35{
-  margin-top: 35px;
+.mb35{
+  margin-bottom: 35px;
 }
 // common input
 .input-control{
@@ -140,6 +147,25 @@ button,input{
       align-items: center;
       justify-content: center;
       padding: 0;
+  }
+  .upload{
+    width:100%;
+    height: 238px;
+    border:1px dashed $light-grey-color;
+    appearance: none;
+    background-color: $white-color;
+    border-radius: 8px;
+    span{
+      margin:16px 0 24px;
+      color:$light-grey-color;
+      font-size: 16px;
+    }
+    .primary-btn{
+      width: 99px;
+    }
+  }
+  #upload{
+    display: none;
   }
 }
 // common forget
@@ -230,6 +256,7 @@ label{
 .nowrap{
   flex-wrap: nowrap;
 }
+
 .primary-btn{
   font-size: 16px;
   font-weight: 500;
@@ -242,7 +269,7 @@ label{
   justify-content: center;
   align-items: center;
   border:none;
-  .disable{
+  &.disable{
     opacity: .6;
   }
   &:hover{
@@ -352,7 +379,11 @@ label{
 }
 // Breadcrumb css changes
 .breadcrumbs-wrapper{
-  margin-top: 30px;
+  padding-top: 30px;
+  background-color: $white-color;
+  ul{
+    margin-bottom: 0;
+  }
 }
 .breadcrumbs{
   color: $search-color;
@@ -392,6 +423,9 @@ label{
   .wd50{
     width: calc(50% - 8px);
   }
+  .wd48{
+    width: calc(50% - 12px);
+  }
   .input-control{
     input,select{
         height: 48px;
@@ -405,13 +439,15 @@ label{
 @media all and (min-width:1440px){
   .inner-container{
     max-width: calc(100% - 160px);
-    padding: 0;
-    .inner-container{
-      padding: 0;
+    .overflow-wrap{
+      .inner-container{
+        max-width: calc(100% - 160px);
+        padding: 0 15px;
+      }
     }
     .overflow-none{
-      .card-wrap {
-        max-width: 100%;
+      .inner-container{
+        max-width: none;
       }
     }
   }

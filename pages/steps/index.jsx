@@ -3,6 +3,7 @@ import Header from "../../components/partials/LandingPage/Header";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import LeftPannel from '../../components/partials/sellerSteps/LeftPannel';
 import ImportantGuidelines from '../../components/partials/sellerSteps/ImportantGuidelines';
+import BasicDetails from '../../components/partials/sellerSteps/BasicDetails';
 import Footer from "../../components/partials/LandingPage/Footer";
 
 export default function Steps(){
@@ -21,7 +22,8 @@ export default function Steps(){
             {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
             <section className="steps-wrapper flex">
                <div className="step-left"><LeftPannel /></div> 
-               <div className="step-right"><ImportantGuidelines/></div> 
+               {/* <div className="step-right"><ImportantGuidelines/></div>  */}
+               <div className="step-right"><BasicDetails/></div> 
             </section>
             <Footer/>
         </>
