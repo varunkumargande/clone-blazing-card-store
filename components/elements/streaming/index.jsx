@@ -31,7 +31,7 @@ function Index(){
         <>
         { streamingDetails?.uuid ? <>
             <div className='wrapper'>
-            <LeftDiv open={open} productDetail={setProductDetail} openPayment = {setOpenPayment} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamDetails={selectedStream}/>
+            <LeftDiv open={open} productDetail={setProductDetail} openPayment = {setOpenPayment} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamingDetails={streamingDetails}/>
             <CenterDiv open={open} productDetail={productDetail} isPayment={openPayment} openPayment = {setOpenPayment} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId} streamDetails={selectedStream}/>
             <RightDiv streamingDetails={streamingDetails} />
         </div>

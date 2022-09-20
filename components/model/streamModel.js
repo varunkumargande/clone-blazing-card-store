@@ -27,11 +27,13 @@ class StreamDetailModel {
       messageChannel: streamData?.vendorDetails?.message_channel,
       agoraAppId: appId,
       scheduleDate: streamData?.scheduleDate,
-      scheduleTime:  streamData?.scheduletime
+      scheduleTime:  streamData?.scheduletime,
+      isLoggedIn: false
     }
     if (!!userDetails) {
-      streamDetails.loggedInUserName = userDetails?.lastName;
+      streamDetails.loggedInUserName = userDetails?.firstName;
       streamDetails.loggedInUserId = userDetails?.id;
+      streamDetails.isLoggedIn= true
     }
     return streamDetails;
   }
