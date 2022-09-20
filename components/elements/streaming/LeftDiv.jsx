@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 import { useRouter } from "next/router";
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails, openPayment, productDetail, streamingDetails }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openPayment, productDetail,streamingDetails }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -78,7 +78,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
           break;
       }
       const data = await getProducts(url);
-      setProductListing(data);
+      setProductListing(data.products);
       setIsLoading(false);
     } catch (error) {
       if (error.response) {
