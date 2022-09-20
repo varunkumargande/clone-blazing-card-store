@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 import { useRouter } from "next/router";
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openPayment, productDetail,streamingDetails }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails, openPayment, productDetail, streamingDetails }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -21,6 +21,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
 
   // User State
   const [user, setUser] = useState();
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
 
   // Card Data State
@@ -271,9 +272,9 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
               {product?.name}
               {isLoggedIn ? 
               toggleState == "buynow" ? <span><button className="btn btn-primary" onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></> :
-              toggleState == "buynow" ? <span><button className="btn btn-secondary" disabled >Buy now</button></span> : <></>
+              toggleState == "buynow" ? <span><button className="btn btn-secondary" onClick={() => handleBuyNow(product)} >Buy now</button></span> : <></>
               }
-              
+
             </li>
             <hr />
           </div>
