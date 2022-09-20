@@ -20,9 +20,10 @@ function StreamingBase() {
   const [volumeLevel, setVolumeLevel] = useState(100);
   const [isMute, setIsMute] = useState(false);
   const stream = useSelector((state) => state.stream)
-
+  const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn
 
   useEffect(() => {
+      isLoggedIn ? setDisableBid(false) : setDisableBid(true);
       joinChannel();
   }, []);
 
@@ -124,6 +125,11 @@ function StreamingBase() {
       <StreamingElement volume={volumeLevel} isMute={isMute} />
       <span>38</span>
       <div className="stream-wrapper">
+        <div className="overlay-sighin">
+          { isLoggedIn ? <></>
+            : <p>Please login to participate in the stream</p>
+          }
+          </div>
         <div className="overlay">
           <div className="product-info">
             <div id="winning-buyer-info">winner won!</div>
