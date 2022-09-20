@@ -3,7 +3,6 @@
 import React,{useState,useEffect} from "react";
 import Header from "../components/shared/headers/modules/Header";
 import MobileHeader from "../components/shared/headers/MobileHeader";
-
 import Category from "../components/partials/LandingPage/Category";
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";

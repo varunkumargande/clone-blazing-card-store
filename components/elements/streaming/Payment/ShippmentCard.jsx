@@ -7,28 +7,8 @@ import { getStreamingShippmentDetail } from '../../../../api/stream/shippmentApi
 import { countryListApi } from "../../../../api"
 
 function ShippmentCard(props) {
-    const { setShippmentFormOpen, setAddShippInfo } = props;
-    // const [open, setOpen] = React.useState(false)
-    // const [openOptions, setOpenOptions] = React.useState(true)
-    // const [paymentForm, setPaymentFormOpen] = React.useState(false)
-    // const [shippmentForm, setShippmentFormOpen] = React.useState(false)
-
-    const [name, setName] = React.useState("")
-    const [address, setAddress] = React.useState("")
-    const [postal, setPostal] = React.useState(null)
-    const [city, setCity] = React.useState("")
-    const [state, setState] = React.useState("")
-    const [country, setCountry] = React.useState("")
-
-    const [nameError, setNameError] = React.useState("")
-    const [addressError, setAddressError] = React.useState("")
-    const [postalError, setPostalError] = React.useState("")
-    const [cityError, setCityError] = React.useState("")
-    const [stateError, setStateError] = React.useState("")
-    const [countryError, setCountryError] = React.useState("")
 
     const [addressList, setAddressList] = React.useState([])
-    const [addressDetail, setAddressDetail] = React.useState(null)
     const [countryData, setCountryData] = React.useState([])
 
     useEffect(() => {
@@ -38,7 +18,8 @@ function ShippmentCard(props) {
 
     const handleSelectAddressDetail = (e) => {
         if (e.target.value != null) {
-            setAddressDetail(addressList[e.target.value])
+            props.setShipIndex(e.target.value)
+            props.setShipData(addressList[e.target.value])
         }
     }
 
@@ -66,8 +47,6 @@ function ShippmentCard(props) {
 
     return (
         <>
-
-
             <div className='payment_form'>
                 <div>
                     <Row>
@@ -103,10 +82,18 @@ function ShippmentCard(props) {
                         </div>
                     </div>
 
-                    {addressDetail != null ? (
+                    {props.shipData != null ? (
                         <>
                             <Formik
-                                initialValues={{ name: addressDetail.company, address1: addressDetail.address1, address2: addressDetail.address2, country: addressDetail.country, postcode: addressDetail.postcode, city: addressDetail.city, state: addressDetail.state }}
+                                initialValues={{
+                                    name: props.shipData.company,
+                                    address1: props.shipData.address1,
+                                    address2: props.shipData.address2,
+                                    country: props.shipData.country,
+                                    postcode: props.shipData.postcode,
+                                    city: props.shipData.city,
+                                    state: props.shipData.state
+                                }}
                                 validationSchema={shipSchema}
                                 onSubmit={(values) => {
                                     props.setShip(values)
@@ -143,22 +130,12 @@ function ShippmentCard(props) {
                                                             className="form-control shippment_country"
                                                             name="country"
                                                             onChange={handleChange}
-                                                            defaultValue={
-                                                                1
-                                                            }>
+                                                            value={props.shipData.countryId}
+                                                        >
                                                             {countryData.map((item, index) => {
                                                                 return (
                                                                     <>
-                                                                        {item.countryId == addressDetail.countryId ? (
-                                                                            <>
-                                                                                <option value={item.countryId}>{item.name}</option>
-                                                                            </>
-                                                                        ) : (
-                                                                            <>
-                                                                                <option value={item.countryId}>{item.name}</option>
-                                                                            </>
-                                                                        )}
-
+                                                                        <option value={item.countryId}>{item.name}</option>
                                                                     </>
                                                                 )
                                                             })}
