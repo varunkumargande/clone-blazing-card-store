@@ -267,10 +267,10 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
           <div key={product?.productId}>
             <li>
               {product?.name}
-              {user_id ? 
-              toggleState == "buynow" ? <span><button className="btn btn-primary" onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></> :
-              toggleState == "buynow" ? <span><button className="btn btn-secondary" disabled >Buy now</button></span> : <></>
-              }
+              {/* {user_id ? 
+              toggleState == "buynow" ? <span><button className="btn btn-primary" onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></> : */}
+              toggleState == "buynow" ? <span><button className="btn btn-secondary" onClick={() => handleBuyNow(product)} >Buy now</button></span> : <></>
+              {/* } */}
               
             </li>
             <hr />

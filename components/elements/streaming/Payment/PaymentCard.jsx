@@ -31,7 +31,6 @@ function PaymentCard(props) {
         if (e.target.value != null) {
             props.cardIndex(e.target.value)
             props.cardDetail(cardList[e.target.value])
-            props.setPayment(props.payDetail)
         }
     }
 
