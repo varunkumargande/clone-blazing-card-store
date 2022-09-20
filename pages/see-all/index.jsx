@@ -103,10 +103,9 @@ export default function categoryStream(){
                               </ul>
                             </aside>
                             <div className="overflow-none">
-                                <section className="category-wrapper">
+                                <section className="category-wrapper cotegories-border">
                                     <div className="overflow-wrap">
                                         <div className="Category-list-wrap inner-container flex">
-                                            
                                             <div className="category-list">
                                                 <button className="title active">Cards</button>
                                             </div>
@@ -164,7 +163,7 @@ export default function categoryStream(){
                                         </div>
                                     </div>
                                 </section>
-                                <div className="card-wrap flex inner-container">
+                                <div className="card-wrap mt35 flex inner-container">
                                     {/*  */}
                                     {getStreamCards()}
                                 </div>

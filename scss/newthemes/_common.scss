@@ -2,6 +2,11 @@ body{
   @include Inter;
   font-size: 14px;
   color: $primary-color;
+  background-color: $body-bg;
+}
+header,.mobile-header{
+  background-color: $white-color;
+  @include pos(re);
 }
 img,svg{
   max-width: 100%;
@@ -77,6 +82,9 @@ button,input{
 }
 .ml24{
   margin-left: 24px;
+}
+.mt35{
+  margin-top: 35px;
 }
 // common input
 .input-control{
@@ -362,6 +370,24 @@ label{
     }
   }
 }
+.category-banner{
+  @include pos(re);
+  > img{
+    width: 100%;
+  }
+  .cover-wrap{
+    padding: 0 15px;
+    @include pos(ab,null,null,24px,50%);
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1310px;
+  }
+  .cover-btn{
+      height: 36px;
+      color: $white-color;
+      border-color: $white-color;
+  }
+}
 @media all and (min-width:768px){
   .wd50{
     width: calc(50% - 8px);
@@ -376,16 +402,22 @@ label{
   }  
 }
 
-@media all and (min-width:1280px){
+@media all and (min-width:1440px){
   .inner-container{
     max-width: calc(100% - 160px);
+    padding: 0;
     .inner-container{
-      padding: 0 24px;
+      padding: 0;
     }
     .overflow-none{
       .card-wrap {
         max-width: 100%;
       }
+    }
+  }
+  .category-banner {
+    .cover-wrap{
+      max-width: calc(100% - 160px);
     }
   }
 

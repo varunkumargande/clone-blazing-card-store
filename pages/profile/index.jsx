@@ -69,9 +69,9 @@ export default function categoryStream(){
     return(
         <div className="home-container">
             {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
-            <section className="category-wrapper">
+            <section className="category-banner">
                 <img src="/static/images/cover.png" alt="cover" />
-                <button className="border-btn cover-btn">Edit Cover Photo</button>
+                <div className="cover-wrap flex justify-right"><button className="border-btn cover-btn">Edit Cover Photo</button></div>
             </section>
             <div className="card-wrapper">
                 <section className="Live-wrapper card-inner">
@@ -105,7 +105,7 @@ export default function categoryStream(){
                                 </div>
                             </aside>
                             <div className="overflow-none">
-                                <section className="category-wrapper">
+                                <section className="category-wrapper cotegories-border">
                                     <div className="overflow-wrap">
                                         <div className="Category-list-wrap inner-container flex">
                                             <div className="category-list">
@@ -123,7 +123,7 @@ export default function categoryStream(){
                                         </div>
                                     </div>
                                 </section>
-                                <div className="card-wrap flex inner-container">
+                                <div className="card-wrap flex mt35 inner-container">
                                     {/*  */}
                                     {getStreamCards()}
                                 </div>

@@ -1,4 +1,7 @@
 .category-wrapper{
+    &.cotegories-border{
+        border-bottom: 1px solid $border2-color;
+    }
     .category-btn-wrap{
         position: relative;
         margin-left: 8px;
