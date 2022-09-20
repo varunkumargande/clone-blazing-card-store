@@ -22,14 +22,12 @@ function CenterDiv({
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
-  const [paymentData, setPaymentData] = React.useState(null);
   
   const [shipIndex, setShipIndex] = React.useState(null);
   const [shipData, setShipData] = React.useState(null);
   
   const [cardIndex, setCardIndex] = useState(null)
   const [cardDetail, setCardDetail] = useState(null)
-
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -57,6 +55,7 @@ function CenterDiv({
     setShipData(data)
     modalSuccess("success", "Shippment Detail added")
   }
+
 
   return (
 
@@ -203,7 +202,7 @@ function CenterDiv({
         )}
         {paymentForm == true ? (
           <>
-            <PaymentCard cardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} payData={paymentData} />
+            <PaymentCard cardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
           </>
         ) : (
           <>

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../store/auth/action'
 import { useRouter } from "next/router";
 
-function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openPayment, productDetail,streamingDetails }) {
+function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, streamDetails, openPayment, productDetail, streamingDetails }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
@@ -21,7 +21,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
 
   // User State
   const [user, setUser] = useState();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
 
   // Card Data State
@@ -39,6 +39,9 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
   const streamUuid = router.query["uuid"];
 
   const POST_ORDER = "";
+  const stream = useSelector((state) => state.stream)
+  const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn
+
   
 
   // using selector to get userId from redux
@@ -267,11 +270,11 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
           <div key={product?.productId}>
             <li>
               {product?.name}
-              {user_id ? 
+              {isLoggedIn ? 
               toggleState == "buynow" ? <span><button className="btn btn-primary" onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></> :
-              toggleState == "buynow" ? <span><button className="btn btn-secondary" disabled >Buy now</button></span> : <></>
+              toggleState == "buynow" ? <span><button className="btn btn-secondary" onClick={() => handleBuyNow(product)} >Buy now</button></span> : <></>
               }
-              
+
             </li>
             <hr />
           </div>
@@ -284,7 +287,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, openP
   return (
     <div className="streaming-div-left">
       <h1>{streamingDetails?.title}</h1>
-      <button onClick={() => openPayment(true)}> Buy </button>
       <div className="stream-nav">{getToggles()}</div>
 
       <div className="product-quick-search">

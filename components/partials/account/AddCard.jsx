@@ -44,9 +44,9 @@ function AddCard() {
     }
 
     const cardListApi = async () => {
-        const result = await APIServices.get('customer-card-details/listCard/', JSON.parse(sessionStorage.getItem("spurtUser")).id)
+        const result = await APIServices.get('customer-card-details/listCard', JSON.parse(sessionStorage.getItem("spurtUser")).id)
         if (result.status == 200) {
-            setCardData(result.data.data)
+            setCardData(result.data)
             setAddressLoader(false)
         } else {
             modalWarning('error', result.data.message)

@@ -39,6 +39,7 @@ export default function LiveShow({ name, catId }) {
                 <button className="cate-btn">{detail.category_name}</button></div></div>
       );
     });
+    
   };
 
   return (
