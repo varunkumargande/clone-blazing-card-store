@@ -42,6 +42,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
   const stream = useSelector((state) => state.stream)
   const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn
 
+  
 
   // using selector to get userId from redux
   // const dispatch = useDispatch()
@@ -80,7 +81,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
           break;
       }
       const data = await getProducts(url);
-      setProductListing(data);
+      setProductListing(data.products);
       setIsLoading(false);
     } catch (error) {
       if (error.response) {
@@ -269,7 +270,7 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
           <div key={product?.productId}>
             <li>
               {product?.name}
-               {isLoggedIn ? 
+              {isLoggedIn ? 
               toggleState == "buynow" ? <span><button className="btn btn-primary" onClick={() => handleBuyNow(product)}>Buy now</button></span> : <></> :
               toggleState == "buynow" ? <span><button className="btn btn-secondary" onClick={() => handleBuyNow(product)} >Buy now</button></span> : <></>
               }
@@ -286,7 +287,6 @@ function LeftDiv({ open, setOpen, addPayInfo, addShippInfo, setCustomerId, strea
   return (
     <div className="streaming-div-left">
       <h1>{streamingDetails?.title}</h1>
-      <button onClick={() => openPayment(true)}> Buy </button>
       <div className="stream-nav">{getToggles()}</div>
 
       <div className="product-quick-search">
