@@ -7,9 +7,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";
-
 import { stringFormatter } from "../../../utilities/utils";
-
 
 export default function Electronic({categoryData}) {
   const dispatch = useDispatch();
@@ -23,7 +21,7 @@ export default function Electronic({categoryData}) {
       return categoryData[1]?.map((detail) => {
         return (
           <div className="card-list flex flex-center">
-            <a href={`/streaming/?stream=${detail.id}&uuid=${detail.uuid}`}>
+            <a href={`/streaming?stream=${detail.id}&uuid=${detail.uuid}`}>
               <div className="image">
                 <img src="/static/images/card.png" alt="Card" />
                 <div className="tme-wrap flex flex-center justify-center">
@@ -75,3 +73,4 @@ export default function Electronic({categoryData}) {
     </section>
   );
   }
+

@@ -1,6 +1,7 @@
 import React,{useState,useEffect,useRef} from "react";
 import Header from "../../components/partials/LandingPage/Header";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
+import HeaderDefault from '../../components/shared/headers/HeaderDefault';
 import IconEye from "../../components/Icons/IconEye";
 import IconLike from "../../components/Icons/IconLike";
 import IconDropdown from "../../components/Icons/IconDropdown";
@@ -9,7 +10,6 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { subcatstreamDetailApi } from "../../api/stream/subStreamDetail";
-
 
 
 export default function categoryStream(){
@@ -68,7 +68,7 @@ export default function categoryStream(){
 
     return(
         <div className="home-container">
-            {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
+            {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
             <section className="breadcrumbs-wrapper">
                 <div className="inner-container">
                     <ul className="breadcrumbs flex flex-center">

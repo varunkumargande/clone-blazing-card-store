@@ -38,11 +38,9 @@ const UserInformationPage = () => {
       categoryApi(dispatch);
     },[])
 
-
     useEffect(()=>{
         if(network===false){ Router.push('/network-error')  }
     },[])
-
 
     const breadCrumb = [
         {
