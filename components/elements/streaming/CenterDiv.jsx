@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { Col, Row } from "antd";
 import PaymentCard from "./Payment/PaymentCard";
 import ShippmentCard from "./Payment/ShippmentCard";
 import StreamingBase from "./StreamingBase";
-import { useSelector } from "react-redux";
 import { buyProduct } from "../../../api/stream/buyProductApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept";
 
@@ -12,12 +10,8 @@ function CenterDiv({
   productDetail,
   isPayment,
   openPayment,
-  open,
   setOpen,
   streamingDetails,
-  setAddShippInfo,
-  setAddPayInfo,
-  customerId,
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
@@ -43,8 +37,8 @@ function CenterDiv({
   };
 
   const handleSubmitBuyProduct = () => {
-    if (paymentData != null && shipData != null) {
-      buyProduct(paymentData, shipData, productDetail)
+    if (cardDetail != null && shipData != null) {
+      buyProduct(cardDetail, shipData, productDetail)
     } else {
       setOpen(true);
       modalWarning("error", "Please select your card detail and shippment address")
