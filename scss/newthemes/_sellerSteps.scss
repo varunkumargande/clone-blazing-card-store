@@ -72,6 +72,14 @@
         line-height: 30px;
         margin-bottom: 24px;
         font-weight: 700;
+        &.mb32{
+            margin-bottom: 32px;
+        }
+    }
+    h4{
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 700;
     }
     .sub-title{
         font-size: 16px;
@@ -80,8 +88,14 @@
         color: $primary-color;
     }
     .submit-wrapper{
-        margin-top: 40px;
+        margin-top: 16px;
         max-width: 254px;
+        &.conform{
+            max-width: 351px;
+            .primary-btn{
+                max-width: 234px;
+            }
+        }
         .border-btn{
             width: 97px;
         }
@@ -124,4 +138,12 @@
 .button-wrapper{
     margin-top: 24px;
     max-width: 192px;
+}
+
+@media all and (min-width:1025px){
+    .step-container{
+        .input-control{
+            margin-bottom: 24px;
+        }
+    }   
 }

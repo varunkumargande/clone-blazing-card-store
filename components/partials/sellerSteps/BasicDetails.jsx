@@ -28,8 +28,8 @@ export default function BasicDetails(){
                         <label className="upload flex column justify-center flex-center">
                             <input id="upload" type="file" name="Upload" placeholder={"Enter here"} />
                             <IconUpload />
-                            <span>Drag & Drop your files here</span>
-                            <button className="primary-btn">Upload</button>
+                            <span className="drag">Drag & Drop your files here</span>
+                            <span className="primary-btn">Upload</span>
                         </label>
                     </div>
                 </div>

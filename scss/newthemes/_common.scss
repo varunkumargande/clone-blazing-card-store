@@ -129,6 +129,10 @@ button,input{
       color: $danger-color;
       margin-top: 6px;
   }
+  select{
+    appearance: none;
+    background:$white-color url('/static/images/down.svg') no-repeat calc(100% - 10px) center;
+  }
   input,select{
       height: 42px;
   }
@@ -155,13 +159,16 @@ button,input{
     appearance: none;
     background-color: $white-color;
     border-radius: 8px;
-    span{
+    cursor: pointer;
+    .drag{
       margin:16px 0 24px;
       color:$light-grey-color;
       font-size: 16px;
+      font-weight: 400;
     }
     .primary-btn{
       width: 99px;
+      color:$white-color
     }
   }
   #upload{
@@ -438,10 +445,10 @@ label{
 
 @media all and (min-width:1440px){
   .inner-container{
-    max-width: calc(100% - 160px);
+    max-width: calc(100% - 130px);
     .overflow-wrap{
       .inner-container{
-        max-width: calc(100% - 160px);
+        max-width: calc(100% - 148px);
         padding: 0 15px;
       }
     }
