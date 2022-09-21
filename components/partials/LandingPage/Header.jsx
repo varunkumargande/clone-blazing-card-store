@@ -63,7 +63,7 @@ function Header(props) {
                         <button className="Notification flex flex-center justify-center"><IconNotification /></button>
 
 
-                        {auth.isLoggedIn ? (
+                        {/* {auth.isLoggedIn ? (
                             <>
                                 <button className="profile">
                                     <span onClick={handleOnClick} ref={wrapperRef}><img src="/static/images/profile.png" alt="Profile" /><IconDropdown /></span>
@@ -81,7 +81,7 @@ function Header(props) {
                                     <a className="border-btn flex flex-center justify-center">Register</a>
                                 </Link>
                             </>
-                        )}
+                        )} */}
 
                     </div>
                     {/* <div className="withotLogedIn flex flex-center justify-right">
