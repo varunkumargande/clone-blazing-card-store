@@ -5,6 +5,12 @@ import AgoraRTM from "agora-rtm-sdk";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
 import { useSelector } from "react-redux";
+import IconSpeaker from '../../Icons/IconSpeaker';
+import IconShare from '../../Icons/IconShare';
+import IconHeart from '../../Icons/IconHeart';
+import IconDoller from '../../Icons/IconDoller';
+import IconEye from '../../Icons/IconEye';
+import IconClose from "../../Icons/IconClose";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
@@ -19,12 +25,12 @@ function StreamingBase() {
   const COUNT_INC = 2;
   const [volumeLevel, setVolumeLevel] = useState(100);
   const [isMute, setIsMute] = useState(false);
-  const stream = useSelector((state) => state.stream)
-  const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn
+  const stream = useSelector((state) => state.stream);
+  const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
 
   useEffect(() => {
-      isLoggedIn ? setDisableBid(false) : setDisableBid(true);
-      joinChannel();
+    isLoggedIn ? setDisableBid(false) : setDisableBid(true);
+    joinChannel();
   }, []);
 
   const joinChannel = async () => {
@@ -86,9 +92,10 @@ function StreamingBase() {
   };
   /*****End notifications *****/
   const handleMuteButton = () => {
-    setIsMute(!isMute)
+    setIsMute(!isMute);
   };
   const handleCustomBid = () => {
+    console.log("handleeee")
     setOpen(true);
   };
 
@@ -115,59 +122,74 @@ function StreamingBase() {
   const changeVolumeLevel = (event) => {
     event.preventDefault();
     const changedVolume = event?.target?.value;
-    if(changedVolume) {
+    if (changedVolume) {
       setVolumeLevel(changedVolume);
     }
-  }
+  };
 
   return (
     <>
-      <StreamingElement volume={volumeLevel} isMute={isMute} />
-      <span>38</span>
       <div className="stream-wrapper">
         <div className="overlay-sighin">
-          { isLoggedIn ? <></>
-            : <p>Please login to participate in the stream</p>
-          }
+          {isLoggedIn ? (
+            <></>
+          ) : (
+            <p>Please login to participate in the stream</p>
+          )}
+        </div>
+        <div className="stream-image-video">
+                {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
+                <StreamingElement volume={volumeLevel} isMute={isMute} />
+            </div>
+        <div className="inner-wrapper">
+          {/*add className disable when want {disable}*/}
+          <div className="stream-header flex space-between">
+            <div className="head-title">PSA SLAB #83</div>
+            <div className="tme-wrap flex flex-center justify-center">
+              <IconEye />
+              <span>1.2K</span> <button className="live">Live</button>
+            </div>
+            {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
-        <div className="overlay">
-          <div className="product-info">
-            <div id="winning-buyer-info">winner won!</div>
-            <div id="product-name">Name</div>
-            <div id="shipping-details">Shipping and tax</div>
+          <div className="video-icon">
+            <button className="flex flex-center justify-center br50">
+              <IconSpeaker />
+            </button>
+            <button className="flex flex-center justify-center br50">
+              <IconShare />
+            </button>
+            <button className="flex flex-center justify-center br50">
+              <IconHeart />
+            </button>
+            <button className="flex flex-center justify-center br50">
+              <IconDoller />
+            </button>
           </div>
-          <div className="video-info">
-            <div className="volume">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={volumeLevel}
-                className="volume-range"
-                onChange={(e)=>{changeVolumeLevel(e)}}
-              />
-              <div className="bar-hoverbox">
-                <div classame="bar">
-                  <div classame="bar-fill"></div>
-                </div>
-              </div>
-              <div>
-                <button
-                  id="mute-button"
-                  className="curved-box"
-                  onClick={handleMuteButton}
-                >
-                  Mute
-                </button>
+          {/*Auction end Html*/}
+          {/* <div className="auction-end-text text-center">     
+                    <h3>Live Stream Ended</h3>
+                    <p>The live video has ended you can <br/>no longer to view</p>
+                </div> */}
+          {/* winner profile*/}
+          {/* <div className="winner-profile flex flex-center">
+                    <div className="pf br50"><img src="/static/images/profile.png" alt="" /></div>
+                    ad_marie <span> &nbsp; is winner 🎉</span>
+                </div> */}
+          <div className="stream-footer flex flex-center space-between">
+            <div className="left">
+              <div className="time-left">Time left - <Timer minutes={minutes} seconds={seconds} /></div>
+              <div className="bid-status flex flex-center">
+                Current Bid - ${bidAmount} + Ship/Tax{" "}
+                <span className="flex flex-center justify-center br50">i</span>
               </div>
             </div>
-            <div id="pay-button">
-              <button className=" curved-box">$</button>
-              <div>Pay</div>
-            </div>
-            <div className="bidded-amount">$ {bidAmount}</div>
-
-            <Timer minutes={minutes} seconds={seconds} />
+            <div className="btn-wrap flex space-between">
+                        <button className="border-btn" onClick={handleCustomBid}>Custom Bid</button>
+                        <button className="primary-btn">Bid ${amountToBid}</button>
+                    </div>
+            {/* <div className="auction-end">
+              <button className="primary-btn disable">Auction Ended</button>
+            </div> */}
           </div>
         </div>
         {disableBid ? (
@@ -208,50 +230,37 @@ function StreamingBase() {
 
         {open ? (
           <>
-            <div id="custom-bid-popup">
-              <div className="close-modal">
-                <button onClick={() => setOpen(false)}>X</button>
-              </div>
-              <div id="product-name-price">
-                <div className="product-detail">Product name</div>
-                <div className="product-detail">${bidAmount}</div>
-              </div>
-              <Timer minutes={minutes} seconds={seconds} />
-              <div id="adjust-bidding-amount">
-                <div>
-                  <button
-                    className=""
-                    onClick={() => setAmountToBid(amountToBid - 1)}
-                  >
-                    -
-                  </button>
-                </div>
-                <div>$ {amountToBid}</div>
-                <div>
-                  <button
-                    className=""
-                    onClick={() => setAmountToBid(amountToBid + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-              <div className="buyer-buttons">
-                <button
-                  className="curved-box general-button-style"
-                  onClick={() => setOpen(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="curved-box general-button-style"
-                  id="confirm-bid"
-                  onClick={handleConfirmBid}
-                >
-                  Confirm
-                </button>
-              </div>
+            <div className="modalOverlay flex justify-center flex-center">
+            <div className="modal">
+               <div className="modal-header flex Space-between flex-center">
+                    <h5 className="modal-title">Custom Bid</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><IconClose /></span>
+                    </button>
+               </div> 
+               <div className="modal-body">
+                    <div className="flex space-between bid-status mb16">
+                        <div className="left">
+                            <strong>Time left - </strong>
+                            <span>0m 15s</span>
+                        </div>
+                        <div className="right">
+                            <strong>Current Bid - </strong>
+                            <span>$110 +Ship/Tax</span>
+                        </div>
+                    </div>
+                    <div className="flex space-between increment mb16">
+                        <button className="decrease flex flex-center justify-center">-</button>
+                        <input type="number" className="text-center" placeholder="0"/>
+                        <button className="increase flex flex-center justify-center">+</button>
+                    </div>
+                    <div className="flex space-between btn-wrap">
+                        <button className="disable-btn">Cancel</button>
+                        <button className="primary-btn">Conform</button>
+                    </div>
+               </div>
             </div>
+        </div>
           </>
         ) : (
           <></>
