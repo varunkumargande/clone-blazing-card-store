@@ -30,7 +30,7 @@ function Index(){
     return(
         <>
         { streamingDetails?.uuid ? <>
-            <div className='wrapper'>
+            <div className='streaming-page flex space-between'>
             <LeftDiv open={open} productDetail={setProductDetail} openPayment = {setOpenPayment} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamingDetails={streamingDetails}/>
             <CenterDiv open={open} productDetail={productDetail} isPayment={openPayment} openPayment = {setOpenPayment} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId} streamDetails={selectedStream}/>
             <RightDiv streamingDetails={streamingDetails} />
@@ -45,3 +45,5 @@ function Index(){
 }
 
 export default Index;
+
+
