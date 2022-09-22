@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 import { modalSuccess } from "../../../api/intercept";
 import { logOut } from '../../../store/auth/action';
-import { imageUrl } from "../../../api/url";
+import { imageUrl } from '../../../api/url';
 
 function HeaderDefault({ auth }) {
   const router = useRouter();

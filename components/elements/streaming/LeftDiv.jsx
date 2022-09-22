@@ -115,12 +115,10 @@ function LeftDiv({
   //     alert("Moving towards payment");
   //   }
   // }, [addPayInfo, addShippInfo]);
-  const setToggle = (element) =>{
-    setProductListing([])
-    toggleTab(
-      TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
-    )
-  }
+  const setToggle = (element) => {
+    setProductListing([]);
+    toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
+  };
   const getToggles = () => {
     return TOGGLES.map((element) => {
       return (
@@ -133,9 +131,7 @@ function LeftDiv({
                 ? "tab-link active"
                 : "tab-link"
             }
-            onClick={() =>
-              setToggle(element)
-            }
+            onClick={() => setToggle(element)}
           >
             {" "}
             {element}
@@ -152,13 +148,13 @@ function LeftDiv({
 
   const getProductList = () => {
     return productListing?.map((product) => {
-      console.log(product);
-      console.log(toggleState)
-      let productName = product?.name.toUpperCase()
+      let productName = product?.name.toUpperCase();
       return (
         <>
           {toggleState == "auction" ? (
-            <li><strong>{product?.name}</strong></li>
+            <li>
+              <strong>{product?.name}</strong>
+            </li>
           ) : toggleState == "buynow" ? (
             <div className="flex flex-center space-between list">
               <div className="left flex column">
@@ -166,8 +162,14 @@ function LeftDiv({
                 {/* <span>17 Available</span> */}
               </div>
               <div className="right">
-                <button className="border-btn" onClick={() => handleBuyNow(product)} disabled={isLoggedIn?false:true}>Buy Now</button>
-                
+                <button
+                  className="border-btn"
+                  onClick={() => handleBuyNow(product)}
+                  disabled={isLoggedIn ? false : true}
+                >
+                  Buy Now
+                </button>
+
                 {/* <div className="piece text-center">$12/piece</div> */}
               </div>
             </div>
@@ -207,6 +209,7 @@ function LeftDiv({
     });
   };
 
+  const productCount = productListing?.length > 0 ? productListing?.length : 0;
   return (
     <div className="streaming-left">
       <div className="flex profile-wrapper">
@@ -229,22 +232,22 @@ function LeftDiv({
         </div>
         {toggleState == "auction" ? (
           <div className="action-list leftdata-list">
-            <div className="product-count">65 Products</div>
+            <div className="product-count">{productCount} Products</div>
             <ul className="product-list">{getProductList()}</ul>
           </div>
         ) : toggleState == "buynow" ? (
           <div className="buynow-list leftdata-list">
-            <div className="product-count">65 Products</div>
+            <div className="product-count">{productCount} Products</div>
             <div className="product-list">{getProductList()}</div>
           </div>
         ) : toggleState == "sold" ? (
           <div className="sold-list leftdata-list">
-            <div className="product-count">19 Products</div>
+            <div className="product-count">{productCount} Products</div>
             <div className="product-list">{getProductList()}</div>
           </div>
         ) : (
           <div className="purchased-list leftdata-list">
-            <div className="product-count">19 Products</div>
+            <div className="product-count"> {productCount} Products</div>
             <div className="product-list">{getProductList()}</div>
           </div>
         )}
