@@ -14,7 +14,6 @@ const commonvendorproduct = () => {
 
     const router=useRouter()
     const Productslug=router.query.cvp
-    // console.log(router.query.cvp,'cvi');
     const breadCrumb = [
       
         {

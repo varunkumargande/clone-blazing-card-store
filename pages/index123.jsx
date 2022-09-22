@@ -63,7 +63,6 @@ function Index(props) {
       dispatch(getCollections(collectionsSlug));
     }
   }, []);
-  console.log(wightdata,'wightdata')
   return (
     <div className="site-content">
       <HeaderDefault />

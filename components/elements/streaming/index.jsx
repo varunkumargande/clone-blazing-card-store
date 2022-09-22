@@ -17,15 +17,17 @@ function Index(){
     const [openPayment, setOpenPayment] = useState(false);
     const [productDetail, setProductDetail] = useState([]);
     const dispatch = useDispatch();
-  const streamingDetails = useSelector((state) => {
-    return state?.stream?.streamData
+  const stream = useSelector((state) => {
+    return state?.stream
   });
+
+  const streamingDetails = stream?.streamData;
+  const streamPageData = stream?.streamPageData;
   
   useEffect(() => {
     dispatch(streamData(uuid));
   }, []);
 
-    console.log(productDetail)
 
     return(
         <>
@@ -33,7 +35,7 @@ function Index(){
             <div className='streaming-page flex space-between'>
             <LeftDiv open={open} productDetail={setProductDetail} openPayment = {setOpenPayment} setOpen={setOpen} addShippInfo={addShippInfo} addPayInfo={addPayInfo} setCustomerId={setCustomerId} streamingDetails={streamingDetails}/>
             <CenterDiv open={open} productDetail={productDetail} isPayment={openPayment} openPayment = {setOpenPayment} setOpen={setOpen} setAddShippInfo={setAddShippInfo} setAddPayInfo={setAddPayInfo} customerId={customerId} streamDetails={selectedStream}/>
-            <RightDiv streamingDetails={streamingDetails} />
+            <RightDiv streamingDetails={streamingDetails} streamData={streamPageData} />
         </div>
             </>  : null
 
