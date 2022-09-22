@@ -4,7 +4,7 @@ import IconShare from '../../Icons/IconShare';
 import IconHeart from '../../Icons/IconHeart';
 import IconDoller from '../../Icons/IconDoller';
 import IconEye from '../../Icons/IconEye';
-
+import { AddNewCardModal,PaymentInfoMOdal } from "../Modal/Modal";
 
 export default function StreamingLive(){
     return(
@@ -47,6 +47,7 @@ export default function StreamingLive(){
                         <button className="primary-btn disable">Auction Ended</button>
                     </div>
                 </div>
+                {/* <PaymentInfoMOdal /> */}
             </div>
         </div>
     );
