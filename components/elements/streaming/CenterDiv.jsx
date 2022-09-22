@@ -50,7 +50,6 @@ function CenterDiv({
     modalSuccess("success", "Shippment Detail added")
   }
 
-
   return (
 
     <div className="streaming-div-center">

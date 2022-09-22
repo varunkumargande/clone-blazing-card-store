@@ -81,7 +81,6 @@ function ShippmentCard(props) {
                             </select>
                         </div>
                     </div>
-
                     {props.shipData != null ? (
                         <>
                             <Formik
@@ -139,15 +138,6 @@ function ShippmentCard(props) {
                                                                     </>
                                                                 )
                                                             })}
-
-                                                            {countryData.map((item, index) => {
-                                                                return (
-                                                                    <>
-                                                                        <option value={item.countryId}>{item.name}</option>
-                                                                    </>
-                                                                )
-                                                            })}
-
                                                         </select>
                                                         <p className='field-error-row-country'>{errors.country}</p>
                                                     </div>
@@ -170,24 +160,14 @@ function ShippmentCard(props) {
                                         </form>
                                     </>
                                 )}
-
                             </Formik>
-
                         </>
                     ) : (
                         <>
                         </>
                     )}
-
-
-
-
-
                 </div>
             </div>
-
-
-
         </>
     )
 }
