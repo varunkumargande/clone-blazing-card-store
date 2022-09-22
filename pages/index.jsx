@@ -33,10 +33,6 @@ export default function landingpage() {
     categoryApi(dispatch);
   }, []);
 
-  if (categories) {
-    console.log("landing page categories", categories);
-  }
-
   const getAllCategoriesCard = () => {
     if (categories) {
       const categoriesData = Object.entries(categories);
