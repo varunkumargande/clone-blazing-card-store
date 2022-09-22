@@ -13,15 +13,21 @@
         border-radius: 24px;
         display: block;
         height: auto;
+        color:$primary-color;
+        &.medium{
+            max-width: 450px;
+        }
     }
     .modal-header{
         height: 56px;
         padding: 0 16px;
         background-color: $modal-header-bg;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
     }
     .modal-title{
         font-size: 20px;
         line-height: 21px;
+        font-weight: 600;
     }
     .close{
         padding: 0;
@@ -37,9 +43,28 @@
             fill:$grey-color;
         }
     }
+    .item-amount{
+        padding: 8px 24px;
+        background-color: $body-bg;
+        margin-bottom: 4px;
+        .left{
+            max-width: 110px;
+            strong{
+                font-size: 16px;
+                line-height: 24px;
+                font-weight: 500;
+            }
+        }
+        .link{
+            font-size: 16px;
+            line-height: 24px;
+            color:$blue-color;
+            font-weight: 600;
+        }
+    }
     .modal-body{
-        max-height: calc(100vh - 70px);
-        padding: 16px 18px 20px;
+        max-height: calc(100vh - 170px);
+        padding: 20px 18px 20px;
         overflow: auto;
         h6{
             font-size: 16px;
@@ -59,6 +84,55 @@
                 }
             }      
         }
+        
+    }
+    .input-control{
+        input,select{
+            height: 42px;
+            background-color: $body-bg;
+            color: $primary-color;
+        }
+        &.with-bg{
+            font-size: 14px;
+            line-height: 24px;
+            input,select{
+                padding: 0 30px 0 36px;
+                font-size: 14px;
+                font-weight: 500;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                &::placeholder { 
+                    color: $primary-color;
+                    opacity: 1; 
+                }
+                &:-ms-input-placeholder { 
+                    color: $primary-color;
+                }
+                &::-ms-input-placeholder { 
+                    color: $primary-color;
+                }
+                &.address{
+                    background: url('/static/images/truck-fill.svg') no-repeat 8px center,
+                    url('/static/images/right.svg') no-repeat calc(100% - 10px) center;
+                    background-color: $body-bg;
+                }
+                &.payment{
+                    background: url('/static/images/bank-card-fill.svg') no-repeat 8px center,
+                    url('/static/images/right.svg') no-repeat calc(100% - 10px) center;
+                    background-color: $body-bg;
+                }
+            }
+        }
+    }
+    
+    .infotext{
+        font-size: 14px;
+        line-height: 20px;
+        color:$primary-color;
+    }
+    .wd310{
+        max-width: 310px;
     }
     .social-link{
         margin-bottom: 16px;
@@ -96,10 +170,12 @@
     }
     .bid-status{
         > div{
-            max-width: 128px;
+            max-width: 100%;
+            margin-bottom: 8px;
         }
         strong{
             font-weight: 500;
+            color: $primary-color;
         }
         span{
             color:$blue-color;
@@ -108,23 +184,32 @@
     }
     .increment {
         button{
-            width: 48px;
-            height: 48px;
+            width: 42px;
+            height: 42px;
             border:1px solid $border2-color;
             background-color: rgba($white-color,.2);
             font-size: 32px;
             line-height: 10px;
             border-radius: 8px;
+            color: $primary-color;
+            &.disable{
+                background: rgba(0, 8, 25, 0.05);
+                color:#a1abb7;
+            }
         }
         input{
             background: rgba(0, 8, 25, 0.05);
             border: 1px solid $border2-color;
             border-radius: 8px;
             width: calc(100% - 124px);
-            font-size: 32px;
+            font-size: 16px;
             font-weight: 500;
             color:$primary-color;
-            height: 48px;
+            height: 42px;
+            &.disable{
+                background: rgba(0, 8, 25, 0.05);
+                color:#a1abb7;
+            }
             ::placeholder { 
                 color: $primary-color;
                 opacity: 1;
@@ -144,6 +229,18 @@
     .btn-wrap{
         button{
             width: calc(50% - 9px);
+        }
+    }
+    .modal-footer{
+        padding: 24px;
+        border-top: 1px solid $border2-color;
+        .btn-wrap{
+            width: 100%;
+        }
+        .primary-btn{
+            &.disable{
+                opacity: .44;
+            }
         }
     }
 }

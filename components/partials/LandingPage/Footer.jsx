@@ -18,7 +18,7 @@ export default function Footer(){
                     <div className="box">
                         <h3 className="follow mb20">Company</h3>
                         <div className="links flex column">
-                            <Link href="/"><a>About Us</a></Link>
+                            <Link href="/about-us"><a>About Us</a></Link>
                             <Link href="/"><a>Faq's</a></Link>        
                             <Link href="/"><a>Contact Us</a></Link>        
                         </div>
@@ -26,8 +26,8 @@ export default function Footer(){
                     <div className="box">
                         <h3 className="follow mb20">Quick Links</h3>
                         <div className="links flex column">
-                            <Link href="/"><a>Privecy Policy</a></Link>
-                            <Link href="/"><a>Term & Conditions</a></Link>    
+                            <Link href="/privacy-policy"><a>Privecy Policy</a></Link>
+                            <Link href="/terms-conditions"><a>Term & Conditions</a></Link>    
                         </div>
                     </div>
                     <div className="box">
