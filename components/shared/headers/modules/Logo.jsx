@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 export default function Logo() {
   const logopaths=useSelector(s=>s.setting.footerDet)
-  console.log(logopaths,'logopaths');
   return (
   <>
   <Link href="/">

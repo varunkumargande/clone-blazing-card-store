@@ -61,7 +61,7 @@ function LeftDiv({
     " " +
     streamingDetails?.vendorDetails?.last_name;
   const streamTitle = streamingDetails?.title;
-  console.log("vendor", vendorName);
+
   // Handle Tabs Change Functionality
   const toggleTab = (index) => {
     setToggleState(index);

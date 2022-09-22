@@ -28,7 +28,6 @@ function Index(){
     dispatch(streamData(uuid));
   }, []);
 
-    console.log(productDetail)
 
     return(
         <>

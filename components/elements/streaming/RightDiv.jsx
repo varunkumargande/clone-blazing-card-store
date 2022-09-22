@@ -33,13 +33,6 @@ function RightDiv({ streamingDetails, streamData }) {
   const joinChannel = async () => {
     const options = streamData?.option;
     const client = AgoraRTM.createInstance(options.appId);
-    console.log('token',
-      options.rtm,
-      options.messageChannel,
-      options.audience + options.audienceId,
-      options.accountType,
-      options.userType
-    )
     const token = await getToken(
       options.rtm,
       options.messageChannel,
@@ -47,7 +40,7 @@ function RightDiv({ streamingDetails, streamData }) {
       options.accountType,
       options.userType
     );
-    console.log(streamData, 'options=======')
+
     await client.login({ uid: options.audience, token });
     const channel = client.createChannel(options.messageChannel);
     await channel.join();
