@@ -23,7 +23,6 @@ function AccountQuickLinks(props) {
     const eventToVendorAdminPanel = async () => {
         let id = JSON.parse(sessionStorage.getItem("spurtUser")).id
         const result =  await APIServices.get('vendor-store/verifyVendor', id)
-        console.log(result)
         if(result.status == 200){
             if(result.data.verifyStatus == false){
                 modalWarning("error", "Your vendor account is not verified !")

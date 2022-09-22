@@ -31,7 +31,6 @@ const MyOrders = ({ auth, compare }) => {
     };
     const categories = useSelector((state)=>state?.category?.categories)
     const dispatch = useDispatch();
-    console.log("landing page", dispatch)
     useEffect(() => {
       resizeWindow();
       window.addEventListener("resize", resizeWindow);
@@ -39,7 +38,6 @@ const MyOrders = ({ auth, compare }) => {
     }, []);
 
     useEffect(()=>{
-      console.log(categories,"landingpage")
       categoryApi(dispatch);
     },[])
 

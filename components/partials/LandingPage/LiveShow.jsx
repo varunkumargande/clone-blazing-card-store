@@ -20,8 +20,7 @@ export default function LiveShow({ name, catId }) {
         subcatstreamDetailApi(dispatch,catId)
     },[])
     const streamDetail= useSelector((state)=>state?.stream?.streamdetails?.stream)
-    console.log("stream detail",streamDetail)
-//    if(!!streamDetail?.category)console.log(Object.keys( streamDetail?.category))
+
 
     const getStreamCards = () => {
        

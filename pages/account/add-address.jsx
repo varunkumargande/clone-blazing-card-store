@@ -27,7 +27,6 @@ const MyAccountPage = () => {
     };
     const categories = useSelector((state)=>state?.category?.categories)
     const dispatch = useDispatch();
-    console.log("landing page", dispatch)
     useEffect(() => {
       resizeWindow();
       window.addEventListener("resize", resizeWindow);
