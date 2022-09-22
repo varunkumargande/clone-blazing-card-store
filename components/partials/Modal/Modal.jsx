@@ -95,13 +95,15 @@ export function CustomBidModal(props){
         </div>
     );
 }
-export function PaymentInfoMOdal(){
+export function PaymentInfoMOdal(props){
+    console.log("payamme")
+    const {openPayment, handlePaymentMethod, handleShippmentMethod, handleSubmitBuyProduct} = props
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal medium">
                <div className="modal-header flex Space-between flex-center">
                     <h5 className="modal-title">Payment Info</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => openPayment(false)}>
                         <span aria-hidden="true"><IconClose /></span>
                     </button>
                </div> 
@@ -123,7 +125,7 @@ export function PaymentInfoMOdal(){
                     </div>
                     <div className="input-control with-bg">
                         <label>Card Number *</label>
-                        <input name="text" placeholder={"Add Payment"}  className="payment" />
+                        <input name="text" placeholder={"Add Payment"}  className="payment" onClick={handlePaymentMethod}/>
                         <span className="errorMessage"></span>
                     </div>     
                </div>
@@ -138,7 +140,9 @@ export function PaymentInfoMOdal(){
     );
 }
 
-export function AddNewCardModal(){
+export function AddNewCardModal(openPayment){
+    console.log("add")
+    openPayment(false)
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal medium">

@@ -4,7 +4,6 @@ import { getToken } from "../../../api/stream/getToken";
 import AgoraRTM from "agora-rtm-sdk";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
-import { getWinnerDetails } from "../../../api/stream/getWinnerDetails";
 import { useSelector } from "react-redux";
 import IconSpeaker from "../../Icons/IconSpeaker";
 import IconShare from "../../Icons/IconShare";
@@ -70,7 +69,7 @@ function StreamingBase() {
 
   const handleConfirmBid = async () => {
     let message;
-    let auctionId = 2;
+    let auctionId = 3;
     setOpen(false);
     createBid(auctionId, Number(audienceId), amountToBid);
     setBidAmount(amountToBid);
@@ -114,7 +113,7 @@ function StreamingBase() {
         if (minutes === 0) {
           clearInterval(myInterval);
           setDisableBid(true);
-          getWinnerDetails(auctionId)
+          // getWinnerDetails(auctionId)
         } else if (seconds < 60) {
           setMinutes(minutes - 1);
           setSeconds(59);

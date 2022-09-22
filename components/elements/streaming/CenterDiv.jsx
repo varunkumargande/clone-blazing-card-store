@@ -5,6 +5,7 @@ import ShippmentCard from "./Payment/ShippmentCard";
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept"
+import {PaymentInfoMOdal, AddNewCardModal, AddAddressModal} from "../../partials/Modal/Modal";
 
 function CenterDiv({
   productDetail,
@@ -56,7 +57,8 @@ function CenterDiv({
         <StreamingBase />
         {isPayment ? (
           <>
-            <div className="payment_popup">
+          <PaymentInfoMOdal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct}/>
+             {/* <div className="payment_popup">
               <div>
                 <Row>
                   <Col span={14}>
@@ -113,7 +115,7 @@ function CenterDiv({
                 <>
                 </>
               )}
-            </div>
+            </div>  */}
           </>
         ) : (
           <>
