@@ -90,7 +90,7 @@ const StreamingElement = ({ volume, isMute }) => {
         <div
           id="local_stream"
           className="local_stream"
-          // style={{ width: "510px", height: "600px" }}
+          style={{ width: "100%", height: "100%" }}
         ></div>
       ) :  <img src="/static/images/stream-image.jpg" alt="stream" />}
     </>

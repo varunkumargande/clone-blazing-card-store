@@ -29,7 +29,6 @@ function LeftDiv({
     PURCHASED: "purchased",
     SOLD: "sold",
   };
-  console.log("ssssssss", streamDetails, streamingDetails);
   const TOGGLES = ["Auction", "Buy now", "Purchased", "Sold"];
 
   const [isLoading, setIsLoading] = useState(true);

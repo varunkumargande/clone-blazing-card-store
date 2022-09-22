@@ -17,7 +17,6 @@ async function getStreamData(streamUuid) {
   if (result && result.data && result.data) {
     console.log(result.data, 'API DATA')
     modalSuccess("success", result.data.message);
-    console.log(result.data?.data?.null, 'yeh wala mera hai ===========&&&&&&&&&&&&&&&')
     if(!!result.data?.data?.null) {
       return result.data?.data?.null[0];
     }else {
