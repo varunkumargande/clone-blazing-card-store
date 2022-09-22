@@ -11,7 +11,7 @@ import IconHeart from "../../Icons/IconHeart";
 import IconDoller from "../../Icons/IconDoller";
 import IconEye from "../../Icons/IconEye";
 import IconClose from "../../Icons/IconClose";
-import { CustomBidModal } from "../../partials/Modal/Modal";
+import { CustomBidModal,ShippingTaxesModal } from "../../partials/Modal/Modal";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
@@ -28,6 +28,8 @@ function StreamingBase() {
   const [isMute, setIsMute] = useState(false);
   const stream = useSelector((state) => state.stream);
   const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
+  const [openShipPayDetails, setOpenShipPayDetails] = useState(false)
+  const [isShipPayOpen, setIsShipPayOpen ] = useState(false)
 
   useEffect(() => {
     isLoggedIn ? setDisableBid(false) : setDisableBid(true);
@@ -134,6 +136,10 @@ function StreamingBase() {
   const increaseBidAmount = () =>{
     setAmountToBid(amountToBid+1)
   }
+
+  const handleShipModal = () => {
+    setOpenShipPayDetails(true)
+  }
   return (
     <>
       <div className="stream-wrapper">
@@ -161,7 +167,7 @@ function StreamingBase() {
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
           <div className="video-icon">
-            <button className="flex flex-center justify-center br50">
+            <button className="flex flex-center justify-center br50" onClick={handleMuteButton}>
               <IconSpeaker />
             </button>
             <button className="flex flex-center justify-center br50">
@@ -191,7 +197,8 @@ function StreamingBase() {
               </div>
               <div className="bid-status flex flex-center">
                 Current Bid - ${bidAmount} + Ship/Tax{" "}
-                <span className="flex flex-center justify-center br50">i</span>
+                <span className="flex flex-center justify-center br50" onClick={handleShipModal}>i</span>
+                
               </div>
             </div>
             {minutes == 0 && seconds == 0 ? (
@@ -235,6 +242,10 @@ function StreamingBase() {
         ) : (
           <></>
         )}
+
+        {
+          openShipPayDetails ? <><ShippingTaxesModal setOpenShipPayDetails={setOpenShipPayDetails}/></> : <></>
+        }
       </div>
     </>
   );
