@@ -3,6 +3,7 @@ import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
 import IconShareTwitter from "../../Icons/IconShareTwitter";
 import IconShareWhatsup from "../../Icons/IconShareWhatsup";
+import Timer from "../../elements/streaming/Timer";
 
 export function ShareModalModal(){
     return(
@@ -52,8 +53,8 @@ export function ShippingTaxesModal(){
         </div>
     );
 }
-export function CustomBidModal(setOpen, Timer, minutes, seconds, bidAmount, setBidAmount, amountToBid, setAmountToBid, handleConfirmBid){
-    console.log("----------")
+export function CustomBidModal(props){
+    const {setOpen, minutes, seconds, bidAmount, amountToBid, handleConfirmBid, increaseBidAmount, checkBidAmount} = props
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal">
@@ -77,13 +78,13 @@ export function CustomBidModal(setOpen, Timer, minutes, seconds, bidAmount, setB
                         </div>
                     </div>
                     <div className="flex space-between increment mb16">
-                        <button className="decrease flex flex-center justify-center" onClick={() => checkBidAmount()}>-</button>
-                        <input type="number" className="text-center" placeholder="0"/>
-                        <button className="increase flex flex-center justify-center" onClick={() => setAmountToBid(amountToBid + 1)}>+</button>
+                        <button className="decrease flex flex-center justify-center" onClick={checkBidAmount}>-</button>
+                        <input type="number" className="text-center" placeholder={amountToBid}/>
+                        <button className="increase flex flex-center justify-center" onClick={increaseBidAmount}>+</button>
                     </div>
                     <div className="flex space-between btn-wrap">
                         <button className="disable-btn" onClick={() => setOpen(false)}>Cancel</button>
-                        <button className="primary-btn" onClick={handleConfirmBid}>Conform</button>
+                        <button className="primary-btn" onClick={handleConfirmBid}>Confrrm</button>
                     </div>
                </div>
             </div>
