@@ -52,13 +52,14 @@ export function ShippingTaxesModal(){
         </div>
     );
 }
-export function CustomBidModal(){
+export function CustomBidModal(setOpen, Timer, minutes, seconds, bidAmount, setBidAmount, amountToBid, setAmountToBid, handleConfirmBid){
+    console.log("----------")
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal">
                <div className="modal-header flex Space-between flex-center">
                     <h5 className="modal-title">Custom Bid</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => setOpen(false)}>
                         <span aria-hidden="true"><IconClose /></span>
                     </button>
                </div> 
@@ -66,21 +67,23 @@ export function CustomBidModal(){
                     <div className="flex space-between bid-status mb16">
                         <div className="left">
                             <strong>Time left - </strong>
-                            <span>0m 15s</span>
+                            <span>
+                        <Timer minutes={minutes} seconds={seconds} />
+                      </span>
                         </div>
                         <div className="right">
                             <strong>Current Bid - </strong>
-                            <span>$110 +Ship/Tax</span>
+                            <span>${bidAmount} +Ship/Tax</span>
                         </div>
                     </div>
                     <div className="flex space-between increment mb16">
-                        <button className="decrease flex flex-center justify-center">-</button>
+                        <button className="decrease flex flex-center justify-center" onClick={() => checkBidAmount()}>-</button>
                         <input type="number" className="text-center" placeholder="0"/>
-                        <button className="increase flex flex-center justify-center">+</button>
+                        <button className="increase flex flex-center justify-center" onClick={() => setAmountToBid(amountToBid + 1)}>+</button>
                     </div>
                     <div className="flex space-between btn-wrap">
-                        <button className="disable-btn">Cancel</button>
-                        <button className="primary-btn">Conform</button>
+                        <button className="disable-btn" onClick={() => setOpen(false)}>Cancel</button>
+                        <button className="primary-btn" onClick={handleConfirmBid}>Conform</button>
                     </div>
                </div>
             </div>
