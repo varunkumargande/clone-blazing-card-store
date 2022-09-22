@@ -67,7 +67,7 @@ export function CustomBidModal(props){
                     </button>
                </div> 
                <div className="modal-body">
-                    <div className="flex space-between bid-status mb16">
+                    <div className="flex space-between bid-status column mb16">
                         <div className="left">
                             <strong>Time left - </strong>
                             <span>
@@ -84,10 +84,154 @@ export function CustomBidModal(props){
                         <input type="number" className="text-center" placeholder={amountToBid}/>
                         <button className="increase flex flex-center justify-center" onClick={increaseBidAmount}>+</button>
                     </div>
+               </div>
+               <div className="modal-footer">
                     <div className="flex space-between btn-wrap">
                         <button className="disable-btn" onClick={() => setOpen(false)}>Cancel</button>
                         <button className="primary-btn" onClick={handleConfirmBid}>Confrrm</button>
+                    </div> 
+               </div>
+            </div>
+        </div>
+    );
+}
+export function PaymentInfoMOdal(){
+    return(
+        <div className="modalOverlay flex justify-center flex-center">
+            <div className="modal medium">
+               <div className="modal-header flex Space-between flex-center">
+                    <h5 className="modal-title">Payment Info</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><IconClose /></span>
+                    </button>
+               </div> 
+               <div className="modal-body-upper">
+                    <div className="flex space-between item-amount">
+                        <div className="left">
+                            <strong>PSA SLAB #81 1 item</strong>
+                        </div>
+                        <div className="right">
+                            <span className="link">$23.00</span>
+                        </div>
                     </div>
+               </div>
+               <div className="modal-body">
+                    <div className="input-control with-bg">
+                        <label>Shipping Details</label>
+                        <input name="text" placeholder={"Add Address"} className="address" />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="input-control with-bg">
+                        <label>Card Number *</label>
+                        <input name="text" placeholder={"Add Payment"}  className="payment" />
+                        <span className="errorMessage"></span>
+                    </div>     
+               </div>
+               <div className="modal-footer flex justify-center">
+                    <div className="flex space-between btn-wrap wd310">
+                        <button className="disable-btn">Cancel</button>
+                        <button className="primary-btn">Conform</button>
+                    </div> 
+               </div>
+            </div>
+        </div>
+    );
+}
+
+export function AddNewCardModal(){
+    return(
+        <div className="modalOverlay flex justify-center flex-center">
+            <div className="modal medium">
+               <div className="modal-header flex Space-between flex-center">
+                    <h5 className="modal-title">Add New Card</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><IconClose /></span>
+                    </button>
+               </div> 
+               <div className="modal-body">
+                    <div className="input-control">
+                        <label>Name on Card *</label>
+                        <input name="text" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="input-control">
+                        <label>Card Number *</label>
+                        <input name="text" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="flex space-between">
+                        <div className="input-control wd50">
+                            <label>Expiration</label>
+                            <input name="text" placeholder={"Enter here"}  />
+                            <span className="errorMessage"></span>
+                        </div>
+                        <div className="input-control wd50">
+                            <label>CVV</label>
+                            <input name="text" placeholder={"Enter here"}  />
+                            <span className="errorMessage"></span>
+                        </div>
+                    </div>
+                    <div className="input-control">
+                        <label>Country *</label>
+                        <select>
+                            <option>India</option>
+                            <option>Australia</option>
+                            <option>America</option>
+                        </select>
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="infotext">By providing your card information, you allow Blazing Cards to charge your card for future payments in accordance with their terms.</div>
+               </div>
+               <div className="modal-footer">
+                    <div className="flex justify-center btn-wrap">
+                        <button className="primary-btn disable">Save card</button>
+                    </div> 
+               </div>
+            </div>
+        </div>
+    );
+}
+export function AddAddressModal(){
+    return(
+        <div className="modalOverlay flex justify-center flex-center">
+            <div className="modal medium">
+               <div className="modal-header flex Space-between flex-center">
+                    <h5 className="modal-title">Add Address</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><IconClose /></span>
+                    </button>
+               </div> 
+               <div className="modal-body">
+                    <div className="input-control">
+                        <label>Full Name *</label>
+                        <input name="text" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="input-control">
+                        <label>Phone Number *</label>
+                        <input name="text" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="input-control">
+                        <label>Email Address *</label>
+                        <input name="email" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="input-control">
+                        <label>Address Line 1 *</label>
+                        <input name="text" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="input-control">
+                        <label>Address Line 2 *</label>
+                        <input name="text" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+               </div>
+               <div className="modal-footer">
+                    <div className="flex justify-center btn-wrap">
+                        <button className="primary-btn">Save Changes</button>
+                    </div> 
                </div>
             </div>
         </div>
