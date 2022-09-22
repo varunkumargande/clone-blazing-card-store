@@ -4,6 +4,7 @@ import { getToken } from "../../../api/stream/getToken";
 import AgoraRTM from "agora-rtm-sdk";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
+import { getWinnerDetails } from "../../../api/stream/getWinnerDetails";
 import { useSelector } from "react-redux";
 import IconSpeaker from "../../Icons/IconSpeaker";
 import IconShare from "../../Icons/IconShare";
@@ -11,7 +12,7 @@ import IconHeart from "../../Icons/IconHeart";
 import IconDoller from "../../Icons/IconDoller";
 import IconEye from "../../Icons/IconEye";
 import IconClose from "../../Icons/IconClose";
-import { CustomBidModal,ShippingTaxesModal } from "../../partials/Modal/Modal";
+import { CustomBidModal,ShippingTaxesModal,ShareModalModal } from "../../partials/Modal/Modal";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
@@ -29,8 +30,8 @@ function StreamingBase() {
   const stream = useSelector((state) => state.stream);
   const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
   const [openShipPayDetails, setOpenShipPayDetails] = useState(false)
-  const [isShipPayOpen, setIsShipPayOpen ] = useState(false)
-
+  const [isShareModalOpen, setIsShareModalOpen ] = useState(false)
+  
   useEffect(() => {
     isLoggedIn ? setDisableBid(false) : setDisableBid(true);
     joinChannel();
@@ -100,8 +101,11 @@ function StreamingBase() {
   const handleCustomBid = () => {
     setOpen(true);
   };
-
+  const handleShareButton = () => {
+    setIsShareModalOpen(true)
+  }
   useEffect(() => {
+    let auctionId = 1;
     let myInterval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
@@ -110,6 +114,7 @@ function StreamingBase() {
         if (minutes === 0) {
           clearInterval(myInterval);
           setDisableBid(true);
+          getWinnerDetails(auctionId)
         } else if (seconds < 60) {
           setMinutes(minutes - 1);
           setSeconds(59);
@@ -167,10 +172,10 @@ function StreamingBase() {
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
           <div className="video-icon">
-            <button className="flex flex-center justify-center br50" onClick={handleMuteButton}>
+            <button className="flex flex-center justify-center br50" onClick={handleMuteButton} disabled={isMute ? true : false}>
               <IconSpeaker />
             </button>
-            <button className="flex flex-center justify-center br50">
+            <button className="flex flex-center justify-center br50" onClick={handleShareButton}>
               <IconShare />
             </button>
             <button className="flex flex-center justify-center br50">
@@ -245,6 +250,9 @@ function StreamingBase() {
 
         {
           openShipPayDetails ? <><ShippingTaxesModal setOpenShipPayDetails={setOpenShipPayDetails}/></> : <></>
+        }
+        {
+          isShareModalOpen ? <><ShareModalModal setIsShareModalOpen={setIsShareModalOpen}/></> : <></>
         }
       </div>
     </>
