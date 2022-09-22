@@ -172,7 +172,7 @@ function StreamingBase() {
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
           <div className="video-icon">
-            <button className="flex flex-center justify-center br50" onClick={handleMuteButton} disabled={isMute ? true : false}>
+            <button className="flex flex-center justify-center br50" onClick={handleMuteButton} disabled={isMute}>
               <IconSpeaker />
             </button>
             <button className="flex flex-center justify-center br50" onClick={handleShareButton}>
