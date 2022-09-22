@@ -4,13 +4,15 @@ import { getToken } from "../../../api/stream/getToken";
 import AgoraRTM from "agora-rtm-sdk";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
+import { getWinnerDetails } from "../../../api/stream/getWinnerDetails";
 import { useSelector } from "react-redux";
-import IconSpeaker from '../../Icons/IconSpeaker';
-import IconShare from '../../Icons/IconShare';
-import IconHeart from '../../Icons/IconHeart';
-import IconDoller from '../../Icons/IconDoller';
-import IconEye from '../../Icons/IconEye';
+import IconSpeaker from "../../Icons/IconSpeaker";
+import IconShare from "../../Icons/IconShare";
+import IconHeart from "../../Icons/IconHeart";
+import IconDoller from "../../Icons/IconDoller";
+import IconEye from "../../Icons/IconEye";
 import IconClose from "../../Icons/IconClose";
+import { CustomBidModal,ShippingTaxesModal,ShareModalModal } from "../../partials/Modal/Modal";
 
 function StreamingBase() {
   const [open, setOpen] = React.useState(false);
@@ -27,7 +29,9 @@ function StreamingBase() {
   const [isMute, setIsMute] = useState(false);
   const stream = useSelector((state) => state.stream);
   const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
-
+  const [openShipPayDetails, setOpenShipPayDetails] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen ] = useState(false)
+  
   useEffect(() => {
     isLoggedIn ? setDisableBid(false) : setDisableBid(true);
     joinChannel();
@@ -95,11 +99,13 @@ function StreamingBase() {
     setIsMute(!isMute);
   };
   const handleCustomBid = () => {
-    console.log("handleeee")
     setOpen(true);
   };
-
+  const handleShareButton = () => {
+    setIsShareModalOpen(true)
+  }
   useEffect(() => {
+    let auctionId = 1;
     let myInterval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
@@ -108,6 +114,7 @@ function StreamingBase() {
         if (minutes === 0) {
           clearInterval(myInterval);
           setDisableBid(true);
+          getWinnerDetails(auctionId)
         } else if (seconds < 60) {
           setMinutes(minutes - 1);
           setSeconds(59);
@@ -127,24 +134,37 @@ function StreamingBase() {
     }
   };
 
+  const checkBidAmount = () => {
+    if (amountToBid > bidAmount) setAmountToBid(amountToBid - 1);
+  }
+  
+  const increaseBidAmount = () =>{
+    setAmountToBid(amountToBid+1)
+  }
+
+  const handleShipModal = () => {
+    setOpenShipPayDetails(true)
+  }
   return (
     <>
       <div className="stream-wrapper">
-        <div className="overlay-sighin">
-          {isLoggedIn ? (
-            <></>
-          ) : (
-            <p>Please login to participate in the stream</p>
-          )}
-        </div>
+        <div className="overlay-sighin"></div>
         <div className="stream-image-video">
-                {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
-                <StreamingElement volume={volumeLevel} isMute={isMute} />
-            </div>
+          {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
+          <StreamingElement volume={volumeLevel} isMute={isMute} />
+        </div>
         <div className="inner-wrapper">
           {/*add className disable when want {disable}*/}
           <div className="stream-header flex space-between">
-            <div className="head-title">PSA SLAB #83</div>
+            {isLoggedIn ? (
+              <>
+                <div className="head-title">PSA SLAB #83</div>
+              </>
+            ) : (
+              <>
+                <div className="head-title">Please login to participate</div>
+              </>
+            )}
             <div className="tme-wrap flex flex-center justify-center">
               <IconEye />
               <span>1.2K</span> <button className="live">Live</button>
@@ -152,10 +172,10 @@ function StreamingBase() {
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
           <div className="video-icon">
-            <button className="flex flex-center justify-center br50">
+            <button className="flex flex-center justify-center br50" onClick={handleMuteButton} disabled={isMute ? true : false}>
               <IconSpeaker />
             </button>
-            <button className="flex flex-center justify-center br50">
+            <button className="flex flex-center justify-center br50" onClick={handleShareButton}>
               <IconShare />
             </button>
             <button className="flex flex-center justify-center br50">
@@ -177,94 +197,63 @@ function StreamingBase() {
                 </div> */}
           <div className="stream-footer flex flex-center space-between">
             <div className="left">
-              <div className="time-left">Time left - <Timer minutes={minutes} seconds={seconds} /></div>
+              <div className="time-left">
+                Time left - <Timer minutes={minutes} seconds={seconds} />
+              </div>
               <div className="bid-status flex flex-center">
                 Current Bid - ${bidAmount} + Ship/Tax{" "}
-                <span className="flex flex-center justify-center br50">i</span>
+                <span className="flex flex-center justify-center br50" onClick={handleShipModal}>i</span>
+                
               </div>
             </div>
-            <div className="btn-wrap flex space-between">
-                        <button className="border-btn" onClick={handleCustomBid}>Custom Bid</button>
-                        <button className="primary-btn">Bid ${amountToBid}</button>
-                    </div>
-            {/* <div className="auction-end">
-              <button className="primary-btn disable">Auction Ended</button>
-            </div> */}
+            {minutes == 0 && seconds == 0 ? (
+              <div className="auction-end">
+                <button className="primary-btn disable">Auction Ended</button>
+              </div>
+            ) : (
+              <div className="btn-wrap flex space-between">
+                <button
+                  className={disableBid ? "border-btn disable" : "border-btn"}
+                  disabled={disableBid}
+                  onClick={handleCustomBid}
+                >
+                  Custom Bid
+                </button>
+                <button
+                  className={disableBid ? "primary-btn disable" : "primary-btn"}
+                  disabled={disableBid}
+                  onClick={handleConfirmBid}
+                >
+                  Bid US ${amountToBid}
+                </button>
+              </div>
+            )}
           </div>
         </div>
-        {disableBid ? (
-          <div className="buyer-buttons">
-            <button
-              className="curved-box general-button-style disabled"
-              id="custom-bid"
-            >
-              Custom
-            </button>
-            <button
-              className="curved-box general-button-style disabled"
-              id="bid-button"
-            >
-              Bid ${amountToBid}
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="buyer-buttons">
-              <button
-                className="curved-box general-button-style"
-                id="custom-bid"
-                onClick={handleCustomBid}
-              >
-                Custom
-              </button>
-              <button
-                className="curved-box general-button-style"
-                id="bid-button"
-                onClick={handleConfirmBid}
-              >
-                Bid ${amountToBid}
-              </button>
-            </div>
-          </>
-        )}
 
         {open ? (
           <>
-            <div className="modalOverlay flex justify-center flex-center">
-            <div className="modal">
-               <div className="modal-header flex Space-between flex-center">
-                    <h5 className="modal-title">Custom Bid</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><IconClose /></span>
-                    </button>
-               </div> 
-               <div className="modal-body">
-                    <div className="flex space-between bid-status mb16">
-                        <div className="left">
-                            <strong>Time left - </strong>
-                            <span>0m 15s</span>
-                        </div>
-                        <div className="right">
-                            <strong>Current Bid - </strong>
-                            <span>$110 +Ship/Tax</span>
-                        </div>
-                    </div>
-                    <div className="flex space-between increment mb16">
-                        <button className="decrease flex flex-center justify-center">-</button>
-                        <input type="number" className="text-center" placeholder="0"/>
-                        <button className="increase flex flex-center justify-center">+</button>
-                    </div>
-                    <div className="flex space-between btn-wrap">
-                        <button className="disable-btn">Cancel</button>
-                        <button className="primary-btn">Conform</button>
-                    </div>
-               </div>
-            </div>
-        </div>
+            <CustomBidModal
+              setOpen={setOpen}
+              minutes={minutes}
+              seconds={seconds}
+              bidAmount={bidAmount}
+              increaseBidAmount={increaseBidAmount}
+              amountToBid={amountToBid}
+              handleConfirmBid={handleConfirmBid}
+              checkBidAmount={checkBidAmount}
+            />
           </>
         ) : (
           <></>
         )}
+
+        {
+          openShipPayDetails ? <><ShippingTaxesModal setOpenShipPayDetails={setOpenShipPayDetails}/></> : <></>
+        }
+        {
+          isShareModalOpen ? <><ShareModalModal setIsShareModalOpen={setIsShareModalOpen}/></> : <></>
+        }
       </div>
     </>
   );
