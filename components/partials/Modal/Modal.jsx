@@ -141,7 +141,6 @@ export function PaymentInfoMOdal(props){
 }
 
 export function AddNewCardModal(openPayment){
-    console.log("add")
     openPayment(false)
     return(
         <div className="modalOverlay flex justify-center flex-center">
