@@ -18,7 +18,7 @@ async function addCardDetail(data, productDetail) {
         })
         const result = await APIServices.create('customer-card-details/addCard', jsondata)
         if (result.status == 200) {
-            productDetail()
+            // productDetail()
             // modalSuccess('success', result.data.message)
             // setOpen(false)
         } else {

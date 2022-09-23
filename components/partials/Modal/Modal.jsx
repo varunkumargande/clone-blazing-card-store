@@ -195,7 +195,6 @@ export function PaymentInfoModal(props) {
 
   const cardDetails = cardDetail?.length == 0 ? "Add shipment" : cardDetail[0].card.brand +" " +"XXXX XXXX XXXX "+cardDetail[0].card.last4 
 
-  console.timeLog(addressInfo, cardDetail)
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal medium">
@@ -254,7 +253,9 @@ export function PaymentInfoModal(props) {
             </button>
             <button
               className="primary-btn"
-              onClick={() => handleSubmitBuyProduct()}
+              onClick={() => {
+                handleSubmitBuyProduct()
+              }}
             >
               Confirm
             </button>
@@ -421,7 +422,6 @@ export function AddAddressModal(props) {
       state: addressList[0]?.state ?? "",
     },
     onSubmit: (values) => {
-      console.log("values", values);
       setShip(values);
       fetchShiipmentApi()
       close(false);
@@ -429,7 +429,7 @@ export function AddAddressModal(props) {
     validationSchema: () => shipSchema,
   });
 
-  console.log("formik", formik);
+
   return (
     <>
       {formik ? (

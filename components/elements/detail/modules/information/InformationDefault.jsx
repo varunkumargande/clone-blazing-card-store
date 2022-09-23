@@ -146,11 +146,9 @@ function InformationDefault({
       varproduct.productvarientList &&
       varproduct.productvarientList.length !== 0
     ) {
-      console.log(product.skuName, "product.skuName");
       setSkuNumber(varproduct.skuName);
       // product.skuName=varproduct.skuName
     } else {
-      console.log(product.skuName, "product.skuName");
       setSkuNumber(product.skuName);
     }
   }, [varproduct.skuName]);
