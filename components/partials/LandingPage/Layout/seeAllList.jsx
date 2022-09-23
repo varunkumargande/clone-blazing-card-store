@@ -26,11 +26,7 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
         setSubCateId(e.target.value)
     }
 
-    console.log(subCateId, liveScheduleCategoryName)
-
     const handleCardDetail = () => {
-
-        
 
         if (seeAllHeading == "Live") {
             return streamDetail?.live?.map((detail) => {
@@ -78,9 +74,6 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
                 })
             }
         }
-
-
-
     }
 
     return (

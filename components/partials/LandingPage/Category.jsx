@@ -32,7 +32,10 @@ function Category({ isSeeAllCate, isSeeAll, subCateId, seeAllHeading, setSubCate
         setSubCateId(id)
     }
 
-    console.log(activeCategoryIndex)
+    const handleAllCate = () => {
+        setSubCateId("select")
+        setActiveCategoryIndex(null)
+    }
 
     const getCategoryList = () => {
         if (isSeeAll == true) {
@@ -40,7 +43,7 @@ function Category({ isSeeAllCate, isSeeAll, subCateId, seeAllHeading, setSubCate
                 return (
                     <>
                         <div className="category-list">
-                            <button className={activeCategoryIndex === null ? "title active" : "title"} onClick={() => setSubCateId("select")}>All</button>
+                            <button className={activeCategoryIndex === null ? "title active" : "title"} onClick={handleAllCate}>All</button>
                         </div>
                         {category["categories"].map((res, index) => {
                             if (res.name === seeAllHeading) {
