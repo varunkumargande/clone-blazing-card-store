@@ -38,11 +38,6 @@ function UserInformation(){
     const { t } = useTranslation('common');
     let currentColor=useSelector(s=>s.palette.currentColor)
 
-    
-
-
-
-
     useEffect(()=>{
         if(sessionStorage.getItem("spurtUser")){
             setUserDetail(JSON.parse(sessionStorage.getItem("spurtUser"))) 
@@ -50,9 +45,7 @@ function UserInformation(){
             setLname(JSON.parse(sessionStorage.getItem("spurtUser")).lastName)
             setEmail(JSON.parse(sessionStorage.getItem("spurtUser")).email)
             setNum(JSON.parse(sessionStorage.getItem("spurtUser")).mobileNumber)
-
         }
-        
     },[])
 
     const onChangeHandler=(name,value)=>{
@@ -265,8 +258,6 @@ function UserInformation(){
                                                     </button>
                                                 </div>
                                             {/* </div> */}
-                                            
-
                                         </div>
                                     </div>
                                     </div>
