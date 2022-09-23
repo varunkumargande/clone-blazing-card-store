@@ -15,7 +15,7 @@ async function getStreamData(streamUuid) {
   const result = await http.get(url)
 
   if (result && result.data && result.data) {
-    console.log(result.data, 'API DATA')
+
     modalSuccess("success", result.data.message);
     if(!!result.data?.data?.null) {
       return result.data?.data?.null[0];

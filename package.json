@@ -59,6 +59,8 @@
         "redux-thunk": "^2.3.0",
         "sass": "^1.49.9",
         "slick-carousel": "^1.8.1",
+        "socket.io": "^4.5.2",
+        "socket.io-client": "^4.5.2",
         "styled-components": "^5.3.5",
         "yup": "^0.32.11"
     }

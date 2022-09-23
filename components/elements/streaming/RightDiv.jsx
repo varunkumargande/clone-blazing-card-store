@@ -41,7 +41,7 @@ function RightDiv({ streamingDetails, streamData }) {
       options.userType
     );
 
-    await client.login({ uid: options.audience, token });
+    await client.login({ uid: options.audience + options.audienceId, token });
     const channel = client.createChannel(options.messageChannel);
     await channel.join();
     setChannel(channel);

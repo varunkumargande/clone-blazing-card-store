@@ -22,6 +22,8 @@ function LeftDiv({
   openPayment,
   productDetail,
   streamingDetails,
+  auctionNotification,
+  setCurrentAuction
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -88,8 +90,12 @@ function LeftDiv({
           break;
       }
       const data = await getProducts(url);
+      if(data){
       setProductListing(data.products);
+      setCurrentAuction(data.latest_auction);
       setIsLoading(false);
+      }
+      
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);
@@ -141,6 +147,11 @@ function LeftDiv({
     });
   };
 
+  useEffect(() => {
+    getProductList()
+  }, [])
+
+
   const handleBuyNow = (product) => {
     productDetail(product);
     openPayment(true);
@@ -149,10 +160,11 @@ function LeftDiv({
   const getProductList = () => {
     return productListing?.map((product) => {
       let productName = product?.name.toUpperCase();
+      let productid = product?.product_id;
       return (
         <>
           {toggleState == "auction" ? (
-            <li>
+            <li className={ productid == auctionNotification?.product?.productId ? "pined " : ""}>
               <strong>{product?.name}</strong>
             </li>
           ) : toggleState == "buynow" ? (
@@ -169,8 +181,6 @@ function LeftDiv({
                 >
                   Buy Now
                 </button>
-
-                {/* <div className="piece text-center">$12/piece</div> */}
               </div>
             </div>
           ) : toggleState == "sold" ? (
@@ -230,27 +240,10 @@ function LeftDiv({
         <div className="search">
           <input type="text" placeholder="Search products..." />
         </div>
-        {toggleState == "auction" ? (
-          <div className="action-list leftdata-list">
+          <div className={`${toggleState}-list leftdata-list`}>
             <div className="product-count">{productCount} Products</div>
             <ul className="product-list">{getProductList()}</ul>
           </div>
-        ) : toggleState == "buynow" ? (
-          <div className="buynow-list leftdata-list">
-            <div className="product-count">{productCount} Products</div>
-            <div className="product-list">{getProductList()}</div>
-          </div>
-        ) : toggleState == "sold" ? (
-          <div className="sold-list leftdata-list">
-            <div className="product-count">{productCount} Products</div>
-            <div className="product-list">{getProductList()}</div>
-          </div>
-        ) : (
-          <div className="purchased-list leftdata-list">
-            <div className="product-count"> {productCount} Products</div>
-            <div className="product-list">{getProductList()}</div>
-          </div>
-        )}
       </div>
     </div>
   );

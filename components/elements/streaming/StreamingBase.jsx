@@ -10,111 +10,85 @@ import IconShare from "../../Icons/IconShare";
 import IconHeart from "../../Icons/IconHeart";
 import IconDoller from "../../Icons/IconDoller";
 import IconEye from "../../Icons/IconEye";
-import IconClose from "../../Icons/IconClose";
+import { io } from "socket.io-client";
 import {
   CustomBidModal,
   ShippingTaxesModal,
   ShareModalModal,
 } from "../../partials/Modal/Modal";
+import moment from "moment/moment";
+import { notification } from "antd";
+import { useRouter } from "next/router";
 
-import { getStreamingCardDetail } from "../../../api/stream/cardApi";
-import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
-
-function StreamingBase({openPayment}) {
-  const [open, setOpen] = React.useState(false);
-  const [bidAmount, setBidAmount] = React.useState(25);
-  const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
+function StreamingBase({ winnerNotification }) {
+  const stream = useSelector((state) => state.stream);
+  const [open, setOpen] = useState(false);
+  const [bidAmount, setBidAmount] = useState(null);
+  const [amountToBid, setAmountToBid] = useState(bidAmount + 2);
   const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(25);
+  const [seconds, setSeconds] = useState(0);
   const [disableBid, setDisableBid] = useState(false);
+  console.log(disableBid, 'tatatatatatat')
   /*****For notifications *****/
   const audienceId = Math.floor(Math.random() * 20);
   const [channel, setChannel] = useState(null);
   const COUNT_INC = 2;
   const [volumeLevel, setVolumeLevel] = useState(100);
   const [isMute, setIsMute] = useState(false);
-  const stream = useSelector((state) => state.stream);
-  const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
   const [openShipPayDetails, setOpenShipPayDetails] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [socketObject, setSocketObject] = useState(
+    io("http://52.72.64.43:4000")
+  );
+  const [auctionNotification, setAuctionNotification] = useState(null);
+  const [bidNotification, setBidNotification] = useState(null);
 
-  const [payData, setPayData] = useState([]);
-  const [payLoader, setPayLoader] = useState(true);
-  const [shipData, setShipData] = useState([]);
+  const router = useRouter();
+  const uuid = router.query["uuid"];
+
 
   useEffect(() => {
-    isLoggedIn ? setDisableBid(false) : setDisableBid(true);
-    joinChannel();
-    getPaymentShipData();
+    socketObject.on(`${uuid}-bid`, (bid) => {
+      setBidNotification(bid);
+    });
+    socketObject.on(`${uuid}-auction`, (auction) => {
+      setAuctionNotification(auction);
+    });
   }, []);
 
-  const joinChannel = async () => {
-    const options = stream?.streamPageData?.option;
-    const client = AgoraRTM.createInstance(options.appId);
-    const token = await getToken(
-      options.rtm,
-      options.notificationChannel,
-      options.audience,
-      options.accountType,
-      options.userType
-    );
-    await client.login({ uid: options.audience, token });
-    const channel = client.createChannel(options.notificationChannel);
-    await channel.join();
-    setChannel(channel);
-    channel.on("Member Joined", function (memberId) {});
-    return channel;
-  };
+
+
 
   useEffect(() => {
-    if (channel) {
-      channel.on("ChannelMessage", function (message, memberId) {
-        const { bidAmount, amountToBid, restartSeconds } = JSON.parse(
-          message.text
-        );
-        if (restartSeconds != 0) setSeconds(restartSeconds);
-        setBidAmount(bidAmount);
-        setAmountToBid(amountToBid);
-      });
+    if (!!auctionNotification || !!bidNotification) {
+      const endTime = moment(
+        bidNotification?.endTime || auctionNotification?.aution?.endTime
+      );
+      const duration = moment.duration(
+        endTime.diff(moment.utc().format("yyyy-MM-DD, hh:mm:ss"))
+      );
+      const minutes = Math.ceil(duration.asSeconds() / 60);
+      const seconds = Math.ceil(duration.asSeconds() % 60);
+      setMinutes(minutes);
+      setSeconds(seconds);
+      if(stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
+        setDisableBid(false)
+      }
+      if (bidNotification) {
+        setBidAmount(bidNotification?.bidAmount);
+      }
     }
-  }, [channel]);
-
-  const getPaymentShipData = () => {
-    getStreamingCardDetail(setPayData, setPayLoader);
-    getStreamingShippmentDetail(setShipData);
-  };
+  }, [bidNotification, auctionNotification]);
 
   const handleConfirmBid = async () => {
-    if (payData.length == 0 && shipData.length == 0) {
-      openPayment(true)
-    } else {
-      let message;
-      let auctionId = 3;
-      setOpen(false);
-      createBid(auctionId, Number(audienceId), amountToBid);
-      setBidAmount(amountToBid);
-      setAmountToBid(amountToBid + COUNT_INC);
-      if (seconds > 0) {
-        if (seconds < 20) {
-          setSeconds((sec) => sec + COUNT_INC);
-          message = {
-            bidAmount: amountToBid,
-            amountToBid: amountToBid + COUNT_INC,
-            restartSeconds: seconds + COUNT_INC,
-          };
-        } else {
-          message = {
-            bidAmount: amountToBid,
-            amountToBid: amountToBid + COUNT_INC,
-            restartSeconds: seconds,
-          };
-        }
-      }
-      message = JSON.stringify(message);
-      await channel.sendMessage({ text: message, type: "text" });
-    }
+    let message;
+    let auctionId = auctionNotification?.auction.id;
+    setOpen(false);
+    increaseBidAmount();
+    createBid(auctionId, Number(stream?.streamPageData.streamPageDteails.loggedInUserId), amountToBid);
+    // setBidAmount(amountToBid);
+    // setAmountToBid(amountToBid + COUNT_INC);
   };
-
   /*****End notifications *****/
   const handleMuteButton = () => {
     setIsMute(!isMute);
@@ -125,8 +99,8 @@ function StreamingBase({openPayment}) {
   const handleShareButton = () => {
     setIsShareModalOpen(true);
   };
+
   useEffect(() => {
-    let auctionId = 1;
     let myInterval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
@@ -135,7 +109,6 @@ function StreamingBase({openPayment}) {
         if (minutes === 0) {
           clearInterval(myInterval);
           setDisableBid(true);
-          // getWinnerDetails(auctionId)
         } else if (seconds < 60) {
           setMinutes(minutes - 1);
           setSeconds(59);
@@ -166,6 +139,35 @@ function StreamingBase({openPayment}) {
   const handleShipModal = () => {
     setOpenShipPayDetails(true);
   };
+
+  const getAuctionArea = () => {
+      return (
+        <>
+          {minutes == 0 && seconds == 0 ? (
+            <div className="auction-end">
+              <button className="primary-btn disable">Auction Ended</button>
+            </div>
+          ) : (
+            <div className="btn-wrap flex space-between">
+              <button
+                className={disableBid ? "border-btn disable" : "border-btn"}
+                disabled={disableBid}
+                onClick={handleCustomBid}
+              >
+                Custom Bid
+              </button>
+              <button
+                className={disableBid ? "primary-btn disable" : "primary-btn"}
+                disabled={disableBid}
+                onClick={handleConfirmBid}
+              >
+                Bid US ${amountToBid}
+              </button>
+            </div>
+          )}
+        </>
+      );
+  };
   return (
     <>
       <div className="stream-wrapper">
@@ -177,9 +179,13 @@ function StreamingBase({openPayment}) {
         <div className="inner-wrapper">
           {/*add className disable when want {disable}*/}
           <div className="stream-header flex space-between">
-            {isLoggedIn ? (
+            {!disableBid ? (
               <>
-                <div className="head-title">PSA SLAB #83</div>
+                <div className="head-title">
+                  {auctionNotification
+                    ? auctionNotification?.product?.name
+                    : null}
+                </div>
               </>
             ) : (
               <>
@@ -219,10 +225,20 @@ function StreamingBase({openPayment}) {
                     <p>The live video has ended you can <br/>no longer to view</p>
                 </div> */}
           {/* winner profile*/}
-          {/* <div className="winner-profile flex flex-center">
-                    <div className="pf br50"><img src="/static/images/profile.png" alt="" /></div>
-                    ad_marie <span> &nbsp; is winner 🎉</span>
-                </div> */}
+          { winnerNotification ? <div className="winner-profile flex flex-center">
+            <div className="pf br50">
+              <img src="/static/images/profile.png" alt="" />
+            </div>
+            ad_marie <span> &nbsp; is winner 🎉</span>
+          </div> : null }
+          {bidNotification ? <div className="winner-profile flex flex-center">
+            <div className="pf br50">
+              <img src="/static/images/profile.png" alt="" />
+            </div>
+            {bidNotification?.customer?.firstName} <span> &nbsp; is winning 🎉</span>
+          </div> : null}
+          
+          
           <div className="stream-footer flex flex-center space-between">
             <div className="left">
               <div className="time-left">
@@ -238,28 +254,7 @@ function StreamingBase({openPayment}) {
                 </span>
               </div>
             </div>
-            {minutes == 0 && seconds == 0 ? (
-              <div className="auction-end">
-                <button className="primary-btn disable">Auction Ended</button>
-              </div>
-            ) : (
-              <div className="btn-wrap flex space-between">
-                <button
-                  className={disableBid ? "border-btn disable" : "border-btn"}
-                  disabled={disableBid}
-                  onClick={handleCustomBid}
-                >
-                  Custom Bid
-                </button>
-                <button
-                  className={disableBid ? "primary-btn disable" : "primary-btn"}
-                  disabled={disableBid}
-                  onClick={handleConfirmBid}
-                >
-                  Bid US ${amountToBid}
-                </button>
-              </div>
-            )}
+            {getAuctionArea()}
           </div>
         </div>
 
