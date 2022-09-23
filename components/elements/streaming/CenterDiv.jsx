@@ -4,8 +4,12 @@ import PaymentCard from "./Payment/PaymentCard";
 import ShippmentCard from "./Payment/ShippmentCard";
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
-import { modalSuccess, modalWarning } from "../../../api/intercept"
-import {PaymentInfoMOdal, AddNewCardModal, AddAddressModal} from "../../partials/Modal/Modal";
+import { modalSuccess, modalWarning } from "../../../api/intercept";
+import {
+  PaymentInfoMOdal,
+  AddNewCardModal,
+  AddAddressModal,
+} from "../../partials/Modal/Modal";
 
 function CenterDiv({
   productDetail,
@@ -13,16 +17,19 @@ function CenterDiv({
   openPayment,
   setOpen,
   streamingDetails,
+  auctionNotification,
+  bidNotification,
+  winnerNotification
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
-  
+
   const [shipIndex, setShipIndex] = React.useState(null);
   const [shipData, setShipData] = React.useState(null);
-  
-  const [cardIndex, setCardIndex] = useState(null)
-  const [cardDetail, setCardDetail] = useState(null)
+
+  const [cardIndex, setCardIndex] = useState(null);
+  const [cardDetail, setCardDetail] = useState(null);
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -39,26 +46,37 @@ function CenterDiv({
 
   const handleSubmitBuyProduct = () => {
     if (cardDetail != null && shipData != null) {
-      buyProduct(cardDetail, shipData, productDetail)
+      buyProduct(cardDetail, shipData, productDetail);
     } else {
       setOpen(true);
-      modalWarning("error", "Please select your card detail and shippment address")
+      modalWarning(
+        "error",
+        "Please select your card detail and shippment address"
+      );
     }
-  }
+  };
 
   const submitShipDetail = (data) => {
-    setShipData(data)
-    modalSuccess("success", "Shippment Detail added")
-  }
-
+    setShipData(data);
+    modalSuccess("success", "Shippment Detail added");
+  };
 
   return (
-      <div className="streaming-live disable">
-        <StreamingBase />
-        {isPayment ? (
-          <>
-          <PaymentInfoMOdal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct}/>
-             {/* <div className="payment_popup">
+    <div className="streaming-live disable">
+      <StreamingBase
+        auctionNotification={auctionNotification}
+        bidNotification={bidNotification}
+        winnerNotification={winnerNotification}
+      />
+      {isPayment ? (
+        <>
+          <PaymentInfoMOdal
+            openPayment={openPayment}
+            handlePaymentMethod={handlePaymentMethod}
+            handleShippmentMethod={handleShippmentMethod}
+            handleSubmitBuyProduct={handleSubmitBuyProduct}
+          />
+          {/* <div className="payment_popup">
               <div>
                 <Row>
                   <Col span={14}>
@@ -116,28 +134,38 @@ function CenterDiv({
                 </>
               )}
             </div>  */}
-          </>
-        ) : (
-          <>
-          </>
-        )}
-        {paymentForm == true ? (
-          <>
-            <PaymentCard cardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
-          </>
-        ) : (
-          <>
-          </>
-        )}
-        {shippmentForm ? (
-          <>
-            <ShippmentCard setShipIndex={setShipIndex} shipIndex={shipIndex} setShipData={setShipData} shipData={shipData}  close={setShippmentFormOpen} setShip={submitShipDetail} />
-          </>
-        ) : (
-          <>
-          </>
-        )}
-      </div>
+        </>
+      ) : (
+        <></>
+      )}
+      {paymentForm == true ? (
+        <>
+          <PaymentCard
+            cardDetail={setCardDetail}
+            payDetail={cardDetail}
+            cardIndex={setCardIndex}
+            payIndex={cardIndex}
+            close={setPaymentFormOpen}
+          />
+        </>
+      ) : (
+        <></>
+      )}
+      {shippmentForm ? (
+        <>
+          <ShippmentCard
+            setShipIndex={setShipIndex}
+            shipIndex={shipIndex}
+            setShipData={setShipData}
+            shipData={shipData}
+            close={setShippmentFormOpen}
+            setShip={submitShipDetail}
+          />
+        </>
+      ) : (
+        <></>
+      )}
+    </div>
   );
 }
 
