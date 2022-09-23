@@ -56,7 +56,6 @@ function SubCategory({ subCateId, seeAllHeading, setSubCateId, category }) {
                 </>
             )
         } else {
-            console.log("data")
         }
     }
 

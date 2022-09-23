@@ -8,14 +8,10 @@ import StreamCard from "../../../elements/StreamCard";
 export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCategory, subCateId, setSubCateId }) {
 
     const handleSubCateId = (e) => {
-        console.log(e.target.value)
         setSubCateId(e.target.value)
     }
 
     const handleCardDetail = () => {
-
-        console.log(subCateId)
-
         if (data[categoryName] != undefined) {
             return data[categoryName].map((detail, index) => {
                 if (subCateId == "select" || subCateId == null) {

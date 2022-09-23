@@ -58,7 +58,6 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
             });
         } else {
             if (data[seeAllHeading] != undefined) {
-                console.log(subCateId)
                 return data[seeAllHeading].map((detail, index) => {
                     if (subCateId == null || subCateId == "select") {
                         return (

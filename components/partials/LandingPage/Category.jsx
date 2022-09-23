@@ -51,7 +51,6 @@ function Category({ isSeeAllCate, isSeeAll, subCateId, seeAllHeading, setSubCate
                                     return (
                                         <>
                                             {res?.children?.map((item, index2) => {
-                                                console.log(item)
                                                 return (
                                                     <>
                                                         <div className="category-list">
