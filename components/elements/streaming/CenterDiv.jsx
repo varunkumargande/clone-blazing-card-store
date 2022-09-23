@@ -6,6 +6,8 @@ import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept"
 import {PaymentInfoModal, AddNewCardModal, AddAddressModal} from "../../partials/Modal/Modal";
+import { countryListApi } from "../../../api";
+import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
 
 function CenterDiv({
   productDetail,
@@ -36,6 +38,13 @@ function CenterDiv({
   const handleShippmentMethod = () => {
     setShippmentFormOpen(true);
   };
+  const [addressList, setAddressList] = useState([])
+  const [countryData, setCountryData] = useState([])
+
+  useEffect(() => {
+      countryListApi(setCountryData);
+      getStreamingShippmentDetail(setAddressList)
+  }, [])
 
   const handleSubmitBuyProduct = () => {
     if (cardDetail != null && shipData != null) {
@@ -73,7 +82,7 @@ function CenterDiv({
         )}
         {shippmentForm ? (
           <>
-            <AddAddressModal setShipIndex={setShipIndex} shipIndex={shipIndex} setShipData={setShipData} shipData={shipData}  close={setShippmentFormOpen} setShip={submitShipDetail} />
+            <AddAddressModal addressList={addressList} countryData={countryData} setShipIndex={setShipIndex} shipIndex={shipIndex} setShipData={setShipData} shipData={shipData}  close={setShippmentFormOpen} setShip={submitShipDetail} />
           </>
         ) : (
           <>
