@@ -47,7 +47,7 @@ export default function StreamingLive(){
                         <button className="primary-btn disable">Auction Ended</button>
                     </div>
                 </div>
-                {/* <PaymentInfoMOdal /> */}
+                <PaymentInfoMOdal/>
             </div>
         </div>
     );
