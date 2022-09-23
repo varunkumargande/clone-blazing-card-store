@@ -206,11 +206,12 @@
         }
     }
     .stream-image-video{
-        img,video{
+        img,video,#local_stream{
             width: 100%;
             height: calc(100vh - 90px) !important;
             object-fit: cover;
             position: relative !important;
+            overflow: hidden;
         }
     }
     .stream-header{

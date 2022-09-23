@@ -8,6 +8,8 @@ import useNetwork from '../../components/reusable/NetworkCheck';
 import Router from "next/router";
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import Footer from '../../components/partials/LandingPage/Footer';
+
 
 
 
@@ -28,7 +30,7 @@ const StreamingPage = (props, dispatch) => {
             <NavigationList />
             <ThemeChanger />
             <Streaming />
-            <FooterDefault />
+            <Footer />
         </div>
     );
 };

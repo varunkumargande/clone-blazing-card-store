@@ -21,9 +21,9 @@ import { notification } from "antd";
 import { useRouter } from "next/router";
 
 function StreamingBase({ winnerNotification }) {
-  const [open, setOpen] = React.useState(false);
-  const [bidAmount, setBidAmount] = React.useState(25);
-  const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
+  const [open, setOpen] = useState(false);
+  const [bidAmount, setBidAmount] = useState(null);
+  const [amountToBid, setAmountToBid] = useState(bidAmount + 2);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [disableBid, setDisableBid] = useState(false);
@@ -61,16 +61,15 @@ function StreamingBase({ winnerNotification }) {
 
 
 
+
   useEffect(() => {
-    console.log('streambase', auctionNotification)
     if (!!auctionNotification || !!bidNotification) {
       const endTime = moment(
-        bidNotification?.endTime ?? auctionNotification?.aution?.endTime
+        bidNotification?.endTime || auctionNotification?.aution?.endTime
       );
       const duration = moment.duration(
         endTime.diff(moment.utc().format("yyyy-MM-DD, hh:mm:ss"))
       );
-      console.log(duration.asSeconds())
       const minutes = Math.ceil(duration.asSeconds() / 60);
       const seconds = Math.ceil(duration.asSeconds() % 60);
       setMinutes(minutes);
@@ -85,6 +84,7 @@ function StreamingBase({ winnerNotification }) {
     let message;
     let auctionId = auctionNotification?.auction.id;
     setOpen(false);
+    increaseBidAmount();
     createBid(auctionId, Number(stream?.streamPageData.streamPageDteails.loggedInUserId), amountToBid);
     // setBidAmount(amountToBid);
     // setAmountToBid(amountToBid + COUNT_INC);
@@ -141,9 +141,7 @@ function StreamingBase({ winnerNotification }) {
   };
 
   const getAuctionArea = () => {
-    if (minutes == NaN && seconds == NaN) {
-      return <></>;
-    } else {
+
       return (
         <>
           {minutes == 0 && seconds == 0 ? (
@@ -170,7 +168,6 @@ function StreamingBase({ winnerNotification }) {
           )}
         </>
       );
-    }
   };
   return (
     <>
