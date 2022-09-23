@@ -254,7 +254,6 @@ export function PaymentInfoModal(props) {
             <button
               className="primary-btn"
               onClick={() => {
-                console.log(addressInfo, cardDetail)
                 handleSubmitBuyProduct()
               }}
             >
@@ -423,7 +422,6 @@ export function AddAddressModal(props) {
       state: addressList[0]?.state ?? "",
     },
     onSubmit: (values) => {
-      console.log("values", values);
       setShip(values);
       fetchShiipmentApi()
       close(false);
@@ -431,7 +429,7 @@ export function AddAddressModal(props) {
     validationSchema: () => shipSchema,
   });
 
-  console.log("formik", formik);
+
   return (
     <>
       {formik ? (

@@ -14,8 +14,6 @@ function ProfileCard(props) {
         }
     },[])
 
-    console.log(userDetail)
-
     return (
         <>
             <aside className="aside-wrapper profile-aside">
