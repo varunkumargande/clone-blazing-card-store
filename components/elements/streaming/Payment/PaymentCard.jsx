@@ -50,7 +50,7 @@ function PaymentCard(props) {
     });
 
     const submitCardDetail = async (data) => {
-        addCardDetail(setOpen, data)
+        addCardDetail(data)
     }
 
     return (

@@ -45,8 +45,10 @@ function StreamingBase({openPayment}) {
   useEffect(() => {
     isLoggedIn ? setDisableBid(false) : setDisableBid(true);
     joinChannel();
-    getPaymentShipData();
+    // getPaymentShipData();
   }, []);
+
+  
 
   const joinChannel = async () => {
     const options = stream?.streamPageData?.option;

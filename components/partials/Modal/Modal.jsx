@@ -7,6 +7,7 @@ import Timer from "../../elements/streaming/Timer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { array, element } from "prop-types";
+import { addCardDetail } from '../../../api/stream/payment';
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -161,17 +162,40 @@ export function CustomBidModal(props) {
     </div>
   );
 }
+
 export function PaymentInfoModal(props) {
-  console.log("payamme");
+
+  
   const {
     openPayment,
     handlePaymentMethod,
     handleShippmentMethod,
     handleSubmitBuyProduct,
-    addressList
+    addressList,
+    cardDetail,
+    productDetail
   } = props;
-  console.log("shipdata", addressList)
-  const addressInfo = addressList.length ==0 ? "Add Address" : addressList[0].address1+" ,"+addressList[0].address2+" ,"+addressList[0].city+" ,"+addressList[0].state+" ,"+addressList[0].postcode
+
+  const addressInfo =
+    addressList?.length == 0
+      ? "Add Address"
+      : addressList[0].address1 +
+        " ," +
+        addressList[0].address2 +
+        " ," +
+        addressList[0].city +
+        " ," +
+        addressList[0].state +
+        " ," +
+        addressList[0].postcode;
+
+  const shipSchema = Yup.object().shape({
+    fullName: Yup.string().min(2, "Too Short!").required("Required"),
+  });
+
+  const cardDetails = cardDetail?.length == 0 ? "Add shipment" : cardDetail[0].card.brand +" " +"XXXX XXXX XXXX "+cardDetail[0].card.last4 
+
+  console.timeLog(addressInfo, cardDetail)
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal medium">
@@ -192,10 +216,10 @@ export function PaymentInfoModal(props) {
         <div className="modal-body-upper">
           <div className="flex space-between item-amount">
             <div className="left">
-              <strong>PSA SLAB #81 1 item</strong>
+              <strong>{productDetail.name}</strong>
             </div>
             <div className="right">
-              <span className="link">$23.00</span>
+              <span className="link">{productDetail.price}</span>
             </div>
           </div>
         </div>
@@ -216,7 +240,7 @@ export function PaymentInfoModal(props) {
             <input
               readOnly
               name="text"
-              placeholder={"Add Payment"}
+              placeholder={cardDetails}
               className="payment"
               onClick={handlePaymentMethod}
             />
@@ -242,21 +266,31 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  const { setCardDetail, payDetail, cardIndex, payIndex, close } = props;
-    console.log("carddetail", payDetail[0].card)
+  
+    const { payDetail, close, productDetail } = props;
+
+  const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
+
+  const shipSchema = Yup.object().shape({
+    cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
+    cardNumber: Yup.string().required("Required").max(16, "Card Number is invalid !").min(15, "Card Number is invalid !"),
+    cvv: Yup.string().min(2, "Too Short!").required("Required"),
+    expiration: Yup.string().required("Required"),
+    country: Yup.string().required("Required"),
+  });
+
   const formik = useFormik({
     initialValues: {
-    //   cardHolderName: JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? "",
-    //   cardnumber: payDetail[0].card.last4 ?? "",
-    //   cvv: payDetail[0].cvc,
-    //   expiration: payDetail[0].card.exp_month+"/"+ payDetail[0].card.exp_year ?? "",
-    //   country: payDetail[0].country ?? "",
+      cardHolderName: userDetail != null ? JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? "" : "",
+      cardNumber: payDetail.length != 0 ? "XXXX XXXX XXXX "+payDetail[0].card.last4 : "",
+      cvv: payDetail.length != 0 ? payDetail[0].cvc : "",
+      expiration: payDetail.length != 0 ? payDetail[0].card.exp_year+"-"+ payDetail[0].card.exp_month : "",
+      country: payDetail.length != 0 ? payDetail[0].country : "",
     },
-
     onSubmit: (values) => {
-        console.log("values", values)
-      alert(JSON.stringify(values));
+        addCardDetail(values, productDetail)
     },
+    validationSchema: () => shipSchema,
   });
 
   return (
@@ -285,8 +319,9 @@ export function AddNewCardModal(props) {
                 name="cardHolderName"
                 placeholder={"Enter here"}
                 value={formik.values.cardHolderName}
+                onChange={formik.handleChange}
               />
-              <span className="errorMessage"></span>
+              <span className="errorMessage">{formik.errors.cardHolderName}</span>
             </div>
             <div className="input-control">
               <label>Card Number *</label>
@@ -295,19 +330,21 @@ export function AddNewCardModal(props) {
                 name="cardNumber"
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
+                onChange={formik.handleChange}
               />
-              <span className="errorMessage"></span>
+               <span className="errorMessage">{formik.errors.cardNumber}</span>
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
                 <label>Expiration</label>
                 <input
-                  type="text"
+                  type="month"
                   name="expiration"
                   placeholder={"Enter here"}
                   value={formik.values.expiration}
+                  onChange={formik.handleChange}
                 />
-                <span className="errorMessage"></span>
+                <span className="errorMessage">{formik.errors.expiration}</span>
               </div>
               <div className="input-control wd50">
                 <label>CVV</label>
@@ -316,18 +353,20 @@ export function AddNewCardModal(props) {
                   name="cvv"
                   placeholder={"Enter here"}
                   value={formik.values.cvv}
+                  onChange={formik.handleChange}
                 />
-                <span className="errorMessage"></span>
+               <span className="errorMessage">{formik.errors.cvv}</span>
               </div>
             </div>
             <div className="input-control">
               <label>Country *</label>
-              <select name="country">
+              <select name="country" onChange={formik.handleChange}>
+                <option value="">Select Country</option>
                 <option>India</option>
                 <option>Australia</option>
                 <option>America</option>
               </select>
-              <span className="errorMessage"></span>
+              <span className="errorMessage">{formik.errors.country}</span>
             </div>
             <div className="infotext">
               By providing your card information, you allow Blazing Cards to
@@ -337,7 +376,7 @@ export function AddNewCardModal(props) {
           </div>
           <div className="modal-footer">
             <div className="flex justify-center btn-wrap">
-              <button className="primary-btn disable">Save card</button>
+              <button className="primary-btn">Save card</button>
             </div>
           </div>
         </form>
@@ -345,6 +384,7 @@ export function AddNewCardModal(props) {
     </div>
   );
 }
+
 export function AddAddressModal(props) {
   const {
     setShipIndex,
@@ -356,7 +396,7 @@ export function AddAddressModal(props) {
     addressList,
     countryData,
   } = props;
-  console.log("addreslist",addressList)
+
   const shipSchema = Yup.object().shape({
     fullName: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
@@ -367,7 +407,7 @@ export function AddAddressModal(props) {
     phoneNumber: Yup.string().required("Required"),
     email: Yup.string().required("Required"),
   });
-//   console.log("addresslist", addressList[0])
+  //   console.log("addresslist", addressList[0])
   const formik = useFormik({
     initialValues: {
       fullName: addressList[0]?.firstName ?? "",
@@ -378,18 +418,18 @@ export function AddAddressModal(props) {
       country: addressList[0]?.countryId ?? "",
       postcode: addressList[0]?.postcode ?? "",
       addressId: addressList[0]?.addressId ?? "",
-      state: addressList[0]?.state ?? ""
+      state: addressList[0]?.state ?? "",
     },
     onSubmit: (values) => {
-        console.log("values", values);
-        setShip(values)
-    //   setShipData(values);
+      console.log("values", values);
+      setShip(values);
+      fetchShiipmentApi()
       close(false);
     },
     validationSchema: () => shipSchema,
   });
 
-    console.log("formik", formik)
+  console.log("formik", formik);
   return (
     <>
       {formik ? (
@@ -472,10 +512,7 @@ export function AddAddressModal(props) {
                   <span className="errorMessage"></span>
                 </div>
                 <div className="input-control" hidden>
-                  <input
-                    name="addressId"
-                    value={formik.values.addressId}
-                  />
+                  <input name="addressId" value={formik.values.addressId} />
                   <span className="errorMessage"></span>
                 </div>
 
