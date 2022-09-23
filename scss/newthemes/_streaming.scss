@@ -208,8 +208,9 @@
     .stream-image-video{
         img,video{
             width: 100%;
-            height: calc(100vh - 90px);
+            height: calc(100vh - 90px) !important;
             object-fit: cover;
+            position: relative !important;
         }
     }
     .stream-header{

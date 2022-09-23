@@ -57,9 +57,9 @@ function CenterDiv({
   };
 
   const submitShipDetail = (data) => {
-    setShipData(data);
-    modalSuccess("success", "Shippment Detail added");
-  };
+    setShipData(data)
+    modalSuccess("success", "Shippment Detail added")
+  }
 
   return (
     <div className="streaming-live disable">

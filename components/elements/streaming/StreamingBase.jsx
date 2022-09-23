@@ -10,15 +10,17 @@ import IconShare from "../../Icons/IconShare";
 import IconHeart from "../../Icons/IconHeart";
 import IconDoller from "../../Icons/IconDoller";
 import IconEye from "../../Icons/IconEye";
-
+import { io } from "socket.io-client";
 import {
   CustomBidModal,
   ShippingTaxesModal,
   ShareModalModal,
 } from "../../partials/Modal/Modal";
 import moment from "moment/moment";
+import { notification } from "antd";
+import { useRouter } from "next/router";
 
-function StreamingBase({ auctionNotification, bidNotification, winnerNotification }) {
+function StreamingBase({ winnerNotification }) {
   const [open, setOpen] = React.useState(false);
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
@@ -35,12 +37,32 @@ function StreamingBase({ auctionNotification, bidNotification, winnerNotificatio
   const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
   const [openShipPayDetails, setOpenShipPayDetails] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [socketObject, setSocketObject] = useState(
+    io("http://52.72.64.43:4000")
+  );
+  const [auctionNotification, setAuctionNotification] = useState(null);
+  const [bidNotification, setBidNotification] = useState(null);
+
+  const router = useRouter();
+  const uuid = router.query["uuid"];
 
   useEffect(() => {
     isLoggedIn ? setDisableBid(false) : setDisableBid(true);
   }, []);
 
   useEffect(() => {
+    socketObject.on(`${uuid}-bid`, (bid) => {
+      setBidNotification(bid);
+    });
+    socketObject.on(`${uuid}-auction`, (auction) => {
+      setAuctionNotification(auction);
+    });
+  }, []);
+
+
+
+  useEffect(() => {
+    console.log('streambase', auctionNotification)
     if (!!auctionNotification || !!bidNotification) {
       const endTime = moment(
         bidNotification?.endTime ?? auctionNotification?.aution?.endTime
@@ -48,6 +70,7 @@ function StreamingBase({ auctionNotification, bidNotification, winnerNotificatio
       const duration = moment.duration(
         endTime.diff(moment.utc().format("yyyy-MM-DD, hh:mm:ss"))
       );
+      console.log(duration.asSeconds())
       const minutes = Math.ceil(duration.asSeconds() / 60);
       const seconds = Math.ceil(duration.asSeconds() % 60);
       setMinutes(minutes);
@@ -56,13 +79,13 @@ function StreamingBase({ auctionNotification, bidNotification, winnerNotificatio
         setBidAmount(bidNotification?.bidAmount);
       }
     }
-  }, []);
+  }, [bidNotification, auctionNotification]);
 
   const handleConfirmBid = async () => {
     let message;
-    let auctionId = 14;
+    let auctionId = auctionNotification?.auction.id;
     setOpen(false);
-    createBid(auctionId, Number(audienceId), amountToBid);
+    createBid(auctionId, Number(stream?.streamPageData.streamPageDteails.loggedInUserId), amountToBid);
     // setBidAmount(amountToBid);
     // setAmountToBid(amountToBid + COUNT_INC);
   };

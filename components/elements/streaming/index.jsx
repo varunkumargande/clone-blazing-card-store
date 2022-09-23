@@ -22,8 +22,8 @@ function Index() {
     io("http://52.72.64.43:4000")
   );
   const [auctionNotification, setAuctionNotification] = useState(null);
-  const [currentAuctionDetails, setCurrentAuctionDetails] = useState(null)
   const [bidNotification, setBidNotification] = useState(null);
+  const [currentAuctionDetails, setCurrentAuctionDetails] = useState(null)
   const stream = useSelector((state) => {
     return state?.stream;
   });
@@ -33,7 +33,6 @@ function Index() {
 
   const [currentAuction, setCurrentAuction] = useState(null);
 
-  console.log(currentAuction, 'curee')
   const getAuctioningItem = () => {
 
     let auctionItem;
@@ -70,7 +69,8 @@ function Index() {
 
   return (
     <>
-    {console.log(bidNotification)}
+    {console.log(auctionNotification, 'auction')}
+    {console.log(bidNotification, 'bidding')}
       {streamingDetails?.uuid ? (
         <>
           <div className="streaming-page flex space-between">
