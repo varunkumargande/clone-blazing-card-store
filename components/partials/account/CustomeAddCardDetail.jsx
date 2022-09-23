@@ -85,7 +85,6 @@ function CustomAddCardDetail({ type, addressId }) {
             } else {
                 modalWarning('error', result.data.message)
             }
-            console.log(result.data.data)
         }
     }
 

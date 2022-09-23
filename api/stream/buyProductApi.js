@@ -8,7 +8,7 @@ async function buyProduct(paymentData, shipData, productDetail) {
             "shippingLastName": "",
             "shippingCity": shipData.city,
             "shippingPostCode": shipData.postcode,
-            "shippingCompany": shipData.company,
+            "shippingCompany": shipData.fullName,
             "shippingFirstName": userData.firstName,
             "shippingZone": shipData.state,
             "gstNo": "",
@@ -17,7 +17,7 @@ async function buyProduct(paymentData, shipData, productDetail) {
             "shippingAddress_1": shipData.address1,
             "shippingAddress_2": shipData.address1,
             "emailId": userData.email,
-            "shippingCountryId": shipData.countryId,
+            "shippingCountryId": shipData.country,
             "productDetails": [
                 {
                     "productId": productDetail.product_id,
@@ -38,7 +38,7 @@ async function buyProduct(paymentData, shipData, productDetail) {
             "paymentAddress_1": shipData.address1,
             "paymentAddress_2": shipData.address2,
             "paymentCity": shipData.city,
-            "paymentCompany": shipData.company,
+            "paymentCompany": shipData.fullName,
             "paymentCountryId": shipData.country,
             "paymentFirstName": userData.firstName,
             "paymentLastName": userData.lastName == null ? "" : userData.lastName,

@@ -28,11 +28,8 @@ function StreamingBase({ winnerNotification }) {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [disableBid, setDisableBid] = useState(false);
-  console.log(disableBid, 'tatatatatatat')
   /*****For notifications *****/
-  const audienceId = Math.floor(Math.random() * 20);
-  const [channel, setChannel] = useState(null);
-  const COUNT_INC = 2;
+
   const [volumeLevel, setVolumeLevel] = useState(100);
   const [isMute, setIsMute] = useState(false);
   const [openShipPayDetails, setOpenShipPayDetails] = useState(false);
@@ -45,7 +42,6 @@ function StreamingBase({ winnerNotification }) {
 
   const router = useRouter();
   const uuid = router.query["uuid"];
-
 
   useEffect(() => {
     socketObject.on(`${uuid}-bid`, (bid) => {
