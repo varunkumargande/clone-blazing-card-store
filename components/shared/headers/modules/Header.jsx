@@ -26,7 +26,6 @@ function Header({ auth }) {
         }
     }, [])
 
-    console.log(auth)
 
     return (
         <header>

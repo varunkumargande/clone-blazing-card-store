@@ -91,7 +91,6 @@ function SetPassword({query}){
     useEffect(()=>{
         resetConfomPassApi(router.query.token,setPageTrue)
     },[])
-    console.log(router.query.token,'42fsdfsdfsf');
     useEffect(()=>{
 
         passVaildator()

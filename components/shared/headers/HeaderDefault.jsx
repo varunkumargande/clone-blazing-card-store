@@ -62,7 +62,6 @@ function HeaderDefault({ auth }) {
     modalSuccess('success', "successfully logged out")
   };
 
-  console.log(aimg)
 
   return (
     <header>

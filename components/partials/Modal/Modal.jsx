@@ -3,14 +3,16 @@ import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
 import IconShareTwitter from "../../Icons/IconShareTwitter";
 import IconShareWhatsup from "../../Icons/IconShareWhatsup";
+import Timer from "../../elements/streaming/Timer";
 
-export function ShareModalModal(){
+export function ShareModalModal(props){
+    const {setIsShareModalOpen} = props
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal">
                <div className="modal-header flex Space-between flex-center">
                     <h5 className="modal-title">Share</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={()=>setIsShareModalOpen(false)}>
                         <span aria-hidden="true"><IconClose /></span>
                     </button>
                </div> 
@@ -30,13 +32,14 @@ export function ShareModalModal(){
     );
 }
 
-export function ShippingTaxesModal(){
+export function ShippingTaxesModal(props){
+    const {setOpenShipPayDetails}=props
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal">
                <div className="modal-header flex Space-between flex-center">
                     <h5 className="modal-title">Shipping & Taxes</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => setOpenShipPayDetails(false)}>
                         <span aria-hidden="true"><IconClose /></span>
                     </button>
                </div> 
@@ -52,13 +55,14 @@ export function ShippingTaxesModal(){
         </div>
     );
 }
-export function CustomBidModal(){
+export function CustomBidModal(props){
+    const {setOpen, minutes, seconds, bidAmount, amountToBid, handleConfirmBid, increaseBidAmount, checkBidAmount} = props
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal">
                <div className="modal-header flex Space-between flex-center">
                     <h5 className="modal-title">Custom Bid</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => setOpen(false)}>
                         <span aria-hidden="true"><IconClose /></span>
                     </button>
                </div> 
@@ -66,36 +70,40 @@ export function CustomBidModal(){
                     <div className="flex space-between bid-status column mb16">
                         <div className="left">
                             <strong>Time left - </strong>
-                            <span>0m 15s</span>
+                            <span>
+                        <Timer minutes={minutes} seconds={seconds} />
+                      </span>
                         </div>
                         <div className="right">
                             <strong>Current Bid - </strong>
-                            <span>$110 +Ship/Tax</span>
+                            <span>${bidAmount} +Ship/Tax</span>
                         </div>
                     </div>
-                    <div className="flex space-between increment mb32">
-                        <button className="decrease flex flex-center justify-center">-</button>
-                        <input type="number" className="text-center" placeholder="0"/>
-                        <button className="increase flex flex-center justify-center">+</button>
+                    <div className="flex space-between increment mb16">
+                        <button className="decrease flex flex-center justify-center" onClick={checkBidAmount}>-</button>
+                        <input type="number" className="text-center" placeholder={amountToBid}/>
+                        <button className="increase flex flex-center justify-center" onClick={increaseBidAmount}>+</button>
                     </div>
                </div>
                <div className="modal-footer">
                     <div className="flex space-between btn-wrap">
-                        <button className="disable-btn">Cancel</button>
-                        <button className="primary-btn disable">Conform</button>
+                        <button className="disable-btn" onClick={() => setOpen(false)}>Cancel</button>
+                        <button className="primary-btn" onClick={handleConfirmBid}>Confrrm</button>
                     </div> 
                </div>
             </div>
         </div>
     );
 }
-export function PaymentInfoMOdal(){
+export function PaymentInfoMOdal(props){
+    console.log("payamme")
+    const {openPayment, handlePaymentMethod, handleShippmentMethod, handleSubmitBuyProduct} = props
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal medium">
                <div className="modal-header flex Space-between flex-center">
                     <h5 className="modal-title">Payment Info</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => openPayment(false)}>
                         <span aria-hidden="true"><IconClose /></span>
                     </button>
                </div> 
@@ -117,7 +125,7 @@ export function PaymentInfoMOdal(){
                     </div>
                     <div className="input-control with-bg">
                         <label>Card Number *</label>
-                        <input name="text" placeholder={"Add Payment"}  className="payment" />
+                        <input name="text" placeholder={"Add Payment"}  className="payment" onClick={handlePaymentMethod}/>
                         <span className="errorMessage"></span>
                     </div>     
                </div>
@@ -132,7 +140,9 @@ export function PaymentInfoMOdal(){
     );
 }
 
-export function AddNewCardModal(){
+export function AddNewCardModal(openPayment){
+    console.log("add")
+    openPayment(false)
     return(
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal medium">

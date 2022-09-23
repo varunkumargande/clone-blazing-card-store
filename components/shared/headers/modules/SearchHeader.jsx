@@ -21,7 +21,6 @@ function SearchHeader() {
   const listInnerRef = useRef();
   const [scrall, setscrall] = useState(false);
   const [muscles,setmuscles]=useState(false);
-  console.log(searchList.length,scrall,'searchList')
 const[routerproductvalue,setRouterproductValue]=useState("")
 
   let reloadKey = router.query.keyword;
@@ -45,7 +44,6 @@ const[routerproductvalue,setRouterproductValue]=useState("")
     
     setRouterproductValue(e.target.value)
   }
-console.log(keyword.length,'keyword23')
   useEffect(() => {
     if (scrall === false ) {
     
@@ -60,7 +58,6 @@ console.log(keyword.length,'keyword23')
     
   }, [scrall,searchList]);
 
-  console.log(searchList,'searchList');
  
   useEffect(() => {
     inputRef.current.selectionStart = inputRef.current.value.length;
