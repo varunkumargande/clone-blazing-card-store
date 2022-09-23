@@ -30,9 +30,8 @@ class StreamDetailModel {
       scheduleDate: streamData?.scheduleDate,
       scheduleTime:  streamData?.scheduletime,
       isLoggedIn: false,
-      avatarImage : userDetails.avatar ? imageUrl + "?path=" + userDetails.avatarPath + "&name=" + userDetails.avatar + "&width=50&height=50" : "/static/img/no-image.png"
+      avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"
     }
-    console.log(streamDetails, 'haa yaha chalunga me')
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;
       streamDetails.loggedInUserId = userDetails?.id;

@@ -5,7 +5,13 @@ import ShippmentCard from "./Payment/ShippmentCard";
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept"
-import {PaymentInfoMOdal, AddNewCardModal, AddAddressModal} from "../../partials/Modal/Modal";
+import {PaymentInfoModal, AddNewCardModal, AddAddressModal} from "../../partials/Modal/Modal";
+import { countryListApi } from "../../../api";
+import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
+import { UserAddAddress } from "../../../api";
+import { editShipAddressApi } from "../../../api";
+import { getStreamingCardDetail } from "../../../api/stream/cardApi";
+import { Router } from "next/router";
 
 function CenterDiv({
   productDetail,
@@ -23,6 +29,8 @@ function CenterDiv({
   
   const [cardIndex, setCardIndex] = useState(null)
   const [cardDetail, setCardDetail] = useState(null)
+  const [isEditFromStream, setIsEditFromStream] = useState(true)
+  const [payLoader, setPayLoader] = useState(true)
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -36,6 +44,19 @@ function CenterDiv({
   const handleShippmentMethod = () => {
     setShippmentFormOpen(true);
   };
+  const [addressList, setAddressList] = useState([])
+  const [countryData, setCountryData] = useState([])
+
+  useEffect(() => {
+      countryListApi(setCountryData);
+      getStreamingShippmentDetail(setAddressList)
+      console.log("hhhhhhhhhhhhhhhhhhhhh")
+      getStreamingCardDetail(setCardDetail, setPayLoader)
+  }, [])
+
+  const fetchShiipmentApi = () =>{
+    getStreamingShippmentDetail(setAddressList)
+  }
 
   const handleSubmitBuyProduct = () => {
     if (cardDetail != null && shipData != null) {
@@ -48,7 +69,11 @@ function CenterDiv({
 
   const submitShipDetail = (data) => {
     setShipData(data)
-    modalSuccess("success", "Shippment Detail added")
+    if(data.addressId){
+      editShipAddressApi(data, fetchShiipmentApi)
+    }else{
+      UserAddAddress(data.address1,data.address2,data.city,data.country,data.state, data.postcode, "1", data.fullName)
+    }
   }
 
   return (
@@ -56,67 +81,7 @@ function CenterDiv({
         <StreamingBase openPayment={openPayment} />
         {isPayment ? (
           <>
-          
-          <PaymentInfoMOdal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct}/>
-             
-             {/* <div className="payment_popup">
-              <div>
-                <Row>
-                  <Col span={14}>
-                    <h3 className='payment_header'>Payment Info</h3>
-                  </Col>
-                  <Col span={1} push={7}>
-                    <button className='payment_close' onClick={() => openPayment(false)}>X</button>
-                  </Col>
-                </Row>
-              </div>
-              {openOptions ? (
-                <>
-                  <div>
-                    <div>
-                      <Row>
-                        <Col span={9}>
-                          <h4 className='option-payment'>Payment</h4>
-                        </Col>
-                        <Col span={12} push={7}>
-                          <button className='option_event' onClick={handlePaymentMethod}> - </button>
-                        </Col>
-                      </Row>
-                    </div>
-                    <div align="center">
-                      <div class="nav-bar" />
-                    </div>
-                    <div>
-                      <Row>
-                        <Col span={10}>
-                          <h4 className='option-shippment'>Shippment</h4>
-                        </Col>
-                        <Col span={10} push={7}>
-                          <button className='option_event' onClick={handleShippmentMethod}> - </button>
-                        </Col>
-                      </Row>
-                    </div>
-                    <div>
-                      <Row>
-                        <Col span={12} align="left">
-                          {cardDetail != null && shipData != null ? (
-                            <>
-                              <button type="submit" onClick={handleSubmitBuyProduct} className='payment_submit'>Pay</button>
-                            </>
-                          ) : (
-                            <>
-                            </>
-                          )}
-                        </Col>
-                      </Row>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                </>
-              )}
-            </div>  */}
+          <PaymentInfoModal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct} addressList={addressList}/>
           </>
         ) : (
           <>
@@ -124,7 +89,7 @@ function CenterDiv({
         )}
         {paymentForm == true ? (
           <>
-            <PaymentCard cardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
+            <AddNewCardModal setCardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
           </>
         ) : (
           <>
@@ -132,7 +97,7 @@ function CenterDiv({
         )}
         {shippmentForm ? (
           <>
-            <ShippmentCard setShipIndex={setShipIndex} shipIndex={shipIndex} setShipData={setShipData} shipData={shipData}  close={setShippmentFormOpen} setShip={submitShipDetail} />
+            <AddAddressModal addressList={addressList} countryData={countryData} setShipIndex={setShipIndex} shipIndex={shipIndex} setShipData={setShipData} shipData={shipData}  close={setShippmentFormOpen} setShip={submitShipDetail} />
           </>
         ) : (
           <>
