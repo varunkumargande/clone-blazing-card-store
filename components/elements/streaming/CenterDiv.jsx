@@ -76,10 +76,9 @@ function CenterDiv({
     }
   }
 
-
   return (
       <div className="streaming-live disable">
-        <StreamingBase />
+        <StreamingBase openPayment={openPayment} />
         {isPayment ? (
           <>
           <PaymentInfoModal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct} addressList={addressList}/>
