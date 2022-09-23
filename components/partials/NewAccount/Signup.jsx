@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState,  useEffect, useRef } from "react";
 import Link from "next/link";
 import IconGoogle from '../../Icons/IconGoogle';
 import IconEye from '../../Icons/IconEye';
-import { useEffect, useState } from "react";
 import { EmailValidator, upperPresent, lowerPresent, numPresent, specialPresent } from '../../helper/emailValidator';
 import { UserRegister } from '../../../api';
 import Router from 'next/router';
@@ -12,6 +11,7 @@ import { modalSuccess, modalWarning } from "../../../api/intercept";
 import { registerConstant } from "../../Constants/register"
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { getUsername } from '../../../api/auth/getUsername';
 
 function Signup(auth) {
 
@@ -21,6 +21,9 @@ function Signup(auth) {
     const [pass, setpass] = useState("")
     const [cpass, setCpass] = useState("")
     const [number, setNumber] = useState("")
+
+    const [usernameAvailable, setUsernameAvailable] = useState(null)
+    const usernameInput = useRef();
 
     const [nameValid, setNameValid] = useState("")
     const [lastNameValid, setLastNameValid] = useState("")
@@ -51,14 +54,19 @@ function Signup(auth) {
         }
     };
 
-
-
     const handlePolicyCheck = () => {
         if (policyCheck) {
             setPolicyCheck(false)
         } else {
             setPolicyCheck(true)
         } 
+    }
+
+    const handleOnBlur = async() => {
+        if(usernameInput) {
+            const res = await getUsername(usernameInput.current.value);
+            setUsernameAvailable(res);
+        }
     }
 
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -71,7 +79,8 @@ function Signup(auth) {
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
           ).required('Required'),
-        cpass: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match')
+        cpass: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match'),
+        username: Yup.string().matches(/^[a-zA-Z0-9]*$/, 'Please enter valid username').max(40).required('Required')
     });
 
 
@@ -98,13 +107,17 @@ function Signup(auth) {
             <div className="or mb32 flex flex-center justify-center"><span>Or</span></div>
 
             <Formik
-                initialValues={{ firstname: '', lastname: '', number: '', email: '', password: '', cpass: '' }}
+                initialValues={{ firstname: '', lastname: '', number: '', email: '', password: '', cpass: '', username: ''}}
                 validationSchema={registerSchema}
                 onSubmit={(values) => {
-                    if (policyCheck == true) {
-                        UserRegister(values.firstname, values.lastname, values.email, values.password, values.cpass, values.number, Router)
-                    } else {
+                    if (policyCheck == true  && usernameAvailable) {
+                        UserRegister(values.firstname, values.lastname, values.email, values.password, values.cpass, values.number,usernameInput.current.value, Router)
+                    } else if(policyCheck == false) {
                         modalWarning("error", "Please select term and condition")
+                    } else if(usernameAvailable == false) {
+                        modalWarning("error", "Username already taken")
+                    } else {
+                        modalWarning("error", "Something went wrong...Please try again later")
                     }
                 }}
             >
@@ -171,6 +184,14 @@ function Signup(auth) {
 
                                 <div className="errorText">{errors.cpass}</div>
 
+                            </div>
+
+                            <div className="input-control">
+                                <label>Username</label>
+                                <input type="text" name="username" placeholder={"username"} value={values.username}
+                                    onChange={handleChange} ref={usernameInput} onBlur={handleOnBlur}/>
+                                <div className="errorText">{errors.username}</div>
+                                { (usernameAvailable===false && usernameAvailable !== null) ? <div className="errorText">Username already taken</div> : null}
                             </div>
 
                             <div className="checkbox-wrap mb32">
