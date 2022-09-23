@@ -23,7 +23,6 @@ const PostDetailDynamic = ({ query }) => {
         if (network === false) { Router.push('/network-error') }
     }, [])
 
-    // console.log(router.query.pid,"query")
 
     useEffect(() => {
         const pid = router.query.pid;

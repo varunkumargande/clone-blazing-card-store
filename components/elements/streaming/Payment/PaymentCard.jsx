@@ -20,7 +20,6 @@ function PaymentCard(props) {
     }, [])
 
     useEffect(() => {
-        console.log(props.payDetail)
     }, [props.payIndex])
 
     const getCardList = () => {

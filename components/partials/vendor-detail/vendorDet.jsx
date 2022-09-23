@@ -30,7 +30,6 @@ export default function VendorDetailShow({
     <div className="vendor-complete-wrapper">
       <div className="vendor-detail-content-wrapper">
         <div className="vendor-detail-img-left">
-        {console.log(vendorInfo,'vendorInfo')}
         {vendorInfo&&vendorInfo.companyCoverImage !==null&&vendorInfo&&vendorInfo.companyCoverImagePath?<>
           <img
             src={
