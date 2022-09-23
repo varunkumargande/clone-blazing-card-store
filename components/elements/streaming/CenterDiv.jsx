@@ -53,10 +53,12 @@ function CenterDiv({
 
   return (
       <div className="streaming-live disable">
-        <StreamingBase />
+        <StreamingBase openPayment={openPayment} />
         {isPayment ? (
           <>
+          
           <PaymentInfoMOdal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct}/>
+             
              {/* <div className="payment_popup">
               <div>
                 <Row>

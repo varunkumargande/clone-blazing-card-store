@@ -23,9 +23,7 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
     },[])
     const streamDetail= useSelector((state)=>state?.stream?.streamdetails?.stream)
 
-
   const getStreamCards = () => {
-
     return streamDetail?.scheduled?.map((detail) => {
       return (
         <>

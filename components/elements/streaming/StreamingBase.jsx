@@ -11,9 +11,16 @@ import IconHeart from "../../Icons/IconHeart";
 import IconDoller from "../../Icons/IconDoller";
 import IconEye from "../../Icons/IconEye";
 import IconClose from "../../Icons/IconClose";
-import { CustomBidModal,ShippingTaxesModal,ShareModalModal } from "../../partials/Modal/Modal";
+import {
+  CustomBidModal,
+  ShippingTaxesModal,
+  ShareModalModal,
+} from "../../partials/Modal/Modal";
 
-function StreamingBase() {
+import { getStreamingCardDetail } from "../../../api/stream/cardApi";
+import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
+
+function StreamingBase({openPayment}) {
   const [open, setOpen] = React.useState(false);
   const [bidAmount, setBidAmount] = React.useState(25);
   const [amountToBid, setAmountToBid] = React.useState(bidAmount + 2);
@@ -28,12 +35,17 @@ function StreamingBase() {
   const [isMute, setIsMute] = useState(false);
   const stream = useSelector((state) => state.stream);
   const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
-  const [openShipPayDetails, setOpenShipPayDetails] = useState(false)
-  const [isShareModalOpen, setIsShareModalOpen ] = useState(false)
-  
+  const [openShipPayDetails, setOpenShipPayDetails] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const [payData, setPayData] = useState([]);
+  const [payLoader, setPayLoader] = useState(true);
+  const [shipData, setShipData] = useState([]);
+
   useEffect(() => {
     isLoggedIn ? setDisableBid(false) : setDisableBid(true);
     joinChannel();
+    getPaymentShipData();
   }, []);
 
   const joinChannel = async () => {
@@ -67,32 +79,42 @@ function StreamingBase() {
     }
   }, [channel]);
 
-  const handleConfirmBid = async () => {
-    let message;
-    let auctionId = 3;
-    setOpen(false);
-    createBid(auctionId, Number(audienceId), amountToBid);
-    setBidAmount(amountToBid);
-    setAmountToBid(amountToBid + COUNT_INC);
-    if (seconds > 0) {
-      if (seconds < 20) {
-        setSeconds((sec) => sec + COUNT_INC);
-        message = {
-          bidAmount: amountToBid,
-          amountToBid: amountToBid + COUNT_INC,
-          restartSeconds: seconds + COUNT_INC,
-        };
-      } else {
-        message = {
-          bidAmount: amountToBid,
-          amountToBid: amountToBid + COUNT_INC,
-          restartSeconds: seconds,
-        };
-      }
-    }
-    message = JSON.stringify(message);
-    await channel.sendMessage({ text: message, type: "text" });
+  const getPaymentShipData = () => {
+    getStreamingCardDetail(setPayData, setPayLoader);
+    getStreamingShippmentDetail(setShipData);
   };
+
+  const handleConfirmBid = async () => {
+    if (payData.length == 0 && shipData.length == 0) {
+      openPayment(true)
+    } else {
+      let message;
+      let auctionId = 3;
+      setOpen(false);
+      createBid(auctionId, Number(audienceId), amountToBid);
+      setBidAmount(amountToBid);
+      setAmountToBid(amountToBid + COUNT_INC);
+      if (seconds > 0) {
+        if (seconds < 20) {
+          setSeconds((sec) => sec + COUNT_INC);
+          message = {
+            bidAmount: amountToBid,
+            amountToBid: amountToBid + COUNT_INC,
+            restartSeconds: seconds + COUNT_INC,
+          };
+        } else {
+          message = {
+            bidAmount: amountToBid,
+            amountToBid: amountToBid + COUNT_INC,
+            restartSeconds: seconds,
+          };
+        }
+      }
+      message = JSON.stringify(message);
+      await channel.sendMessage({ text: message, type: "text" });
+    }
+  };
+
   /*****End notifications *****/
   const handleMuteButton = () => {
     setIsMute(!isMute);
@@ -101,8 +123,8 @@ function StreamingBase() {
     setOpen(true);
   };
   const handleShareButton = () => {
-    setIsShareModalOpen(true)
-  }
+    setIsShareModalOpen(true);
+  };
   useEffect(() => {
     let auctionId = 1;
     let myInterval = setInterval(() => {
@@ -135,15 +157,15 @@ function StreamingBase() {
 
   const checkBidAmount = () => {
     if (amountToBid > bidAmount) setAmountToBid(amountToBid - 1);
-  }
-  
-  const increaseBidAmount = () =>{
-    setAmountToBid(amountToBid+1)
-  }
+  };
+
+  const increaseBidAmount = () => {
+    setAmountToBid(amountToBid + 1);
+  };
 
   const handleShipModal = () => {
-    setOpenShipPayDetails(true)
-  }
+    setOpenShipPayDetails(true);
+  };
   return (
     <>
       <div className="stream-wrapper">
@@ -171,10 +193,17 @@ function StreamingBase() {
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
           <div className="video-icon">
-            <button className="flex flex-center justify-center br50" onClick={handleMuteButton} disabled={isMute}>
+            <button
+              className="flex flex-center justify-center br50"
+              onClick={handleMuteButton}
+              disabled={isMute}
+            >
               <IconSpeaker />
             </button>
-            <button className="flex flex-center justify-center br50" onClick={handleShareButton}>
+            <button
+              className="flex flex-center justify-center br50"
+              onClick={handleShareButton}
+            >
               <IconShare />
             </button>
             <button className="flex flex-center justify-center br50">
@@ -201,8 +230,12 @@ function StreamingBase() {
               </div>
               <div className="bid-status flex flex-center">
                 Current Bid - ${bidAmount} + Ship/Tax{" "}
-                <span className="flex flex-center justify-center br50" onClick={handleShipModal}>i</span>
-                
+                <span
+                  className="flex flex-center justify-center br50"
+                  onClick={handleShipModal}
+                >
+                  i
+                </span>
               </div>
             </div>
             {minutes == 0 && seconds == 0 ? (
@@ -247,12 +280,20 @@ function StreamingBase() {
           <></>
         )}
 
-        {
-          openShipPayDetails ? <><ShippingTaxesModal setOpenShipPayDetails={setOpenShipPayDetails}/></> : <></>
-        }
-        {
-          isShareModalOpen ? <><ShareModalModal setIsShareModalOpen={setIsShareModalOpen}/></> : <></>
-        }
+        {openShipPayDetails ? (
+          <>
+            <ShippingTaxesModal setOpenShipPayDetails={setOpenShipPayDetails} />
+          </>
+        ) : (
+          <></>
+        )}
+        {isShareModalOpen ? (
+          <>
+            <ShareModalModal setIsShareModalOpen={setIsShareModalOpen} />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
