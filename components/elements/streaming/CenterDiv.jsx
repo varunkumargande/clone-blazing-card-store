@@ -8,6 +8,10 @@ import { modalSuccess, modalWarning } from "../../../api/intercept"
 import {PaymentInfoModal, AddNewCardModal, AddAddressModal} from "../../partials/Modal/Modal";
 import { countryListApi } from "../../../api";
 import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
+import { UserAddAddress } from "../../../api";
+import { editShipAddressApi } from "../../../api";
+import { getStreamingCardDetail } from "../../../api/stream/cardApi";
+import { Router } from "next/router";
 
 function CenterDiv({
   productDetail,
@@ -25,6 +29,8 @@ function CenterDiv({
   
   const [cardIndex, setCardIndex] = useState(null)
   const [cardDetail, setCardDetail] = useState(null)
+  const [isEditFromStream, setIsEditFromStream] = useState(true)
+  const [payLoader, setPayLoader] = useState(true)
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -44,7 +50,13 @@ function CenterDiv({
   useEffect(() => {
       countryListApi(setCountryData);
       getStreamingShippmentDetail(setAddressList)
+      console.log("hhhhhhhhhhhhhhhhhhhhh")
+      getStreamingCardDetail(setCardDetail, setPayLoader)
   }, [])
+
+  const fetchShiipmentApi = () =>{
+    getStreamingShippmentDetail(setAddressList)
+  }
 
   const handleSubmitBuyProduct = () => {
     if (cardDetail != null && shipData != null) {
@@ -57,7 +69,11 @@ function CenterDiv({
 
   const submitShipDetail = (data) => {
     setShipData(data)
-    modalSuccess("success", "Shippment Detail added")
+    if(data.addressId){
+      editShipAddressApi(data, fetchShiipmentApi)
+    }else{
+      UserAddAddress(data.address1,data.address2,data.city,data.country,data.state, data.postcode, "1", data.fullName)
+    }
   }
 
 
@@ -66,7 +82,7 @@ function CenterDiv({
         <StreamingBase />
         {isPayment ? (
           <>
-          <PaymentInfoModal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct}/>
+          <PaymentInfoModal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct} addressList={addressList}/>
           </>
         ) : (
           <>
@@ -74,7 +90,7 @@ function CenterDiv({
         )}
         {paymentForm == true ? (
           <>
-            <AddNewCardModal cardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
+            <AddNewCardModal setCardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
           </>
         ) : (
           <>

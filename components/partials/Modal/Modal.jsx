@@ -168,7 +168,10 @@ export function PaymentInfoModal(props) {
     handlePaymentMethod,
     handleShippmentMethod,
     handleSubmitBuyProduct,
+    addressList
   } = props;
+  console.log("shipdata", addressList)
+  const addressInfo = addressList.length ==0 ? "Add Address" : addressList[0].address1+" ,"+addressList[0].address2+" ,"+addressList[0].city+" ,"+addressList[0].state+" ,"+addressList[0].postcode
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal medium">
@@ -202,7 +205,7 @@ export function PaymentInfoModal(props) {
             <input
               readOnly
               name="text"
-              placeholder={"Add Address"}
+              placeholder={addressInfo}
               className="address"
               onClick={handleShippmentMethod}
             />
@@ -229,7 +232,7 @@ export function PaymentInfoModal(props) {
               className="primary-btn"
               onClick={() => handleSubmitBuyProduct()}
             >
-              Conform
+              Confirm
             </button>
           </div>
         </div>
@@ -239,18 +242,19 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  const { cardDetail, payDetail, cardIndex, payIndex, close } = props;
-
+  const { setCardDetail, payDetail, cardIndex, payIndex, close } = props;
+    console.log("carddetail", payDetail[0].card)
   const formik = useFormik({
     initialValues: {
-      cardHolderName: "",
-      cardnumber: "",
-      cvv: "",
-      expiration: "",
-      country: "",
+    //   cardHolderName: JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? "",
+    //   cardnumber: payDetail[0].card.last4 ?? "",
+    //   cvv: payDetail[0].cvc,
+    //   expiration: payDetail[0].card.exp_month+"/"+ payDetail[0].card.exp_year ?? "",
+    //   country: payDetail[0].country ?? "",
     },
 
     onSubmit: (values) => {
+        console.log("values", values)
       alert(JSON.stringify(values));
     },
   });
@@ -352,34 +356,40 @@ export function AddAddressModal(props) {
     addressList,
     countryData,
   } = props;
+  console.log("addreslist",addressList)
   const shipSchema = Yup.object().shape({
     fullName: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
     country: Yup.string().required("Required"),
+    state: Yup.string().required("Required"),
     postcode: Yup.string().min(4, "Invalide PinCode").required("Required"),
     phoneNumber: Yup.string().required("Required"),
     email: Yup.string().required("Required"),
   });
-
+//   console.log("addresslist", addressList[0])
   const formik = useFormik({
     initialValues: {
-      fullName: addressList[0]?.company ?? "",
+      fullName: addressList[0]?.firstName ?? "",
       phoneNumber: addressList[0]?.phoneNo ?? "",
       email: addressList[0]?.emailId ?? "",
       address1: addressList[0]?.address1 ?? "",
       address2: addressList[0]?.address2 ?? "",
       country: addressList[0]?.countryId ?? "",
       postcode: addressList[0]?.postcode ?? "",
+      addressId: addressList[0]?.addressId ?? "",
+      state: addressList[0]?.state ?? ""
     },
     onSubmit: (values) => {
-      setShipData(values);
+        console.log("values", values);
+        setShip(values)
+    //   setShipData(values);
       close(false);
     },
     validationSchema: () => shipSchema,
   });
 
-
+    console.log("formik", formik)
   return (
     <>
       {formik ? (
@@ -457,6 +467,43 @@ export function AddAddressModal(props) {
                     name="postcode"
                     placeholder={"Enter here"}
                     value={formik.values.postcode}
+                    onChange={formik.handleChange}
+                  />
+                  <span className="errorMessage"></span>
+                </div>
+                <div className="input-control" hidden>
+                  <input
+                    name="addressId"
+                    value={formik.values.addressId}
+                  />
+                  <span className="errorMessage"></span>
+                </div>
+
+                {/* <div className="input-control" hidden>
+                  <input
+                    name="id"
+                    value={formik.values.addressId}
+                  />
+                  <span className="errorMessage"></span>
+                </div> */}
+
+                <div className="input-control">
+                  <label>City *</label>
+                  <input
+                    name="city"
+                    placeholder={"Enter here"}
+                    value={formik.values.city}
+                    onChange={formik.handleChange}
+                  />
+                  <span className="errorMessage"></span>
+                </div>
+
+                <div className="input-control">
+                  <label>State *</label>
+                  <input
+                    name="state"
+                    placeholder={"Enter here"}
+                    value={formik.values.state}
                     onChange={formik.handleChange}
                   />
                   <span className="errorMessage"></span>
