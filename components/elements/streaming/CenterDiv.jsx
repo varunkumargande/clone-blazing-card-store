@@ -28,7 +28,7 @@ function CenterDiv({
   const [shipData, setShipData] = React.useState(null);
   
   const [cardIndex, setCardIndex] = useState(null)
-  const [cardDetail, setCardDetail] = useState(null)
+  const [cardDetail, setCardDetail] = useState([])
   const [isEditFromStream, setIsEditFromStream] = useState(true)
   const [payLoader, setPayLoader] = useState(true)
 
@@ -50,9 +50,13 @@ function CenterDiv({
   useEffect(() => {
       countryListApi(setCountryData);
       getStreamingShippmentDetail(setAddressList)
-      console.log("hhhhhhhhhhhhhhhhhhhhh")
       getStreamingCardDetail(setCardDetail, setPayLoader)
   }, [])
+
+  const fetchCardDetail = () => {
+    getStreamingCardDetail(setCardDetail, setPayLoader)
+  }
+
 
   const fetchShiipmentApi = () =>{
     getStreamingShippmentDetail(setAddressList)
@@ -76,12 +80,15 @@ function CenterDiv({
     }
   }
 
+
   return (
       <div className="streaming-live disable">
+        
         <StreamingBase openPayment={openPayment} />
+
         {isPayment ? (
           <>
-          <PaymentInfoModal openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct} addressList={addressList}/>
+          <PaymentInfoModal productDetail={productDetail} fetchShiipmentApi={fetchShiipmentApi} openPayment={openPayment} handlePaymentMethod={handlePaymentMethod} handleShippmentMethod={handleShippmentMethod} handleSubmitBuyProduct={handleSubmitBuyProduct} addressList={addressList} cardDetail={cardDetail}/>
           </>
         ) : (
           <>
@@ -89,7 +96,7 @@ function CenterDiv({
         )}
         {paymentForm == true ? (
           <>
-            <AddNewCardModal setCardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
+            <AddNewCardModal productDetail={productDetail} fetchShiipmentApi={fetchShiipmentApi} setCardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
           </>
         ) : (
           <>
@@ -97,7 +104,7 @@ function CenterDiv({
         )}
         {shippmentForm ? (
           <>
-            <AddAddressModal addressList={addressList} countryData={countryData} setShipIndex={setShipIndex} shipIndex={shipIndex} setShipData={setShipData} shipData={shipData}  close={setShippmentFormOpen} setShip={submitShipDetail} />
+            <AddAddressModal productDetail={productDetail} fetchShiipmentApi={fetchShiipmentApi} addressList={addressList} countryData={countryData} setShipIndex={setShipIndex} shipIndex={shipIndex} setShipData={setShipData} shipData={shipData}  close={setShippmentFormOpen} setShip={submitShipDetail} />
           </>
         ) : (
           <>
