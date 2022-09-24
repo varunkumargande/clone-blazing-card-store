@@ -3,12 +3,14 @@ import { modalSuccess, modalWarning } from "../intercept";
 
 async function buyProduct(paymentData, shipData, productDetail) {
     const userData = JSON.parse(sessionStorage.getItem("spurtUser"))
+
+
     if (userData) {
         const jsonData = {
             "shippingLastName": "",
             "shippingCity": shipData.city,
             "shippingPostCode": shipData.postcode,
-            "shippingCompany": shipData.fullName,
+            "shippingCompany": shipData.company,
             "shippingFirstName": userData.firstName,
             "shippingZone": shipData.state,
             "gstNo": "",
@@ -17,7 +19,7 @@ async function buyProduct(paymentData, shipData, productDetail) {
             "shippingAddress_1": shipData.address1,
             "shippingAddress_2": shipData.address1,
             "emailId": userData.email,
-            "shippingCountryId": shipData.country,
+            "shippingCountryId": shipData.countryId,
             "productDetails": [
                 {
                     "productId": productDetail.product_id,
@@ -38,7 +40,7 @@ async function buyProduct(paymentData, shipData, productDetail) {
             "paymentAddress_1": shipData.address1,
             "paymentAddress_2": shipData.address2,
             "paymentCity": shipData.city,
-            "paymentCompany": shipData.fullName,
+            "paymentCompany": shipData.company,
             "paymentCountryId": shipData.country,
             "paymentFirstName": userData.firstName,
             "paymentLastName": userData.lastName == null ? "" : userData.lastName,

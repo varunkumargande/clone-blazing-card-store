@@ -25,7 +25,7 @@ function CenterDiv({
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
 
   const [shipIndex, setShipIndex] = React.useState(null);
-  const [shipData, setShipData] = React.useState(null);
+  const [shipData, setShipData] = React.useState([]);
   
   const [cardIndex, setCardIndex] = useState(null)
   const [cardDetail, setCardDetail] = useState([])
@@ -62,16 +62,13 @@ function CenterDiv({
   }
 
   const handleSubmitBuyProduct = () => {
-    if (cardDetail != null && shipData != null) {
-      buyProduct(cardDetail, shipData, productDetail);
-    } else {
-      setOpen(true);
-      modalWarning(
-        "error",
-        "Please select your card detail and shippment address"
-      );
+    // console.log(cardDetail)
+    if(cardDetail.length != 0 && addressList.length != 0){
+      buyProduct(cardDetail[0], addressList[0], productDetail)
+    }else{  
+      modalWarning("error", "Please select your card detail and shippment address")
     }
-  };
+  }
 
   const submitShipDetail = (data) => {
     setShipData(data)
@@ -81,7 +78,6 @@ function CenterDiv({
       UserAddAddress(data.address1,data.address2,data.city,data.country,data.state, data.postcode, "1", data.fullName)
     }
   }
-
 
   return (
       <div className="streaming-live disable">

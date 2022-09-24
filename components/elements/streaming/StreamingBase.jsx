@@ -52,9 +52,6 @@ function StreamingBase({ winnerNotification }) {
     });
   }, []);
 
-
-
-
   useEffect(() => {
     if (!!auctionNotification || !!bidNotification) {
       const endTime = moment(

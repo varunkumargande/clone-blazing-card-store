@@ -399,7 +399,7 @@ export function AddAddressModal(props) {
   } = props;
 
   const shipSchema = Yup.object().shape({
-    fullName: Yup.string().min(2, "Too Short!").required("Required"),
+    company: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
     country: Yup.string().required("Required"),
@@ -408,10 +408,10 @@ export function AddAddressModal(props) {
     phoneNumber: Yup.string().required("Required"),
     email: Yup.string().required("Required"),
   });
-  //   console.log("addresslist", addressList[0])
+
   const formik = useFormik({
     initialValues: {
-      fullName: addressList[0]?.firstName ?? "",
+      company: addressList[0]?.company ?? "",
       phoneNumber: addressList[0]?.phoneNo ?? "",
       email: addressList[0]?.emailId ?? "",
       address1: addressList[0]?.address1 ?? "",
@@ -452,11 +452,11 @@ export function AddAddressModal(props) {
             <form onSubmit={formik.handleSubmit}>
               <div className="modal-body">
                 <div className="input-control">
-                  <label>Full Name *</label>
+                  <label>Company *</label>
                   <input
-                    name="fullName"
+                    name="company"
                     placeholder={"Enter here"}
-                    value={formik.values.fullName}
+                    value={formik.values.company}
                     onChange={formik.handleChange}
                   />
                   <span className="errorMessage"></span>
