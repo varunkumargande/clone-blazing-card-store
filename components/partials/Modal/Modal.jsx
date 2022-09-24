@@ -7,7 +7,7 @@ import Timer from "../../elements/streaming/Timer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { array, element } from "prop-types";
-import { addCardDetail } from '../../../api/stream/payment';
+import { addCardDetail } from "../../../api/stream/payment";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -164,8 +164,6 @@ export function CustomBidModal(props) {
 }
 
 export function PaymentInfoModal(props) {
-
-  
   const {
     openPayment,
     handlePaymentMethod,
@@ -173,7 +171,7 @@ export function PaymentInfoModal(props) {
     handleSubmitBuyProduct,
     addressList,
     cardDetail,
-    productDetail
+    productDetail,
   } = props;
 
   const addressInfo =
@@ -193,7 +191,13 @@ export function PaymentInfoModal(props) {
     fullName: Yup.string().min(2, "Too Short!").required("Required"),
   });
 
-  const cardDetails = cardDetail?.length == 0 ? "Add shipment" : cardDetail[0].card.brand +" " +"XXXX XXXX XXXX "+cardDetail[0].card.last4 
+  const cardDetails =
+    cardDetail?.length == 0
+      ? "Add shipment"
+      : cardDetail[0].card.brand +
+        " " +
+        "XXXX XXXX XXXX " +
+        cardDetail[0].card.last4;
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -254,7 +258,7 @@ export function PaymentInfoModal(props) {
             <button
               className="primary-btn"
               onClick={() => {
-                handleSubmitBuyProduct()
+                handleSubmitBuyProduct();
               }}
             >
               Confirm
@@ -267,14 +271,16 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  
-    const { payDetail, close, productDetail } = props;
+  const { payDetail, close, productDetail } = props;
 
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
 
   const shipSchema = Yup.object().shape({
     cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
-    cardNumber: Yup.string().required("Required").max(16, "Card Number is invalid !").min(15, "Card Number is invalid !"),
+    cardNumber: Yup.string()
+      .required("Required")
+      .max(16, "Card Number is invalid !")
+      .min(15, "Card Number is invalid !"),
     cvv: Yup.string().min(2, "Too Short!").required("Required"),
     expiration: Yup.string().required("Required"),
     country: Yup.string().required("Required"),
@@ -282,14 +288,23 @@ export function AddNewCardModal(props) {
 
   const formik = useFormik({
     initialValues: {
-      cardHolderName: userDetail != null ? JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? "" : "",
-      cardNumber: payDetail.length != 0 ? "XXXX XXXX XXXX "+payDetail[0].card.last4 : "",
+      cardHolderName:
+        userDetail != null
+          ? JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? ""
+          : "",
+      cardNumber:
+        payDetail.length != 0
+          ? "XXXX XXXX XXXX " + payDetail[0].card.last4
+          : "",
       cvv: payDetail.length != 0 ? payDetail[0].cvc : "",
-      expiration: payDetail.length != 0 ? payDetail[0].card.exp_year+"-"+ payDetail[0].card.exp_month : "",
+      expiration:
+        payDetail.length != 0
+          ? payDetail[0].card.exp_year + "-" + payDetail[0].card.exp_month
+          : "",
       country: payDetail.length != 0 ? payDetail[0].country : "",
     },
     onSubmit: (values) => {
-        addCardDetail(values, productDetail)
+      addCardDetail(values, productDetail);
     },
     validationSchema: () => shipSchema,
   });
@@ -322,7 +337,9 @@ export function AddNewCardModal(props) {
                 value={formik.values.cardHolderName}
                 onChange={formik.handleChange}
               />
-              <span className="errorMessage">{formik.errors.cardHolderName}</span>
+              <span className="errorMessage">
+                {formik.errors.cardHolderName}
+              </span>
             </div>
             <div className="input-control">
               <label>Card Number *</label>
@@ -333,7 +350,7 @@ export function AddNewCardModal(props) {
                 value={formik.values.cardNumber}
                 onChange={formik.handleChange}
               />
-               <span className="errorMessage">{formik.errors.cardNumber}</span>
+              <span className="errorMessage">{formik.errors.cardNumber}</span>
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
@@ -356,7 +373,7 @@ export function AddNewCardModal(props) {
                   value={formik.values.cvv}
                   onChange={formik.handleChange}
                 />
-               <span className="errorMessage">{formik.errors.cvv}</span>
+                <span className="errorMessage">{formik.errors.cvv}</span>
               </div>
             </div>
             <div className="input-control">
@@ -423,12 +440,11 @@ export function AddAddressModal(props) {
     },
     onSubmit: (values) => {
       setShip(values);
-      fetchShiipmentApi()
+      fetchShiipmentApi();
       close(false);
     },
     validationSchema: () => shipSchema,
   });
-
 
   return (
     <>

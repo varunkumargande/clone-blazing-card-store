@@ -87,6 +87,8 @@ function CenterDiv({
         auctionNotification={auctionNotification}
         bidNotification={bidNotification}
         winnerNotification={winnerNotification}
+        addressList={addressList}
+        cardDetail={cardDetail}
       />
 
         {isPayment ? (

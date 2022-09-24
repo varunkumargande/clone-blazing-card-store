@@ -20,7 +20,12 @@ import moment from "moment/moment";
 import { notification } from "antd";
 import { useRouter } from "next/router";
 
-function StreamingBase({ winnerNotification }) {
+function StreamingBase({
+  winnerNotification,
+  cardDetail,
+  addressList,
+  openPayment,
+}) {
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
   const [bidAmount, setBidAmount] = useState(null);
@@ -64,8 +69,8 @@ function StreamingBase({ winnerNotification }) {
       const seconds = Math.ceil(duration.asSeconds() % 60);
       setMinutes(minutes);
       setSeconds(seconds);
-      if(stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
-        setDisableBid(false)
+      if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
+        setDisableBid(false);
       }
       if (bidNotification) {
         setBidAmount(bidNotification?.bidAmount);
@@ -73,14 +78,24 @@ function StreamingBase({ winnerNotification }) {
     }
   }, [bidNotification, auctionNotification]);
 
+  console.log(cardDetail, addressList);
+
   const handleConfirmBid = async () => {
-    let message;
-    let auctionId = auctionNotification?.auction.id;
-    setOpen(false);
-    increaseBidAmount();
-    createBid(auctionId, Number(stream?.streamPageData.streamPageDteails.loggedInUserId), amountToBid);
-    // setBidAmount(amountToBid);
-    // setAmountToBid(amountToBid + COUNT_INC);
+    if (cardDetail.length == 0 && addressList.length == 0) {
+      openPayment(true);
+    } else {
+      let message;
+      let auctionId = auctionNotification?.auction.id;
+      setOpen(false);
+      increaseBidAmount();
+      createBid(
+        auctionId,
+        Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
+        amountToBid
+      );
+      // setBidAmount(amountToBid);
+      // setAmountToBid(amountToBid + COUNT_INC);
+    }
   };
   /*****End notifications *****/
   const handleMuteButton = () => {
@@ -134,32 +149,32 @@ function StreamingBase({ winnerNotification }) {
   };
 
   const getAuctionArea = () => {
-      return (
-        <>
-          {minutes == 0 && seconds == 0 ? (
-            <div className="auction-end">
-              <button className="primary-btn disable">Auction Ended</button>
-            </div>
-          ) : (
-            <div className="btn-wrap flex space-between">
-              <button
-                className={disableBid ? "border-btn disable" : "border-btn"}
-                disabled={disableBid}
-                onClick={handleCustomBid}
-              >
-                Custom Bid
-              </button>
-              <button
-                className={disableBid ? "primary-btn disable" : "primary-btn"}
-                disabled={disableBid}
-                onClick={handleConfirmBid}
-              >
-                Bid US ${amountToBid}
-              </button>
-            </div>
-          )}
-        </>
-      );
+    return (
+      <>
+        {minutes == 0 && seconds == 0 ? (
+          <div className="auction-end">
+            <button className="primary-btn disable">Auction Ended</button>
+          </div>
+        ) : (
+          <div className="btn-wrap flex space-between">
+            <button
+              className={disableBid ? "border-btn disable" : "border-btn"}
+              disabled={disableBid}
+              onClick={handleCustomBid}
+            >
+              Custom Bid
+            </button>
+            <button
+              className={disableBid ? "primary-btn disable" : "primary-btn"}
+              disabled={disableBid}
+              onClick={handleConfirmBid}
+            >
+              Bid US ${amountToBid}
+            </button>
+          </div>
+        )}
+      </>
+    );
   };
   return (
     <>
@@ -218,20 +233,24 @@ function StreamingBase({ winnerNotification }) {
                     <p>The live video has ended you can <br/>no longer to view</p>
                 </div> */}
           {/* winner profile*/}
-          { winnerNotification ? <div className="winner-profile flex flex-center">
-            <div className="pf br50">
-              <img src="/static/images/profile.png" alt="" />
+          {winnerNotification ? (
+            <div className="winner-profile flex flex-center">
+              <div className="pf br50">
+                <img src="/static/images/profile.png" alt="" />
+              </div>
+              ad_marie <span> &nbsp; is winner 🎉</span>
             </div>
-            ad_marie <span> &nbsp; is winner 🎉</span>
-          </div> : null }
-          {bidNotification ? <div className="winner-profile flex flex-center">
-            <div className="pf br50">
-              <img src="/static/images/profile.png" alt="" />
+          ) : null}
+          {bidNotification ? (
+            <div className="winner-profile flex flex-center">
+              <div className="pf br50">
+                <img src="/static/images/profile.png" alt="" />
+              </div>
+              {bidNotification?.customer?.firstName}{" "}
+              <span> &nbsp; is winning 🎉</span>
             </div>
-            {bidNotification?.customer?.firstName} <span> &nbsp; is winning 🎉</span>
-          </div> : null}
-          
-          
+          ) : null}
+
           <div className="stream-footer flex flex-center space-between">
             <div className="left">
               <div className="time-left">
