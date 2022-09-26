@@ -1,7 +1,7 @@
 import APIServices from "../../services";
 import { modalSuccess, modalWarning } from "../intercept";
 
-async function buyProduct(paymentData, shipData, productDetail) {
+async function buyProduct(paymentData, shipData, productDetail, openPayment) {
   const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
 
   if (userData) {
@@ -57,8 +57,10 @@ async function buyProduct(paymentData, shipData, productDetail) {
     if (result && result.data && result.data) {
       if (result.status == 200) {
         modalSuccess("success", result.data.message);
+        openPayment(false)
       } else {
         modalWarning("error", result.data.message);
+        openPayment(false);
       }
     }
   }

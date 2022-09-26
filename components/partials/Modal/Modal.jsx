@@ -191,6 +191,8 @@ export function PaymentInfoModal(props) {
     fullName: Yup.string().min(2, "Too Short!").required("Required"),
   });
 
+  console.log(addressList)
+
   const cardDetails =
     cardDetail?.length == 0
       ? "Add shipment"
@@ -271,7 +273,7 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  const { payDetail, close, productDetail } = props;
+  const { payDetail, close, productDetail, countryData } = props;
 
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
 
@@ -285,6 +287,7 @@ export function AddNewCardModal(props) {
     expiration: Yup.string().required("Required"),
     country: Yup.string().required("Required"),
   });
+
 
   const formik = useFormik({
     initialValues: {
@@ -301,10 +304,10 @@ export function AddNewCardModal(props) {
         payDetail.length != 0
           ? payDetail[0].card.exp_year + "-" + payDetail[0].card.exp_month
           : "",
-      country: payDetail.length != 0 ? payDetail[0].country : "",
+      country: payDetail.length != 0 ? payDetail[0].card.country : "",
     },
     onSubmit: (values) => {
-      addCardDetail(values, productDetail);
+      addCardDetail(values, productDetail, close);
     },
     validationSchema: () => shipSchema,
   });
@@ -378,11 +381,16 @@ export function AddNewCardModal(props) {
             </div>
             <div className="input-control">
               <label>Country *</label>
-              <select name="country" onChange={formik.handleChange}>
+              <select name="country" onChange={formik.handleChange} value={formik.values.country}>
                 <option value="">Select Country</option>
-                <option>India</option>
-                <option>Australia</option>
-                <option>America</option>
+
+                {countryData?.map((item, index) => {
+                  return (
+                    <>
+                      <option value={item.name}>{item.name}</option>
+                    </>
+                  );
+                })}
               </select>
               <span className="errorMessage">{formik.errors.country}</span>
             </div>
@@ -421,9 +429,10 @@ export function AddAddressModal(props) {
     address1: Yup.string().min(2, "Too Short!").required("Required"),
     country: Yup.string().required("Required"),
     state: Yup.string().required("Required"),
+    city: Yup.string().required("Required"),
     postcode: Yup.string().min(4, "Invalide PinCode").required("Required"),
-    phoneNumber: Yup.string().required("Required"),
-    email: Yup.string().required("Required"),
+    // phoneNumber: Yup.string().required("Required"),
+    // email: Yup.string().required("Required"),
   });
 
   const formik = useFormik({
@@ -437,6 +446,7 @@ export function AddAddressModal(props) {
       postcode: addressList[0]?.postcode ?? "",
       addressId: addressList[0]?.addressId ?? "",
       state: addressList[0]?.state ?? "",
+      city: addressList[0]?.city ?? "",
     },
     onSubmit: (values) => {
       setShip(values);
@@ -532,14 +542,6 @@ export function AddAddressModal(props) {
                   <span className="errorMessage"></span>
                 </div>
 
-                {/* <div className="input-control" hidden>
-                  <input
-                    name="id"
-                    value={formik.values.addressId}
-                  />
-                  <span className="errorMessage"></span>
-                </div> */}
-
                 <div className="input-control">
                   <label>City *</label>
                   <input
@@ -568,7 +570,7 @@ export function AddAddressModal(props) {
                     className="input-control"
                     name="country"
                     onChange={formik.handleChange}
-                    value={shipData?.countryId}
+                    value={formik.values.country}
                   >
                     {countryData?.map((item, index) => {
                       return (
