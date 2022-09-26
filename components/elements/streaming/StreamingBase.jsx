@@ -58,8 +58,8 @@ function StreamingBase({
   }, []);
 
   useEffect(() => {
-    console.log("auctionNotification",auctionNotification)
-    console.log("bidNotification", bidNotification)
+    console.log("auctionNotification", auctionNotification)
+    console.log("bidNotification",bidNotification)
     if (!!auctionNotification || !!bidNotification) {
       const endTime = moment(
         bidNotification?.endTime || auctionNotification?.auction?.endTime
@@ -190,7 +190,6 @@ function StreamingBase({
           <StreamingElement volume={volumeLevel} isMute={isMute} />
         </div>
         <div className="inner-wrapper">
-          {/*add className disable when want {disable}*/}
           <div className="stream-header flex space-between">
             {stream?.streamPageData?.streamPageDteails?.isLoggedIn ? (
               <>

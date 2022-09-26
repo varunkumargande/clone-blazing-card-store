@@ -64,7 +64,7 @@ function CenterDiv({
   const handleSubmitBuyProduct = () => {
     // console.log(cardDetail)
     if(cardDetail.length != 0 && addressList.length != 0){
-      buyProduct(cardDetail[0], addressList[0], productDetail)
+      buyProduct(cardDetail[cardDetail.length-1], addressList[addressList.length-1], productDetail, openPayment)
     }else{  
       modalWarning("error", "Please select your card detail and shippment address")
     }
@@ -73,7 +73,8 @@ function CenterDiv({
   const submitShipDetail = (data) => {
     setShipData(data)
     if(data.addressId){
-      editShipAddressApi(data, fetchShiipmentApi)
+      editShipAddressApi(data, fetchShiipmentApi, setShippmentFormOpen)
+
     }else{
       UserAddAddress(data.address1,data.address2,data.city,data.country,data.state, data.postcode, "1", data.fullName)
     }
@@ -101,7 +102,7 @@ function CenterDiv({
         )}
         {paymentForm == true ? (
           <>
-            <AddNewCardModal productDetail={productDetail} fetchShiipmentApi={fetchShiipmentApi} setCardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
+            <AddNewCardModal productDetail={productDetail} countryData={countryData} fetchShiipmentApi={fetchShiipmentApi} setCardDetail={setCardDetail} payDetail={cardDetail} cardIndex={setCardIndex} payIndex={cardIndex} close={setPaymentFormOpen} />
           </>
         ) : (
           <>

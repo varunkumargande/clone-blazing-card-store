@@ -22,8 +22,8 @@ function ProfileCard(props) {
                         <img src="/static/images/profile-large.svg" alt="profileImg" />
                     </div>
                     <div className="title flex column">
-                        {userDetail.firstName != null ? userDetail.firstName : ""} {userDetail.lastName != null ? userDetail.lastName : ""}
-                        <span>{userDetail.username != null ? userDetail.username : ""}</span>
+                        {/* {userDetail.firstName != null ? userDetail.firstName : ""} {userDetail.lastName != null ? userDetail.lastName : ""}
+                        <span>{userDetail.username != null ? userDetail.username : ""}</span> */}
                     </div>
                     {/* <button className="primary-btn follow-btn">Follow</button> */}
                     <button className="border-btn edit-profile-btn">Edit Profile</button>
