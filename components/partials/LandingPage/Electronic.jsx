@@ -8,16 +8,24 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";
 import { stringFormatter } from "../../../utilities/utils";
+import Router from 'next/router';
 
-export default function Electronic({categoryData}) {
+
+export default function Electronic({ categoryData, setIsSeeAllCate, isSeeAll, setIsSeeAll, setSeeAllHeading }) {
   const dispatch = useDispatch();
+
   useEffect(() => {
     subcatstreamDetailApi(dispatch);
   }, []);
-  const getStreamCards = () => {
-    if (categoryData) 
-    
 
+  const handleSeeAll = (name) => { 
+    setIsSeeAll(true)
+    setIsSeeAllCate(false)
+    setSeeAllHeading(name)
+  }
+
+  const getStreamCards = () => {
+    if (categoryData)
       return categoryData[1]?.map((detail) => {
         return (
           <div className="card-list flex flex-center">
@@ -31,8 +39,6 @@ export default function Electronic({categoryData}) {
                   </button>
                 </div>
               </a>
-
-
               <div className="text">
                 <h3 className="title flex flex-center">
                   <img src="/static/images/profile.png" alt="Card" />{" "}
@@ -45,9 +51,7 @@ export default function Electronic({categoryData}) {
           </div>
         );
       });
-    }
-  
-
+  }
 
   return (
     <section className="Live-wrapper card-inner">
@@ -57,9 +61,9 @@ export default function Electronic({categoryData}) {
             <h3 className="title">{stringFormatter(categoryData[0])}</h3>
           </div>
           <div className="seeAll">
-            <Link href={`/categoryStream?catname=${categoryData[0]}`}>
-              <a className="flex flex-center">See All</a>
-            </Link>
+            {/* <Link href={`/categoryStream?catname=${categoryData[0]}`}> */}
+            <a className="flex flex-center" onClick={() => handleSeeAll(categoryData[0])}>See All</a>
+            {/* </Link> */}
           </div>
         </div>
         <div className="overflow-wrap">
@@ -71,5 +75,5 @@ export default function Electronic({categoryData}) {
       </div>
     </section>
   );
-  }
+}
 

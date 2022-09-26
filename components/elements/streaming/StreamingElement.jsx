@@ -29,7 +29,6 @@ const StreamingElement = ({ volume, isMute }) => {
   }, []);
 
   const joinChannelAsAudience = async () => {
-    console.log(options, "++++++++++++++++++++++++++++++=");
     if (options && options.userType) {
       rtc.current.client.setClientRole(options.userType);
 
@@ -79,7 +78,6 @@ const StreamingElement = ({ volume, isMute }) => {
   const getRtcToken = async (uid, role, tokenType) => {
     const url = `/stream/getStreamToken?token=RTC&channel=${options.streamChannel}&role=${role}&tokentype=${tokenType}&uid=${uid}`;
     const response = await agoraGettToken(url);
-    console.log(response, "token response.");
     return response.rtcToken;
   };
 
@@ -90,9 +88,9 @@ const StreamingElement = ({ volume, isMute }) => {
         <div
           id="local_stream"
           className="local_stream"
-          style={{ width: "510px", height: "600px" }}
+          style={{ width: "100%", height: "100%" }}
         ></div>
-      ) : null}
+      ) :  <img src="/static/images/stream-image.jpg" alt="stream" />}
     </>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import * as cryptoJs from "crypto-js";
+import { imageUrl } from "../../api/url";
 
 class StreamDetailModel {
   constructor(streamData) {
@@ -28,7 +29,8 @@ class StreamDetailModel {
       agoraAppId: appId,
       scheduleDate: streamData?.scheduleDate,
       scheduleTime:  streamData?.scheduletime,
-      isLoggedIn: false
+      isLoggedIn: false,
+      avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"
     }
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;
@@ -44,7 +46,7 @@ class StreamDetailModel {
       streamChannel: data.streamChannel,
       notificationChannel: data.notificationChannel,
       messageChannel: data.messageChannel,
-      audience: data.loggedInUserName + data.loggedInUserId,
+      audience: data.loggedInUserName,
       audienceId: data.loggedInUserId,
       userType: 'audience',
       accountType: 'userAccount',

@@ -31,7 +31,6 @@ export default function CardCarousel() {
       );
     });
   };
-console.log(streamDetail,"stream")
   return (
     <>
       <Slider {...settings}>{getStreamCards()}</Slider>
