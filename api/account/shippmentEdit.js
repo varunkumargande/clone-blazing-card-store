@@ -12,7 +12,9 @@ export async function editShipAddressApi(data, fetchShiipmentApi) {
         postcode: data.postcode,
         country: data.countryId,
         addressType: 1,
-        company: data.fullName
+        company: data.company,
+        emailId: data.email,
+        phoneNo: data.phoneNumber
     })
 
     console.log("datatta", data)
