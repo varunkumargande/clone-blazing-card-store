@@ -47,6 +47,9 @@ export default function categoryStream(){
     }, []);
 
 
+    
+
+
     const getStreamCards = () => {
        
         return streamDetail?.scheduled?.map((detail) => {
