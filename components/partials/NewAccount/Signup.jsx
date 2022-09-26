@@ -110,8 +110,10 @@ function Signup(auth) {
                 initialValues={{ firstname: '', lastname: '', number: '', email: '', password: '', cpass: '', username: ''}}
                 validationSchema={registerSchema}
                 onSubmit={(values) => {
+                  
                     if (policyCheck == true  && usernameAvailable) {
                         UserRegister(values.firstname, values.lastname, values.email, values.password, values.cpass, values.number,usernameInput.current.value, Router)
+                       
                     } else if(policyCheck == false) {
                         modalWarning("error", "Please select term and condition")
                     } else if(usernameAvailable == false) {
@@ -122,6 +124,7 @@ function Signup(auth) {
                 }}
             >
                 {({
+                    formik,
                     values,
                     errors,
                     touched,
@@ -131,6 +134,7 @@ function Signup(auth) {
                     isSubmitting,
                 }) => (
                     <>
+                        {console.log(formik)}
                         <form className="signup flex space-between" onSubmit={handleSubmit}>
                             <div className="input-control wd50">
                                 <label>First Name</label>
@@ -203,7 +207,7 @@ function Signup(auth) {
                             </div>
 
                             <div className="submitWrap mb32">
-                                <button className="primary-btn">Sign Up</button>
+                                <button className={(Object.keys(errors).length > 0 || policyCheck===false) ? "disable-btn" : "primary-btn"} disabled={(Object.keys(errors).length > 0  || policyCheck===false) ? true : false}>Sign Up</button>
                             </div>
 
                             <div className="text-center mb16 already">
