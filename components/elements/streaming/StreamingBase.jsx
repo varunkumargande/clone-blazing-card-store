@@ -58,16 +58,17 @@ function StreamingBase({
   }, []);
 
   useEffect(() => {
-
-    console.log(stream?.streamPageData?.streamPageDteails?.isLoggedIn)
-
+    console.log("auctionNotification", auctionNotification)
+    console.log("bidNotification",bidNotification)
     if (!!auctionNotification || !!bidNotification) {
       const endTime = moment(
-        bidNotification?.endTime || auctionNotification?.aution?.endTime
+        bidNotification?.endTime || auctionNotification?.auction?.endTime
       );
+      console.log("endTime",endTime)
       const duration = moment.duration(
         endTime.diff(moment.utc().format("yyyy-MM-DD, hh:mm:ss"))
       );
+      console.log("duration",duration)
       const minutes = Math.ceil(duration.asSeconds() / 60);
       const seconds = Math.ceil(duration.asSeconds() % 60);
       setMinutes(minutes);
@@ -88,6 +89,7 @@ function StreamingBase({
       openPayment(true);
     } else {
       let message;
+      console.log(auctionNotification)
       let auctionId = auctionNotification?.auction.id;
       setOpen(false);
       increaseBidAmount();
@@ -189,7 +191,7 @@ function StreamingBase({
         </div>
         <div className="inner-wrapper">
           <div className="stream-header flex space-between">
-            {!disableBid ? (
+            {stream?.streamPageData?.streamPageDteails?.isLoggedIn ? (
               <>
                 <div className="head-title">
                   {auctionNotification
