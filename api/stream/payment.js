@@ -1,7 +1,7 @@
 import APIServices from "../../services";
-// import { modalSuccess, modalWarning } from "../../../../api/intercept";
+import { modalSuccess, modalWarning } from "../../api/intercept";
 
-async function addCardDetail(data, productDetail) {
+async function addCardDetail(data, productDetail, close) {
   if (sessionStorage.getItem("spurtUser")) {
     let expDate = "";
     let year = data.expiration.split("-")[0].slice(-2);
@@ -21,11 +21,11 @@ async function addCardDetail(data, productDetail) {
       jsondata
     );
     if (result.status == 200) {
-      // productDetail()
       modalSuccess("success", result.data.message);
-      // setOpen(false)
+      close(false)
     } else {
-      // modalWarning('error', result.data.message)
+      modalWarning('error', result.data.message)
+      // close(false)
     }
   }
 }

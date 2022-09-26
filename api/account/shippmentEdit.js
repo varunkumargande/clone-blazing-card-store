@@ -1,7 +1,7 @@
 import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from '../../services'
 
-export async function editShipAddressApi(data, fetchShiipmentApi) {
+export async function editShipAddressApi(data, fetchShiipmentApi, setShippmentFormOpen) {
     console.log(data)
     
     const dataJson = JSON.stringify({
@@ -24,8 +24,10 @@ export async function editShipAddressApi(data, fetchShiipmentApi) {
             if (result.data.status === 1) {
                 modalSuccess('success', result.data.message)
                 fetchShiipmentApi()
+                setShippmentFormOpen(false)
             } else {
                 modalWarning('error', result.data.message);
+                setShippmentFormOpen(false)
             }
         }
 }
