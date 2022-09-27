@@ -21,10 +21,10 @@ export default function SendMail(props) {
 
     return(
         <div className="login-wrapper">
-            <div className="back mb32"><IconBack /></div>
+
             <div className="iconkey mb32"><IconKey /></div>
             <h1 className="title mb8">Check Your Email</h1>
-            <div className="infotext mb32">We sent a password reset link to {props.mail}</div>
+            <div className="infotext mb32">We sent a password reset link to {mail}</div>
             <div className="sent flex space-between">
                 <div className="mb32 already">
                     Don’t receive the email? <a onClick={handleSubmit}>Click to resend</a>

@@ -1,5 +1,5 @@
 import { modalSuccess, modalWarning } from "../intercept";
-import APIServices from '../../services'
+import APIServices from "../../services";
 
 export async function resetPassApi(key, newPass, Router, setError) {
  
