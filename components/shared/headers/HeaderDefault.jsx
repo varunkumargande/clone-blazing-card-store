@@ -18,7 +18,7 @@ import { logOut } from '../../../store/auth/action';
 import { searchRequest } from "../../../store/search/action";
 import { imageUrl } from '../../../api/url';
 
-function HeaderDefault({ auth }) {
+function HeaderDefault({ auth }, props) {
   const router = useRouter();
   const [active, setActive] = useState(false);
   let category = useSelector((s) => s.product);
@@ -70,6 +70,7 @@ function HeaderDefault({ auth }) {
   const handleSearchValue = (e) => {
     dispatch(searchRequest(e.target.value))
   }
+
 
   return (
     <header>

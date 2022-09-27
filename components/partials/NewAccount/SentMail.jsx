@@ -2,18 +2,20 @@ import React, {useState} from "react";
 import Link from "next/link";
 import IconKey from "../../Icons/IconKey";
 import IconBack from "../../Icons/IconBack";
+
 import { forgotApi } from '../../../api/auth/forgotPassword'
 import { forgotPasswordConstant } from "../../Constants/forgot-password";
 
-export default function SendMail({mail}){
-    
+export default function SendMail(props) {
+
+    const [mailError, setMailError] = useState("")
     const [forgotSuccess, setForgotSuccess] = useState(false)
 
     const handleSubmit = () => {
-        if(mail == "") {
+        if(props.mail == "") {
             setMailError(forgotPasswordConstant["requiredEmail"])
         }else {
-            forgotApi(mail, setForgotSuccess)
+            forgotApi(props.mail, setForgotSuccess)
         }
     }
 
@@ -25,7 +27,7 @@ export default function SendMail({mail}){
             <div className="infotext mb32">We sent a password reset link to {mail}</div>
             <div className="sent flex space-between">
                 <div className="mb32 already">
-                    Don’t receive the email? <a onClick={handleSubmit}>Click to resend</a> 
+                    Don’t receive the email? <a onClick={handleSubmit}>Click to resend</a>
                 </div>
                 <div className="already">
                     Go Back to <Link href="/account/login"><a>Sign In</a></Link> 
