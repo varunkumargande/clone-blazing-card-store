@@ -1,7 +1,7 @@
 import {modalSuccess, modalWarning} from "../intercept";
 import APIServices from '../../services'
 
-export async function UserRegister(firstname, lastname, email, password,confirmPassword,number,Router) {
+export async function UserRegister(firstname, lastname, email, password,confirmPassword,number,usernameInput,Router) {
 
     const data = JSON.stringify({
             name: firstname,
@@ -9,7 +9,8 @@ export async function UserRegister(firstname, lastname, email, password,confirmP
             emailId: email,
             password: password,
             confirmPassword: confirmPassword,
-            phoneNumber:number
+            phoneNumber:number,
+            userName: usernameInput
    })
    const result =await APIServices.create('customer/register',data)
    if (result&&result.data) {
