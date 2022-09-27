@@ -21,10 +21,10 @@ import { notification } from "antd";
 import { useRouter } from "next/router";
 
 function StreamingBase({
-  winnerNotification,
   cardDetail,
   addressList,
   openPayment,
+  currentAuction
 }) {
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
@@ -40,10 +40,11 @@ function StreamingBase({
   const [openShipPayDetails, setOpenShipPayDetails] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [socketObject, setSocketObject] = useState(
-    io("http://52.72.64.43:4000")
+    stream?.streamPageData.streamPageDteails.socketObject
   );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
+  const [winnerNotification, setWinnerNotification] = useState(null);
 
   const router = useRouter();
   const uuid = router.query["uuid"];
@@ -51,25 +52,27 @@ function StreamingBase({
   useEffect(() => {
     socketObject.on(`${uuid}-bid`, (bid) => {
       setBidNotification(bid);
+      setWinner(null)
     });
     socketObject.on(`${uuid}-auction`, (auction) => {
       setAuctionNotification(auction);
+      setWinner(null)
     });
+    socketObject.on(`${uuid}-win`, (winner) => {
+      setWinnerNotification(winner);
+    });
+
   }, []);
 
   useEffect(() => {
-    console.log("auctionNotification", auctionNotification)
-    console.log("bidNotification",bidNotification)
     if (!!auctionNotification || !!bidNotification) {
       const endTime = moment(
         bidNotification?.endTime || auctionNotification?.auction?.endTime
       );
-      console.log("endTime",endTime)
       const duration = moment.duration(
         endTime.diff(moment.utc().format("yyyy-MM-DD, hh:mm:ss"))
       );
-      console.log("duration",duration)
-      const minutes = Math.ceil(duration.asSeconds() / 60);
+      const minutes = Math.floor(duration.asSeconds() / 60);
       const seconds = Math.ceil(duration.asSeconds() % 60);
       setMinutes(minutes);
       setSeconds(seconds);
@@ -82,14 +85,12 @@ function StreamingBase({
     }
   }, [bidNotification, auctionNotification]);
 
-  console.log(cardDetail, addressList);
 
   const handleConfirmBid = async () => {
     if (cardDetail.length == 0 && addressList.length == 0) {
       openPayment(true);
     } else {
       let message;
-      console.log(auctionNotification)
       let auctionId = auctionNotification?.auction.id;
       setOpen(false);
       increaseBidAmount();
@@ -242,7 +243,7 @@ function StreamingBase({
               <div className="pf br50">
                 <img src="/static/images/profile.png" alt="" />
               </div>
-              ad_marie <span> &nbsp; is winner 🎉</span>
+              winnerNotification?.name <span> &nbsp; is winner 🎉</span>
             </div>
           ) : null}
           {bidNotification ? (
@@ -261,7 +262,9 @@ function StreamingBase({
                 Time left - <Timer minutes={minutes} seconds={seconds} />
               </div>
               <div className="bid-status flex flex-center">
-                Current Bid - ${bidAmount} + Ship/Tax{" "}
+                {winnerNotification?.bidAmount? <>
+                  Current Bid - ${bidAmount} + Ship/Tax{" "}
+                </> : <>Selling Bid - ${bidAmount} + Ship/Tax{" "}</>}
                 <span
                   className="flex flex-center justify-center br50"
                   onClick={handleShipModal}

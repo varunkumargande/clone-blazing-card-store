@@ -23,7 +23,6 @@ function Index() {
   );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
-  const [currentAuctionDetails, setCurrentAuctionDetails] = useState(null)
   const stream = useSelector((state) => {
     return state?.stream;
   });
@@ -32,30 +31,6 @@ function Index() {
   const streamPageData = stream?.streamPageData;
 
   const [currentAuction, setCurrentAuction] = useState(null);
-
-  const getAuctioningItem = () => {
-
-    let auctionItem;
-    if(auctionNotification) {
-      auctionItem = {
-        id: auctionNotification?.auction?.id,
-        uuid: auctionNotification?.auction?.uuid,
-        productId: auctionNotification?.product?.productId,
-        productTitle: auctionNotification?.product?.name,
-        productDescription: auctionNotification?.product?.description
-      }
-    } else {
-      auctionItem = {
-        id: currentAuction?.id,
-        uuid: currentAuction?.uuid,
-        productId: currentAuction?.streamProductId,
-        productTitle: '',
-        productDescription: ''
-      }
-    }
-    setRunningAuction(auctionItem)
-    return auctionItem;
-  }
 
   useEffect(() => {
     socketObject.on(`${uuid}-bid`, (bid) => {
@@ -85,9 +60,7 @@ function Index() {
               setCurrentAuction={setCurrentAuction}
             />
             <CenterDiv
-              bidNotification={bidNotification}
               open={open}
-              auctionNotification={auctionNotification}
               productDetail={productDetail}
               isPayment={openPayment}
               openPayment={setOpenPayment}
@@ -96,8 +69,7 @@ function Index() {
               setAddPayInfo={setAddPayInfo}
               customerId={customerId}
               streamDetails={selectedStream}
-              currentAuctionDetails={currentAuctionDetails}
-              winnerNotification={null}
+              currentAuction={currentAuction}
             />
             <RightDiv
               streamingDetails={streamingDetails}

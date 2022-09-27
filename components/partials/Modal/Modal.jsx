@@ -191,8 +191,6 @@ export function PaymentInfoModal(props) {
     fullName: Yup.string().min(2, "Too Short!").required("Required"),
   });
 
-  console.log(addressList)
-
   const cardDetails =
     cardDetail?.length == 0
       ? "Add shipment"
