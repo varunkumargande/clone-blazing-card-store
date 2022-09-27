@@ -413,6 +413,7 @@ label{
   @include pos(re);
   > img{
     width: 100%;
+    min-height: 200px;
   }
   .cover-wrap{
     padding: 0 15px;
@@ -425,6 +426,15 @@ label{
       height: 36px;
       color: $white-color;
       border-color: $white-color;
+      background-color: rgba($white-color,.3);
+  }
+}
+@media all and (min-width:320px) and (max-width:1024px){
+  .category-banner{
+    .cover-wrap{
+      bottom: 122px;
+      justify-content: center;
+    }
   }
 }
 @media all and (min-width:768px){
