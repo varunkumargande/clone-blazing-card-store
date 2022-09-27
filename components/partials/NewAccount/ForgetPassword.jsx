@@ -31,7 +31,7 @@ export default function ForgetPassword() {
         <div className="login-wrapper">
             {forgotSuccess ? <SendMail mail={mail} /> : (
                 <>
-                    <div className="iconkey mb32"><IconKey /></div>
+                    <div className="back mb32"><IconBack /></div>
                     <h1 className="title mb8">Forgot Password</h1>
                     <div className="infotext wd328 mb32">Enter your registered email id below. We will sent the link to reset your password</div>
                     <div className="input-control mb32">
@@ -39,7 +39,7 @@ export default function ForgetPassword() {
                         <input type="email" value={mail} name="email" placeholder="Email address" onChange={e => handleSetEmail(e)} />
                         <div className="errorText">{mail == "" ? <span>{mailError}</span> : ""}</div>
                     </div>
-                    <div className="submitWrap mb32 mt16">
+                    <div className="submitWrap mb32 mt32">
                         <button type="submit" className="primary-btn" onClick={handleSubmit}>Reset Password</button>
                     </div>
                     <div className="text-center mb16 already">
