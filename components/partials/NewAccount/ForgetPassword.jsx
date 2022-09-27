@@ -26,6 +26,7 @@ export default function ForgetPassword() {
         }
     }
 
+    
     return (
         <div className="login-wrapper">
             {forgotSuccess ? <SendMail mail={mail} /> : (

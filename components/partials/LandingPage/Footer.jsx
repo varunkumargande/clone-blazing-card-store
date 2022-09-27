@@ -20,13 +20,13 @@ export default function Footer(){
                         <div className="links flex column">
                             <Link href="/about-us"><a>About Us</a></Link>
                             <Link href="/"><a>Faq's</a></Link>        
-                            <Link href="/"><a>Contact Us</a></Link>        
+                            <Link href="/contact"><a>Contact Us</a></Link>        
                         </div>
                     </div>
                     <div className="box">
                         <h3 className="follow mb20">Quick Links</h3>
                         <div className="links flex column">
-                            <Link href="/privacy-policy"><a>Privecy Policy</a></Link>
+                            <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
                             <Link href="/terms-conditions"><a>Term & Conditions</a></Link>    
                         </div>
                     </div>
