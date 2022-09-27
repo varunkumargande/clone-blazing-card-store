@@ -61,14 +61,11 @@ function StreamingBase({
     console.log("auctionNotification", auctionNotification)
     console.log("bidNotification",bidNotification)
     if (!!auctionNotification || !!bidNotification) {
-      const endTime = moment(
-        bidNotification?.endTime || auctionNotification?.auction?.endTime
-      );
-      console.log("endTime",endTime)
+      let [date, time] = auctionNotification?.auction?.endTime.split(" ") || bidNotification?.endTime.split(" ")
+      const endTime = moment(date.replaceAll("-","/")+" "+time)
       const duration = moment.duration(
-        endTime.diff(moment.utc().format("yyyy-MM-DD, hh:mm:ss"))
+        endTime.diff(moment.utc().format("yyyy/MM/DD, hh:mm:ss"))
       );
-      console.log("duration",duration)
       const minutes = Math.ceil(duration.asSeconds() / 60);
       const seconds = Math.ceil(duration.asSeconds() % 60);
       setMinutes(minutes);
