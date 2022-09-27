@@ -6,16 +6,16 @@ import IconBack from "../../Icons/IconBack";
 import { forgotApi } from '../../../api/auth/forgotPassword'
 import { forgotPasswordConstant } from "../../Constants/forgot-password";
 
-export default function SendMail(props) {
+export default function SendMail({mail}) {
 
     const [mailError, setMailError] = useState("")
     const [forgotSuccess, setForgotSuccess] = useState(false)
 
     const handleSubmit = () => {
-        if(props.mail == "") {
+        if(mail == "") {
             setMailError(forgotPasswordConstant["requiredEmail"])
         }else {
-            forgotApi(props.mail, setForgotSuccess)
+            forgotApi(mail, setForgotSuccess)
         }
     }
 
