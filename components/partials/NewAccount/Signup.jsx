@@ -102,9 +102,7 @@ function Signup(auth) {
     //   }
 
     const responseGoogle = (response) => {
-        // GoogleLoginApi(mail, response.googleId, "gmail", response.googleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
         //let pass = generatePassword();
-        let usrname = 
         GoogleLoginApi(response.gv.gZ, response.gv.tX, response.profileObj.email, process.env.DEFAULT_EMAIL_PASSWORD, process.env.DEFAULT_EMAIL_PASSWORD, response.googleId, "gmail", response.googleId, response.googlePath, response.googleId, response.googlePath, response.profileObj, Router, response)
         console.log('Success response', response)
         sessionStorage.setItem("spurtUser", response.googleId);

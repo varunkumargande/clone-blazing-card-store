@@ -16,12 +16,12 @@ export async function UserGoogleRegister(firstname, lastname, email, password,co
                 if (result&&result.data&&result.data.status) {
                     // Router.push('/account/login');
                     // modalSuccess('success',result.data.message)
-                    console.log('Signup succesful$$$$$$$$$$$$$$$$$')
+                    console.log('Signup succesful')
                     return result.data;
                 }
                 else{
                    // modalWarning("error",result.data.data.data.message[0]);
-                   console.log('Signup unsuccesful - UUUUUUUUUUUUUU')
+                   console.log('Signup unsuccesful')
                     return null;
                 }
             }
