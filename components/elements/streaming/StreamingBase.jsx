@@ -66,11 +66,10 @@ function StreamingBase({
 
   useEffect(() => {
     if (!!auctionNotification || !!bidNotification) {
-      const endTime = moment(
-        bidNotification?.endTime || auctionNotification?.auction?.endTime
-      );
+      let [date, time] = auctionNotification?.auction?.endTime.split(" ") || bidNotification?.endTime.split(" ")
+      const endTime = moment(date.replaceAll("-","/")+" "+time)
       const duration = moment.duration(
-        endTime.diff(moment.utc().format("yyyy-MM-DD, hh:mm:ss"))
+        endTime.diff(moment.utc().format("yyyy/MM/DD, hh:mm:ss"))
       );
       const minutes = Math.floor(duration.asSeconds() / 60);
       const seconds = Math.ceil(duration.asSeconds() % 60);
