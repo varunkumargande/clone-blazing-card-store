@@ -10,6 +10,7 @@ import { GoogleLogin } from 'react-google-login';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { loginConstant } from "../../Constants/login"
+import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 
 function Login(props) {
 
@@ -44,7 +45,7 @@ function Login(props) {
     }
 
     const responseGoogle = (response) => {
-        GoogleLoginApi(mail, password, "gmail", setgoogleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
+        GoogleLoginApi(response.gv.gZ, response.gv.tX, response.profileObj.email, process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD, process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD, response.googleId, "gmail", response.googleId, response.googlePath, response.googleId, response.googlePath, response.profileObj, Router, response)
     }
 
     const loginSchema = Yup.object().shape({
@@ -61,7 +62,7 @@ function Login(props) {
             <GoogleLogin
                 clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
                 render={renderProps => (
-                    <button className="google-btn mb42" onClick={renderProps.onClick}><IconGoogle />Sign in with Gooogle</button>
+                    <button className="google-btn mb42" onClick={renderProps.onClick}><IconGoogle />Sign in with Google</button>
                 )}
                 buttonText="Login"
                 onSuccess={responseGoogle}

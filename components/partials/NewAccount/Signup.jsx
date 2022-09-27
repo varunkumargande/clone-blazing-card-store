@@ -100,16 +100,13 @@ function Signup(auth) {
     //     }
     //     return pass;
     //   }
-
     const responseGoogle = (response) => {
         //let pass = generatePassword();
-        GoogleLoginApi(response.gv.gZ, response.gv.tX, response.profileObj.email, process.env.DEFAULT_EMAIL_PASSWORD, process.env.DEFAULT_EMAIL_PASSWORD, response.googleId, "gmail", response.googleId, response.googlePath, response.googleId, response.googlePath, response.profileObj, Router, response)
-        console.log('Success response', response)
-        sessionStorage.setItem("spurtUser", response.googleId);
+        GoogleLoginApi(response.gv.gZ, response.gv.tX, response.profileObj.email, process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD, process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD, response.googleId, "gmail", response.googleId, response.googlePath, response.googleId, response.googlePath, response.profileObj, Router, response)
     }
 
     const responseGoogleFailure = (response) => {
-        console.log('Failure response', response)
+        console.error('Failure response', response)
     }
 
     const submitBtnState = (errors) => (Object.keys(errors).length > 0 || policyCheck===false) ? "disable-btn" : "primary-btn"
