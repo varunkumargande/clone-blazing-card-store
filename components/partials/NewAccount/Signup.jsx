@@ -7,6 +7,7 @@ import { UserRegister } from '../../../api';
 import Router from 'next/router';
 import { connect, useDispatch } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
+import { GoogleLoginApi } from '../../../api/auth/GoogleLoginApi';
 import { modalSuccess, modalWarning } from "../../../api/intercept";
 import { registerConstant } from "../../Constants/register"
 import { Formik } from 'formik';
@@ -83,9 +84,29 @@ function Signup(auth) {
         username: Yup.string().matches(/^[a-zA-Z0-9]*$/, 'Please enter valid username').max(40).required('Required')
     });
 
-
+    // const generatePassword = () => {
+    //     const alpha = 'abcdefghijklmnopqrstuvwxyz';
+    //     const calpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    //     const num = '1234567890';
+    //     const specials = ',.!@#$%^&*';
+    //     const options = [alpha, alpha, alpha, calpha, calpha, num, num, specials];
+    //     let opt, choose;
+    //     let pass = "";
+    //     for (let i = 0; i < 8; i++) {
+    //       opt = Math.floor(Math.random() * options.length);
+    //       choose = Math.floor(Math.random() * (options[opt].length));
+    //       pass = pass + options[opt][choose];
+    //       options.splice(opt, 1);
+    //     }
+    //     return pass;
+    //   }
     const responseGoogle = (response) => {
-        GoogleLoginApi(mail, password, "gmail", setgoogleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
+        //let pass = generatePassword();
+        GoogleLoginApi(response.gv.gZ, response.gv.tX, response.profileObj.email, process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD, process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD, response.googleId, "gmail", response.googleId, response.googlePath, response.googleId, response.googlePath, response.profileObj, Router, response)
+    }
+
+    const responseGoogleFailure = (response) => {
+        console.error('Failure response', response)
     }
 
     const submitBtnState = (errors) => (Object.keys(errors).length > 0 || policyCheck===false) ? "disable-btn" : "primary-btn"
@@ -99,11 +120,11 @@ function Signup(auth) {
             <GoogleLogin
                 clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
                 render={renderProps => (
-                    <button className="google-btn mb42" onClick={renderProps.onClick}><IconGoogle />Sign up with Gooogle</button>
+                    <button className="google-btn mb42" onClick={renderProps.onClick}><IconGoogle />Sign up with Google</button>
                 )}
                 buttonText="Login"
                 onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onFailure={responseGoogleFailure}
                 isSignedIn={false}
             />
 
