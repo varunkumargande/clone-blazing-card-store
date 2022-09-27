@@ -88,6 +88,9 @@ function Signup(auth) {
         GoogleLoginApi(mail, password, "gmail", setgoogleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
     }
 
+    const submitBtnState = (errors) => (Object.keys(errors).length > 0 || policyCheck===false) ? "disable-btn" : "primary-btn"
+    const submitBtnDisableState = (errors) => (Object.keys(errors).length > 0  || policyCheck===false) ? true : false
+
     return (
         <div className="login-wrapper">
             <h1 className="title mb32">Sign up to Blazing Cards</h1>
@@ -113,13 +116,6 @@ function Signup(auth) {
                   
                     if (policyCheck == true  && usernameAvailable) {
                         UserRegister(values.firstname, values.lastname, values.email, values.password, values.cpass, values.number,usernameInput.current.value, Router)
-                       
-                    } else if(policyCheck == false) {
-                        modalWarning("error", "Please select term and condition")
-                    } else if(usernameAvailable == false) {
-                        modalWarning("error", "Username already taken")
-                    } else {
-                        modalWarning("error", "Something went wrong...Please try again later")
                     }
                 }}
             >
@@ -134,7 +130,6 @@ function Signup(auth) {
                     isSubmitting,
                 }) => (
                     <>
-                        {console.log(formik)}
                         <form className="signup flex space-between" onSubmit={handleSubmit}>
                             <div className="input-control wd50">
                                 <label>First Name</label>
@@ -207,7 +202,7 @@ function Signup(auth) {
                             </div>
 
                             <div className="submitWrap mb32">
-                                <button className={(Object.keys(errors).length > 0 || policyCheck===false) ? "disable-btn" : "primary-btn"} disabled={(Object.keys(errors).length > 0  || policyCheck===false) ? true : false}>Sign Up</button>
+                                <button className={submitBtnState(errors)} disabled={() => submitBtnDisableState(errors)}>Sign Up</button>
                             </div>
 
                             <div className="text-center mb16 already">
