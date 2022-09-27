@@ -1,6 +1,7 @@
 import React from "react";
 import * as cryptoJs from "crypto-js";
 import { imageUrl } from "../../api/url";
+import { io } from "socket.io-client";
 
 class StreamDetailModel {
   constructor(streamData) {
@@ -30,7 +31,8 @@ class StreamDetailModel {
       scheduleDate: streamData?.scheduleDate,
       scheduleTime:  streamData?.scheduletime,
       isLoggedIn: false,
-      avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"
+      avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png",
+      socketObject: io("http://52.72.64.43:4000")
     }
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;

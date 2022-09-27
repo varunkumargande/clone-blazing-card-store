@@ -16,9 +16,7 @@ function CenterDiv({
   openPayment,
   setOpen,
   streamingDetails,
-  auctionNotification,
-  bidNotification,
-  winnerNotification
+  currentAuction
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
@@ -85,11 +83,9 @@ function CenterDiv({
         
         <StreamingBase
         openPayment={openPayment}
-        auctionNotification={auctionNotification}
-        bidNotification={bidNotification}
-        winnerNotification={winnerNotification}
         addressList={addressList}
         cardDetail={cardDetail}
+        currentAuction={currentAuction}
       />
 
         {isPayment ? (
