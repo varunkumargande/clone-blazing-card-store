@@ -4,9 +4,10 @@ import getProfileApi from "../home/getInfo";
 import APIServices from '../../services'
 import { modalSuccess,modalWarning } from "../intercept";
 import { UserOauthLogin } from "./oAuthLogin";
+import { UserGoogleRegister } from './onlyRegister';
 
 
-export async function GoogleLoginApi(mail, password, gmail,setgoogleId,setgooglePath,googleId,googlePath,profie,Router,res){
+export async function GoogleLoginApi(firstname, lastname, mail, password, confirmPassword, username, gmail,setgoogleId,setgooglePath,googleId,googlePath,profie,Router,res){
     
     // return fetch(apiUrl+'customer/login', {
     //     method: 'POST',
@@ -33,24 +34,30 @@ export async function GoogleLoginApi(mail, password, gmail,setgoogleId,setgoogle
                    
     //             }
     //     })
-
-    const data = JSON.stringify({
-        emailId:mail, 
-        password: password,
-        type:gmail
-    })
-    const result =await APIServices.create('customer/login',data)
-    console.log(result.data,'response45');
-    if(result&&result.data&&result.data.status === 1){
-        if(result.data.data.clientId&&result.data.data.returnPath){
-            UserOauthLogin(profie,Router,res,result.data.data.clientId,result.data.data.returnPath)
+    const signupResult = UserGoogleRegister(firstname, lastname, mail, password, confirmPassword, username)
+    if(signupResult !== null ) {
+        const data = JSON.stringify({
+            emailId:mail, 
+            password: password,
+            type:gmail
+        })
+        const result =await APIServices.create('customer/login',data)
+        console.log(result.data,'response45------------------------------');
+        console.log(result.data.status)
+        if(result&&result.data&&result.data.status === 1){
+            if(result.data.data.clientId&&result.data.data.returnPath){
+                console.log('response46------------------------------');
+                UserOauthLogin(profie,Router,res,result.data.data.clientId,result.data.data.returnPath)
+            }
+           
+          
+        }else{
+           
+            
         }
-       
-      
-    }else{
-       
-        
     }
+
+    
     
 
 };
