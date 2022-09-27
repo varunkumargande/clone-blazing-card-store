@@ -17,7 +17,7 @@ import { modalSuccess } from "../../../api/intercept";
 import { logOut } from '../../../store/auth/action';
 import { imageUrl } from '../../../api/url';
 
-function HeaderDefault({ auth }) {
+function HeaderDefault({ auth }, props) {
   const router = useRouter();
   const [active, setActive] = useState(false);
   let category = useSelector((s) => s.product);
@@ -61,6 +61,7 @@ function HeaderDefault({ auth }) {
     Router.push("/")
     modalSuccess('success', "successfully logged out")
   };
+
 
 
   return (
