@@ -4,6 +4,10 @@ import Logo from "../../Icons/Logo";
 import IconMessage from "../../Icons/IconMessage";
 import IconNotification from "../../Icons/IconNotification";
 import IconDropdown from "../../Icons/IconDropdown";
+import IconProfile from "../../Icons/IconProfile";
+import IconMyOrders from "../../Icons/IconMyOrders";
+import IconSettings from "../../Icons/IconSettings";
+import IconLogout from "../../Icons/IconLogout";
 import IconSearch from "../../Icons/IconSearch";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -99,17 +103,22 @@ function HeaderDefault({ auth }) {
                   <span onClick={handleOnClick}><img src={aimg} alt="Profile" /><IconDropdown /></span>
                   <ul className={active ? "dropDown active" : "dropDown"} >
                     <li>
+                      <Link href="/"><a className="active">
+                        <span><IconProfile />My Profile</span></a>
+                      </Link>
+                    </li>
+                    <li>
                       <Link href="/account/myorders"><a className="active">
-                        <span>{t('OrderHistory')}</span></a>
+                        <span><IconMyOrders />{t('OrderHistory')}</span></a>
                       </Link>
                     </li>
                     <li>
                       <Link href="/account/dashboard"><a className="active">
-                        <span>{t('AccountSettings')}</span></a>
+                        <span><IconSettings />{t('AccountSettings')}</span></a>
                       </Link>
                     </li>
 
-                    <li className="active" onClick={e => handleLogout(e)}>Logout</li>
+                    <li onClick={e => handleLogout(e)}><IconLogout />Logout</li>
                   </ul>
                 </button>
               </>

@@ -231,3 +231,34 @@ export function AddAddressModal(){
         </div>
     );
 }
+export function DeletAccountModal(){
+    return(
+        <div className="modalOverlay flex justify-center flex-center">
+            <div className="modal medium">
+               <div className="modal-header flex Space-between flex-center">
+                    <h5 className="modal-title">Delete Account</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><IconClose /></span>
+                    </button>
+               </div> 
+               <div className="modal-body">
+                    <div className="infotextlg">Are you sure you want to leave?</div>
+                    <div className="input-control">
+                        <label>User Name</label>
+                        <input name="text" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="input-control">
+                        <label>Password *</label>
+                        <input name="password" placeholder={"Enter here"}  />
+                        <span className="errorMessage"></span>
+                    </div>
+                    <div className="flex btn-wrap delete">
+                        <button className="border-btn mr16">Cancel</button>
+                        <button className="primary-btn disable">Delete Account</button>
+                    </div> 
+               </div>
+            </div>
+        </div>
+    );
+}
