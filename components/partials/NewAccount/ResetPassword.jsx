@@ -21,8 +21,13 @@ export default function SentMail() {
   const [pageTrue, setPageTrue] = useState(false);
 
   useEffect(() => {
-    resetConfomPassApi(router.query.auth, setPageTrue, Router);
-  }, []);
+    if (router?.query?.auth) {
+      resetConfomPassApi(router.query.auth, setPageTrue);
+      console.log("Auth Success");
+    } else {
+      console.log("Auth Failed");
+    }
+  }, [router.query]);
 
   const loginSchema = Yup.object().shape({
     oldPass: Yup.string().required("Required"),
