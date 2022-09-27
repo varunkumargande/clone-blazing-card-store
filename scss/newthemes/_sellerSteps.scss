@@ -43,6 +43,7 @@
     }
     &.process{
         color:$primary-color;
+        font-weight: 500;
         .count{
             color:$step-success-color;
             border-color: $step-success-color;
@@ -55,6 +56,7 @@
     }
     &.completed{
         color:$primary-color;
+        font-weight: 500;
         .count{
             font-size: 0;
             background: url('/static/images/check-icon.svg') no-repeat center center / 100%;
@@ -139,7 +141,51 @@
     margin-top: 24px;
     max-width: 192px;
 }
+@media all and (min-width:320px) and (max-width:1024px){
+    .step-left,.step-right{
+        flex:0 0 100%;
+    }
+    .step-left{
+        padding: 10px 15px 24px;
+    }
+    .step-right{
+        padding: 24px 15px 64px;
+    }
+    .left-pannel{
+        justify-content: space-between;
+        flex-direction: row;
+    }
+    .step{
+        margin: 0;
+        flex-direction: column;
+        font-size: 12px;
+        line-height: 20px;
+        width: 64px;
+        text-align: center;
+        .count{
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            margin:0 0 8px;
+            line-height: 18px;
+            &:before{
+                height: 1px;
+                top:10px;
+                bottom: auto;
+                right: calc(100% + 5px);
+                left: auto;
+                transform: translateX(0);
+                width:calc(calc(100vw / 4) - 50px)
+            }
+        }
+        &.completed{
+            .count{
+                background-size: 120%;
+            }
+        }
 
+    }
+}
 @media all and (min-width:1025px){
     .step-container{
         .input-control{
