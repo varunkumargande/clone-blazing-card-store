@@ -62,13 +62,16 @@ function HeaderDefault({ auth }) {
     modalSuccess('success', "successfully logged out")
   };
 
+  const handleChangePageToHome = () => {
+    window.location.href = "/";
+  }
 
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
         <div className="left flex flex-wrap flex-center">
           <div className="logo">
-            <Link href="/"><a><Logo /></a></Link>
+            <a onClick={handleChangePageToHome}><Logo /></a>
           </div>
           <div className="Search">
             <input type="search" id="search" name="search" />
@@ -95,7 +98,9 @@ function HeaderDefault({ auth }) {
                 <button className="message flex flex-center justify-center"><IconMessage /></button>
                 <button className="Notification flex flex-center justify-center"><IconNotification /></button>
                 <button className="profile">
+                  
                   <span onClick={handleOnClick}><img src={aimg} alt="Profile" /><IconDropdown /></span>
+
                   <ul className={active ? "dropDown active" : "dropDown"} >
                     <li>
                       <Link href="/account/myorders"><a className="active">

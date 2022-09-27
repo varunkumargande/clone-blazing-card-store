@@ -51,8 +51,6 @@ function Signup(auth) {
         }
     };
 
-
-
     const handlePolicyCheck = () => {
         if (policyCheck) {
             setPolicyCheck(false)
