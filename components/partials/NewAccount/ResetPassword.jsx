@@ -16,12 +16,12 @@ export default function SentMail(){
             <form className="reset flex space-between">
                 <div className="input-control">
                     <label>Password</label>
-                    <input type="password" type={passShow ? "text" : "password"} placeholder="Enter here" />
+                    <input  type={passShow ? "text" : "password"} placeholder="Enter here" />
                     {passShow ? <button className="show-hide" onClick={e => setPassShow(!passShow)}><IconEye /></button> : (<> <button className="show-hide" onClick={e => setPassShow(!passShow)}><IconEye /></button> </>)}
                 </div>
                 <div className="input-control">
                     <label>Conform Password</label>
-                    <input type="password" type={conpassShow ? "text" : "password"} placeholder="Enter here" />
+                    <input  type={conpassShow ? "text" : "password"} placeholder="Enter here" />
                     {conpassShow ? <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> : (<> <button className="show-hide" onClick={e => setConPassShow(!conpassShow)}><IconEye /></button> </>)}
                 </div>
                 <div className="submitWrap mb32 mt16">

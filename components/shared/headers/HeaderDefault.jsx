@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 import { modalSuccess } from "../../../api/intercept";
 import { logOut } from '../../../store/auth/action';
+import { searchRequest } from "../../../store/search/action";
 import { imageUrl } from '../../../api/url';
 
 function HeaderDefault({ auth }) {
@@ -66,6 +67,10 @@ function HeaderDefault({ auth }) {
     window.location.href = "/";
   }
 
+  const handleSearchValue = (e) => {
+    dispatch(searchRequest(e.target.value))
+  }
+
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
@@ -73,10 +78,12 @@ function HeaderDefault({ auth }) {
           <div className="logo">
             <a onClick={handleChangePageToHome}><Logo /></a>
           </div>
+          
           <div className="Search">
-            <input type="search" id="search" name="search" />
-            <button className="search-btn"><IconSearch /></button>
+            <input type="search" id="search" name="search" onChange={(e) => handleSearchValue(e)} />
+            <button className="search-btn" disabled><IconSearch /></button>
           </div>
+
         </div>
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">
