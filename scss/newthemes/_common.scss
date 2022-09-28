@@ -93,11 +93,20 @@ button,input{
 .mb35{
   margin-bottom: 35px;
 }
+.mb40{
+  margin-bottom: 40px;
+}
+.mr16{
+  margin-right: 16px;
+}
 // common input
 .input-control{
   margin-bottom: 16px;
   position: relative;
   width: 100%;
+  &.wd420{
+    max-width: 420px;
+  }
   input,select,textarea{
       font-size: 16px;
       line-height: 24px;
@@ -107,7 +116,10 @@ button,input{
       background-color: $white-color;
       border:none;
       outline: none;
-      padding: 0 30px 0 14px;
+      padding: 0 30px 0 15px;
+      &.grey-bg{
+        background-color: $body-bg;
+      }
       &:focus{
           outline: none;
       }
@@ -132,12 +144,17 @@ button,input{
   select{
     appearance: none;
     background:$white-color url('/static/images/down.svg') no-repeat calc(100% - 10px) center;
+    option{
+      padding: 0 15px;
+    }
   }
   input,select{
       height: 42px;
   }
   textarea{
-      height: 100px;
+      height: 108px;
+      resize: none;
+      padding: 15px;
   }
   .show-hide{
       width: 24px;
@@ -389,6 +406,9 @@ label{
 .breadcrumbs-wrapper{
   padding-top: 30px;
   background-color: $white-color;
+  &.no-bg{
+    background-color: transparent;
+  }
   ul{
     margin-bottom: 0;
   }
@@ -407,6 +427,12 @@ label{
       color: $blue-color;
       cursor: unset;
     }
+  }
+}
+.back{
+  margin-right: 10px;
+  .icon{
+    fill:#A1ABB7;
   }
 }
 .category-banner{
