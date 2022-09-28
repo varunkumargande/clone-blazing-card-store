@@ -6,7 +6,7 @@ export default function notifications(){
         <div className="notification-wrapper">
             <div className="head-title flex space-between flex-center">
                 <h1>Notification</h1>
-                <div className="unread">Show All Unread</div>
+                {/* <div className="unread">Show All Unread</div> */}
             </div>
             <Notifications />
          </div>

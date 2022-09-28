@@ -18,6 +18,12 @@ button{
 button,input{
   @include Inter;
 }
+h1{
+  font-size: 24px;
+  line-height: 30px;
+  color:$primary-color;
+  margin-bottom: 24px;
+}
 .flex{
   display: flex;
 }
