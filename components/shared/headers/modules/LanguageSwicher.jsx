@@ -12,7 +12,6 @@ function LanguageSwicher({ t, i18n }) {
     let coutryf=useSelector(s=>s.wishlist.langagechange)
     let countflagcout=useSelector(s=>s.wishlist.mainloadedone)
     
-console.log(countflagcout,'23423countflagcout')
 useEffect(() => {
     // JSON.stringify
    let  lagnchange =  JSON.parse(localStorage.getItem("language-spurt"))
@@ -32,7 +31,6 @@ useEffect(() => {
                         i18n.changeLanguage('fr')
 
                     }else{
-                        console.log(lagnchange,'localStorage.getItem("language-spurt").name')
                         
                             setCurrentLang(lagnchange.name)
                         
@@ -47,7 +45,6 @@ useEffect(() => {
                 }
                 else {
                     if(countflagcout&&countflagcout.length !==0){
-                        console.log(countflagcout,'countflagcout');
                         setCurrentLang(countflagcout.at(0).name )
                     
                         dispatch(LanguageListLoading(imageUrl+"?path="+countflagcout.at(0).imagePath+"&name="+countflagcout.at(0).image+"&width=20&height=20"))
@@ -114,7 +111,6 @@ useEffect(() => {
         
         <div className="ps-dropdown language">
     
-           {console.log(coutryf,'4324234')}
            {coutryf&&<><a href="#" onClick={(e) => e.preventDefault()}>
                 <img src={coutryf&&coutryf} alt="martfury" /> </a></>}
                

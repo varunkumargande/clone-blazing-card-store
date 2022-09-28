@@ -58,7 +58,6 @@ function SpurtRelatedProduct({slugName,boxed}){
     };
     //     const { boxed } = this.props;
       
-    //    console.log(boxed,'boxed')
 
        
             

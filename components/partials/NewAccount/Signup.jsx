@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useState,  useEffect, useRef } from "react";
 import Link from "next/link";
 import IconGoogle from '../../Icons/IconGoogle';
 import IconEye from '../../Icons/IconEye';
-import { useEffect, useState } from "react";
 import { EmailValidator, upperPresent, lowerPresent, numPresent, specialPresent } from '../../helper/emailValidator';
 import { UserRegister } from '../../../api';
 import Router from 'next/router';
 import { connect, useDispatch } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
+import { GoogleLoginApi } from '../../../api/auth/GoogleLoginApi';
 import { modalSuccess, modalWarning } from "../../../api/intercept";
 import { registerConstant } from "../../Constants/register"
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { getUsername } from '../../../api/auth/getUsername';
 
 function Signup(auth) {
 
@@ -21,6 +22,9 @@ function Signup(auth) {
     const [pass, setpass] = useState("")
     const [cpass, setCpass] = useState("")
     const [number, setNumber] = useState("")
+
+    const [usernameAvailable, setUsernameAvailable] = useState(null)
+    const usernameInput = useRef();
 
     const [nameValid, setNameValid] = useState("")
     const [lastNameValid, setLastNameValid] = useState("")
@@ -51,14 +55,19 @@ function Signup(auth) {
         }
     };
 
-
-
     const handlePolicyCheck = () => {
         if (policyCheck) {
             setPolicyCheck(false)
         } else {
             setPolicyCheck(true)
         } 
+    }
+
+    const handleOnBlur = async() => {
+        if(usernameInput) {
+            const res = await getUsername(usernameInput.current.value);
+            setUsernameAvailable(res);
+        }
     }
 
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -71,13 +80,37 @@ function Signup(auth) {
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
           ).required('Required'),
-        cpass: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match')
+        cpass: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match'),
+        username: Yup.string().matches(/^[a-zA-Z0-9]*$/, 'Please enter valid username').max(40).required('Required')
     });
 
-
+    // const generatePassword = () => {
+    //     const alpha = 'abcdefghijklmnopqrstuvwxyz';
+    //     const calpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    //     const num = '1234567890';
+    //     const specials = ',.!@#$%^&*';
+    //     const options = [alpha, alpha, alpha, calpha, calpha, num, num, specials];
+    //     let opt, choose;
+    //     let pass = "";
+    //     for (let i = 0; i < 8; i++) {
+    //       opt = Math.floor(Math.random() * options.length);
+    //       choose = Math.floor(Math.random() * (options[opt].length));
+    //       pass = pass + options[opt][choose];
+    //       options.splice(opt, 1);
+    //     }
+    //     return pass;
+    //   }
     const responseGoogle = (response) => {
-        GoogleLoginApi(mail, password, "gmail", setgoogleId, setgooglePath, googleId, googlePath, response.profileObj, Router, response)
+        //let pass = generatePassword();
+        GoogleLoginApi(response.gv.gZ, response.gv.tX, response.profileObj.email, process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD, process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD, response.googleId, "gmail", response.googleId, response.googlePath, response.googleId, response.googlePath, response.profileObj, Router, response)
     }
+
+    const responseGoogleFailure = (response) => {
+        console.error('Failure response', response)
+    }
+
+    const submitBtnState = (errors) => (Object.keys(errors).length > 0 || policyCheck===false) ? "disable-btn" : "primary-btn"
+    const submitBtnDisableState = (errors) => (Object.keys(errors).length > 0  || policyCheck===false) ? true : false
 
     return (
         <div className="login-wrapper">
@@ -87,28 +120,28 @@ function Signup(auth) {
             <GoogleLogin
                 clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
                 render={renderProps => (
-                    <button className="google-btn mb42" onClick={renderProps.onClick}><IconGoogle />Sign up with Gooogle</button>
+                    <button className="google-btn mb42" onClick={renderProps.onClick}><IconGoogle />Sign up with Google</button>
                 )}
                 buttonText="Login"
                 onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onFailure={responseGoogleFailure}
                 isSignedIn={false}
             />
 
             <div className="or mb32 flex flex-center justify-center"><span>Or</span></div>
 
             <Formik
-                initialValues={{ firstname: '', lastname: '', number: '', email: '', password: '', cpass: '' }}
+                initialValues={{ firstname: '', lastname: '', number: '', email: '', password: '', cpass: '', username: ''}}
                 validationSchema={registerSchema}
                 onSubmit={(values) => {
-                    if (policyCheck == true) {
-                        UserRegister(values.firstname, values.lastname, values.email, values.password, values.cpass, values.number, Router)
-                    } else {
-                        modalWarning("error", "Please select term and condition")
+                  
+                    if (policyCheck == true  && usernameAvailable) {
+                        UserRegister(values.firstname, values.lastname, values.email, values.password, values.cpass, values.number,usernameInput.current.value, Router)
                     }
                 }}
             >
                 {({
+                    formik,
                     values,
                     errors,
                     touched,
@@ -173,6 +206,14 @@ function Signup(auth) {
 
                             </div>
 
+                            <div className="input-control">
+                                <label>Username</label>
+                                <input type="text" name="username" placeholder={"username"} value={values.username}
+                                    onChange={handleChange} ref={usernameInput} onBlur={handleOnBlur}/>
+                                <div className="errorText">{errors.username}</div>
+                                { (usernameAvailable===false && usernameAvailable !== null) ? <div className="errorText">Username already taken</div> : null}
+                            </div>
+
                             <div className="checkbox-wrap mb32">
                                 <label className="checkbox">
                                     <input type="checkbox" onClick={handlePolicyCheck} />
@@ -182,7 +223,7 @@ function Signup(auth) {
                             </div>
 
                             <div className="submitWrap mb32">
-                                <button className="primary-btn">Sign Up</button>
+                                <button className={submitBtnState(errors)} disabled={() => submitBtnDisableState(errors)}>Sign Up</button>
                             </div>
 
                             <div className="text-center mb16 already">

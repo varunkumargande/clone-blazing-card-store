@@ -206,10 +206,12 @@
         }
     }
     .stream-image-video{
-        img,video{
+        img,video,#local_stream{
             width: 100%;
-            height: calc(100vh - 90px);
+            height: calc(100vh - 90px) !important;
             object-fit: cover;
+            position: relative !important;
+            overflow: hidden;
         }
     }
     .stream-header{
@@ -345,6 +347,7 @@
             height: 36px;
             border:3px solid $white-color;
             margin-right: 5px;
+            overflow: hidden;
         }
         .name{
             font-size: 14px;

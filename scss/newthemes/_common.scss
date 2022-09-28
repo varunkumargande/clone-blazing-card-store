@@ -312,6 +312,7 @@ label{
   justify-content: center;
   align-items: center;
   border:none;
+  cursor: not-allowed;
   &:hover{
     color: $grey-color;
   }

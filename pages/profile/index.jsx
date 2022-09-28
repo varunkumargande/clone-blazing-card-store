@@ -67,7 +67,6 @@ export default function categoryStream(){
         });
       };
 
-
     return(
         <div className="home-container">
             {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
@@ -102,7 +101,7 @@ export default function categoryStream(){
                                      <li><IconShareFacebook/></li>
                                     <li><IconShareTwitter /></li>
                                     <li> <IconShareWhatsup /></li>
-                                   </ul>
+                                   </ul>    
                                 </div>
                                 </div>
                             </aside>

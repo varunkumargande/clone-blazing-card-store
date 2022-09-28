@@ -31,7 +31,6 @@ export default function AccordionMenu() {
         </Link>;
     });
   };
-console.log(categories,"from Accordion")
   return (
     <>
       <Accordion

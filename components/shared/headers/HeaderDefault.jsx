@@ -19,9 +19,10 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 import { modalSuccess } from "../../../api/intercept";
 import { logOut } from '../../../store/auth/action';
+import { searchRequest } from "../../../store/search/action";
 import { imageUrl } from '../../../api/url';
 
-function HeaderDefault({ auth }) {
+function HeaderDefault({ auth }, props) {
   const router = useRouter();
   const [active, setActive] = useState(false);
   let category = useSelector((s) => s.product);
@@ -66,19 +67,28 @@ function HeaderDefault({ auth }) {
     modalSuccess('success', "successfully logged out")
   };
 
-  console.log(aimg)
+  const handleChangePageToHome = () => {
+    window.location.href = "/";
+  }
+
+  const handleSearchValue = (e) => {
+    dispatch(searchRequest(e.target.value))
+  }
+
 
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
         <div className="left flex flex-wrap flex-center">
           <div className="logo">
-            <Link href="/"><a><Logo /></a></Link>
+            <a onClick={handleChangePageToHome}><Logo /></a>
           </div>
+          
           <div className="Search">
-            <input type="search" id="search" name="search" />
-            <button className="search-btn"><IconSearch /></button>
+            <input type="search" id="search" name="search" onChange={(e) => handleSearchValue(e)} />
+            <button className="search-btn" disabled><IconSearch /></button>
           </div>
+
         </div>
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">
@@ -100,7 +110,9 @@ function HeaderDefault({ auth }) {
                 <button className="message flex flex-center justify-center"><IconMessage /></button>
                 <button className="Notification flex flex-center justify-center"><IconNotification /></button>
                 <button className="profile">
+                  
                   <span onClick={handleOnClick}><img src={aimg} alt="Profile" /><IconDropdown /></span>
+
                   <ul className={active ? "dropDown active" : "dropDown"} >
                     <li>
                       <Link href="/"><a className="active">
