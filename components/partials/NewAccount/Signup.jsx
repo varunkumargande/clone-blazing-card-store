@@ -2,6 +2,7 @@ import React, { useState,  useEffect, useRef } from "react";
 import Link from "next/link";
 import IconGoogle from '../../Icons/IconGoogle';
 import IconEye from '../../Icons/IconEye';
+import IconBack from "../../Icons/IconBack";
 import { EmailValidator, upperPresent, lowerPresent, numPresent, specialPresent } from '../../helper/emailValidator';
 import { UserRegister } from '../../../api';
 import Router from 'next/router';
@@ -114,6 +115,7 @@ function Signup(auth) {
 
     return (
         <div className="login-wrapper">
+            <div className="back mb32"><IconBack /></div>
             <h1 className="title mb32">Sign up to Blazing Cards</h1>
 
 

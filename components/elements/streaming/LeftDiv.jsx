@@ -1,29 +1,18 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import {
-  getProducts,
-  getCardDetails,
-  getAddress,
-  buyProduct,
-} from "../../../api/stream/streams_api";
 import { useSelector, useDispatch } from "react-redux";
-import { loginSuccess } from "../../../store/auth/action";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import {
+  addStreamProducts,
+  streamProducts,
+} from "../../../store/stream/action";
 
 function LeftDiv({
-  open,
-  setOpen,
-  addPayInfo,
-  addShippInfo,
-  setCustomerId,
-  streamDetails,
   openPayment,
   productDetail,
   streamingDetails,
   auctionNotification,
-  setCurrentAuction
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -32,30 +21,9 @@ function LeftDiv({
     SOLD: "sold",
   };
   const TOGGLES = ["Auction", "Buy now", "Purchased", "Sold"];
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [productListing, setProductListing] = useState([]);
-
-  // User State
-  const [user, setUser] = useState();
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState("");
-
-  // Card Data State
-  const [cardData, setCardData] = useState({});
-  const [card, setCard] = useState({});
-  const [address, setAddress] = useState({});
-
-  // Shipping Data State
-  const [addressData, setAddressData] = useState([]);
-
-  const [token, setToken] = useState("");
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
-
   const router = useRouter();
   const streamUuid = router.query["uuid"];
-
-  const POST_ORDER = "";
   const stream = useSelector((state) => state.stream);
   const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
   const vendorName =
@@ -67,6 +35,7 @@ function LeftDiv({
   const toggleTab = (index) => {
     setToggleState(index);
   };
+  const dispatch = useDispatch();
 
   /**
    * Method to get All products of a stream
@@ -88,22 +57,14 @@ function LeftDiv({
           url = `stream/streamSoldProductList?streamuuid=${streamUuid}`;
           break;
       }
-      const data = await getProducts(url);
-      if(data){
-      setProductListing(data.products);
-      setCurrentAuction(data.latest_auction);
-      setIsLoading(false);
-      }
-      
+      dispatch(streamProducts(url));
     } catch (error) {
       if (error.response) {
         console.log(error.response.data);
         console.log(err.response.status);
         console.log(error.response.header);
-        setIsLoading(false);
       } else {
         console.log(`Error: ${error.message}`);
-        setIsLoading(false);
       }
     }
   };
@@ -113,11 +74,19 @@ function LeftDiv({
     fetchProducts();
   }, [toggleState]);
 
-
+  /**
+   * Method to set tab type
+   * @param {*} element
+   */
   const setToggle = (element) => {
-    setProductListing([]);
+    dispatch(addStreamProducts({}));
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
   };
+
+  /**
+   * Method to toggle between product listing types
+   * @returns
+   */
   const getToggles = () => {
     return TOGGLES.map((element) => {
       return (
@@ -140,30 +109,50 @@ function LeftDiv({
     });
   };
 
-  useEffect(() => {
-    getProductList()
-  }, [])
-
-
+  /**
+   * Method Will initiate BuyNow process
+   * @param {*} product
+   */
   const handleBuyNow = (product) => {
     productDetail(product);
     openPayment(true);
   };
 
+  /**
+   * This Method will pined that particular product which is currently on auction
+   * @param {*} productId
+   * @returns
+   */
+  const getLiveAuctionClass = (productId) => {
+    if (
+      productId == auctionNotification?.product?.productId ||
+      productId ==
+        stream?.streamProducts?.AuctionDetails.latestAuction?.productId
+    ) {
+      return "pined";
+    }
+    return "";
+  };
+
+  /**
+   * Method will render all product listing
+   * @returns JSX
+   */
   const getProductList = () => {
-    return productListing?.map((product) => {
+    if (!stream?.streamProducts?.products) return null;
+    return stream?.streamProducts?.products?.map((product) => {
       const productDetails = {
         productName: product?.name.toUpperCase() ?? "",
         productId: product?.product_id ?? "",
         customerName: product?.customerName ?? "",
         price: product?.price ?? "",
         quantity: product?.quantity ?? "",
-        description: product?.description ?? ""
-      }
+        description: product?.description ?? "",
+      };
       return (
         <>
           {toggleState == "auction" ? (
-            <li className={ productDetails.productId == auctionNotification?.product?.productId ? "pined " : ""}>
+            <li className={getLiveAuctionClass(productDetails.productId)}>
               <strong>{productDetails.productName}</strong>
             </li>
           ) : toggleState == "buynow" ? (
@@ -181,7 +170,9 @@ function LeftDiv({
                 >
                   Buy Now
                 </button>
-                <div className="piece text-center">${productDetails.price}/piece</div>
+                <div className="piece text-center">
+                  ${productDetails.price}/piece
+                </div>
               </div>
             </div>
           ) : toggleState == "sold" ? (
@@ -220,7 +211,10 @@ function LeftDiv({
     });
   };
 
-  const productCount = productListing?.length > 0 ? productListing?.length : 0;
+  const productCount =
+    stream?.streamProducts?.products?.length > 0
+      ? stream?.streamProducts?.products?.length
+      : 0;
   return (
     <div className="streaming-left">
       <div className="flex profile-wrapper">
@@ -241,10 +235,10 @@ function LeftDiv({
         <div className="search">
           <input type="text" placeholder="Search products..." />
         </div>
-          <div className={`${toggleState}-list leftdata-list`}>
-            <div className="product-count">{productCount} Products</div>
-            <ul className="product-list">{getProductList()}</ul>
-          </div>
+        <div className={`${toggleState}-list leftdata-list`}>
+          <div className="product-count">{productCount} Products</div>
+          <ul className="product-list">{getProductList()}</ul>
+        </div>
       </div>
     </div>
   );

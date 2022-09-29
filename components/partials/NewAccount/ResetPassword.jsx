@@ -117,7 +117,7 @@ export default function SentMail() {
                     )}
                     <div className="errorText">{errors.newPass}</div>
                   </div>
-                  <div className="submitWrap mb32 mt16">
+                  <div className="submitWrap mb32 mt32">
                     <button type="submit" className="primary-btn">
                       Reset Password
                     </button>

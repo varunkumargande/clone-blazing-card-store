@@ -81,6 +81,7 @@
             color:$disc-color;
             font-weight: 500;
             position: relative;
+            white-space: nowrap;
             &:after{
                 content: "";
                 position: absolute;
@@ -92,7 +93,7 @@
                 background-color: transparent;
             }
             &.active{
-                font-weight: 700;
+                font-weight: 600;
                 color: $blue-color;
                 &:after{
                     background-color: $blue-color;
