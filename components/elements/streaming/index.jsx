@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { streamData } from "../../../store/stream/action";
 import { io } from "socket.io-client";
+import { socketIO } from "../../../api/url";
+
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -19,7 +21,7 @@ function Index() {
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
   const [socketObject, setSocketObject] = useState(
-    io(process.env.SOCKET_IO_PATH)
+    io(socketIO)
   );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
