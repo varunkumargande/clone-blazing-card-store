@@ -3,7 +3,6 @@ import { modalSuccess, modalWarning } from "../intercept";
 import { getOrders } from '../../store/order/action';
 
 export async function orderListApi(dispatch, searchVal="") {
-    console.log("isinde orderlist")
     const result =await APIServices.getAll(`orders/order-list?keyword=${searchVal}`)
     if(result && result.data && result.data.status ===1){
         dispatch(getOrders(result.data.data));   

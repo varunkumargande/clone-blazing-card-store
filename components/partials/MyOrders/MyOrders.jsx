@@ -11,7 +11,6 @@ export default function MyOrders() {
   const orders = useSelector((state) => state?.order?.orderList);
 
   useEffect(() => {
-    console.log("useeffect")
     orderListApi(dispatch);
   }, []);
 console.log(orders)
