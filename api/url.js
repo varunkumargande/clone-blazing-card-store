@@ -3,4 +3,5 @@ export const imageUrl='https://blazing-card-backend-dev.kellton.net/api/media/im
 export const env='development'
 export const port = "3000"
 export const videoUrl='https://blazing-card-backend-dev.kellton.net/api/media/video-preview-s3/' //http://localhost:9000
-export const agora="http://localhost:8080"
+export const agora="http://localhost:8080";
+export const socketIO ="https://blazing-card-notification-dev.kellton.net/"
