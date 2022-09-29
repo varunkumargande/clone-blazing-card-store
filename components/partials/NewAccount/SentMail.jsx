@@ -22,7 +22,7 @@ export default function SendMail({mail}) {
     return(
         <div className="login-wrapper">
 
-            <div className="iconkey mb32"><IconKey /></div>
+            <div className="back mb32"><IconBack /></div>
             <h1 className="title mb8">Check Your Email</h1>
             <div className="infotext mb32">We sent a password reset link to {mail}</div>
             <div className="sent flex space-between">

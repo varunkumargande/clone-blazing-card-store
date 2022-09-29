@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import IconGoogle from '../../Icons/IconGoogle';
 import IconEye from '../../Icons/IconEye';
+import IconBack from "../../Icons/IconBack";
 import { EmailValidator } from '../../helper/emailValidator';
 import { UserLogin } from '../../../api';
 import { connect, useDispatch } from 'react-redux';
@@ -58,6 +59,7 @@ function Login(props) {
 
     return (
         <div className="login-wrapper">
+            <div className="back mb32"><IconBack /></div>
             <h1 className="title mb32">Sign in to Blazing Cards</h1>
             <GoogleLogin
                 clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
