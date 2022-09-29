@@ -32,7 +32,7 @@ class StreamDetailModel {
       scheduleTime:  streamData?.scheduletime,
       isLoggedIn: false,
       avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png",
-      socketObject: io("http://52.72.64.43:4000")
+      socketObject: io(process.env.SOCKET_IO_PATH)
     }
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;

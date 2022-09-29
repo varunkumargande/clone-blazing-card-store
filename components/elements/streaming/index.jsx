@@ -19,7 +19,7 @@ function Index() {
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
   const [socketObject, setSocketObject] = useState(
-    io("http://52.72.64.43:4000")
+    io(process.env.SOCKET_IO_PATH)
   );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
