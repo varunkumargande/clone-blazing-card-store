@@ -62,7 +62,7 @@ function Login(props) {
             <div className="back mb32"><IconBack /></div>
             <h1 className="title mb32">Sign in to Blazing Cards</h1>
             <GoogleLogin
-                clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
+                clientId="951035021628-eq7mvocc70h77117grhsdt95p343plc4.apps.googleusercontent.com"
                 render={renderProps => (
                     <button className="google-btn mb42" onClick={renderProps.onClick}><IconGoogle />Sign in with Google</button>
                 )}
