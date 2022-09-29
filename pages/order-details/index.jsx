@@ -1,12 +1,13 @@
 import React,{useState,useEffect,useRef} from "react";
 import IconSearch from '../../components/Icons/IconSearch';
 import IconDropdown from '../../components/Icons/IconDropdown';
-import MyOrders from "../../components/partials/MyOrders/MyOrders";
+import OrderDetails from "../../components/partials/OrderDetails/OrderDetails";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import Footer from "../../components/partials/LandingPage/Footer";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
+import IconBack from '../../components/Icons/IconBack';
 
-export default function Myorders(){
+export default function Orderdetails(){
     const [active, setActive] = useState(false);
     const [windowWidth, setWindowWidth] = useState(0);
     const wrapperRef = useRef(null);
@@ -42,27 +43,23 @@ export default function Myorders(){
                 <section className="breadcrumbs-wrapper no-bg mb26">
                     <ul className="breadcrumbs flex flex-center">
                         <li>Home</li>/
-                        <li className="current">My Orders</li>
+                        <li>My Orders</li>/
+                        <li className="current">Order Detail</li>
                     </ul>
                 </section>
-                <div className="heading-wrapper flex space-between flex-center mb16">
-                    <h1>My Orders</h1>
-                    <div className="search-wrapper flex flex-center">
-                        <div className="Search">
-                            <input type="search" id="search" name="search" placeholder="Search by order "/>
-                            <button className="search-btn"><IconSearch /></button>
+                <div className="heading-wrapper flex space-between flex-center mb16 border-btm">
+                    <h1><button className="back"><IconBack/></button>Order Detail</h1>
+                    <div className="order-time-wrap flex flex-center">
+                        <div className="placed">
+                             Order Placed: August 22, 2022
                         </div>
-                        <div className="dropdwn-wrapper">
-                            <button className="dropdown" onClick={handleOnClick} ref={wrapperRef}>Recennt <IconDropdown /></button>
-                            <ul className={active ? "dropdwnList active" : "dropdwnList"}>
-                                <li>Last months</li>
-                                <li>Last 3 months</li>
-                            </ul>
+                        <div className="delivered">
+                            Order Delivered: August 22, 2022
                         </div>
                     </div>
                 </div>
-                <div className="orderlist-wrapper">
-                    <MyOrders />
+                <div className="orderdetails-wrapper flex space-between">
+                    <OrderDetails />
                 </div>
             </div>
             <Footer/>

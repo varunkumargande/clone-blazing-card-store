@@ -24,6 +24,11 @@ h1{
   color:$primary-color;
   margin-bottom: 24px;
 }
+.heading-wrapper{
+  h1{
+    margin-bottom: 0;
+  }
+}
 .flex{
   display: flex;
 }
@@ -77,6 +82,9 @@ h1{
 }
 .mb20{
   margin-bottom: 20px;
+}
+.mb24{
+  margin-bottom: 24px;
 }
 .mb26{
   margin-bottom: 26px;
