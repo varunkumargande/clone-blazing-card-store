@@ -13,7 +13,7 @@ import {
   ShippingTaxesModal,
   ShareModalModal,
 } from "../../partials/Modal/Modal";
-import moment, { min } from "moment/moment";
+import moment from "moment/moment";
 import { useRouter } from "next/router";
 
 function StreamingBase({
@@ -40,34 +40,36 @@ function StreamingBase({
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
   const [winnerNotification, setWinnerNotification] = useState(null);
-  const [liveAuction, setLiveAuction] = useState(stream.streamProducts?.AuctionDetails)
   const [auctionId, setAuctionId] = useState(null)
   const router = useRouter();
   const uuid = router.query["uuid"];
 
+  /**
+   * Will Subscribe to all Notofication type channels
+   */
   useEffect(() => {
     socketObject.on(`${uuid}-bid`, (bid) => {
       setBidNotification(bid);
       setAuctionNotification(null);
-      setLiveAuction(null)
       setWinner(null)
     });
     socketObject.on(`${uuid}-auction`, (auction) => {
       setAuctionNotification(auction);
       setBidNotification(null);
       setAuctionId(auctionNotification?.auction.id)
-      setLiveAuction(null)
       setWinner(null)
     });
     socketObject.on(`${uuid}-win`, (winner) => {
       setWinnerNotification(winner);
       setBidNotification(null);
       setAuctionNotification(null);
-      setLiveAuction(null)
     });
   }, []);
 
 
+/**
+ * This useEffect will calculate time and set bid amount on changes of notification
+ */
   useEffect(() => {
     if (!!auctionNotification || !!bidNotification) {
       getTimeDifference(auctionNotification?.auction?.endTime || bidNotification?.endTime)
@@ -80,6 +82,9 @@ function StreamingBase({
     } 
   }, [bidNotification, auctionNotification]);
 
+  /**
+   * Method will re-rednders on each stream api change
+   */
   useEffect(() => {
     if(stream?.streamProducts?.AuctionDetails) {
       getTimeDifference(stream?.streamProducts?.AuctionDetails?.latestBidding?.bidEndTime ?? stream?.streamProducts?.AuctionDetails?.latestAuction?.endTime)
@@ -88,6 +93,10 @@ function StreamingBase({
   }, [stream])
 
 
+  /**
+   * Method will calculate Live Auction endtime
+   * @param {*} endTime 
+   */
   const getTimeDifference = (endTime) => {
     let [date, time] = endTime.split(" ")
     const endTime = moment(date.replaceAll("-","/")+" "+time)
@@ -105,6 +114,9 @@ function StreamingBase({
     setSeconds(seconds);
  }
 
+ /**
+  * Method will Handle bid confirmation event
+  */
   const handleConfirmBid = async () => {
     if (cardDetail.length == 0 && addressList.length == 0) {
       openPayment(true);
@@ -118,17 +130,31 @@ function StreamingBase({
       );
     }
   };
-  /*****End notifications *****/
+
+  /**
+   * Method will handle mute and untmute of stream
+   */
   const handleMuteButton = () => {
     setIsMute(!isMute);
   };
+
+  /**
+   * Opens custom bid modal
+   */
   const handleCustomBid = () => {
     setOpen(true);
   };
+
+  /**
+   * Opens sahre bid modal
+   */
   const handleShareButton = () => {
     setIsShareModalOpen(true);
   };
 
+  /**
+   * This useEffect will start countdown till 0
+   */
   useEffect(() => {
     let myInterval = setInterval(() => {
       if(seconds < 0 && minutes < 0) {
@@ -155,6 +181,10 @@ function StreamingBase({
     };
   });
 
+  /**
+   * Adjust volume of Stream
+   * @param {*} event 
+   */
   const changeVolumeLevel = (event) => {
     event.preventDefault();
     const changedVolume = event?.target?.value;
@@ -163,18 +193,31 @@ function StreamingBase({
     }
   };
 
+  /**
+   * Method will set bidding amount
+   */
   const checkBidAmount = () => {
     if (amountToBid > bidAmount) setAmountToBid(amountToBid - 1);
   };
 
+  /**
+   * Method to increase bid amount by 1
+   */
   const increaseBidAmount = () => {
     setAmountToBid(amountToBid + 1);
   };
 
+  /**
+   * Method to open shipping modal
+   */
   const handleShipModal = () => {
     setOpenShipPayDetails(true);
   };
 
+  /**
+   * Method will return AUction area on stream
+   * @returns JSX
+   */
   const getAuctionArea = () => {
     return (
       <>
@@ -204,6 +247,10 @@ function StreamingBase({
     );
   };
 
+  /**
+   * Method to identify name of stream
+   * @returns string || null
+   */
   const liveAuctionName = () => {
     if(stream?.streamProducts?.AuctionDetails) {
       return stream?.streamProducts?.AuctionDetails?.latestAuction?.productName ?? null;
@@ -259,12 +306,6 @@ function StreamingBase({
               <IconDoller />
             </button>
           </div>
-          {/*Auction end Html*/}
-          {/* <div className="auction-end-text text-center">     
-                    <h3>Live Stream Ended</h3>
-                    <p>The live video has ended you can <br/>no longer to view</p>
-                </div> */}
-          {/* winner profile*/}
           {winnerNotification ? (
             <div className="winner-profile flex flex-center">
               <div className="pf br50">

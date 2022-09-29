@@ -76,11 +76,19 @@ function LeftDiv({
     fetchProducts();
   }, [toggleState]);
 
+  /**
+   * Method to set tab type
+   * @param {*} element 
+   */
   const setToggle = (element) => {
     dispatch(addStreamProducts({}))
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
   };
   
+  /**
+   * Method to toggle between product listing types
+   * @returns 
+   */
   const getToggles = () => {
     return TOGGLES.map((element) => {
       return (
@@ -103,16 +111,21 @@ function LeftDiv({
     });
   };
 
-  // useEffect(() => {
-  //   getProductList()
-  // }, [])
 
-
+  /**
+   * Method Will initiate BuyNow process
+   * @param {*} product 
+   */
   const handleBuyNow = (product) => {
     productDetail(product);
     openPayment(true);
   };
 
+  /**
+   * This Method will pined that particular product which is currently on auction
+   * @param {*} productId 
+   * @returns 
+   */
   const getLiveAuctionClass = (productId) => {
     if (productId == auctionNotification?.product?.productId || productId == stream?.streamProducts?.AuctionDetails.latestAuction?.productId ) {
       return "pined";
@@ -120,6 +133,10 @@ function LeftDiv({
     return  "";
   }
 
+  /**
+   * Method will render all product listing 
+   * @returns JSX
+   */
   const getProductList = () => {
     if(!stream?.streamProducts?.products) return null;
     return stream?.streamProducts?.products?.map((product) => {
