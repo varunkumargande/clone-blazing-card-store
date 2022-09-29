@@ -131,6 +131,12 @@
         line-height: 20px;
         color:$primary-color;
     }
+    .infotextlg{
+        font-size: 16px;
+        line-height: 20px;
+        color:$primary-color;
+        margin-bottom: 28px;
+    }
     .wd310{
         max-width: 310px;
     }
@@ -229,6 +235,18 @@
     .btn-wrap{
         button{
             width: calc(50% - 9px);
+        }
+    }
+    .delete{
+        margin-top:30px;
+        .border-btn{
+            max-width: 85px;
+        }
+        .primary-btn{
+            max-width: 162px;
+            &.disable{
+                opacity: .44;
+            }
         }
     }
     .modal-footer{
