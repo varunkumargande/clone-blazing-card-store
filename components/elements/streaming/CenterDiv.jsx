@@ -15,8 +15,6 @@ function CenterDiv({
   isPayment,
   openPayment,
   setOpen,
-  streamingDetails,
-  currentAuction
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
@@ -85,7 +83,6 @@ function CenterDiv({
         openPayment={openPayment}
         addressList={addressList}
         cardDetail={cardDetail}
-        currentAuction={currentAuction}
       />
 
         {isPayment ? (
