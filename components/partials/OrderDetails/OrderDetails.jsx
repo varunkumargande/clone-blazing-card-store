@@ -91,7 +91,7 @@ export default function OrderDetails(){
                             <div className="value">$3.00</div>
                         </div>
                     </div>
-                    <div className="total-order flex space-between">
+                    <div className="total-order flex space-between flex-center">
                         <div className="label">Total</div>
                         <div className="value">$30.00</div>
                     </div>
