@@ -63,7 +63,6 @@ function LeftDiv({
     " " +
     streamingDetails?.vendorDetails?.last_name;
   const streamTitle = streamingDetails?.title;
-
   // Handle Tabs Change Functionality
   const toggleTab = (index) => {
     setToggleState(index);
@@ -83,10 +82,10 @@ function LeftDiv({
           url = `stream/streamProductList?streamuuid=${streamUuid}&sellType=buy_now`;
           break;
         case TOGGLE_STATES.PURCHASED:
-          url = `stream/streamProductList?streamuuid=${streamUuid}&sellType=auction`;
+          url = "#";
           break;
         case TOGGLE_STATES.SOLD:
-          url = `stream/streamSoldProductList?streamuuid=${1234343453654645}`;
+          url = `stream/streamSoldProductList?streamuuid=${streamUuid}`;
           break;
       }
       const data = await getProducts(url);
@@ -114,13 +113,7 @@ function LeftDiv({
     fetchProducts();
   }, [toggleState]);
 
-  // If user successfully added payment info and shipping info then will close the pop-up and move towards payment
-  // useEffect(() => {
-  //   if (addPayInfo && addShippInfo) {
-  //     setOpen(false);
-  //     alert("Moving towards payment");
-  //   }
-  // }, [addPayInfo, addShippInfo]);
+
   const setToggle = (element) => {
     setProductListing([]);
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
@@ -159,19 +152,26 @@ function LeftDiv({
 
   const getProductList = () => {
     return productListing?.map((product) => {
-      let productName = product?.name.toUpperCase();
-      let productid = product?.product_id;
+      const productDetails = {
+        productName: product?.name.toUpperCase() ?? "",
+        productId: product?.product_id ?? "",
+        customerName: product?.customerName ?? "",
+        price: product?.price ?? "",
+        quantity: product?.quantity ?? "",
+        description: product?.description ?? ""
+      }
       return (
         <>
           {toggleState == "auction" ? (
-            <li className={ productid == auctionNotification?.product?.productId ? "pined " : ""}>
-              <strong>{product?.name}</strong>
+            <li className={ productDetails.productId == auctionNotification?.product?.productId ? "pined " : ""}>
+              <strong>{productDetails.productName}</strong>
             </li>
           ) : toggleState == "buynow" ? (
             <div className="flex flex-center space-between list">
               <div className="left flex column">
-                <strong>{productName}</strong>
-                {/* <span>17 Available</span> */}
+                <strong>{productDetails.productName}</strong>
+                <span>{productDetails.description}</span>
+                <span>{productDetails.quantity} Available</span>
               </div>
               <div className="right">
                 <button
@@ -181,27 +181,28 @@ function LeftDiv({
                 >
                   Buy Now
                 </button>
+                <div className="piece text-center">${productDetails.price}/piece</div>
               </div>
             </div>
           ) : toggleState == "sold" ? (
             <div className="flex space-between list-data">
               <div className="left flex column">
-                <strong>{productName}</strong>
+                <strong>{productDetails.productName}</strong>
                 <span>
                   Sold to:{" "}
-                  <Link href="/">
-                    <a>phatdawg</a>
+                  <Link href="#">
+                    <a>{productDetails.customerName}</a>
                   </Link>
                 </span>
               </div>
               <div className="right">
-                <div className="amount">For $25</div>
+                <div className="amount">For ${productDetails.price}</div>
               </div>
             </div>
           ) : (
             <div className="flex space-between list-data">
               <div className="left flex column">
-                <strong>{productName}</strong>
+                <strong>{productDetails.productName}</strong>
                 <span>
                   Purchased from{" "}
                   <Link href="/">
@@ -210,7 +211,7 @@ function LeftDiv({
                 </span>
               </div>
               <div className="right">
-                <div className="amount">For $25</div>
+                <div className="amount">For ${productDetails.price}</div>
               </div>
             </div>
           )}

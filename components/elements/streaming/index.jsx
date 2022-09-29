@@ -70,6 +70,7 @@ function Index() {
               customerId={customerId}
               streamDetails={selectedStream}
               currentAuction={currentAuction}
+              streamingDetails={streamingDetails}
             />
             <RightDiv
               streamingDetails={streamingDetails}
