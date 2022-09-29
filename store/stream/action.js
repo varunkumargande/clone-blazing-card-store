@@ -1,10 +1,12 @@
 import { getStreamData } from "../../api/stream/stream";
+import { getProducts } from "../../api/stream/streams_api";
 
 export const actionTypes = {
   ADD_STREAM_DETAILS: 'ADD_STREAM_DETAILS',
   ADD_USER: 'ADD_USER_TYPE',
   ADD_RTM_TOKEN: 'ADD_RTM_TOKEN',
   ADD_RTC_TOKEN: 'ADD_RTC_TOKEN',
+  ADD_STREAM_PRODUCTS:'ADD_STREAM_PRODUCTS',
 
   GET_STREAM_DETAILS: 'GET_STREAM_DETAILS',
   GET_USER: 'GET_USER_TYPE',
@@ -22,6 +24,23 @@ export const streamData =  (streamUuid) => {
     }
   };
 };
+
+export const streamProducts = (url) => {
+  return async dispatch => {
+    const result = await getProducts(url)
+    if(result) {
+      dispatch(addStreamProducts(result))
+      return result;
+    }
+  };
+}
+
+export const addStreamProducts = (payload) => {
+  return {
+    type: actionTypes.ADD_STREAM_PRODUCTS,
+    payload:payload,
+};
+}
 
 export function getStreamDetails(payload) {
   return {

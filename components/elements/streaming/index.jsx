@@ -30,8 +30,6 @@ function Index() {
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
 
-  const [currentAuction, setCurrentAuction] = useState(null);
-
   useEffect(() => {
     socketObject.on(`${uuid}-bid`, (bid) => {
       setBidNotification(bid);
@@ -57,7 +55,6 @@ function Index() {
               addPayInfo={addPayInfo}
               setCustomerId={setCustomerId}
               streamingDetails={streamingDetails}
-              setCurrentAuction={setCurrentAuction}
             />
             <CenterDiv
               open={open}
@@ -69,7 +66,6 @@ function Index() {
               setAddPayInfo={setAddPayInfo}
               customerId={customerId}
               streamDetails={selectedStream}
-              currentAuction={currentAuction}
             />
             <RightDiv
               streamingDetails={streamingDetails}
