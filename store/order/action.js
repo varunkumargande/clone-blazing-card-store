@@ -3,7 +3,6 @@ export const actionTypes = {
   };
 
   export function getOrders(payload) {
-    console.log("payload", payload)
     return { 
         type: actionTypes.GET_ORDERS, 
         payload:payload 
