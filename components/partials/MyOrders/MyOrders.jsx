@@ -7,10 +7,6 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
 export default function MyOrders() {
-  const [orderData, setOrderData] = useState([]);
-  const [limit, setLimit] = useState(5);
-  const [offset, setOffset] = useState(0);
-  const [status, setStatus] = useState("opened");
   const dispatch = useDispatch();
   const orders = useSelector((state) => state?.order?.orderList);
 
@@ -52,13 +48,12 @@ console.log(orders)
                       </button>
                     </div>
                     <div className="order-disc mb16">
-                      Get Free Shipping On Your First Order. Giving Away Spots
-                      From Our Mystery Pull Game
+                      {order.productDescription}
                     </div>
                     <div className="qty-bought-wrap flex">
                       <div className="qty">Qty: {order.quantity}</div>
                       <span className="divide">|</span>
-                      <div className="bought">Bought By: Auction</div>
+                      <div className="bought">Bought By: {order.productSellType}</div>
                     </div>
                   </div>
                 </div>

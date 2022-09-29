@@ -8,12 +8,6 @@ import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import { orderListApi } from "../../api";
 import { useDispatch } from 'react-redux';
 export default function Myorders() {
-  const [orderData, setOrderData] = useState([]);
-  const [limit, setLimit] = useState(5);
-  const [offset, setOffset] = useState(0);
-  const [status, setStatus] = useState("opened");
-  const [orderLoader, setOrderLoader] = useState(true);
-  const [count, setCount] = useState(0);
   const [searchVal, setSearchVal] = useState("");
   const [active, setActive] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
@@ -45,10 +39,8 @@ export default function Myorders() {
   }, []);
 
   useEffect(() => {
-    setOrderLoader(true);
-    // setReload(0);
-    orderListApi(dispatch);
-  }, [searchVal, offset, limit, status]);
+    orderListApi(dispatch, searchVal);
+  }, [searchVal]);
   return (
     <>
       {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
