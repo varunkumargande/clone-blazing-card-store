@@ -205,8 +205,8 @@ function StreamingBase({
   };
 
   const liveAuctionName = () => {
-    if(liveAuction) {
-      return liveAuction?.latestAuction?.productName ?? null;
+    if(stream?.streamProducts?.AuctionDetails) {
+      return stream?.streamProducts?.AuctionDetails?.latestAuction?.productName ?? null;
     }
     return auctionNotification?.product?.name ?? null;
   }
