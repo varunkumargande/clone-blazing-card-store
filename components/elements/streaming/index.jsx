@@ -19,7 +19,7 @@ function Index() {
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
   const [socketObject, setSocketObject] = useState(
-    io("http://52.72.64.43:4000")
+    io(process.env.SOCKET_IO_PATH)
   );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
@@ -29,8 +29,6 @@ function Index() {
 
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
-
-  const [currentAuction, setCurrentAuction] = useState(null);
 
   useEffect(() => {
     socketObject.on(`${uuid}-bid`, (bid) => {
@@ -57,7 +55,6 @@ function Index() {
               addPayInfo={addPayInfo}
               setCustomerId={setCustomerId}
               streamingDetails={streamingDetails}
-              setCurrentAuction={setCurrentAuction}
             />
             <CenterDiv
               open={open}
@@ -69,7 +66,6 @@ function Index() {
               setAddPayInfo={setAddPayInfo}
               customerId={customerId}
               streamDetails={selectedStream}
-              currentAuction={currentAuction}
             />
             <RightDiv
               streamingDetails={streamingDetails}
