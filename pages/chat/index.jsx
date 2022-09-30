@@ -4,7 +4,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import styled from "styled-components";
 import { allUsersRoute, host } from "../../api/utils/APIRoutes";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import {
   sendMessageRoute,
   recieveMessageRoute,
@@ -192,7 +192,7 @@ export default function Chat() {
                 <div className="chat-messages">
                   {messages.map((message) => {
                     return (
-                      <div ref={scrollRef} key={uuidv4()}>
+                      <div ref={scrollRef} >
                         <div
                           className={`message ${
                             message.fromSelf ? "sended" : "recieved"

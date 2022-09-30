@@ -38,7 +38,6 @@ export default function Myorders() {
     };
   }, []);
 
-<<<<<<< HEAD
     return(
         <>
             {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
@@ -68,31 +67,6 @@ export default function Myorders() {
                 <div className="orderlist-wrapper">
                     <MyOrders />
                 </div>
-=======
-  useEffect(() => {
-    orderListApi(dispatch, searchVal);
-  }, [searchVal]);
-  return (
-    <>
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
-      <div className="myorder-wrapper">
-        <div className="heading-wrapper flex space-between flex-center mb16">
-          <h1>My Orders</h1>
-          <div className="search-wrapper flex flex-center">
-            <div className="Search">
-              <input
-                type="search"
-                id="search"
-                name="search"
-                placeholder="Search by order "
-                value={searchVal}
-                onChange={(e) => 
-                  setSearchVal(e.target.value)}
-              />
-              <button className="search-btn">
-                <IconSearch />
-              </button>
->>>>>>> 8f206a594d99f09257f6b472823b10b56e03075e
             </div>
             <div className="dropdwn-wrapper">
               <button
