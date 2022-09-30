@@ -38,6 +38,37 @@ export default function Myorders() {
     };
   }, []);
 
+<<<<<<< HEAD
+    return(
+        <>
+            {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
+            <div className="myorder-wrapper">
+                <section className="breadcrumbs-wrapper no-bg mb26">
+                    <ul className="breadcrumbs flex flex-center">
+                        <li>Home</li>/
+                        <li className="current">My Orders</li>
+                    </ul>
+                </section>
+                <div className="heading-wrapper flex space-between flex-center mb16">
+                    <h1>My Orders</h1>
+                    <div className="search-wrapper flex flex-center">
+                        <div className="Search">
+                            <input type="search" id="search" name="search" placeholder="Search by order "/>
+                            <button className="search-btn"><IconSearch /></button>
+                        </div>
+                        <div className="dropdwn-wrapper">
+                            <button className="dropdown" onClick={handleOnClick} ref={wrapperRef}>Recennt <IconDropdown /></button>
+                            <ul className={active ? "dropdwnList active" : "dropdwnList"}>
+                                <li>Last months</li>
+                                <li>Last 3 months</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div className="orderlist-wrapper">
+                    <MyOrders />
+                </div>
+=======
   useEffect(() => {
     orderListApi(dispatch, searchVal);
   }, [searchVal]);
@@ -61,6 +92,7 @@ export default function Myorders() {
               <button className="search-btn">
                 <IconSearch />
               </button>
+>>>>>>> 8f206a594d99f09257f6b472823b10b56e03075e
             </div>
             <div className="dropdwn-wrapper">
               <button

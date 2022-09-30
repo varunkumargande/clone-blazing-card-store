@@ -6,6 +6,7 @@ import Footer from "../../components/partials/LandingPage/Footer";
 import IconShareFacebook from "../../components/Icons/IconShareFacebook"
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
 import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
+import Followers from "../../components/partials/Profile/Followers";
 import { useSelector,useDispatch } from "react-redux";
 import Link from "next/link";
 import { subcatstreamDetailApi } from "../../api/stream/subStreamDetail";
@@ -87,8 +88,10 @@ export default function categoryStream(){
                                     Alejandro Felix Bronco
                                   <span>@felix.bronco</span>
                                 </div>
-                                {/* <button className="primary-btn follow-btn">Follow</button> */}
-                                <button className="border-btn edit-profile-btn">Edit Profile</button>
+                                <div className="flex justify-center">
+                                    <button className="primary-btn follow-btn">Follow</button>
+                                    <button className="border-btn edit-profile-btn">Edit Profile</button>
+                                </div>
                                 <p className="description">
                                 Add our new 'Hire Me' section to your profile to let
                                  visitors know that you're looking for new opportunities.
@@ -127,6 +130,8 @@ export default function categoryStream(){
                                 <div className="card-wrap flex inner-container">
                                     {/*  */}
                                     {getStreamCards()}
+                                    {/* <Followers/> */}
+                                    {/* <div className="no-record flex justify-center">No Data found</div> */}
                                 </div>
                             </div>
                         </div>
