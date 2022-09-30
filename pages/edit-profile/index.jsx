@@ -6,6 +6,9 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import IconBack from '../../components/Icons/IconBack';
 import ProfileInformation from "../../components/partials/EditProfile/ProfileInformation";
+import PaymentDetails from "../../components/partials/EditProfile/PaymentCard";
+import NoCard from "../../components/partials/EditProfile/NoCard";
+import PaymentCard from "../../components/partials/EditProfile/PaymentCard";
 import ChangePassword from "../../components/partials/EditProfile/ChangePassword";
 import ShippingInformation from "../../components/partials/EditProfile/ShippingInformation";
 
@@ -52,7 +55,10 @@ export default function categoryStream(){
                     </div>
                     {/* <ProfileInformation/> */}
                     {/* <ChangePassword/> */}
-                    <ShippingInformation/>
+                    {/* <ShippingInformation/> */}
+                    {/* <PaymentDetails/> */}
+                    {/* <NoCard/> */}
+                    <PaymentCard/>
                 </div>
                 
             </div>

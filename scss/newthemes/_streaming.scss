@@ -339,8 +339,11 @@
         &::-webkit-scrollbar { 
             height: 0;  
         }
-        > .chat{
-            margin-top: 24px;
+        .chat-inner-wrap{ 
+            min-height: 100%;
+            > .chat{
+                margin-top: 24px;
+            }
         }
         .chat-img{
             width: 36px;

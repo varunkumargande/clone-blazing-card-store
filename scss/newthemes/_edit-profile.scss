@@ -37,6 +37,9 @@
         line-height: 24px;
         margin-bottom: 16px;
         font-weight: 400;
+        &.sb{
+            font-weight: 600;
+        }
     }
     .tab-link-wrap{
         border-bottom: 1px solid $border2-color;
@@ -71,6 +74,14 @@
             }
         }
     }
+    .select-input{
+        select{
+            width: 80px;
+        }
+        input{
+            width:calc(100% - 88px);
+        }
+    }
     .box{
         padding: 24px 22px;
         background-color: $white-color;
@@ -80,6 +91,7 @@
             font-size: 16px;
             .link{
                 color:$blue-color;
+                text-decoration: underline;
             }
         }
         .inner-box{
@@ -99,6 +111,17 @@
         }
         .max-limit{
             font-size: 12px;
+        }
+    }
+    .NoCard{
+        min-height: 312px;
+        .no-payment{
+            font-size: 16px;
+            line-height: 24px;
+            margin:16px 0;
+        }
+        .primary-btn{
+            width: 233px;
         }
     }
     .button-wrapper{
@@ -140,6 +163,119 @@
         height: 40px;
         background-color: $delete-bg;
         margin-left: 28px;
+    }
+    .payment-card-wrap{
+        width:100%;
+        max-width: 368px;
+        border: 1px solid $border2-color;
+        border-radius: 16px;
+        .payment-card{
+            width: calc(100% + 2px);
+            height: 200px;
+            background-color: $card-blue-color;
+            border-radius: 16px;
+            margin: -1px 0 0 -1px;
+            padding: 24px 24px 16px;
+            @include pos(re);
+            overflow: hidden;
+            &:before{
+                content: '';
+                width: 375px;
+                height: 262px;
+                background-color: rgba($white-color,.1);
+                @include pos(ab,-170px,-175px,null,null);
+                border-radius:50%;
+            }
+            &:after{
+                content: '';
+                width: 375px;
+                height: 262px;
+                background-color: rgba($white-color,.08);
+                @include pos(ab,null,null,-170px,-175px);
+                border-radius:50%;
+            }
+        }
+        .paymentCard{
+            @include pos(re);
+            z-index: 2;
+        }
+        .bank-name{
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 42px;
+            color: $white-color;
+            font-weight: 600;
+        }
+        .card-no{
+            font-size: 20px;
+            line-height: 24px;
+            margin-bottom: 24px;
+            font-weight: 500;
+            color:$white-color;
+        }
+        .card-holder{
+            .label{
+                font-size: 11px;
+                line-height: 13px;
+                color:#B6D3FD;
+                margin-bottom: 4px;
+            }
+            .value{
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 500;
+                color:$white-color;
+                margin-bottom: 4px;
+            }
+        }
+        .payemnt-edits{
+            height: 44px;
+            font-weight: 500;
+            padding: 0 16px;
+            button{
+                padding: 0;
+            }
+            .remove{
+                color:$disc-color;
+            }
+            .edit{
+                color: $blue-color;
+            }
+        }
+        .card-name{
+            svg{
+                width: 48px;
+            }
+            .icon{
+                fill:$white-color;
+            }
+        }
+    }
+    .payment-card-wrapper{
+        .add-card{
+            width: 368px;
+            max-width: 100%;
+            margin-left: 48px;
+            height: 200px;
+            border-radius: 16px;
+            background-color: rgba($blue-color,.05);
+            span{
+                width: 26px;
+                height: 26px;
+                color:$white-color;
+                font-size: 28px;
+                border-radius: 50%;
+                line-height: 22px;
+                padding-bottom: 2px;
+                background-color: $blue-color;
+                margin-bottom: 10px;
+            }
+            .another-card{
+                font-size: 16px;
+                line-height: 18px;
+                color:$blue-color;
+            }
+        }
     }
 }
 
