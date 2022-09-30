@@ -44,9 +44,6 @@ export default function Electronic({
   };
 
   const getlikedStatus = (uuid) => {
-    console.log(likedStream)
-    console.log(uuid)
-    console.log(likedStream.includes(uuid))
     if(!!likedStream.includes(uuid)) {
       
       return  "like flex flex-center justify-center liked"
@@ -66,7 +63,7 @@ export default function Electronic({
                   <img src="/static/images/card.png" alt="Card" />
                 </a>
                 <div className="tme-wrap flex flex-center justify-center live">
-                  <span>1.2Ks</span> <button className="live"></button>
+                  <span>1.2K</span> <button className="live"></button>
                 </div>
                 <button
                   onClick={() => handleLikeUnlike(detail.uuid)}

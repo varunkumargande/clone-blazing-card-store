@@ -226,13 +226,14 @@ function LeftDiv({
       };
       const response = await userFollowUnfollow(data);
       if (response.status) {
-        setFollowed(!liked);
+        setFollowed(!followed);
       }
     }
   };
 
   return (
     <div className="streaming-left">
+      {console.log(followed, 'asdasdasd')}
       <div className="flex profile-wrapper">
         <div className="image">
           <img src="/static/images/profileImg.png" alt="profile" />
@@ -243,7 +244,7 @@ function LeftDiv({
         </div>
         <div className="btn-wrap">
           <button onClick={handleFollowUnfollow} className="primary-btn">
-            {followed ? "follow" : 'Unfollow'}
+            {followed ? "Unfollow" : 'Follow'}
           </button>
         </div>
       </div>

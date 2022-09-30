@@ -40,10 +40,6 @@ function Index() {
       setAuctionNotification(auction);
     });
     dispatch(streamData(uuid));
-    return () => {
-      socketObject.removeListeners(`${uuid}-bid`);
-      socketObject.removeListeners(`${uuid}-auction`);
-    }
   }, []);
 
   return (
