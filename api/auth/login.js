@@ -13,7 +13,10 @@ export async function UserLogin(email, password, loginType, Router, setLoginErro
     })
     const result = await APIServices.create('customer/login', data)
     if (result && result.data && result.data.status === 1) {
+        
         sessionStorage.setItem("spurtToken", result.data.data.token);
+        sessionStorage.setItem("userPass", password)
+
         getProfileApi()
         modalSuccess('success', result.data.message)
         Router.push('/');
