@@ -178,6 +178,29 @@ export default function ProfileInformation() {
                           </span>
                         </div>
                       </div>
+                      <div className="flex space-between">
+                        <div className="input-control wd50">
+                            <div className="flex space-between flex-center">
+                                <label htmlFor="usr">Username *</label>
+                                <button className="verify-email-btn">Verify email</button>
+                            </div>
+                            <input name="text" placeholder={"Enter here"} id="usr" className="grey-bg" />
+                            <span className="errorMessage"></span>
+                        </div>
+                        <div className="input-control wd50">
+                            <div className="flex space-between flex-center">
+                                <label htmlFor="usr">Phone Number *</label>
+                            </div>
+                            <div className="flex space-between select-input">
+                              <select className="grey-bg" >
+                                 <option>+ 1</option>
+                                 <option>+ 2</option>
+                              </select>  
+                              <input name="text" placeholder={"Enter here"} id="usr" className="grey-bg" />
+                            </div>
+                            <span className="errorMessage"></span>
+                        </div>
+                    </div>
                       <div className="input-control">
                         <div className="flex space-between flex-center">
                           <label htmlFor="bio">Bio</label>
