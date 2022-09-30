@@ -15,6 +15,7 @@ import {
 } from "../../partials/Modal/Modal";
 import moment from "moment/moment";
 import { useRouter } from "next/router";
+import { streamLikeDislike } from "../../../api/stream/streams_api";
 
 function StreamingBase({
   cardDetail,
@@ -43,6 +44,7 @@ function StreamingBase({
   const [auctionId, setAuctionId] = useState(null)
   const router = useRouter();
   const uuid = router.query["uuid"];
+  const [liked, setLiked] = useState(false);
 
   /**
    * Will Subscribe to all Notofication type channels
@@ -64,6 +66,11 @@ function StreamingBase({
       setBidNotification(null);
       setAuctionNotification(null);
     });
+    return () => {
+      socketObject.removeListeners(`${uuid}-bid`);
+      socketObject.removeListeners(`${uuid}-auction`);
+      socketObject.removeListeners(`${uuid}-win`);
+    }
   }, []);
 
 
@@ -258,6 +265,21 @@ function StreamingBase({
     return auctionNotification?.product?.name ?? null;
   }
 
+  const handleLikeUnlike = async () => {
+    if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
+      const data = {
+        stream_id : uuid,
+        user_id : stream?.streamPageData?.streamPageDteails?.loggedInUserId
+      }
+      const response = await streamLikeDislike(data);
+      console.log(response)
+
+      if(response.status) {
+        setLiked(!liked);
+      }
+    }    
+  }
+
   return (
     <>
       <div className="stream-wrapper">
@@ -299,7 +321,7 @@ function StreamingBase({
             >
               <IconShare />
             </button>
-            <button className="flex flex-center justify-center br50">
+            <button onClick={handleLikeUnlike} className="like flex flex-center justify-center br50 liked">
               <IconHeart />
             </button>
             <button className="flex flex-center justify-center br50">

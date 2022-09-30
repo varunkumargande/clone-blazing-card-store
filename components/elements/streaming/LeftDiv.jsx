@@ -7,6 +7,7 @@ import {
   addStreamProducts,
   streamProducts,
 } from "../../../store/stream/action";
+import { userFollowUnfollow } from "../../../api/stream/streams_api";
 
 function LeftDiv({
   openPayment,
@@ -36,6 +37,7 @@ function LeftDiv({
     setToggleState(index);
   };
   const dispatch = useDispatch();
+  const [followed, setFollowed] = useState(false);
 
   /**
    * Method to get All products of a stream
@@ -215,6 +217,20 @@ function LeftDiv({
     stream?.streamProducts?.products?.length > 0
       ? stream?.streamProducts?.products?.length
       : 0;
+
+  const handleFollowUnfollow = async () => {
+    if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
+      const data = {
+        following_id: stream?.streamPageData?.streamPageDteails?.loggedInUserId,
+        follower_id: stream?.streamPageData?.streamPageDteails?.sellerId,
+      };
+      const response = await userFollowUnfollow(data);
+      if (response.status) {
+        setFollowed(!liked);
+      }
+    }
+  };
+
   return (
     <div className="streaming-left">
       <div className="flex profile-wrapper">
@@ -226,7 +242,9 @@ function LeftDiv({
           <div className="followrs-count">129K Followers</div>
         </div>
         <div className="btn-wrap">
-          <button className="primary-btn">Follow</button>
+          <button onClick={handleFollowUnfollow} className="primary-btn">
+            {followed ? "follow" : 'Unfollow'}
+          </button>
         </div>
       </div>
       <div className="leftdata-wrapper">
