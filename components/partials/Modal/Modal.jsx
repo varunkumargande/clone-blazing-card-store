@@ -10,6 +10,7 @@ import { array, element } from "prop-types";
 import { addCardDetail } from "../../../api/stream/payment";
 import { deleteAccountApi } from "../../../api/account/deleteAccount";
 import axios from "axios";
+import { searchUsers } from "../../../chatService";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -689,12 +690,9 @@ export function ChatUserModal({ setIsOpen }) {
   const handleUsername = async (e) => {
     setUserDataLoader(true);
     if (e.target.value != "") {
-      const data = await axios.post(
-        "http://localhost:5000/api/auth/searchUsers",
-        {
-          slang: e.target.value,
-        }
-      );
+      const data = await axios.post(searchUsers, {
+        slang: e.target.value,
+      });
       if (data.status == 200) {
         // console.log(data.data.user)
         setUserData(data.data.user);
@@ -703,7 +701,6 @@ export function ChatUserModal({ setIsOpen }) {
     } else {
       setUserData([]);
       setUserDataLoader(false);
-
     }
   };
 

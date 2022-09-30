@@ -5,10 +5,7 @@ import IconShareWhatsup from "../../../../components/Icons/IconShareWhatsup";
 import { useDispatch, connect, useSelector } from "react-redux";
 import Router from "next/router";
 import Link from "next/link";
-import {
-    LineShareButton,
-    LineIcon,
-  } from 'next-share';
+import { LineShareButton, LineIcon } from "next-share";
 
 function ProfileCard(props) {
   const handleGoToEditProfile = () => {
@@ -30,7 +27,7 @@ function ProfileCard(props) {
           <img
             src={
               userDetail.avatar != null
-                ? `https://blazing-card-backend-dev.kellton.net/api/media/image-resize?path=${profileData.avatarPath}&name=${profileData.avatar}&width=300&height=300`
+                ? `https://blazing-card-backend-dev.kellton.net/api/media/image-resize?path=${userDetail.avatarPath}&name=${userDetail.avatar}&width=300&height=300`
                 : "/static/images/profile-lg-image.png"
             }
             alt="ProfileImg"
@@ -99,12 +96,14 @@ function ProfileCard(props) {
           <div className="profile-icon">{handleProfileImage()}</div>
           <div className="title flex column">{handleUserName()}</div>
           {/* <button className="primary-btn follow-btn">Follow</button> */}
-          <button
-            onClick={handleGoToEditProfile}
-            className="border-btn edit-profile-btn"
-          >
-            Edit Profile
-          </button>
+          <div align={"center"}>
+            <button
+              onClick={handleGoToEditProfile}
+              className="border-btn edit-profile-btn"
+            >
+              Edit Profile
+            </button>
+          </div>
           {handleBio()}
           <div className="social-icons-wrapper">
             <div className="social-border"></div>

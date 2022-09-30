@@ -3,12 +3,13 @@ import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import styled from "styled-components";
-import { allUsersRoute, host } from "../../api/utils/APIRoutes";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import {
   sendMessageRoute,
   recieveMessageRoute,
-} from "../../api/utils/APIRoutes";
+  allUsersRoute,
+  host,
+} from "../../chatService";
 import ChatInput from "../../components/chats/components/ChatInput";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import MobileHeader from "../../components/shared/headers/MobileHeader";
@@ -67,9 +68,7 @@ export default function Chat() {
   const fetchUserData = async () => {
     if (localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
-      const data = await axios.get(
-        "http://localhost:5000/api/auth/allusers/" + user._id
-      );
+      const data = await axios.get(allUsersRoute + user._id);
       setContacts(data.data);
     }
   };
