@@ -11,6 +11,35 @@ import APIServices from "../../services"
     }
   };
 
+  export const streamLikeDislike = async (data) => {
+    try {
+      const response = await APIServices.create("stream/stream-like-unlike", data);
+      if(response?.data?.status) {
+        return {data: response?.data?.data, status: true};
+      }      
+    } catch (error) {
+      return {
+        status: false,
+        error: error
+      }
+    }
+  };
+
+  export const userFollowUnfollow = async (data) => {
+    try {
+      const response = await APIServices.create("follow/follow_unfollow", data);
+      debugger
+      if(response?.data?.status) {
+        return {data: response?.data?.data, status: true};
+      }
+    } catch (error) {
+      return {
+        status: false,
+        error: error
+      }
+    }
+  };
+
 
   export const getCardDetails = async (userId, url) => {
     try {
