@@ -1,29 +1,19 @@
 import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from "../../services";
-export async function changePasswordApi(oldPass, newPass, auth) {
+export async function changePasswordApi(values, setPassLoader) {
   const data = JSON.stringify({
-    oldPassword: oldPass,
-    newPassword: newPass,
+    oldPassword: values.currentPassword,
+    newPassword: values.newPassword,
   });
   const result = await APIServices.create("customer/change-password", data);
 
   if (result && result.data) {
-    setPassButtonLoader(false);
+    setPassLoader(false);
 
     if (result && result.data && result.data.status === 1) {
       modalSuccess("success", result.data.message);
-      // setOldPass("")
-      // setNewPass("")
-      // setOldPassError("")
-      // setNewPassError("")
-      // setPassSubmit(0)
     } else {
       modalWarning("error", result.data.message);
-      // setOldPass("");
-      // setNewPass("");
-      // setOldPassError("");
-      // setNewPassError("");
-      // setPassSubmit(0);
     }
     return result.data; //unwanted
   }

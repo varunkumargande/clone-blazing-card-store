@@ -21,6 +21,7 @@ import { modalSuccess } from "../../../api/intercept";
 import { logOut } from '../../../store/auth/action';
 import { searchRequest } from "../../../store/search/action";
 import { imageUrl } from '../../../api/url';
+import MessageButton from "../../elements/MessageButton";
 
 function HeaderDefault({ auth }, props) {
   const router = useRouter();
@@ -104,6 +105,7 @@ function HeaderDefault({ auth }, props) {
                     </span>
                 </label> */}
             <Link href=""><a className="border-btn flex flex-center justify-center become">Become a Seller</a></Link>
+            <MessageButton name={"Message"} />
 
             {auth.isLoggedIn ? (
               <>
@@ -115,7 +117,7 @@ function HeaderDefault({ auth }, props) {
 
                   <ul className={active ? "dropDown active" : "dropDown"} >
                     <li>
-                      <Link href="/"><a className="active">
+                      <Link href="/account/myprofile"><a className="active">
                         <span><IconProfile />My Profile</span></a>
                       </Link>
                     </li>
@@ -124,11 +126,11 @@ function HeaderDefault({ auth }, props) {
                         <span><IconMyOrders />{t('OrderHistory')}</span></a>
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/account/dashboard"><a className="active">
                         <span><IconSettings />{t('AccountSettings')}</span></a>
                       </Link>
-                    </li>
+                    </li> */}
 
                     <li onClick={e => handleLogout(e)}><IconLogout />Logout</li>
                   </ul>

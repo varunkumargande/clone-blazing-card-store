@@ -37,8 +37,6 @@ function Category({ isSeeAllCate, isSeeAll, subCateId, seeAllHeading, setSubCate
         setActiveCategoryIndex(null)
     }
 
-    console.log(activeCategoryIndex)
-
     const getCategoryList = () => {
         if (isSeeAll == true) {
             if (Object.keys(category).length != 0) {

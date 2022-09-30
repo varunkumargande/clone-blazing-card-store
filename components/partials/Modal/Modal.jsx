@@ -8,6 +8,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { array, element } from "prop-types";
 import { addCardDetail } from "../../../api/stream/payment";
+import { deleteAccountApi } from "../../../api/account/deleteAccount";
+import axios from "axios";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -286,7 +288,6 @@ export function AddNewCardModal(props) {
     country: Yup.string().required("Required"),
   });
 
-
   const formik = useFormik({
     initialValues: {
       cardHolderName:
@@ -327,7 +328,7 @@ export function AddNewCardModal(props) {
             </span>
           </button>
         </div>
-    );
+        );
         <form onSubmit={formik.handleSubmit}>
           <div className="modal-body">
             <div className="input-control">
@@ -380,7 +381,11 @@ export function AddNewCardModal(props) {
             </div>
             <div className="input-control">
               <label>Country *</label>
-              <select name="country" onChange={formik.handleChange} value={formik.values.country}>
+              <select
+                name="country"
+                onChange={formik.handleChange}
+                value={formik.values.country}
+              >
                 <option value="">Select Country</option>
 
                 {countryData?.map((item, index) => {
@@ -599,34 +604,174 @@ export function AddAddressModal(props) {
   );
 }
 
-export function DeletAccountModal(){
-  return(
-      <div className="modalOverlay flex justify-center flex-center">
-          <div className="modal medium">
-             <div className="modal-header flex Space-between flex-center">
-                  <h5 className="modal-title">Delete Account</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true"><IconClose /></span>
-                  </button>
-             </div> 
-             <div className="modal-body">
-                  <div className="infotextlg">Are you sure you want to leave?</div>
-                  <div className="input-control">
-                      <label>User Name</label>
-                      <input name="text" placeholder={"Enter here"}  />
-                      <span className="errorMessage"></span>
-                  </div>
-                  <div className="input-control">
-                      <label>Password *</label>
-                      <input name="password" placeholder={"Enter here"}  />
-                      <span className="errorMessage"></span>
-                  </div>
-                  <div className="flex btn-wrap delete">
-                      <button className="border-btn mr16">Cancel</button>
-                      <button className="primary-btn disable">Delete Account</button>
-                  </div> 
-             </div>
+export function DeletAccountModal({ setIsOpen }) {
+  const deleteSchema = Yup.object().shape({
+    emailId: Yup.string().email("Invalid email format").required("Required"),
+    password: Yup.string().required("Required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      emailId: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      deleteAccountApi(values);
+    },
+    validationSchema: () => deleteSchema,
+  });
+
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal medium">
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">Delete Account</h5>
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+
+        <form onSubmit={formik.handleSubmit}>
+          <div className="modal-body">
+            <div className="infotextlg">Are you sure you want to leave?</div>
+            <div className="input-control">
+              <label>User Name</label>
+              <input
+                type="email"
+                name="emailId"
+                onChange={formik.handleChange}
+                placeholder={"Enter here"}
+                value={formik.values.emailId}
+              />
+              <span className="errorMessage">{formik.errors.emailId}</span>
+            </div>
+            <div className="input-control">
+              <label>Password *</label>
+              <input
+                type="password"
+                name="password"
+                placeholder={"Enter here"}
+                onChange={formik.handleChange}
+                value={formik.values.password}
+              />
+              <span className="errorMessage">{formik.errors.password}</span>
+            </div>
+            <div className="flex btn-wrap delete">
+              <button
+                className="border-btn mr16"
+                onClick={() => setIsOpen(false)}
+              >
+                Cancel
+              </button>
+              <button className="primary-btn" type="submit">
+                Delete Account
+              </button>
+            </div>
           </div>
+        </form>
       </div>
+    </div>
+  );
+}
+
+export function ChatUserModal({ setIsOpen }) {
+  const [userData, setUserData] = useState([]);
+  const [userDataLoader, setUserDataLoader] = useState(false);
+
+  const handleUsername = async (e) => {
+    setUserDataLoader(true);
+    if (e.target.value != "") {
+      const data = await axios.post(
+        "http://localhost:5000/api/auth/searchUsers",
+        {
+          slang: e.target.value,
+        }
+      );
+      if (data.status == 200) {
+        // console.log(data.data.user)
+        setUserData(data.data.user);
+        setUserDataLoader(false);
+      }
+    } else {
+      setUserData([]);
+      setUserDataLoader(false);
+
+    }
+  };
+
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal medium">
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">New Message</h5>
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+
+        <div className="modal-body">
+          <div className="input-control">
+            <label>User Name</label>
+            <input
+              type="text"
+              name="username"
+              placeholder={"Enter Username"}
+              onChange={(e) => handleUsername(e)}
+            />
+          </div>
+          <div className="profile-chat-list-wrap">
+            {userDataLoader ? (
+              <>Loading ...</>
+            ) : (
+              <>
+                {userData.map((item, index) => {
+                  return (
+                    <>
+                      <div
+                        className="profile-chat-list flex space-between"
+                        // onClick={() => changeCurrentChat(index)}
+                      >
+                        <div className="profile-image-title flex flex-center">
+                          <div className="image br50">
+                            <img src={item.avatarImage} alt="" />
+                          </div>
+                          <div className="profile-text">
+                            <div className="name">
+                              {item.username} <span className="new"></span>
+                            </div>
+                            {/* <div className="time"></div> */}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </>
+            )}
+          </div>
+          <div className="btn-wrap delete" align={"center"}>
+            <button className="primary-btn" type="submit">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
