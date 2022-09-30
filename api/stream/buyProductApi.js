@@ -1,9 +1,8 @@
 import APIServices from "../../services";
 import { modalSuccess, modalWarning } from "../intercept";
 
-async function buyProduct(paymentData, shipData, productDetail, openPayment) {
+async function buyProduct(paymentData, shipData, productDetail, openPayment, streamingDetails) {
   const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
-
   if (userData) {
     const jsonData = {
       shippingLastName: "",
@@ -51,6 +50,7 @@ async function buyProduct(paymentData, shipData, productDetail, openPayment) {
       password: "",
       paymentMethodId: paymentData.id,
       customerStripeRefId: paymentData.customer,
+      streamUUID: streamingDetails?.uuid ?? ""
     };
 
     const result = await APIServices.create("orders/customer-pay", jsonData);

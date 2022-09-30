@@ -28,7 +28,7 @@ function Index() {
   const stream = useSelector((state) => {
     return state?.stream;
   });
-
+  const [currentAuction, setCurrentAuction] = useState(null);
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
 
@@ -68,6 +68,8 @@ function Index() {
               setAddPayInfo={setAddPayInfo}
               customerId={customerId}
               streamDetails={selectedStream}
+              currentAuction={currentAuction}
+              streamingDetails={streamingDetails}
             />
             <RightDiv
               streamingDetails={streamingDetails}

@@ -60,7 +60,7 @@ function CenterDiv({
   const handleSubmitBuyProduct = () => {
     // console.log(cardDetail)
     if(cardDetail.length != 0 && addressList.length != 0){
-      buyProduct(cardDetail[cardDetail.length-1], addressList[addressList.length-1], productDetail, openPayment)
+      buyProduct(cardDetail[cardDetail.length-1], addressList[addressList.length-1], productDetail, openPayment, streamingDetails)
     }else{  
       modalWarning("error", "Please select your card detail and shippment address")
     }
