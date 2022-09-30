@@ -113,6 +113,12 @@ h1{
 .mr16{
   margin-right: 16px;
 }
+.mr16{
+  margin-right: 16px;
+}
+.ml20{
+  margin-left: 20px;
+}
 // common input
 .input-control{
   margin-bottom: 16px;
@@ -134,6 +140,10 @@ h1{
       padding: 0 30px 0 15px;
       &.grey-bg{
         background-color: $body-bg;
+        &:focus,&.filled{
+          background-color: $white-color;
+          border-color: $border2-color;
+        }
       }
       &:focus{
           outline: none;
