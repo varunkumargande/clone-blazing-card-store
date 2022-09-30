@@ -120,7 +120,7 @@ function HeaderDefault({ auth }, props) {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/account/myorders"><a className="active">
+                      <Link href="/my-orders"><a className="active">
                         <span><IconMyOrders />{t('OrderHistory')}</span></a>
                       </Link>
                     </li>
