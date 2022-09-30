@@ -294,6 +294,24 @@
 
     }
 }
+@media all and (min-width:320px) and (max-width:767px){
+    .overflow-none{
+        .card-wrap {
+            .card-list{ 
+                flex:0 0 50%;
+            }
+        }
+    }
+}
+@media all and (min-width:768px) and (max-width:1024px){
+    .overflow-none{
+        .card-wrap {
+            .card-list{ 
+                flex:0 0 33.333%;
+            }
+        }
+    }
+}
 @media all and (min-width:320px) and (max-width:1024px){
     .card-list{
         @include pos(re);
@@ -320,7 +338,6 @@
             margin:0 -8px;
             .card-list{ 
                 padding:8px;
-                flex:0 0 50%;
             }
         }
     }
@@ -385,14 +402,19 @@
     .tme-wrap{
         font-size: 16px;
         width: 136px;
-        height: 32px;
+        height: 28px;
+        &.live{
+            span{
+                font-size: 14px;
+            }
+        }
         svg{
             max-width: 18px;
         }
         span{
             padding: 0 6px 0 2px;
         }
-        .live{
+        &.live{
             font-size: 14px;
             width: 53px;
             height: 24px;

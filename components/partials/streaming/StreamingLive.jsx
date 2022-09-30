@@ -17,7 +17,7 @@ export default function StreamingLive(){
             <div className="inner-wrapper">  {/*add className disable when want {disable}*/}
                 <div className="stream-header flex space-between">
                     <div className="head-title">PSA SLAB #83</div>
-                    <div className="tme-wrap flex flex-center justify-center"><IconEye /><span>1.2K</span> <button className="live">Live</button></div>
+                    <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
                     {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
                 </div>
                 <div className="video-icon">
@@ -55,7 +55,7 @@ export default function StreamingLive(){
                         <button className="primary-btn disable" onClick={CustomBidModal}>Auction Ended</button>
                     </div>
                 </div>
-                {/* <PaymentInfoModal /> */}
+                {/* <CustomBidModal /> */}
             </div>
         </div>
     );

@@ -76,7 +76,7 @@ export default function ProfileInformation() {
     <div className="profile-detail">
       <h3>Profile Image</h3>
       <div className="box">
-        <div className="flex flex-center">
+        <div className="profile-image-upload flex flex-center">
           <div className="prifile-image br50">
             {profileData != null ? (
               <>
@@ -180,27 +180,41 @@ export default function ProfileInformation() {
                       </div>
                       <div className="flex space-between">
                         <div className="input-control wd50">
-                            <div className="flex space-between flex-center">
-                                <label htmlFor="usr">Username *</label>
-                                <button className="verify-email-btn">Verify email</button>
-                            </div>
-                            <input name="text" placeholder={"Enter here"} id="usr" className="grey-bg" />
-                            <span className="errorMessage"></span>
+                          <div className="flex space-between">
+                            <label>User Name *</label>
+                            <button className="verify-email-btn">Verify Eamil</button>
+                          </div>
+                          <input
+                            placeholder={"Enter here"}
+                            className="grey-bg"
+                            name="UserName"
+                            // onChange={handleChange}
+                            // value={values.firstName}
+                          />
+                          <span className="errorMessage">
+                            {/* {errors.firstName} */}
+                          </span>
                         </div>
                         <div className="input-control wd50">
-                            <div className="flex space-between flex-center">
-                                <label htmlFor="usr">Phone Number *</label>
-                            </div>
-                            <div className="flex space-between select-input">
-                              <select className="grey-bg" >
-                                 <option>+ 1</option>
-                                 <option>+ 2</option>
-                              </select>  
-                              <input name="text" placeholder={"Enter here"} id="usr" className="grey-bg" />
-                            </div>
-                            <span className="errorMessage"></span>
+                          <label>Phone Number *</label>
+                          <div className="select-input flex space-between">
+                            <select className="grey-bg">
+                              <option>+1</option>
+                              <option>+2</option>
+                            </select>
+                            <input
+                              name="lastName"
+                              placeholder={"Enter here"}
+                              className="grey-bg"
+                              // onChange={handleChange}
+                              // value={values.lastName}
+                            />
+                            <span className="errorMessage">
+                              {/* {errors.lastName} */}
+                            </span>
+                          </div>
                         </div>
-                    </div>
+                      </div>
                       <div className="input-control">
                         <div className="flex space-between flex-center">
                           <label htmlFor="bio">Bio</label>

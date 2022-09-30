@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import IconDelete from "../../Icons/IconDelete";
+import IconMasterCard from "../../Icons/IconMasterCard";
 import Link from "next/link";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -139,6 +140,7 @@ export default function PaymentDetail() {
                                 onChange={handleChange}
                                 value={values.cardNumber}
                               />
+                              <span className="card-icon"><IconMasterCard /></span>
                               <span className="errorMessage">
                                 {errors.cardNumber}
                               </span>
