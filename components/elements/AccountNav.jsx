@@ -64,7 +64,7 @@ function AccountNav({keyValue}){
 
                     <Menu.Item key="4" icon={<CreditCardOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>CardRoute()}>Card Details</Menu.Item>
 
-                    <Menu.Item key="4" icon={<ShoppingCartOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OrderRoute()}>Order History</Menu.Item>
+                    {/* <Menu.Item key="4" icon={<ShoppingCartOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OrderRoute()}>Order History</Menu.Item> */}
                     <Menu.Item key="5" icon={<ShoppingCartOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>QuotationRoute()}>Quotation Request List</Menu.Item>
                     <Menu.Item key="6" icon={<PoweroffOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>handleLogout()}>Logout</Menu.Item>
                 </Menu>
@@ -79,8 +79,8 @@ function AccountNav({keyValue}){
                     <Menu.Item key="1" icon={<AppstoreFilled style={{color:"#2874f0",fontSize:"18px"}}/>}  style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e => DashboardRoute()}>Account Dashboard</Menu.Item>
                     <Menu.Item key="2" icon={<InfoCircleFilled style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e =>AccountInfoRoute()}>Account Information</Menu.Item>
                     <Menu.Item key="3" icon={<EnvironmentFilled style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>AddressRoute()}>Address</Menu.Item>
-                    <Menu.Item key="4" icon={<CreditCardOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OrderRoute()}>Card Details</Menu.Item>
-                    <Menu.Item key="4" icon={<ShoppingCartOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OrderRoute()}>Order History</Menu.Item>
+                    <Menu.Item key="4" icon={<CreditCardOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>CardRoute()}>Card Details</Menu.Item>
+                    {/* <Menu.Item key="4" icon={<ShoppingCartOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>OrderRoute()}>Order History</Menu.Item> */}
                     <Menu.Item key="5" icon={<ShoppingCartOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>QuotationRoute()}>Quotation Request List</Menu.Item>
                     <Menu.Item key="6" icon={<PoweroffOutlined style={{color:"#2874f0",fontSize:"18px"}}/>} style={{margin:"0",borderBottom:"solid thin #f2f2f2",color:"#212121",fontSize:"12px"}} onClick={e=>handleLogout()}>Logout</Menu.Item>
                 </Menu>
