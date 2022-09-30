@@ -233,9 +233,72 @@
         button{
             width:42px;
             height: 42px;
+            border-radius: 21px;
             background-color: rgba($white-color,.2);
             margin-bottom: 16px;
             padding: 0;
+            @include pos(re);
+            &.like{
+                transition:all .25s;
+                &.liked,&:hover{
+                    .icon{
+                        fill:$red-color;
+                        stroke:$red-color;
+                    }
+                }
+            }
+            &.valum{
+                float: right;
+                justify-content: flex-end;
+                padding: 0 9px 0 0;
+                overflow: hidden;
+                svg{
+                    width: 24px;
+                }
+                &:hover{
+                    width: 182px;
+                }
+                .range{
+                    @include pos(ab,50%,45px,null,null);
+                    transform: translateY(-50%);
+                    width: 120px;
+                    input{
+                        max-width: 100%;
+                    }
+                    .slider {
+                        -webkit-appearance: none;
+                        width: 100%;
+                        height: 4px;
+                        background: $white-color;
+                        outline: none;
+                        -webkit-transition: .2s;
+                        transition: opacity .2s;
+                        border-radius: 2px;
+                        &:hover {
+                            opacity: 1;
+                        }
+                        &::-webkit-slider-thumb {
+                            -webkit-appearance: none;
+                            appearance: none;
+                            width: 10px;
+                            height: 10px;
+                            background: $white-color;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            border-color: $white-color;
+                        }
+                        &::-moz-range-thumb {
+                            width: 10px;
+                            height: 10px;
+                            background: $white-color;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            border-color: $white-color;
+                        }
+                    }
+
+                }
+            }
         }
     }
     .stream-footer{
