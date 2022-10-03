@@ -40,18 +40,18 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
                 if (subCateId != "select") {
                     if (parseInt(subCateId) === parseInt(detail.category_id)) {
                         return (
-                            <StreamCard detail={detail} isLive={false} />
+                            <StreamCard detail={detail} isLive={true} />
                         );
                     }
                 } else {
                     if (liveScheduleCategoryName === detail.category_name) {
                         return (
-                            <StreamCard detail={detail} isLive={false} />
+                            <StreamCard detail={detail} isLive={true} />
                         );
                     }
                     if (liveScheduleCategoryName == null) {
                         return (
-                            <StreamCard detail={detail} isLive={false} />
+                            <StreamCard detail={detail} isLive={true} />
                         );
                     }
                 }
