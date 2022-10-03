@@ -8,6 +8,7 @@ import {
   streamProducts,
 } from "../../../store/stream/action";
 import { userFollowUnfollow } from "../../../api/stream/streams_api";
+import { imageUrl } from "../../../api/url";
 
 function LeftDiv({
   openPayment,
@@ -231,12 +232,28 @@ function LeftDiv({
     }
   };
 
+  const getImagePath = (type) => {
+
+    if(stream?.streamData?.vendorDetails?.avatar_path && stream?.streamData?.vendorDetails?.avatar && type == 'vendor') {
+     return imageUrl + "?path=" + stream?.streamData?.vendorDetails?.avatar_path + "&name=" + stream?.streamData?.vendorDetails?.avatar + "&width=50&height=50";
+    }
+      return "/static/images/profileImg.png";
+  }
+
   return (
     <div className="streaming-left">
-      {console.log(followed, 'asdasdasd')}
+      {console.log(stream, 'sadasdasdasd')}
       <div className="flex profile-wrapper">
         <div className="image">
-          <img src="/static/images/profileImg.png" alt="profile" />
+          {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
+          <img
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src="/static/images/profileImg.png";
+              }}
+              src={getImagePath('vendor')}
+              alt="Card"
+            />
         </div>
         <div className="profile-wrap">
           <div className="name">{vendorName}</div>

@@ -81,6 +81,15 @@ const StreamingElement = ({ volume, isMute }) => {
     return response.rtcToken;
   };
 
+  // Do not remove
+  // const getImagePath = (type) => {
+
+  //   if(stream?.streamData?.vendorDetails?.avatar_path && stream?.streamData?.vendorDetails?.avatar && type == 'vendor') {
+  //    return imageUrl + "?path=" + stream?.streamData?.vendorDetails?.avatar_path + "&name=" + stream?.streamData?.vendorDetails?.avatar + "&width=50&height=50";
+  //   }
+  //     return "/static/images/stream-image.jpg";
+  // }
+
   return (
     <>
       {" "}
@@ -90,7 +99,17 @@ const StreamingElement = ({ volume, isMute }) => {
           className="local_stream"
           style={{ width: "100%", height: "100%" }}
         ></div>
-      ) :  <img src="/static/images/stream-image.jpg" alt="stream" />}
+      ) :
+      // Do not remove this code
+      // <img
+      //     onError={({ currentTarget }) => {
+      //       currentTarget.onerror = null; // prevents looping
+      //       currentTarget.src="/static/images/stream-image.jpg";
+      //     }}
+      //       src={getImagePath('profile')}
+      //     />  
+      <img src="/static/images/stream-image.jpg" alt="stream" />
+      }
     </>
   );
 };
