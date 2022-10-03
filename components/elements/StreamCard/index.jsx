@@ -33,7 +33,7 @@ export default function StreamCard({ detail, isLive }) {
             alt="Card"
             onClick={() => handleStreamingLink(detail)}
           />
-          <LiveStreamStatus isLive={isLive} uuid={detail.uuid} />
+          <LiveStreamStatus isLive={isLive} uuid={detail.uuid} detail={detail} />
         </div>
         {/* </Link> */}
         <div className="text">

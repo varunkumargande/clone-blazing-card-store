@@ -40,7 +40,7 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
                 if (subCateId != "select") {
                     if (parseInt(subCateId) === parseInt(detail.category_id)) {
                         return (
-                            <StreamCard detail={detail} isLive={true} />
+                            <StreamCard detail={detail} isLive={true}  />
                         );
                     }
                 } else {
