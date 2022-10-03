@@ -8,7 +8,6 @@ import { streamLikeDislike } from "../../../api/stream/streams_api";
 export default function LiveStreamStatus({ isLive, uuid, detail }) {
 
   const [likedStream, setLikedStream] = useState([]);
-  console.log(detail)
 
   const handleLikeUnlike = async (uuid) => {
     const userDetails = JSON.parse(sessionStorage.getItem("spurtUser"));
@@ -30,10 +29,6 @@ export default function LiveStreamStatus({ isLive, uuid, detail }) {
     }
     return "like flex flex-center justify-center";
   };
-
-  const handleLikeButton = () => {
-    
-  }
 
   return (
     <>
