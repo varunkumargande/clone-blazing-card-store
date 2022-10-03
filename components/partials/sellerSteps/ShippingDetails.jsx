@@ -3,6 +3,7 @@ import MySelect from "../../CommonComponents/MySelect";
 import { Formik, Form } from "formik";
 import { TextInput } from "../../CommonComponents/TextInput";
 import { shippingDetailsvalidation } from "../../../pages/become-seller/validations/shippingDetails";
+import IconBack from '../../Icons/IconBack';
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -39,7 +40,7 @@ export default function ShippingDetails() {
 
   return (
     <div className="step-container">
-      <h3>Shipping Details</h3>
+      <h3 className="flex flex-center"><div className="edit-back"><IconBack/></div>Shipping Details</h3>
       <div className="sub-title">
         A return address must be added before going live on Blazing Cards. This
         will be used on your shipment labels.

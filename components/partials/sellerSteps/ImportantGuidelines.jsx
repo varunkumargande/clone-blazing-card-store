@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { rulesAcknowledgement } from "../../../store/becomeSeller/action";
 import IconCheck from "../../Icons/iconCheck";
+import IconBack from '../../Icons/IconBack';
+
 
 export default function ImportantGuidelines() {
   const dispatch = useDispatch();
@@ -21,7 +23,7 @@ export default function ImportantGuidelines() {
   // }, [status]);
   return (
     <div className="step-container">
-      <h3>Important Guidelines</h3>
+      <h3 className="flex flex-center"><div className="edit-back"><IconBack/></div>Important Guidelines</h3>
       <div className="sub-title">
         Let's keep the community safe together. Please follow the rules, or you
         may lose the ability to sell on Blazing Cards, or be charged a fee.

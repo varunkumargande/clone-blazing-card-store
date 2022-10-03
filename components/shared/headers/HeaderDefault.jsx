@@ -14,13 +14,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "../../../i18n";
 import { categoryListApi } from "../../../api";
 import { useRouter } from "next/router";
-import { login } from '../../../store/auth/action';
-import { connect } from 'react-redux';
-import Router from 'next/router';
+import { login } from "../../../store/auth/action";
+import { connect } from "react-redux";
+import Router from "next/router";
 import { modalSuccess } from "../../../api/intercept";
-import { logOut } from '../../../store/auth/action';
+import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
-import { imageUrl } from '../../../api/url';
+import { imageUrl } from "../../../api/url";
+import MessageButton from "../../elements/MessageButton";
 
 function HeaderDefault({ auth }, props) {
   const router = useRouter();
@@ -29,15 +30,15 @@ function HeaderDefault({ auth }, props) {
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   let currentColor = useSelector((s) => s.palette.currentColor);
-  const [fname, setFname] = useState("")
-  const [aimg, setAimg] = useState("")
-  const [email, setEmail] = useState("")
+  const [fname, setFname] = useState("");
+  const [aimg, setAimg] = useState("");
+  const [email, setEmail] = useState("");
 
   const authFunc = () => {
     if (sessionStorage.getItem("spurtToken") !== null) {
-      dispatch(login())
+      dispatch(login());
     }
-  }
+  };
 
   const handleOnClick = () => {
     setActive(!active);
@@ -45,50 +46,65 @@ function HeaderDefault({ auth }, props) {
 
   useEffect(() => {
     categoryListApi(dispatch);
-    authFunc()
+    authFunc();
     // getServiceApi(dispatch);
   }, []);
 
-
   useEffect(() => {
-    let userData = JSON.parse(sessionStorage.getItem("spurtUser"))
+    let userData = JSON.parse(sessionStorage.getItem("spurtUser"));
     if (userData != null) {
-      setFname(JSON.parse(sessionStorage.getItem("spurtUser")).firstName)
-      setEmail(JSON.parse(sessionStorage.getItem("spurtUser")).email)
-      JSON.parse(sessionStorage.getItem("spurtUser")).avatar ? setAimg(imageUrl + "?path=" + JSON.parse(sessionStorage.getItem("spurtUser")).avatarPath + "&name=" + JSON.parse(sessionStorage.getItem("spurtUser")).avatar + "&width=500&height=500") : setAimg("/static/img/no-image.png")
+      setFname(JSON.parse(sessionStorage.getItem("spurtUser")).firstName);
+      setEmail(JSON.parse(sessionStorage.getItem("spurtUser")).email);
+      JSON.parse(sessionStorage.getItem("spurtUser")).avatar
+        ? setAimg(
+            imageUrl +
+              "?path=" +
+              JSON.parse(sessionStorage.getItem("spurtUser")).avatarPath +
+              "&name=" +
+              JSON.parse(sessionStorage.getItem("spurtUser")).avatar +
+              "&width=500&height=500"
+          )
+        : setAimg("/static/img/no-image.png");
     }
-  }, [])
+  }, []);
 
-  const handleLogout = e => {
+  const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear()
+    sessionStorage.clear();
     dispatch(logOut());
-    Router.push("/")
-    modalSuccess('success', "successfully logged out")
+    Router.push("/");
+    modalSuccess("success", "successfully logged out");
   };
 
   const handleChangePageToHome = () => {
     window.location.href = "/";
-  }
+  };
 
   const handleSearchValue = (e) => {
-    dispatch(searchRequest(e.target.value))
-  }
-
+    dispatch(searchRequest(e.target.value));
+  };
 
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
         <div className="left flex flex-wrap flex-center">
           <div className="logo">
-            <a onClick={handleChangePageToHome}><Logo /></a>
-          </div>
-          
-          <div className="Search">
-            <input type="search" id="search" name="search" onChange={(e) => handleSearchValue(e)} />
-            <button className="search-btn" disabled><IconSearch /></button>
+            <a onClick={handleChangePageToHome}>
+              <Logo />
+            </a>
           </div>
 
+          <div className="Search">
+            <input
+              type="search"
+              id="search"
+              name="search"
+              onChange={(e) => handleSearchValue(e)}
+            />
+            <button className="search-btn" disabled>
+              <IconSearch />
+            </button>
+          </div>
         </div>
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">
@@ -103,42 +119,74 @@ function HeaderDefault({ auth }, props) {
                         </span>
                     </span>
                 </label> */}
-            <Link href=""><a className="border-btn flex flex-center justify-center become">Become a Seller</a></Link>
+            <Link href="">
+              <a className="border-btn flex flex-center justify-center become">
+                Become a Seller
+              </a>
+            </Link>
 
             {auth.isLoggedIn ? (
               <>
-                <button className="message flex flex-center justify-center"><IconMessage /></button>
-                <button className="Notification flex flex-center justify-center"><IconNotification /></button>
+                <MessageButton name={"Message"} />
+                <button className="message flex flex-center justify-center">
+                  <IconMessage />
+                </button>
+                <button className="Notification flex flex-center justify-center">
+                  <IconNotification />
+                </button>
                 <button className="profile">
-                  
-                  <span onClick={handleOnClick}><img src={aimg} alt="Profile" /><IconDropdown /></span>
+                  <span onClick={handleOnClick}>
+                    <img src={aimg} alt="Profile" />
+                    <IconDropdown />
+                  </span>
 
-                  <ul className={active ? "dropDown active" : "dropDown"} >
+                  <ul className={active ? "dropDown active" : "dropDown"}>
                     <li>
-                      <Link href="/"><a className="active">
-                        <span><IconProfile />My Profile</span></a>
+                      <Link href="/account/myprofile">
+                        <a className="active">
+                          <span>
+                            <IconProfile />
+                            My Profile
+                          </span>
+                        </a>
                       </Link>
                     </li>
                     <li>
-                      <Link href="/my-orders"><a className="active">
-                        <span><IconMyOrders />{t('OrderHistory')}</span></a>
+                      <Link href="/my-orders">
+                        <a className="active">
+                          <span>
+                            <IconMyOrders />
+                            {t("OrderHistory")}
+                          </span>
+                        </a>
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/account/dashboard"><a className="active">
                         <span><IconSettings />{t('AccountSettings')}</span></a>
                       </Link>
-                    </li>
+                    </li> */}
 
-                    <li onClick={e => handleLogout(e)}><IconLogout />Logout</li>
+                    <li onClick={(e) => handleLogout(e)}>
+                      <IconLogout />
+                      Logout
+                    </li>
                   </ul>
                 </button>
               </>
             ) : (
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
-                <Link href="account/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
-                <Link href="account/register"><a className="border-btn flex flex-center justify-center ml24">Sign up</a></Link>
+                <Link href="account/login">
+                  <a className="primary-btn flex flex-center justify-center ml24">
+                    Sign In
+                  </a>
+                </Link>
+                <Link href="account/register">
+                  <a className="border-btn flex flex-center justify-center ml24">
+                    Sign up
+                  </a>
+                </Link>
                 {/* </div> */}
               </>
             )}
@@ -149,8 +197,7 @@ function HeaderDefault({ auth }, props) {
   );
 }
 
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return state;
 };
 

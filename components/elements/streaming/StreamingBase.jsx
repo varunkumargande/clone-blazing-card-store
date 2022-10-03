@@ -15,6 +15,8 @@ import {
 } from "../../partials/Modal/Modal";
 import moment from "moment/moment";
 import { useRouter } from "next/router";
+import { streamLikeDislike } from "../../../api/stream/streams_api";
+import IconSpeakerMute from "../../Icons/IconSpeakerMute";
 
 function StreamingBase({
   cardDetail,
@@ -43,6 +45,7 @@ function StreamingBase({
   const [auctionId, setAuctionId] = useState(null)
   const router = useRouter();
   const uuid = router.query["uuid"];
+  const [liked, setLiked] = useState(false);
 
   /**
    * Will Subscribe to all Notofication type channels
@@ -134,8 +137,11 @@ function StreamingBase({
   /**
    * Method will handle mute and untmute of stream
    */
-  const handleMuteButton = () => {
-    setIsMute(!isMute);
+  const handleMuteButton = (e) => {
+    e.preventDefault();
+    if(e.target.id !== 'vol') {
+      setIsMute(!isMute);
+    }
   };
 
   /**
@@ -258,6 +264,27 @@ function StreamingBase({
     return auctionNotification?.product?.name ?? null;
   }
 
+  const handleLikeUnlike = async () => {
+    if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
+      const data = {
+        stream_id : uuid,
+        user_id : stream?.streamPageData?.streamPageDteails?.loggedInUserId
+      }
+      const response = await streamLikeDislike(data);
+      console.log(response)
+
+      if(response.status) {
+        setLiked(!liked);
+      }
+    }    
+  }
+  const getlikeClass = () => {
+    if(liked) {
+      return "like flex flex-center justify-center br50 liked";
+    }
+    return "like flex flex-center justify-center br50";
+  }
+
   return (
     <>
       <div className="stream-wrapper">
@@ -286,20 +313,31 @@ function StreamingBase({
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
           <div className="video-icon">
-            <button
+          <button 
+          onClick={(e) => handleMuteButton(e)}
+          className="flex flex-center justify-center br50 valum" id='mute'>
+             {isMute ? <IconSpeakerMute /> : <IconSpeaker/>}
+              <span className="range flex flex-center">
+                  <input type="range" id="vol" name="vol" min="0" max="100"
+                    onChange={(e)=> changeVolumeLevel(e)}
+                    value={volumeLevel}
+                   className="slider"
+                   />
+              </span>
+          </button>
+            {/* <button
               className="flex flex-center justify-center br50"
-              onClick={handleMuteButton}
               disabled={isMute}
             >
               <IconSpeaker />
-            </button>
+            </button> */}
             <button
               className="flex flex-center justify-center br50"
               onClick={handleShareButton}
             >
               <IconShare />
             </button>
-            <button className="flex flex-center justify-center br50">
+            <button onClick={handleLikeUnlike} className={getlikeClass()}>
               <IconHeart />
             </button>
             <button className="flex flex-center justify-center br50">

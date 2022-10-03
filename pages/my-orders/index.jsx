@@ -6,7 +6,7 @@ import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import Footer from "../../components/partials/LandingPage/Footer";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import { orderListApi } from "../../api";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 export default function Myorders() {
   const [searchVal, setSearchVal] = useState("");
   const [active, setActive] = useState(false);
@@ -38,35 +38,33 @@ export default function Myorders() {
     };
   }, []);
 
-    return(
-        <>
-            {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
-            <div className="myorder-wrapper">
-                <section className="breadcrumbs-wrapper no-bg mb26">
-                    <ul className="breadcrumbs flex flex-center">
-                        <li>Home</li>/
-                        <li className="current">My Orders</li>
-                    </ul>
-                </section>
-                <div className="heading-wrapper flex space-between flex-center mb16">
-                    <h1>My Orders</h1>
-                    <div className="search-wrapper flex flex-center">
-                        <div className="Search">
-                            <input type="search" id="search" name="search" placeholder="Search by order "/>
-                            <button className="search-btn"><IconSearch /></button>
-                        </div>
-                        <div className="dropdwn-wrapper">
-                            <button className="dropdown" onClick={handleOnClick} ref={wrapperRef}>Recennt <IconDropdown /></button>
-                            <ul className={active ? "dropdwnList active" : "dropdwnList"}>
-                                <li>Last months</li>
-                                <li>Last 3 months</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div className="orderlist-wrapper">
-                    <MyOrders />
-                </div>
+  useEffect(() => {
+    orderListApi(dispatch, searchVal);
+  }, [searchVal]);
+  return (
+    <>
+      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      <div className="myorder-wrapper">
+        <section className="breadcrumbs-wrapper no-bg mb26">
+          <ul className="breadcrumbs flex flex-center">
+            <li>Home</li>/<li className="current">My Orders</li>
+          </ul>
+        </section>
+        <div className="heading-wrapper flex space-between flex-center mb16">
+          <h1>My Orders</h1>
+          <div className="search-wrapper flex flex-center">
+            <div className="Search">
+              <input
+                type="search"
+                id="search"
+                name="search"
+                placeholder="Search by order "
+                value={searchVal}
+                onChange={(e) => setSearchVal(e.target.value)}
+              />
+              <button className="search-btn">
+                <IconSearch />
+              </button>
             </div>
             <div className="dropdwn-wrapper">
               <button
@@ -74,11 +72,11 @@ export default function Myorders() {
                 onClick={handleOnClick}
                 ref={wrapperRef}
               >
-                All <IconDropdown />
+                Recent <IconDropdown />
               </button>
               <ul className={active ? "dropdwnList active" : "dropdwnList"}>
-                <li>Crads</li>
-                <li>Pokemon</li>
+                <li>Last months</li>
+                <li>Last 3 months</li>
               </ul>
             </div>
           </div>
