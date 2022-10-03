@@ -73,6 +73,7 @@ function RightDiv({ streamingDetails, streamData }) {
     if (!messages) return <></>;
     return (
       <>
+      <div className="chat-inner-wrap flex column justify-right">
         {messages?.map(({ message, userId }) => {
           return (
             <>
@@ -92,6 +93,7 @@ function RightDiv({ streamingDetails, streamData }) {
             </>
           );
         })}
+        </div>
       </>
     );
   };
