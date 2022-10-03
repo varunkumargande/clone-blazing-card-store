@@ -21,8 +21,8 @@ export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
                         <div className="payment-card-wrap">
                             <div className="payment-card">
                                 <div className="paymentCard">
-                                    <div className="bank-name">{cardData.card.brand}</div>
-                                    <div className="card-no">**** **** **** {cardData.card.last4}</div>
+                                    <div className="bank-name">{cardData?.card?.brand}</div>
+                                    <div className="card-no">**** **** **** {cardData?.card?.last4}</div>
                                     <div className="cardholder-wrapper flex space-between">
                                         <div className="card-holder">
                                             <div className="label">Card Holder</div>
@@ -30,10 +30,10 @@ export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
                                         </div>
                                         <div className="card-holder">
                                             <div className="label">Expires</div>
-                                            <div className="value">{cardData.card.exp_month} / {cardData.card.exp_year}</div>
+                                            <div className="value">{cardData?.card?.exp_month} / {cardData?.card?.exp_year}</div>
                                         </div>
                                         <div className="card-name">
-                                            {cardData.card.brand == "visa" ? (
+                                            {cardData?.card?.brand == "visa" ? (
                                                 <>
                                                     Visa
                                                 </>
