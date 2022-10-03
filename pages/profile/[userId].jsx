@@ -210,11 +210,11 @@ export default function categoryStream() {
         if (upcomingShows) {
             if(upcomingShows.length > 0) {
                 return (
-                    <div>
+                    <>
                         {upcomingShows.map((show, index) => (
                             <StreamCard detail={show} />
                         ))}
-                    </div>
+                    </>
                 )
             } else {
                 return <div className="no-record flex justify-center">No Data found</div>;
@@ -227,11 +227,11 @@ export default function categoryStream() {
         if (previousShows) {
             if(previousShows.length > 0) {
                 return (
-                    <div>
+                    <>
                         {previousShows.map((show, index) => (
                             <StreamCard detail={show} />
                         ))}
-                    </div>
+                    </>
                 )
             } else {
                 return <div className="no-record flex justify-center">No Data found</div>;
@@ -244,11 +244,11 @@ export default function categoryStream() {
         if (likedShows) {
             if(likedShows.length > 0) {
                 return (
-                    <div>
+                    <>
                         {likedShows.map((show, index) => (
                             <StreamCard detail={show} />
                         ))}
-                    </div>
+                    </>
                 )
             } else {
                 return <div className="no-record flex justify-center">No Data found</div>;
@@ -262,11 +262,11 @@ export default function categoryStream() {
             if (followers) {
                 if (followers.length > 0) {
                     return (
-                        <div>
+                        <>
                             {followers.map((details, index) => (
                                 <Followers person={details} isFollower={isForFollower} />
                             ))}
-                        </div>
+                        </>
                     )
                 } else {
                     return <div className="no-record flex justify-center">No Data found</div>;
@@ -276,11 +276,11 @@ export default function categoryStream() {
             if (following) {
                 if (following.length > 0) {
                     return (
-                        <div>
+                        <>
                             {following.map((details, index) => (
                                 <Followers person={details} isFollower={isForFollower} />
                             ))}
-                        </div>
+                        </>
                     )
                 } else {
                     return <div className="no-record flex justify-center">No Data found</div>;
