@@ -37,8 +37,6 @@ function Category({ isSeeAllCate, isSeeAll, subCateId, seeAllHeading, setSubCate
         setActiveCategoryIndex(null)
     }
 
-    console.log(activeCategoryIndex)
-
     const getCategoryList = () => {
         if (isSeeAll == true) {
             if (Object.keys(category).length != 0) {
@@ -95,7 +93,12 @@ function Category({ isSeeAllCate, isSeeAll, subCateId, seeAllHeading, setSubCate
             <div className="inner-container">
                 <div className="title-wrap flex space-between flex-center">
                     <div className="flex flex-center">
-                        <h3 className="title"> <a onClick={() => window.location.href="/"} className="title active"> Home / </a> {activeCategoryIndex == null ? "All" : activeCategoryName}</h3>
+                        <section className="breadcrumbs-wrapper">
+                            <ul className="breadcrumbs flex flex-center">
+                                <li><a onClick={() => window.location.href="/"}> Home </a></li>/
+                                <li className="current">{activeCategoryIndex == null ? "All" : activeCategoryName}</li>
+                            </ul>
+                        </section>
                         <div className="category-btn-wrap">
                             {/* <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
                             <ul className={active ? "dropDown active" : "dropDown"} >

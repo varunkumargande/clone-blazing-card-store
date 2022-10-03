@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import Header from "../../components/partials/LandingPage/Header";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
+import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import LeftPannel from '../../components/partials/sellerSteps/LeftPannel';
 //import ImportantGuidelines from '../../components/partials/sellerSteps/ImportantGuidelines';
 import BasicDetails from '../../components/partials/sellerSteps/BasicDetails';
@@ -22,9 +23,12 @@ export default function Steps(){
 
     return(
         <>
-            {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
+            {windowWidth <= 1024 ? "" : <HeaderDefault />}
             <section className="steps-wrapper flex flex-wrap">
-               <div className="step-left"><LeftPannel /></div> 
+              <div className="step-left">
+                {windowWidth <= 1024 ? <div className="header-title">Become a Seller</div> : ""}
+                <LeftPannel />
+              </div> 
                <div className="step-right">
                   {/* <ImportantGuidelines/> */}
                   <BasicDetails/>

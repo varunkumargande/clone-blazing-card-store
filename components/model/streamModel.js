@@ -18,6 +18,7 @@ class StreamDetailModel {
     var appId = bytes.toString(cryptoJs.enc.Utf8);
     let streamDetails = {
       sellerName: streamData?.vendorDetails?.username,
+      sellerId: streamData?.vendorDetails?.vendor_id,
       loggedInUserName: "Guest",
       loggedInUserId: Math.floor(Math.random() * 20),
       uuid: streamData?.uuid,
@@ -38,7 +39,7 @@ class StreamDetailModel {
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;
       streamDetails.loggedInUserId = userDetails?.id;
-      streamDetails.isLoggedIn= true
+      streamDetails.isLoggedIn= true;
     }
     return streamDetails;
   }

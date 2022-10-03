@@ -5,7 +5,7 @@ export default function ProfileBanner() {
         <>
             <section className="category-banner">
                 <img src="/static/images/cover.png" alt="cover" />
-                <div className="cover-wrap flex justify-right"><button className="border-btn cover-btn">Edit Cover Photo</button></div>
+                {/* <div className="cover-wrap flex justify-right"><button className="border-btn cover-btn">Edit Cover Photo</button></div> */}
             </section>
         </>
     );

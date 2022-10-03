@@ -1,9 +1,10 @@
 import React from "react";
 import IconUpload from "../../Icons/IconUpload";
+import IconBack from '../../Icons/IconBack';
 export default function BasicDetails(){
     return(
         <div className="step-container">
-            <h3>Basic Details</h3>
+            <h3 className="flex flex-center"><div className="edit-back"><IconBack/></div>Basic Details</h3>
             <div className="sub-title">Blazing Cards takes marketplace safety seriously. Sellers must have a valid payment method on file. In rare occasions, sellers are charged a $100 fee for severe or repeated infractions of our policies.</div>
             <form>
                 <div className="flex space-between">

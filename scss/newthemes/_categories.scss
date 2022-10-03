@@ -13,6 +13,11 @@
         border-radius: 8px;
         background-color: $search-bg;
     }
+    .title-wrap{
+        .breadcrumbs-wrapper{
+            padding-top: 0;
+        }
+    }
     .dropDown{
         position: absolute;
         left:0;

@@ -1,9 +1,10 @@
 import React from "react";
 import IconCheck from "../../Icons/iconCheck";
+import IconBack from '../../Icons/IconBack';
 export default function ImportantGuidelines(){
     return(
         <div className="step-container">
-            <h3>Important Guidelines</h3>
+            <h3 className="flex flex-center"><div className="edit-back"><IconBack/></div>Important Guidelines</h3>
             <div className="sub-title">Let's keep the community safe together. Please follow the rules, or you may lose the ability to sell on Blazing Cards, or be charged a fee.</div>
             <div className="guidlines-step flex flex-start">
                 <div className="Check-icon"><IconCheck /></div>
