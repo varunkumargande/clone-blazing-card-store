@@ -22,6 +22,7 @@ import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
 import { imageUrl } from "../../../api/url";
 import MessageButton from "../../elements/MessageButton";
+import { stepState } from "../../Constants/becomeSeller";
 
 function HeaderDefault({ auth }, props) {
   const router = useRouter();
@@ -33,6 +34,7 @@ function HeaderDefault({ auth }, props) {
   const [fname, setFname] = useState("");
   const [aimg, setAimg] = useState("");
   const [email, setEmail] = useState("");
+  let { pageName } = router.query;
 
   const authFunc = () => {
     if (sessionStorage.getItem("spurtToken") !== null) {
@@ -119,11 +121,11 @@ function HeaderDefault({ auth }, props) {
                         </span>
                     </span>
                 </label> */}
-            <Link href="/become-seller/guidelines">
+            { !stepState.includes(pageName) ? <Link href="/become-seller/guidelines">
               <a className="border-btn flex flex-center justify-center become">
                 Become a Seller
               </a>
-            </Link>
+            </Link> : null}
 
             {auth.isLoggedIn ? (
               <>

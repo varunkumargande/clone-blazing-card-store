@@ -24,7 +24,6 @@ export default function BasicDetails() {
     const data = {
       fullName: values.fullName,
       ssn: values.ssn,
-      address: values.address,
       documents: {
         fileName: values?.upload?.name,
         image: imageData,
@@ -64,7 +63,6 @@ export default function BasicDetails() {
         initialValues={{
           fullName: BasicDetails?.fullName ?? "",
           ssn: BasicDetails?.ssn ?? "",
-          address: BasicDetails?.address ?? "",
           upload: "",
         }}
         validationSchema={basicDetailvalidation}
@@ -95,18 +93,9 @@ export default function BasicDetails() {
               />
             </div>
             <div className="flex space-between">
-              <TextInput
-                className="input-control wd48"
-                label="Address *"
-                name="address"
-                type="text"
-                placeholder="Enter here"
-              />
-            </div>
-            <div className="flex space-between">
               <FileUpload
                 className="input-control wd48"
-                label="Document *"
+                label="Upload Doc *"
                 name="upload"
                 type="file"
                 id="upload"
