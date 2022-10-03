@@ -105,7 +105,7 @@ export default function OrderDetails() {
             </div>
             <div className="download-wrap flex space-between flex-center">
                <button className="border-btn flex flex-center justify-center">
-                   Download Invoice
+                   Track Package
               </button>
             </div>
           </div>
