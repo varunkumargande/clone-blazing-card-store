@@ -5,7 +5,7 @@ import IconShareWhatsup from "../../../../components/Icons/IconShareWhatsup";
 import { useDispatch, connect, useSelector } from "react-redux";
 import Router from "next/router";
 import Link from "next/link";
-import { LineShareButton, LineIcon } from "next-share";
+// import { LineShareButton, LineIcon } from "next-share";
 
 function ProfileCard(props) {
   const handleGoToEditProfile = () => {
