@@ -2,14 +2,14 @@ import { getPostsDetail } from "../../store/post/action";
 import APIServices from '../../services'
 
 export async function basicDteailsApi(payload) {
-  const result = await APIServices.create('vendor-store/basic-details ', payload)
+  const result = await APIServices.create('vendor-store/basic-details', payload)
   if (result && result.data && result.data.data) {
     return result.data.data;
   }
 }
 
 export async function guideLinesApi(payLoad) {
-  const result = await APIServices.create('list/blog/blog-detail', payLoad)
+  const result = await APIServices.create('vendor-store/basic-details', payLoad)
   if (result && result.data && result.data.data) {
     return result.data.data;
   }

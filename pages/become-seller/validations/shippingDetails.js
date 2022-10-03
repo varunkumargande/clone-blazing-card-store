@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const basicDetailvalidation = yup.object().shape({
+export const shippingDetailsvalidation = yup.object().shape({
   fullName: yup.string().required('Required'),
   addressLine1: yup.string().required('Required'),
   addressLine2: yup.string().required('Required'),

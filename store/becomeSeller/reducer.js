@@ -1,24 +1,75 @@
-import { actionTypes, streamData } from "./action";
-import StreamDetailModel from "../../components/model/streamModel";
+import { addBasicDetails, addPaymentDetails, addShippingDetails, AddGuideLines, actionTypes } from "./action";
+let stepState = {
+  guideLines : 'process',
+  basicDetails: "",
+  shippingDetails: "",
+  paymentDetails: "",
+  submitted: ""
+}
 export const initState = {
-  streamData: null,
-  streamdetails: null,
-  streamPageData: null
+  guideLines: false,
+  basicDetails: null,
+  shippingDetails: null,
+  paymentDetails: null,
+  stepContainer: stepState
 };
 
 function reducer(state = initState, action) {
 
   switch (action.type) {
-    case actionTypes.ADD_STREAM_DETAILS:
+    case actionTypes.SUBMIT_GUIDELINES:
       return {
         ...state,
-        ...{ streamData: action.payload, streamPageData: new StreamDetailModel(action.payload) },
+        ...{ guideLines: action.payload },
+        ...{ stepContainer : {
+          guideLines : 'completed',
+          basicDetails: "process",
+          paymentDetails: "",
+          shippingDetails: "",
+          submitted: ""
+        } }
       };
-    case actionTypes.GET_STREAM_DETAILS:
+    case actionTypes.ADD_BASIC_DETAILS:
       return {
         ...state,
-        ...{ streamdetails: action.payload  }
+        ...{ basicDetails: action.payload },
+        ...{ stepContainer : {
+          guideLines : 'completed',
+          basicDetails: "completed",
+          paymentDetails: "process",
+          shippingDetails: "",
+          submitted: ""
+        } }
       }
+    case actionTypes.ADD_SHIPPING_DETAILS:
+      return {
+        ...state,
+        ...{ shippingDetails: action.payload },
+        ...{ stepContainer : {
+          guideLines : 'completed',
+          basicDetails: "completed",
+          paymentDetails: "completed",
+          shippingDetails: "process",
+          submitted: ""
+        } }
+      }
+    case actionTypes.ADD_PAYMENT_DETAILS:
+      return {
+        ...state,
+        ...{ paymentDetails: action.payload },
+        ...{ stepContainer : {
+          guideLines : 'completed',
+          basicDetails: "completed",
+          paymentDetails: "completed",
+          shippingDetails: "completed",
+          submitted: "process"
+        } }
+      }
+    // case actionTypes.GET_STREAM_DETAILS:
+    //   return {
+    //     ...state,
+    //     ...{ streamdetails: action.payload }
+    //   }
     default:
       return state;
   }
