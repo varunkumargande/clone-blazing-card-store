@@ -63,39 +63,6 @@ export default function Orderdetails() {
     }
 ];
 
-<<<<<<< HEAD
-    return(
-        <>
-            {windowWidth <= 1024 ? "" : <HeaderDefault />}
-            <div className="myorder-wrapper">
-                
-                {windowWidth <= 1024 ? 
-                "" 
-                : <section className="breadcrumbs-wrapper no-bg mb26">
-                    <ul className="breadcrumbs flex flex-center">
-                        <li>Home</li>/
-                        <li>My Orders</li>/
-                        <li className="current">Order Detail</li>
-                    </ul>
-                </section>}
-                <div className="heading-wrapper flex space-between flex-center mb16 border-btm">
-                    <h1><button className="back"><IconBack/></button>Order Detail</h1>
-                    <div className="order-time-wrap flex flex-center">
-                        <div className="placed">
-                             Order Placed: August 22, 2022
-                        </div>
-                        <div className="delivered">
-                            Order Delivered: August 22, 2022
-                        </div>
-                    </div>
-                </div>
-                <div className="orderdetails-wrapper flex space-between">
-                    <OrderDetails />
-                </div>
-            </div>
-            <Footer/>
-        </>
-=======
 const createBreadCrumb = () => {
     return (
       <>
@@ -107,18 +74,19 @@ const createBreadCrumb = () => {
           </li>
         ))}
       </>
->>>>>>> 6bd1d94ee6f58b11b23dd70b1cdd214934733b58
     );
   };
   return (
     <>
       {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
       <div className="myorder-wrapper">
-        <section className="breadcrumbs-wrapper no-bg mb26">
-          <ul className="breadcrumbs flex flex-center">
-            {createBreadCrumb()}
-          </ul>
-        </section>
+      {windowWidth <= 1024 ? 
+            "" 
+            : <section className="breadcrumbs-wrapper no-bg mb26">
+                <ul className="breadcrumbs flex flex-center">
+                {createBreadCrumb()}
+            </ul>
+        </section>}
         <div className="heading-wrapper flex space-between flex-center mb16 border-btm">
           <h1>
             <button className="back">

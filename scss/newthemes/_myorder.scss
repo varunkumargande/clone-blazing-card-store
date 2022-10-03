@@ -321,6 +321,9 @@
                 .divide{
                     display: none;
                 }
+                .placed{
+                    border-right:none;
+                }
             }
             .btn-wrap{
                 max-width: 94px;
@@ -330,12 +333,14 @@
             }
         }
         .heading-wrapper{
-            border-bottom: none;
-            margin-bottom: 0;
+            &.border-btm{
+                border-bottom: none;
+                margin-bottom: 0;
+            }
             h1{
                 padding: 40px 15px 30px;
                 background-color: $white-color;
-                margin-left: -15px;
+                margin:0 -15px;
                 width: calc(100% + 30px);
                 margin-bottom: 24px;
             }
