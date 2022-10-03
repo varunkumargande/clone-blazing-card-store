@@ -12,13 +12,13 @@ export default function ImportantGuidelines() {
   const router = useRouter();
 
   const handleSubmit = () => {
-    dispatch(rulesAcknowledgement({ isAgree: 1 }));
+    dispatch(rulesAcknowledgement({ isAgree: 1 }, router));
   };
-  useEffect(() => {
-    if (status) {
-      router.push("/become-seller/basicDetails", undefined, { shallow: true });
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if (status) {
+  //     router.push("/become-seller/basicDetails", undefined, { shallow: true });
+  //   }
+  // }, [status]);
   return (
     <div className="step-container">
       <h3>Important Guidelines</h3>

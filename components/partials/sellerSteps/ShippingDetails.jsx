@@ -16,6 +16,7 @@ export default function ShippingDetails() {
   );
 
   const handleSubmit = (values) => {
+    console.log(values)
     const data = {
       shipFromName: values?.fullName,
       addressLine1: values?.addressLine1,
@@ -28,13 +29,13 @@ export default function ShippingDetails() {
     dispatch(addShippingData(data));
   };
 
-  useEffect(() => {
-    if (!!shippingDetails) {
-      router.push("/become-seller/ApplicationSubmitted", undefined, {
-        shallow: true,
-      });
-    }
-  }, [shippingDetails]);
+  // useEffect(() => {
+  //   if (!!shippingDetails) {
+  //     router.push("/become-seller/ApplicationSubmitted", undefined, {
+  //       shallow: true,
+  //     });
+  //   }
+  // }, [shippingDetails]);
 
   return (
     <div className="step-container">
@@ -53,8 +54,9 @@ export default function ShippingDetails() {
           city: "",
           state: "",
         }}
-        validationSchema={shippingDetailsvalidation}
+        // validationSchema={shippingDetailsvalidation}
         onSubmit={(values) => {
+          console.log(values, 'submit')
           if (values) {
             handleSubmit(values)
           }
@@ -130,8 +132,8 @@ export default function ShippingDetails() {
             </div>
 
             <div className="submit-wrapper flex space-between conform">
-              <button className="border-btn">Cancel</button>
-              <button type="" className="primary-btn">
+              <button type="reset" className="border-btn">Cancel</button>
+              <button type="submit" className="primary-btn">
                 Confirm Shipping Details
               </button>
             </div>

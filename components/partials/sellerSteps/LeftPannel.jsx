@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function LeftPannel(){
@@ -12,6 +13,10 @@ export default function LeftPannel(){
         "paymentDetails",
         "submitted"
       ]
+
+      useEffect(() => {
+        getCurrentState()
+      }, [steps])
     
     const getCurrentState = (name) => {
         return `step1 step flex flex-center ${steps[name]}`

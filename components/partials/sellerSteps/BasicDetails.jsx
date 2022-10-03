@@ -24,13 +24,13 @@ export default function BasicDetails() {
       fullName: values.fullName,
       ssn: values.ssn,
       address: values.address,
-      document: {
+      documents: {
         fileName: values?.upload?.name,
         image: imageData,
         path: "user/",
       },
     };
-    dispatch(addBasicData(data));
+    dispatch(addBasicData(data, router));
   };
 
   const setImage = (file) => {
@@ -50,13 +50,13 @@ export default function BasicDetails() {
     };
   };
 
-  useEffect(() => {
-    if (!!BasicDetails) {
-      router.push("/become-seller/shippingDetails", undefined, {
-        shallow: true,
-      });
-    }
-  }, [BasicDetails]);
+  // useEffect(() => {
+  //   if (!!BasicDetails) {
+  //     router.push("/become-seller/shippingDetails", undefined, {
+  //       shallow: true,
+  //     });
+  //   }
+  // }, [BasicDetails]);
 
   return (
     <div className="step-container">

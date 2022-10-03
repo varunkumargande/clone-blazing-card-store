@@ -1,4 +1,5 @@
-import { addBasicDetails, addPaymentDetails, addShippingDetails, AddGuideLines, actionTypes } from "./action";
+import { actionTypes } from "./action";
+
 let stepState = {
   guideLines : 'process',
   basicDetails: "",
@@ -15,7 +16,6 @@ export const initState = {
 };
 
 function reducer(state = initState, action) {
-
   switch (action.type) {
     case actionTypes.SUBMIT_GUIDELINES:
       return {
@@ -27,7 +27,7 @@ function reducer(state = initState, action) {
           paymentDetails: "",
           shippingDetails: "",
           submitted: ""
-        } }
+        } },
       };
     case actionTypes.ADD_BASIC_DETAILS:
       return {
