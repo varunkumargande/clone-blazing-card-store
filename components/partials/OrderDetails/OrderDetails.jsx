@@ -86,15 +86,15 @@ export default function OrderDetails() {
               <div className="order-value">
                 <div className="flex space-between amount">
                   <div className="label">Subtotal (1 items)</div>
-                  <div className="value">$ {productData?.productPrice}</div>
+                  <div className="value">${productData?.subTotal}</div>
                 </div>
                 <div className="flex space-between amount">
                   <div className="label">Tax ({productData?.taxType}%)</div>
-                  <div className="value">$ {productData?.taxValue}</div>
+                  <div className="value">${productData?.taxValue}</div>
                 </div>
                 <div className="flex space-between amount">
                   <div className="label">Shipping</div>
-                  <div className="value">$ {shippingDetails.shippingCharge}</div>
+                  <div className="value">${shippingDetails.shippingCharge}</div>
                 </div>
               </div>
               <div className="total-order flex space-between flex-center">
@@ -109,7 +109,7 @@ export default function OrderDetails() {
               </button>
               <button className="download flex flex-center justify-center">
                 <IconDownload />
-                Track
+                Download
               </button>
             </div>
           </div>

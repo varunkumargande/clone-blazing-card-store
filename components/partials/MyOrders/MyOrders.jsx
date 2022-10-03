@@ -6,6 +6,7 @@ import { orderListApi } from "../../../api";
 import { connect, useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import Link from "next/link";
+import Router from "next/router";
 
 export default function MyOrders() {
   const dispatch = useDispatch();
@@ -15,6 +16,9 @@ export default function MyOrders() {
     orderListApi(dispatch);
   }, []);
 
+  const handleOrderDetails = (id) => {
+    Router.push(`/order-details?id=${id}`)
+  }
   return (
     <>
       {orders && orders?.length === 0 ? (
@@ -65,7 +69,7 @@ export default function MyOrders() {
                   Return Order
                 </div>
                 <div className="order-detail link">
-                <Link href={`order-details?id=${order.orderProductId}`}>Order Details </Link>
+                <button onClick={e => handleOrderDetails(order.orderProductId)}>Order Details</button>
                   <IconRiightAngle />
                 </div>
               </div>
