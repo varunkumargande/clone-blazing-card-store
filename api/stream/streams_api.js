@@ -28,7 +28,6 @@ import APIServices from "../../services"
   export const userFollowUnfollow = async (data) => {
     try {
       const response = await APIServices.create("follow/follow_unfollow", data);
-      debugger
       if(response?.data?.status) {
         return {data: response?.data?.data, status: true};
       }
