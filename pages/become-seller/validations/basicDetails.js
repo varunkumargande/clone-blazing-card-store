@@ -3,7 +3,6 @@ import * as yup from "yup";
 export const basicDetailvalidation = yup.object().shape({
   fullName: yup.string().required('Please Enter Your Full name'),
   ssn: yup.number().typeError("Invalid Details Entered").required("Please Enter your SSN"),
-  address: yup.string().required("Please enter your adress").max(250),
   upload: yup
     .mixed()
     .required("A file is required")

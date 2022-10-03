@@ -14,7 +14,11 @@ export const initState = {
   shippingDetails: null,
   paymentDetails: null,
   submittedDetails: null,
-  stepContainer: stepState
+  stepContainer: stepState,
+  isguidelinesSubmitted: false,
+  isBasicDetailsSubmitted: false,
+  isPaymentDetailsSubmitted: false,
+  isShippingDetailsSubmitted: false,
 };
 
 const getStepState = (lastStep) => {
@@ -65,6 +69,7 @@ function reducer(state = initState, action) {
       return {
         ...state,
         ...{ guidelines: !!action.payload },
+        ...{isguidelinesSubmitted: !!action.payload},
         ...{ stepContainer : {
           guidelines : 'completed',
           basicDetails: "process",
@@ -77,6 +82,7 @@ function reducer(state = initState, action) {
       return {
         ...state,
         ...{ basicDetails: action.payload },
+        ...{isBasicDetailsSubmitted: true},
         ...{ stepContainer : {
           guidelines : 'completed',
           basicDetails: "completed",
@@ -89,24 +95,26 @@ function reducer(state = initState, action) {
       return {
         ...state,
         ...{ shippingDetails: action.payload },
+        ...{isShippingDetailsSubmitted: true},
         ...{ stepContainer : {
           guidelines : 'completed',
           basicDetails: "completed",
           paymentDetails: "completed",
-          shippingDetails: "process",
-          submitted: ""
+          shippingDetails: "Completed",
+          submitted: "process"
         } }
       }
     case actionTypes.ADD_PAYMENT_DETAILS:
       return {
         ...state,
         ...{ paymentDetails: action.payload },
+        ...{isPaymentDetailsSubmitted: true},
         ...{ stepContainer : {
           guidelines : 'completed',
           basicDetails: "completed",
           paymentDetails: "completed",
-          shippingDetails: "completed",
-          submitted: "process"
+          shippingDetails: "process",
+          submitted: ""
         } }
       }
       case actionTypes.GET_SUBMIITED_DETAILS:

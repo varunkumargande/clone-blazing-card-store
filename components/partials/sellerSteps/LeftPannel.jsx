@@ -1,26 +1,33 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { stepState } from "../../Constants/becomeSeller";
 
 export default function LeftPannel(){
+    const router = useRouter()
     const steps = useSelector(
         (state) => state?.becomeSeller?.stepContainer
       );
-      const state = useSelector(
-        (state) => state?.becomeSeller
+      const submittedData = useSelector(
+        (state) => state?.becomeSeller?.submittedDetails
       );
-      const stepState = [
-        "guidelines",
-        "basicDetails",
-        "paymentDetails",
-        "shippingDetails",
-        "submitted"
-      ]
+
       useEffect(() => {
         stepState.forEach(element => {
             getCurrentState(element)    
         });
       }, [steps])
+
+      useEffect(() => {
+        if(submittedData?.steps){
+            router.push(`/become-seller/${stepState[submittedData.steps]}`, undefined, {
+                shallow: true,
+            })
+        }
+      }, [submittedData])
+
+      console.log(submittedData, 'submittedData')
     
     const getCurrentState = (name) => {
         return `step1 step flex flex-center ${steps[name]}`
