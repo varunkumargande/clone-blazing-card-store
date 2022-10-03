@@ -1,14 +1,9 @@
 
 import React, { useState, useEffect } from "react";
-import Header from "../components/shared/headers/modules/Header";
 import MobileHeader from "../components/shared/headers/MobileHeader";
-
 import Category from "../components/partials/LandingPage/Category";
 import LiveScheduleCategory from "../components/partials/LandingPage/LiveScheduleCategory";
-
-import SubCategory from "../components/partials/LandingPage/SubCategory";
 import SeeAllList from "../components/partials/LandingPage/Layout/seeAllList";
-
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
 import Footer from "../components/partials/LandingPage/Footer";
@@ -17,8 +12,6 @@ import { useDispatch } from "react-redux";
 import { categoryApi } from "../api/category/category";
 import Electronic from "../components/partials/LandingPage/Electronic";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
-import { element } from "prop-types";
-import Horizontal from "../components/partials/LandingPage/Layout/Horizontal";
 import Vertical from "../components/partials/LandingPage/Layout/vertical";
 
 export default function landingpage() {

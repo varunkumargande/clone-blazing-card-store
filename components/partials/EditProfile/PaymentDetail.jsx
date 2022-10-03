@@ -7,12 +7,16 @@ import * as Yup from "yup";
 import APIServices from "../../../services";
 import { countryListApi } from "../../../api";
 import { modalWarning, modalSuccess } from "../../../api/intercept";
+import PaymentCard from "./PaymentCard";
+import { handleCardApi } from "../../../api/account/editCard";
 
 export default function PaymentDetail() {
   const [cardData, setCardData] = useState(null);
   const [delStatus, setDelStatus] = useState(0);
   const [cardLoader, setCardLoader] = useState(true);
   const [countryData, setCountryData] = useState([]);
+  const [isCardData, setIsCardData] = useState(true);
+  const [isCardEdit, setIsCardEdit] = useState(false);
 
   useEffect(() => {
     setDelStatus(0);
@@ -32,10 +36,14 @@ export default function PaymentDetail() {
   const cardListApi = async () => {
     const result = await APIServices.getUser("customer-card-details/getCard");
     if (result.status == 200) {
-      console.log(result.data);
       if (result.data.data != false) {
         setCardData(result.data.data[0]);
         setCardLoader(false);
+        setIsCardEdit(false)
+        setIsCardData(true)
+      } else {
+        setCardLoader(false);
+        setIsCardData(false);
       }
     } else {
       modalWarning("error", result.data.message);
@@ -73,16 +81,7 @@ export default function PaymentDetail() {
       countryId: values.countryId,
     });
 
-    const result = await APIServices.create(
-      "customer-card-details/addCardInProfile",
-      jsonData
-    );
-    if (result.data.status == 1) {
-      cardListApi();
-      modalSuccess("success", "Card Addedd !");
-    } else {
-      modalWarning("error", result.data.message);
-    }
+    handleCardApi(jsonData, isCardEdit, cardListApi);
   };
 
   const handleCardDetail = () => {
@@ -91,15 +90,13 @@ export default function PaymentDetail() {
     } else {
       return (
         <>
-          {cardData != null ? (
+          {isCardData ? (
             <>
-              <div>
-                <h1>{cardData.card.brand}</h1>
-                <h6>XXXX XXXX XXXX {cardData.card.last4}</h6>
-                <h6>
-                  {cardData.card.exp_month} / {cardData.card.exp_year}
-                </h6>
-              </div>
+              <PaymentCard
+                cardData={cardData}
+                setIsCardData={setIsCardData}
+                setIsCardEdit={setIsCardEdit}
+              />
             </>
           ) : (
             <>
@@ -200,7 +197,12 @@ export default function PaymentDetail() {
                         </div>
                       </div>
                       <div className="button-wrapper flex mb40">
-                        {/* <button className="border-btn mr16">Cancel</button> */}
+                        {/* <button
+                          className="border-btn mr16"
+                          onClick={() => setIsCardData(true)}
+                        >
+                          Cancel
+                        </button> */}
                         <button className="primary-btn">Save</button>
                       </div>
                     </form>

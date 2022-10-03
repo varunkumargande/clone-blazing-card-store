@@ -46,7 +46,6 @@ export default function ProfileInformation() {
         let reader = new FileReader();
         reader.readAsDataURL(files[0]);
         reader.onloadend = () => setNewDp(reader.result);
-        console.log(reader);
         setimpuploadsuccess(true);
       } else {
         setNewDpError("Please upload minimum 2 MB");
@@ -80,16 +79,29 @@ export default function ProfileInformation() {
           <div className="prifile-image br50">
             {profileData != null ? (
               <>
-                <img
-                  width={"200"}
-                  height={"200"}
-                  src={
-                    profileData.avatar != null
-                      ? `https://blazing-card-backend-dev.kellton.net/api/media/image-resize?path=${profileData.avatarPath}&name=${profileData.avatar}&width=300&height=300`
-                      : "/static/images/profile-lg-image.png"
-                  }
-                  alt="Profile"
-                />
+                {newDp != "" ? (
+                  <>
+                    <img
+                      width={"200"}
+                      height={"200"}
+                      src={newDp}
+                      alt="Profile"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <img
+                      width={"200"}
+                      height={"200"}
+                      src={
+                        profileData.avatar != null
+                          ? `https://blazing-card-backend-dev.kellton.net/api/media/image-resize?path=${profileData.avatarPath}&name=${profileData.avatar}&width=300&height=300`
+                          : "/static/images/profile-lg-image.png"
+                      }
+                      alt="Profile"
+                    />
+                  </>
+                )}
               </>
             ) : (
               ""
@@ -178,43 +190,45 @@ export default function ProfileInformation() {
                           </span>
                         </div>
                       </div>
-                      <div className="flex space-between">
+
+
+                      {/* <div className="flex space-between">
                         <div className="input-control wd50">
-                          <div className="flex space-between">
-                            <label>User Name *</label>
-                            <button className="verify-email-btn">Verify Eamil</button>
+                          <div className="flex space-between flex-center">
+                            <label htmlFor="usr">Username *</label>
+                            <button className="verify-email-btn">
+                              Verify email
+                            </button>
                           </div>
                           <input
+                            name="text"
                             placeholder={"Enter here"}
+                            id="usr"
                             className="grey-bg"
-                            name="UserName"
-                            // onChange={handleChange}
-                            // value={values.firstName}
                           />
-                          <span className="errorMessage">
-                            {/* {errors.firstName} */}
-                          </span>
+                          <span className="errorMessage"></span>
                         </div>
                         <div className="input-control wd50">
-                          <label>Phone Number *</label>
-                          <div className="select-input flex space-between">
+                          <div className="flex space-between flex-center">
+                            <label htmlFor="usr">Phone Number *</label>
+                          </div>
+                          <div className="flex space-between select-input">
                             <select className="grey-bg">
-                              <option>+1</option>
-                              <option>+2</option>
+                              <option>+ 1</option>
+                              <option>+ 2</option>
                             </select>
                             <input
-                              name="lastName"
+                              name="text"
                               placeholder={"Enter here"}
+                              id="usr"
                               className="grey-bg"
-                              // onChange={handleChange}
-                              // value={values.lastName}
                             />
-                            <span className="errorMessage">
-                              {/* {errors.lastName} */}
-                            </span>
                           </div>
+                          <span className="errorMessage"></span>
                         </div>
-                      </div>
+                      </div> */}
+
+
                       <div className="input-control">
                         <div className="flex space-between flex-center">
                           <label htmlFor="bio">Bio</label>

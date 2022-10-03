@@ -129,7 +129,7 @@ function LeftDiv({
     if (
       productId == auctionNotification?.product?.productId ||
       productId ==
-        stream?.streamProducts?.AuctionDetails.latestAuction?.productId
+        stream?.streamProducts?.AuctionDetails?.latestAuction?.productId
     ) {
       return "pined";
     }

@@ -127,7 +127,7 @@ function StreamingBase({
       setOpen(false);
       increaseBidAmount();
       createBid(
-        auctionId,
+        Number(auctionId),
         Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
         amountToBid
       );
