@@ -1,14 +1,15 @@
+import { object } from "prop-types";
 import { actionTypes } from "./action";
 
 let stepState = {
-  guideLines : 'process',
+  guidelines : 'process',
   basicDetails: "",
-  shippingDetails: "",
   paymentDetails: "",
+  shippingDetails: "",
   submitted: ""
 }
 export const initState = {
-  guideLines: false,
+  guidelines: false,
   basicDetails: null,
   shippingDetails: null,
   paymentDetails: null,
@@ -16,14 +17,56 @@ export const initState = {
   stepContainer: stepState
 };
 
+const getStepState = (lastStep) => {
+  switch (lastStep) {
+    case 1:
+      return {
+        guidelines : 'completed',
+        basicDetails: "process",
+        paymentDetails: "",
+        shippingDetails: "",
+        submitted: ""
+      }
+      case 2:
+        return {
+          guidelines : 'completed',
+          basicDetails: "completed",
+          paymentDetails: "process",
+          shippingDetails: "",
+          submitted: ""
+        }
+      case 3:
+        return {
+          guidelines : 'completed',
+          basicDetails: "compelted",
+          paymentDetails: "completed",
+          shippingDetails: "process",
+          submitted: ""
+        }
+      break;
+      case 4:
+        return {
+          guidelines : 'completed',
+          basicDetails: "completed",
+          paymentDetails: "completed",
+          shippingDetails: "completed",
+          submitted: "process"
+        }
+      break;
+    default:
+        return stepState;
+      break;
+  }
+}
+
 function reducer(state = initState, action) {
   switch (action.type) {
     case actionTypes.SUBMIT_GUIDELINES:
       return {
         ...state,
-        ...{ guideLines: action.payload },
+        ...{ guidelines: !!action.payload },
         ...{ stepContainer : {
-          guideLines : 'completed',
+          guidelines : 'completed',
           basicDetails: "process",
           paymentDetails: "",
           shippingDetails: "",
@@ -35,7 +78,7 @@ function reducer(state = initState, action) {
         ...state,
         ...{ basicDetails: action.payload },
         ...{ stepContainer : {
-          guideLines : 'completed',
+          guidelines : 'completed',
           basicDetails: "completed",
           paymentDetails: "process",
           shippingDetails: "",
@@ -47,7 +90,7 @@ function reducer(state = initState, action) {
         ...state,
         ...{ shippingDetails: action.payload },
         ...{ stepContainer : {
-          guideLines : 'completed',
+          guidelines : 'completed',
           basicDetails: "completed",
           paymentDetails: "completed",
           shippingDetails: "process",
@@ -59,7 +102,7 @@ function reducer(state = initState, action) {
         ...state,
         ...{ paymentDetails: action.payload },
         ...{ stepContainer : {
-          guideLines : 'completed',
+          guidelines : 'completed',
           basicDetails: "completed",
           paymentDetails: "completed",
           shippingDetails: "completed",
@@ -69,13 +112,14 @@ function reducer(state = initState, action) {
       case actionTypes.GET_SUBMIITED_DETAILS:
         return {
           ...state,
+          ...{ guidelines: !!action.payload?.isAgree },
+          ...{ basicDetails: action.payload?.basicDetails !== {} ? action.payload?.basicDetails : null},
+          ...{ paymentDetails: action.payload?.paymentDetails !== {} ? action.payload?.paymentDetails : null},
+          ...{ shippingDetails: action.payload?.shippingDetails !== {} ? action.payload?.shippingDetails : null},
           ...{ submittedDetails: action.payload },
+          ...{ stepContainer : getStepState(action.payload?.steps)}
+
         }
-    // case actionTypes.GET_STREAM_DETAILS:
-    //   return {
-    //     ...state,
-    //     ...{ streamdetails: action.payload }
-    //   }
     default:
       return state;
   }
