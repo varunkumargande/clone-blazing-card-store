@@ -12,6 +12,7 @@ export const initState = {
   basicDetails: null,
   shippingDetails: null,
   paymentDetails: null,
+  submittedDetails: null,
   stepContainer: stepState
 };
 
@@ -65,6 +66,11 @@ function reducer(state = initState, action) {
           submitted: "process"
         } }
       }
+      case actionTypes.GET_SUBMIITED_DETAILS:
+        return {
+          ...state,
+          ...{ submittedDetails: action.payload },
+        }
     // case actionTypes.GET_STREAM_DETAILS:
     //   return {
     //     ...state,

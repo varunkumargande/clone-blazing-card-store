@@ -30,7 +30,7 @@ export async function shippingDetails(payLoad) {
 }
 
 export async function getDetails() {
-  const result = await APIServices.create('vendor-store/get-details')
+  const result = await APIServices.getAll('vendor-store/get-details')
   if (result && result.data && result.data.data) {
     return result.data.data;
   }

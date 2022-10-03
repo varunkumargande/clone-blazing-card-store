@@ -24,7 +24,7 @@ export const addBasicData =  (payLoad, router) => {
   return async dispatch => {
     const result = await basicDteailsApi(payLoad)
     if(result) {
-      dispatch(addBasicDetails(result))
+      dispatch(addBasicDetails(payLoad))
       router.push("/become-seller/paymentDetails", undefined, {
         shallow: true,
       })
@@ -35,7 +35,7 @@ export const addPaymentData =  (payLoad, router) => {
   return async dispatch => {
     const result = await paymentDetailsApi(payLoad)
     if(result) {
-      dispatch(addPaymentDetails(result))
+      dispatch(addPaymentDetails(payLoad))
       router.push("/become-seller/shippingDetails", undefined, {
         shallow: true,
       })
@@ -46,8 +46,8 @@ export const addShippingData =  (payLoad, router) => {
   return async dispatch => {
     const result = await shippingDetails(payLoad)
     if(result) {
-      dispatch(addShippingDetails(result))
-      router.push("/become-seller/shippingDetails", undefined, {
+      dispatch(addShippingDetails(payLoad))
+      router.push("/become-seller/ApplicationSubmitted", undefined, {
         shallow: true,
       })
     }
@@ -57,10 +57,10 @@ export const addShippingData =  (payLoad, router) => {
 
 export function getBecomeSellerInfo() {
   return async dispatch => {
-    const result = await getDetails(payLoad)
+    const result = await getDetails()
     if(result) {
-      console.log(result, 'become-seller')
-      // dispatch(addStreamDetails(result))
+
+      dispatch(addPreviousData(result))
     }
   };
 };
@@ -93,6 +93,12 @@ export function addGuideLines(payload) {
 };
 }
  
+export function addPreviousData(payload) {
+  return {
+    type: actionTypes.GET_SUBMIITED_DETAILS,
+    payload:payload,
+};
+}
 
 
 

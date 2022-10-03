@@ -17,7 +17,7 @@ export default function ShippingDetails() {
   );
 
   const handleSubmit = (values) => {
-    console.log(values)
+
     const data = {
       shipFromName: values?.fullName,
       addressLine1: values?.addressLine1,
@@ -27,16 +27,8 @@ export default function ShippingDetails() {
       city: values?.city,
       state: values?.state,
     };
-    dispatch(addShippingData(data));
+    dispatch(addShippingData(data, router));
   };
-
-  // useEffect(() => {
-  //   if (!!shippingDetails) {
-  //     router.push("/become-seller/ApplicationSubmitted", undefined, {
-  //       shallow: true,
-  //     });
-  //   }
-  // }, [shippingDetails]);
 
   return (
     <div className="step-container">
@@ -55,9 +47,9 @@ export default function ShippingDetails() {
           city: "",
           state: "",
         }}
-        // validationSchema={shippingDetailsvalidation}
+        validationSchema={shippingDetailsvalidation}
         onSubmit={(values) => {
-          console.log(values, 'submit')
+
           if (values) {
             handleSubmit(values)
           }

@@ -6,16 +6,20 @@ export default function LeftPannel(){
     const steps = useSelector(
         (state) => state?.becomeSeller?.stepContainer
       );
+      const state = useSelector(
+        (state) => state?.becomeSeller
+      );
       const stepState = [
         "guideLines",
         "basicDetails",
-        "shippingDetails",
         "paymentDetails",
+        "shippingDetails",
         "submitted"
       ]
-
       useEffect(() => {
-        getCurrentState()
+        stepState.forEach(element => {
+            getCurrentState(element)    
+        });
       }, [steps])
     
     const getCurrentState = (name) => {

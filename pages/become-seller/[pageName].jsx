@@ -9,11 +9,16 @@ import ShippingDetails from "../../components/partials/sellerSteps/ShippingDetai
 import ApplicationSubmitted from "../../components/partials/sellerSteps/ApplicationSubmitted";
 import Footer from "../../components/partials/LandingPage/Footer";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { getBecomeSellerInfo } from "../../store/becomeSeller/action";
 
 export default function Steps() {
   const [windowWidth, setWindowWidth] = useState(0);
+  const dispatch = useDispatch();
+
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
+    dispatch(getBecomeSellerInfo());
   };
   useEffect(() => {
     resizeWindow();
@@ -22,9 +27,9 @@ export default function Steps() {
   }, []);
 
   const route = useRouter();
+  let { pageName } = route.query;
+  
 
-  const { pageName } = route.query;
-  // console.log(name)
   const getComponent = () => {
     switch (pageName) {
       case "basicDetails":

@@ -51,13 +51,6 @@ export default function BasicDetails() {
     };
   };
 
-  // useEffect(() => {
-  //   if (!!BasicDetails) {
-  //     router.push("/become-seller/shippingDetails", undefined, {
-  //       shallow: true,
-  //     });
-  //   }
-  // }, [BasicDetails]);
 
   return (
     <div className="step-container">
@@ -69,13 +62,14 @@ export default function BasicDetails() {
       </div>
       <Formik
         initialValues={{
-          fullName: "",
-          ssn: "",
-          address: "",
+          fullName: BasicDetails?.fullName ?? "",
+          ssn: BasicDetails?.ssn ?? "",
+          address: BasicDetails?.address ?? "",
           upload: "",
         }}
         validationSchema={basicDetailvalidation}
         onSubmit={(values) => {
+
           if (values) {
             handleSubmit(values);
           }

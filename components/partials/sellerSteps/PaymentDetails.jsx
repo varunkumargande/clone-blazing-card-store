@@ -29,17 +29,8 @@ export default function PaymentDetails() {
       country : values.country,
       countryId : 99
     }
-    dispatch(addPaymentData(data));
+    dispatch(addPaymentData(data, router));
   };
-
-  useEffect(() => {
-    if (!!paymentDetails) {
-      router.push("/become-seller/shippingDetails", undefined, {
-        shallow: true,
-      });
-    }
-  }, [paymentDetails]);
-
 
   return (
     <div className="step-container">
@@ -60,7 +51,7 @@ export default function PaymentDetails() {
         validationSchema={paymentDetailsvalidation}
 
         onSubmit={(values) => {
-          console.log('rohit', values)
+
           if (values) {
             handleSubmit(values);
           }
