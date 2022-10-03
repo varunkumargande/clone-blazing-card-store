@@ -5,6 +5,7 @@ import IconClose from "../../Icons/IconClose";
 import { orderListApi } from "../../../api";
 import { connect, useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import Link from "next/link";
 
 export default function MyOrders() {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ export default function MyOrders() {
   useEffect(() => {
     orderListApi(dispatch);
   }, []);
-console.log(orders)
+
   return (
     <>
       {orders && orders?.length === 0 ? (
@@ -64,7 +65,7 @@ console.log(orders)
                   Return Order
                 </div>
                 <div className="order-detail link">
-                  Order Details
+                <Link href={`order-details?id=${order.orderProductId}`}>Order Details </Link>
                   <IconRiightAngle />
                 </div>
               </div>
