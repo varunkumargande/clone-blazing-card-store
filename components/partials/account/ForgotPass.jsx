@@ -22,9 +22,7 @@ function ForgotPassword(){
       };
 
     const handleSubmit=()=>{    
-       
         forgotApi(mail,setForgotSuccess)
-
     }
 
     return(

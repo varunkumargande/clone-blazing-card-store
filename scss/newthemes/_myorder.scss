@@ -1,0 +1,298 @@
+.myorder-wrapper{
+    max-width: 1150px;
+    width: 100%;
+    padding: 32px 15px;
+    margin: 0 auto;
+    .breadcrumbs-wrapper{
+        padding-top: 0;
+    }
+    h1{
+        font-size: 24px;
+        line-height: 30px;
+        font-weight: 700;
+        .back{
+            .icon{
+                fill:$primary-color;
+            }
+        }
+    }
+    .heading-wrapper{
+        &.border-btm{
+            border-bottom: 1px solid $border2-color;
+            padding-bottom: 20px;
+        }
+    }
+    .order-time-wrap{
+        font-size: 14px;
+        line-height: 16px;
+        color:$disc-color;
+        .placed{
+            padding-right: 16px;
+            margin-right: 16px;
+            border-right: 1px solid $border2-color;
+        }
+    }
+    .order-list{
+        background-color: $white-color;
+        border-radius: 8px;
+    }
+    .order-header{
+        padding: 12px 24px;
+        border-bottom: 1px solid $border2-color;
+    }
+    .divide{
+        color:$border2-color;
+    }
+    .order-head{
+        strong{
+            font-weight: 600;
+            margin-right: 15px;
+        }
+        .placed{
+            margin-left:15px;
+        }
+    }
+    .order-body{
+        padding: 16px 24px;
+    }
+    .order-footer{
+        height:56px;
+        padding: 0 24px;
+        border-top: 1px solid $border2-color;
+    }
+    .Search{
+        max-width: 230px;
+        margin-right: 16px;
+        #search{
+            background-color: $white-color;
+            border:1px solid $border2-color;
+        }
+    }
+    .dropdwn-wrapper{
+        @include pos(re);
+        .dropdown{
+            height: 42px;
+            border-radius: 8px;
+            border:1px solid $border2-color;
+            background-color: $white-color;
+            min-width:87px;
+            padding: 0 10px;
+            svg{
+                margin-left: 5px;
+            }
+        }
+        .dropdwnList{
+            position: absolute;
+            right:0;
+            top: calc(100% + 12px);
+            background-color: $white-color;
+            width:152px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 24px $search-bg;
+            padding: 0 10px;
+            z-index: 2;
+            visibility: hidden;
+            opacity: 0.5;
+            transition: all .12s;
+            &.active{
+                height: auto;
+                visibility: visible;
+                opacity: 1;
+            }
+            li{
+                font-size: 14px;
+                line-height: 21px;
+                color:$disc-color;
+                list-style: none;
+                padding: 10px 0;
+                cursor: pointer;
+                text-align: left;
+                border-bottom: 1px solid $border2-color;
+                &.active{
+                    color:$blue-color;
+                }
+                &:last-child{
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+    .order-detail{
+        font-weight: 500;
+        color:$blue-color;
+        &.link{
+            cursor: pointer;
+        }
+        a{
+            color: inherit;
+        }
+        svg{
+            margin-left: 10px;
+            max-width: 7px;
+        }
+        .icon{
+            fill:$blue-color;
+        }
+    }
+    .order-text{
+        > img{
+            max-width: 90px;
+            border-radius: 8px;
+            margin-right: 16px;
+        }
+    }
+    .order-details{
+        max-width: 422px;
+    }
+    .order-title{
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 600;
+    }
+    .amount{
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 600;
+    }
+    .qty{
+        font-weight: 500;
+        margin-right: 15px;
+    }
+    .bought{
+        font-weight: 500;
+        margin-left: 15px;
+    }
+    .qty{
+        font-weight: 500;
+        margin-right: 15px;
+    }
+    .order-status{
+        color:$disc-color;
+        svg{
+            margin-right: 10px;
+            max-width: 10px;
+            .icon{
+                fill:$disc-color;
+            }
+        }
+    }
+    .status{
+        padding: 5px 16px;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 13px;
+        margin-left: 12px;
+        &.shipped,&.delivered{
+            color:$step-success-color;
+            background-color: rgba($step-success-color,.1);
+        }
+        &.processing{
+            color:$orange-color;
+            background-color: rgba($orange-color,.1);
+        }
+    }
+    .btn-wrap{
+        .primary-btn{
+            width: 130px;
+            height: 42px;
+        }
+    }
+    .order-body-wrapper{
+        .order-body{
+            border-bottom: 1px solid $border2-color;
+            padding: 20px 16px 30px;
+            &:last-child{
+                border-bottom: none;
+            }
+        }
+    }
+    .orderdetails-wrapper{
+        .billing-shipping-wrap{
+            padding-top: 16px;
+            border-top: 1px solid $border2-color;
+        }
+        .box{
+            border-radius: 8px;
+            background-color: $white-color;
+        }
+        .heading{
+            padding: 16px;
+            font-size: 18px;
+            line-height: 28px;
+            font-weight:600;
+            border-bottom: 1px solid $border2-color;
+        }
+        .body{
+            padding: 12px 16px 16px;
+            h5{
+                font-size: 16px;
+                line-height: 24px;
+                margin-bottom: 12px;
+                font-weight: 500;
+            }
+        }
+        .bodyText{
+            color:$secondry-color;
+            .mastr{
+                margin-right: 8px;
+                padding: 2px 5px 2px 8px;
+                background-color: $body-bg;
+                border-radius: 4px;
+                width: 48px;
+                height: 34px;
+            }
+        }
+        .order-value{
+            padding:12px 24px;
+            .amount{
+                margin: 8px 0;
+                font-size: 16px;
+                line-height: 24px;
+            }
+            .label{
+                font-weight: 500;
+            }
+            .value{
+                font-weight: 400;
+            }
+        }
+        .total-order{
+            font-size: 18px;
+            line-height: 24px;
+            font-weight: 600;
+            height: 56px;
+            padding: 0 24px;
+            border-top: 1px solid $border2-color;
+        }
+        .order-list-wrap{
+            width: 100%;
+            max-width: calc(100% - 382px);
+        }
+        .order-summery-wrap{
+            width: 100%;
+            max-width: 352px;
+        }
+        .track{
+            width:126px;
+            height: 42px;
+            border-radius: 4px;
+            color:$white-color;
+            font-weight: 500;
+            background-color:$blue-color;
+            svg{
+                margin-right: 4px;
+            }
+        }
+        .download{
+            width:207px;
+            height: 42px;
+            border-radius: 4px;
+            color:$white-color;
+            font-weight: 500;
+            background-color:$red-color;
+            svg{
+                margin-right: 4px;
+            }
+        }
+    }
+}

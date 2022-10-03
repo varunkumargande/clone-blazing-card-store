@@ -7,7 +7,7 @@ export default function Success(){
             <h1 className="title mb8">Password Reset</h1>
             <div className="infotext wd300 mb32">Your password has been successfully reset. Click below to sign in</div>
             <form className="success flex space-between">
-                <div className="submitWrap mb32 mt16">
+                <div className="submitWrap mb32 mt32">
                     <button type="submit" className="primary-btn">Continue</button>
                 </div>
                 <div className="copyright flex flex-center justify-center">

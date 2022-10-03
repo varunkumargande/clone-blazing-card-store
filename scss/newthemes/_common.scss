@@ -18,6 +18,17 @@ button{
 button,input{
   @include Inter;
 }
+h1{
+  font-size: 24px;
+  line-height: 30px;
+  color:$primary-color;
+  margin-bottom: 24px;
+}
+.heading-wrapper{
+  h1{
+    margin-bottom: 0;
+  }
+}
 .flex{
   display: flex;
 }
@@ -72,6 +83,9 @@ button,input{
 .mb20{
   margin-bottom: 20px;
 }
+.mb24{
+  margin-bottom: 24px;
+}
 .mb26{
   margin-bottom: 26px;
 }
@@ -99,6 +113,12 @@ button,input{
 .mr16{
   margin-right: 16px;
 }
+.mr16{
+  margin-right: 16px;
+}
+.ml20{
+  margin-left: 20px;
+}
 // common input
 .input-control{
   margin-bottom: 16px;
@@ -110,18 +130,24 @@ button,input{
   input,select,textarea{
       font-size: 16px;
       line-height: 24px;
-      color:$light-grey-color;
+      color:$primary-color;
       width: 100%;
       border-radius: 8px;
       background-color: $white-color;
       border:none;
       outline: none;
+      border:1px solid $white-color;
       padding: 0 30px 0 15px;
       &.grey-bg{
         background-color: $body-bg;
+        &:focus,&.filled{
+          background-color: $white-color;
+          border-color: $border2-color;
+        }
       }
       &:focus{
           outline: none;
+          border-color: $blue-color;
       }
       &::placeholder { 
           color: $light-grey-color;
@@ -133,13 +159,20 @@ button,input{
       &::-ms-input-placeholder { 
           color: $light-grey-color;
       }
+      &.error{
+        background-color: #FDEEEE;
+        border-color: $danger-color;
+      }
   }
   .errorText,.errorMessage{
-      font-size: 14px;
-      line-height: 21px;
-      font-weight: 500;
+      font-size: 12px;
+      line-height: 14px;
       color: $danger-color;
       margin-top: 6px;
+      width: 100%;
+  }
+  .card-icon{
+    @include pos(ab,32px,10px,null,null);
   }
   select{
     appearance: none;
@@ -312,6 +345,7 @@ label{
   justify-content: center;
   align-items: center;
   border:none;
+  cursor: not-allowed;
   &:hover{
     color: $grey-color;
   }
@@ -430,14 +464,19 @@ label{
 }
 .back{
   margin-right: 10px;
+  cursor: pointer;
   .icon{
     fill:#A1ABB7;
   }
+}
+.edit-back{
+  cursor: pointer;
 }
 .category-banner{
   @include pos(re);
   > img{
     width: 100%;
+    min-height: 200px;
   }
   .cover-wrap{
     padding: 0 15px;
@@ -450,9 +489,18 @@ label{
       height: 36px;
       color: $white-color;
       border-color: $white-color;
+      background-color: rgba($white-color,.3);
   }
 }
-@media all and (min-width:768px){
+@media all and (min-width:320px) and (max-width:1024px){
+  .category-banner{
+    .cover-wrap{
+      bottom: 122px;
+      justify-content: center;
+    }
+  }
+}
+@media all and (min-width:1025px){
   .wd50{
     width: calc(50% - 8px);
   }

@@ -1,5 +1,8 @@
 import React from "react";
 import * as cryptoJs from "crypto-js";
+import { socketIO, imageUrl } from "../../api/url";
+import { io } from "socket.io-client";
+
 
 class StreamDetailModel {
   constructor(streamData) {
@@ -15,6 +18,7 @@ class StreamDetailModel {
     var appId = bytes.toString(cryptoJs.enc.Utf8);
     let streamDetails = {
       sellerName: streamData?.vendorDetails?.username,
+      sellerId: streamData?.vendorDetails?.vendor_id,
       loggedInUserName: "Guest",
       loggedInUserId: Math.floor(Math.random() * 20),
       uuid: streamData?.uuid,
@@ -28,12 +32,14 @@ class StreamDetailModel {
       agoraAppId: appId,
       scheduleDate: streamData?.scheduleDate,
       scheduleTime:  streamData?.scheduletime,
-      isLoggedIn: false
+      isLoggedIn: false,
+      avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png",
+      socketObject: io(socketIO)
     }
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;
       streamDetails.loggedInUserId = userDetails?.id;
-      streamDetails.isLoggedIn= true
+      streamDetails.isLoggedIn= true;
     }
     return streamDetails;
   }
@@ -44,7 +50,7 @@ class StreamDetailModel {
       streamChannel: data.streamChannel,
       notificationChannel: data.notificationChannel,
       messageChannel: data.messageChannel,
-      audience: data.loggedInUserName + data.loggedInUserId,
+      audience: data.loggedInUserName,
       audienceId: data.loggedInUserId,
       userType: 'audience',
       accountType: 'userAccount',

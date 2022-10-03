@@ -3,7 +3,8 @@ import StreamDetailModel from "../../components/model/streamModel";
 export const initState = {
   streamData: null,
   streamdetails: null,
-  streamPageData: null
+  streamPageData: null,
+  streamProducts: null
 };
 
 function reducer(state = initState, action) {
@@ -18,6 +19,11 @@ function reducer(state = initState, action) {
       return {
         ...state,
         ...{ streamdetails: action.payload  }
+      }
+    case actionTypes.ADD_STREAM_PRODUCTS:
+      return {
+        ...state,
+        ...{ streamProducts: action.payload  }
       }
     default:
       return state;

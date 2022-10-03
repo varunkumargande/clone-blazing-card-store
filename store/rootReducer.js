@@ -10,6 +10,8 @@ import collection from './collection/reducer';
 import palette from './colorPalette/reducer';
 import category from './category/reducer'
 import stream from './stream/reducer'
+import search from  "./search/reducer"
+import order from "./order/reducer"
 
 export default combineReducers({
     auth,
@@ -22,5 +24,7 @@ export default combineReducers({
     collection,
     palette,
     category,
-    stream
+    stream,
+    search,
+    order
 });

@@ -1,10 +1,12 @@
 import React from "react";
 import IconSpeaker from '../../Icons/IconSpeaker';
+import IconSpeakerMute from '../../Icons/IconSpeakerMute';
 import IconShare from '../../Icons/IconShare';
-import IconHeart from '../../Icons/IconHeart';
+import IconLikeWhite from '../../Icons/IconLikeWhite';
 import IconDoller from '../../Icons/IconDoller';
 import IconEye from '../../Icons/IconEye';
-import { AddNewCardModal,PaymentInfoMOdal } from "../Modal/Modal";
+import { CustomBidModal } from "../Modal/Modal";
+import { AddNewCardModal,PaymentInfoModal } from "../Modal/Modal";
 
 export default function StreamingLive(){
     return(
@@ -15,13 +17,19 @@ export default function StreamingLive(){
             <div className="inner-wrapper">  {/*add className disable when want {disable}*/}
                 <div className="stream-header flex space-between">
                     <div className="head-title">PSA SLAB #83</div>
-                    <div className="tme-wrap flex flex-center justify-center"><IconEye /><span>1.2K</span> <button className="live">Live</button></div>
+                    <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
                     {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
                 </div>
                 <div className="video-icon">
-                    <button className="flex flex-center justify-center br50"><IconSpeaker/></button>
+                    <button className="flex flex-center justify-center br50 valum">
+                        <IconSpeaker/>
+                        {/* <IconSpeakerMute /> */}
+                        <span className="range flex flex-center">
+                            <input type="range" id="vol" name="vol" min="0" max="100" className="slider"/>
+                        </span>
+                    </button>
                     <button className="flex flex-center justify-center br50"><IconShare/></button>
-                    <button className="flex flex-center justify-center br50"><IconHeart/></button>
+                    <button className="flex flex-center justify-center br50 like"><IconLikeWhite/></button>
                     <button className="flex flex-center justify-center br50"><IconDoller/></button>
                 </div>
                 {/*Auction end Html*/}
@@ -44,10 +52,10 @@ export default function StreamingLive(){
                         <button className="primary-btn">Bid US $28</button>
                     </div> */}
                     <div className="auction-end">
-                        <button className="primary-btn disable">Auction Ended</button>
+                        <button className="primary-btn disable" onClick={CustomBidModal}>Auction Ended</button>
                     </div>
                 </div>
-                <PaymentInfoMOdal/>
+                {/* <CustomBidModal /> */}
             </div>
         </div>
     );

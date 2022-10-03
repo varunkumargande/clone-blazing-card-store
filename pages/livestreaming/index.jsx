@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from "react";
-import Header from "../../components/partials/Landingpage/Header";
+// import Header from "../../components/partials/Landingpage/Header";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import StreamingLeft from "../../components/partials/streaming/StreamingLeft";
 import StreamingLive from "../../components/partials/streaming/StreamingLive";

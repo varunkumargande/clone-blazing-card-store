@@ -339,7 +339,6 @@ export function incrementQuantity(payload){
             }
         }
         else{
-            console.log(selectedItem,'vweqeadasd')
             if (selectedItem) {
                
                 if(selectedItem.hasTirePrice===1){
@@ -359,7 +358,6 @@ export function incrementQuantity(payload){
                 else{
                     // selectedItem.quantity++;
                     if(selectedItem.maxQuantityAllowedCart!==null){
-                      console.log(selectedItem,'sdfsdfsd')
     
                         if(selectedItem.maxQuantityAllowedCart>=selectedItem.quantity+1){
                           

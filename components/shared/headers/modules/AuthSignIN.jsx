@@ -4,7 +4,6 @@ import AccountQuickLinks from './AccountQuickLinks'
 import SignINLINks from './SignINLINks';
 function AuthSignIN({ auth }) {
 
-  console.log(auth.isLoggedIn)
 
   return (
     <>

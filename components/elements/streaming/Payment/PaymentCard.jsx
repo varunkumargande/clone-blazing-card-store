@@ -20,7 +20,6 @@ function PaymentCard(props) {
     }, [])
 
     useEffect(() => {
-        console.log(props.payDetail)
     }, [props.payIndex])
 
     const getCardList = () => {
@@ -51,7 +50,7 @@ function PaymentCard(props) {
     });
 
     const submitCardDetail = async (data) => {
-        addCardDetail(setOpen, data)
+        addCardDetail(data)
     }
 
     return (

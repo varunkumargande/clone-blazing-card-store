@@ -25,10 +25,7 @@ function OrderDetailFunc({orderDetailInfo,orderLoading,currency}){
     useEffect(()=>{
         if(sessionStorage.getItem("spurtUser")){
             setFname(JSON.parse(sessionStorage.getItem("spurtUser")).firstName)
-            
-
         }
-        
     },[])
 
     const handleLogout=(e)=>{

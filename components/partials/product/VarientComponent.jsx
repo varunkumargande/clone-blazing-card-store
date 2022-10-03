@@ -20,7 +20,6 @@ function SpurtVarientComponent() {
     
 // },[productId])
 
-console.log(product,'yyyyproduct')
 
 useEffect(() => {
     if (

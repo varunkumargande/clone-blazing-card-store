@@ -206,10 +206,12 @@
         }
     }
     .stream-image-video{
-        img,video{
+        img,video,#local_stream{
             width: 100%;
-            height: calc(100vh - 90px);
+            height: calc(100vh - 90px) !important;
             object-fit: cover;
+            position: relative !important;
+            overflow: hidden;
         }
     }
     .stream-header{
@@ -231,9 +233,72 @@
         button{
             width:42px;
             height: 42px;
+            border-radius: 21px;
             background-color: rgba($white-color,.2);
             margin-bottom: 16px;
             padding: 0;
+            @include pos(re);
+            &.like{
+                transition:all .25s;
+                &.liked,&:hover{
+                    .icon{
+                        fill:$red-color;
+                        stroke:$red-color;
+                    }
+                }
+            }
+            &.valum{
+                float: right;
+                justify-content: flex-end;
+                padding: 0 9px 0 0;
+                overflow: hidden;
+                svg{
+                    width: 24px;
+                }
+                &:hover{
+                    width: 182px;
+                }
+                .range{
+                    @include pos(ab,50%,45px,null,null);
+                    transform: translateY(-50%);
+                    width: 120px;
+                    input{
+                        max-width: 100%;
+                    }
+                    .slider {
+                        -webkit-appearance: none;
+                        width: 100%;
+                        height: 4px;
+                        background: $white-color;
+                        outline: none;
+                        -webkit-transition: .2s;
+                        transition: opacity .2s;
+                        border-radius: 2px;
+                        &:hover {
+                            opacity: 1;
+                        }
+                        &::-webkit-slider-thumb {
+                            -webkit-appearance: none;
+                            appearance: none;
+                            width: 10px;
+                            height: 10px;
+                            background: $white-color;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            border-color: $white-color;
+                        }
+                        &::-moz-range-thumb {
+                            width: 10px;
+                            height: 10px;
+                            background: $white-color;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            border-color: $white-color;
+                        }
+                    }
+
+                }
+            }
         }
     }
     .stream-footer{
@@ -316,6 +381,53 @@
             margin-right: 4px;
         }
     }
+    .tme-wrap{
+        font-size: 12px;
+        line-height: 18px;
+        background: rgba($white-color, 0.4);
+        backdrop-filter: blur(8px);
+        border-radius: 18px;
+        color:$white-color;
+        height: 34px;
+        &.live{
+            width: 60px;
+            height: 34px;
+            flex-direction: row-reverse;
+            font-size: 12px;
+            .live{
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background-color: transparent;
+                border:2px solid rgba($red-color,.3);
+                padding: 0;
+                margin-right: 2px;
+                font-size: 0;
+                &:before{
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background-color: $red-color;
+                    left: 2px;
+                    top:2px;
+                }
+            }
+        }
+        &.end{
+            width: auto;
+            padding: 0 8px;
+        }
+        svg{
+            max-width: 14px;
+            text-align: center;
+            .icon{
+                fill: $white-color;
+            }
+        }
+        span{
+            padding: 0 3px 0 2px;
+        }
+    }
 }
 // Stream right
 .streaming-right{
@@ -337,14 +449,18 @@
         &::-webkit-scrollbar { 
             height: 0;  
         }
-        > .chat{
-            margin-top: 24px;
+        .chat-inner-wrap{ 
+            min-height: 100%;
+            > .chat{
+                margin-top: 24px;
+            }
         }
         .chat-img{
             width: 36px;
             height: 36px;
             border:3px solid $white-color;
             margin-right: 5px;
+            overflow: hidden;
         }
         .name{
             font-size: 14px;
