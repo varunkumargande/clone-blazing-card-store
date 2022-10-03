@@ -11,20 +11,25 @@ import Footer from "../../components/partials/LandingPage/Footer";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { getBecomeSellerInfo } from "../../store/becomeSeller/action";
+import { useSelector } from "react-redux";
 
 export default function Steps() {
   const [windowWidth, setWindowWidth] = useState(0);
   const dispatch = useDispatch();
+  const stage = useSelector((state) => state?.becomeSeller)
 
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
-    dispatch(getBecomeSellerInfo());
   };
   useEffect(() => {
     resizeWindow();
     window.addEventListener("resize", resizeWindow);
     return () => window.removeEventListener("resize", resizeWindow);
   }, []);
+
+  useEffect(()=>{
+    dispatch(getBecomeSellerInfo());
+  }, [])
 
   const route = useRouter();
   let { pageName } = route.query;

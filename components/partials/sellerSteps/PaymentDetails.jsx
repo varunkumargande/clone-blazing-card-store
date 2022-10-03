@@ -34,7 +34,7 @@ export default function PaymentDetails() {
 
   return (
     <div className="step-container">
-      <h3 className="flex flex-center"><div className="edit-back"><IconBack/></div>Payment Details</h3>
+      <h3 className="flex flex-center"><div className="edit-back" onClick={() => router.back()} ><IconBack/></div>Payment Details</h3>
       <div className="sub-title">
         Blazing Cards takes marketplace safety seriously. Sellers must have a
         valid payment method on file. In rare occasions, sellers are charged a

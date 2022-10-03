@@ -10,7 +10,7 @@ export default function LeftPannel(){
         (state) => state?.becomeSeller
       );
       const stepState = [
-        "guideLines",
+        "guidelines",
         "basicDetails",
         "paymentDetails",
         "shippingDetails",

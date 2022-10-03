@@ -32,20 +32,20 @@ export default function ShippingDetails() {
 
   return (
     <div className="step-container">
-      <h3 className="flex flex-center"><div className="edit-back"><IconBack/></div>Shipping Details</h3>
+      <h3 className="flex flex-center"><div className="edit-back" onClick={() => router.back()} ><IconBack/></div>Shipping Details</h3>
       <div className="sub-title">
         A return address must be added before going live on Blazing Cards. This
         will be used on your shipment labels.
       </div>
       <Formik
         initialValues={{
-          fullName: "",
-          addressLine1: "",
-          addressLine2: "",
-          country: "",
-          postalCode: "",
-          city: "",
-          state: "",
+          fullName: shippingDetails?.shipFromName ?? "",
+          addressLine1: shippingDetails?.addressLine1 ?? "",
+          addressLine2: shippingDetails?.addressLine2 ?? "",
+          country: shippingDetails?.country ?? "",
+          postalCode: shippingDetails?.postalCode ?? "",
+          city: shippingDetails?.city ?? "",
+          state: shippingDetails?.state ?? "",
         }}
         validationSchema={shippingDetailsvalidation}
         onSubmit={(values) => {
