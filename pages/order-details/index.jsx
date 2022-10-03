@@ -78,13 +78,15 @@ const createBreadCrumb = () => {
   };
   return (
     <>
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      {windowWidth <= 1024 ? "" : <HeaderDefault />}
       <div className="myorder-wrapper">
-        <section className="breadcrumbs-wrapper no-bg mb26">
-          <ul className="breadcrumbs flex flex-center">
-            {createBreadCrumb()}
-          </ul>
-        </section>
+      {windowWidth <= 1024 ? 
+            "" 
+            : <section className="breadcrumbs-wrapper no-bg mb26">
+                <ul className="breadcrumbs flex flex-center">
+                {createBreadCrumb()}
+            </ul>
+        </section>}
         <div className="heading-wrapper flex space-between flex-center mb16 border-btm">
           <h1>
             <button className="back">
