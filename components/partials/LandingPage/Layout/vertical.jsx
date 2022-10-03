@@ -21,13 +21,13 @@ export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCa
                 } else {
                     if (parseInt(subCateId) === detail.category_id) {
                         return (
-                            <StreamCard detail={detail} />
+                            <StreamCard detail={detail} isLive={true} />
                         )
                     }
 
                     if (parseInt(subCateId) === detail.subCategory_id) {
                         return (
-                            <StreamCard detail={detail} />
+                            <StreamCard detail={detail} isLive={true} />
                         )
                     }
                 }

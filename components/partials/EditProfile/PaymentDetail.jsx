@@ -15,7 +15,7 @@ export default function PaymentDetail() {
   const [delStatus, setDelStatus] = useState(0);
   const [cardLoader, setCardLoader] = useState(true);
   const [countryData, setCountryData] = useState([]);
-  const [isCardData, setIsCardData] = useState(true);
+  const [isCardData, setIsCardData] = useState(false);
   const [isCardEdit, setIsCardEdit] = useState(false);
 
   useEffect(() => {
@@ -39,8 +39,10 @@ export default function PaymentDetail() {
       if (result.data.data != false) {
         setCardData(result.data.data[0]);
         setCardLoader(false);
-        setIsCardEdit(false)
-        setIsCardData(true)
+        setIsCardEdit(false);
+        if(result.data.data.length != 0){
+          setIsCardData(true);
+        }
       } else {
         setCardLoader(false);
         setIsCardData(false);
@@ -137,7 +139,9 @@ export default function PaymentDetail() {
                                 onChange={handleChange}
                                 value={values.cardNumber}
                               />
-                              <span className="card-icon"><IconMasterCard /></span>
+                              <span className="card-icon">
+                                <IconMasterCard />
+                              </span>
                               <span className="errorMessage">
                                 {errors.cardNumber}
                               </span>
@@ -197,12 +201,18 @@ export default function PaymentDetail() {
                         </div>
                       </div>
                       <div className="button-wrapper flex mb40">
-                        {/* <button
-                          className="border-btn mr16"
-                          onClick={() => setIsCardData(true)}
-                        >
-                          Cancel
-                        </button> */}
+                        {!isCardData ? (
+                          <>
+                            <button
+                              className="border-btn mr16"
+                              onClick={() => setIsCardData(true)}
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          ""
+                        )}
                         <button className="primary-btn">Save</button>
                       </div>
                     </form>
