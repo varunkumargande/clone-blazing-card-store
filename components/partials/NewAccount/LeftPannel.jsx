@@ -20,9 +20,6 @@ export default function LeftPannel(){
                 <img src="/static/images/Charizard.png" alt="Charizard" />
             </div>
             <div className="flex justify-center indicator mb70">
-                <span></span>
-                <span className="active"></span>
-                <span></span>
             </div>
             <div className="social-icon-wrapper">
                 <h3 className="follow mb20">Follow Us On</h3>

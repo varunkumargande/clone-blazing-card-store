@@ -16,11 +16,7 @@ export default function ImportantGuidelines() {
   const handleSubmit = () => {
     dispatch(rulesAcknowledgement({ isAgree: 1 }, router));
   };
-  // useEffect(() => {
-  //   if (status) {
-  //     router.push("/become-seller/basicDetails", undefined, { shallow: true });
-  //   }
-  // }, [status]);
+
   return (
     <div className="step-container">
       <h3 className="flex flex-center"><div className="edit-back"><IconBack/></div>Important Guidelines</h3>
@@ -59,7 +55,7 @@ export default function ImportantGuidelines() {
         <div className="ruls-wrap">
           <h4>Don't sell counterfeits</h4>
           <p>
-            Don’t sell fake items on Whatnot. If you’re unsure of an items
+            Don’t sell fake items on BlazingCard. If you’re unsure of an items
             authenticity, don’t sell it
           </p>
         </div>
