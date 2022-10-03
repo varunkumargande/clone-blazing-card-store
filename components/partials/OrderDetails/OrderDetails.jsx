@@ -49,7 +49,7 @@ export default function OrderDetails() {
               </div>
             </div>
             <div className="billing-shipping-wrap flex space-between">
-              <div className="billing-shipping wd50 box">
+            <div className="billing-shipping wd50 box">
                 <div className="heading">Shipping Information</div>
                 <div className="body">
                   <div className="bodyText flex flex-center">
@@ -78,6 +78,7 @@ export default function OrderDetails() {
                   </div>
                 </div>
               </div>
+              
             </div>
           </div>
           <div className="order-summery-wrap">

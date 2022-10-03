@@ -1,6 +1,7 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import IconSpeaker from '../../Icons/IconSpeaker';
 import IconSpeakerMute from '../../Icons/IconSpeakerMute';
+import IconShops from '../../Icons/IconShops';
 import IconShare from '../../Icons/IconShare';
 import IconLikeWhite from '../../Icons/IconLikeWhite';
 import IconDoller from '../../Icons/IconDoller';
@@ -9,6 +10,16 @@ import { CustomBidModal } from "../Modal/Modal";
 import { AddNewCardModal,PaymentInfoModal } from "../Modal/Modal";
 
 export default function StreamingLive(){
+    const [windowWidth, setWindowWidth] = useState(0);
+    let resizeWindow = () => {
+      setWindowWidth(window.innerWidth);
+    };
+  
+    useEffect(() => {
+      resizeWindow();
+      window.addEventListener("resize", resizeWindow);
+      return () => window.removeEventListener("resize", resizeWindow);
+    }, []);
     return(
         <div className="streaming-live disable">
             <div className="stream-image-video">
@@ -21,6 +32,7 @@ export default function StreamingLive(){
                     {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
                 </div>
                 <div className="video-icon">
+                    {windowWidth <= 1024 ? <button className="flex flex-center justify-center br50 shops"><IconShops/></button>:""}
                     <button className="flex flex-center justify-center br50 valum">
                         <IconSpeaker/>
                         {/* <IconSpeakerMute /> */}

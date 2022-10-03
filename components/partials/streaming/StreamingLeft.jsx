@@ -36,7 +36,7 @@ export default function StreamingLeft(){
                         <li>PSA SLAB #83</li>
                     </ul>  
                 </div> */}
-                {/* <div className="buynow-list leftdata-list">
+                <div className="buynow-list leftdata-list">
                     <div className="product-count">65 Products</div>
                     <div className="product-list">
                         <div className="flex flex-center space-between list">
@@ -90,7 +90,7 @@ export default function StreamingLeft(){
                             </div>
                         </div>
                     </div>  
-                </div> */}
+                </div>
                 {/* <div className="sold-list leftdata-list">
                     <div className="product-count">19 Products</div>
                     <div className="product-list">
@@ -132,7 +132,7 @@ export default function StreamingLeft(){
                         </div>
                     </div>  
                 </div> */}
-                <div className="purchased-list leftdata-list"> 
+                {/* <div className="purchased-list leftdata-list"> 
                     <div className="product-count">19 Products</div>
                     <div className="product-list">
                         <div className="flex space-between list-data">
@@ -154,7 +154,7 @@ export default function StreamingLeft(){
                             </div>
                         </div>
                     </div>  
-                </div>
+                </div> */}
             </div>
         </div>
     );

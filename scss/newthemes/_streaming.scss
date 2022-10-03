@@ -229,7 +229,7 @@
     }
     .video-icon{
         width: 42px;
-        @include pos(ab,null,16px,96px,null,null);
+        @include pos(ab,null,16px,96px,null,1);
         button{
             width:42px;
             height: 42px;
@@ -479,6 +479,146 @@
         width:calc(100% - 90px)
     }
 }
+@media all and (min-width:320px) and (max-width:1024px){
+    .streaming-page{
+        @include pos(re);
+    }
+    .stream-top-header{
+        background-color: #fff;
+        padding: 25px 15px;
+    }
+    .streaming-live{
+        flex: 0 0 100%;
+        .video-icon{
+            bottom: 136px;
+        }
+        .stream-header{
+            height: calc(100% - 160px);
+            background: transparent;
+            .head-title{
+                align-self: flex-end;
+            }
+        }
+        .video-icon{
+            z-index: 4;
+        }
+        .stream-footer{
+            flex-wrap: wrap;
+            bottom: 24px;
+            height: auto;
+            z-index: 4;
+            .left{
+                margin-bottom:15px;
+                width: 100%;
+            }
+            .btn-wrap{
+                width: 100%;
+                max-width: 100%;
+                justify-content: space-between;
+                .border-btn{
+                    max-width: 130px;
+                }
+                .primary-btn{
+                    max-width: calc(100% - 146px);
+                    width: 100%;
+                }
+            }
+            .auction-end{
+                width: 100%;
+                .primary-btn{
+                    width: 100%;
+                }
+            }
+        }
+        .winner-profile{
+            bottom: 213px;
+        }        
+    }
+    .streaming-page{
+        .streaming-left{
+            height: auto;
+            padding: 0;
+            .profile-wrapper{
+                padding: 0;
+                z-index: 4;
+                max-width: calc(100% - 80px);
+                @include pos(ab,24px,null,null,16px,4);
+
+            }
+            .leftdata-wrapper{
+                width: 100%;
+                @include pos(ab,null,null,0,0,5);
+                border-radius: 16px 16px 0 0;
+                background-color: $white-color;
+                color:$primary-color;
+                .title{
+                    color:$primary-color;
+                }
+                .search{
+                    input{
+                        border-color: $border2-color;
+                        color:$primary-color;
+                    }
+                }
+            }
+            .product-list{
+                height: calc(100vh - 415px);
+                .list-data{
+                    border-color: $border2-color;
+                    strong,span{
+                        color:$primary-color;
+                    }
+                }
+                li,.list{
+                    border-color: $border2-color;
+                }
+                .list{
+                    .border-btn{
+                        &.selected{
+                            background-color: $blue-color;
+                            color:$white-color;
+                        }
+                    }
+                }
+            }
+        }
+        .streaming-right{
+            @include pos(ab,null,null,250px,0);
+            max-width: calc(100% - 70px);
+            max-height: calc(100% - 315px);
+            padding: 0 15px;
+            z-index: 3;
+            &:after{
+                content: none;
+            }
+            .chat-wrap{
+                padding: 0;
+            }
+            .input-chat{
+                padding: 0;
+                left:16px;
+                width:calc(100% - 16px);
+                input{
+                    width: calc(100% - 50px);
+                    background-color: rgba(#000,.4);
+                    border-color: $border2-color;
+                    color:$white-color;
+                    &::placeholder { 
+                        color: #c6c7c8;
+                        opacity: 1; 
+                    }
+                    &:-ms-input-placeholder { 
+                        color: #c6c7c8;
+                    }
+                    &::-ms-input-placeholder { 
+                        color: #c6c7c8;
+                    }
+                }
+                
+            }
+        }
+    }
+}   
 @media all and (min-width:1025px){
     .streaming-page{
         min-height: calc(100vh - 90px);
