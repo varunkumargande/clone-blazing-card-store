@@ -8,6 +8,7 @@ import Footer from "../../components/partials/LandingPage/Footer";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import { orderListApi } from "../../api";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 export default function Myorders() {
   const [searchVal, setSearchVal] = useState("");
   const [active, setActive] = useState(false);
@@ -42,15 +43,36 @@ export default function Myorders() {
   useEffect(() => {
     orderListApi(dispatch, searchVal);
   }, [searchVal]);
+  const breadCrumb = [
+    {
+      text: "Home",
+      url: "/",
+    },
+    {
+      text: "/ My orders",
+      url: "/my-orders/",
+    },
+  ];
+  const createBreadCrumb = () => {
+    return (
+      <>
+        {breadCrumb.map((link) => (
+          <li key={link.text} className={breadCrumb.indexOf(link) === (breadCrumb.length-1) ? "current" : ""}>
+            <Link href={link.url}>
+              <a>{link.text}</a>
+            </Link>
+          </li>
+        ))}
+      </>
+    );
+  };
   return (
     <>
       {windowWidth <= 1024 ? "" : <HeaderDefault />}
       <div className="myorder-wrapper">
         
         {windowWidth <= 1024 ? "" : <section className="breadcrumbs-wrapper no-bg mb26">
-          <ul className="breadcrumbs flex flex-center">
-            <li>Home</li>/<li className="current">My Orders</li>
-          </ul>
+          <ul className="breadcrumbs flex flex-center">{createBreadCrumb()}</ul>
         </section>}
         <div className="heading-wrapper flex space-between flex-center mb16">
           <h1>{windowWidth <= 1024 ? <button className="back"><IconBack/></button> : ""}My Orders</h1>

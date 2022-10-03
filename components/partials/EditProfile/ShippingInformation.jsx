@@ -61,7 +61,7 @@ export default function ShippingDetails() {
             validationSchema={shippingSchema}
             onSubmit={(values) => {
               if (addressData.length != 0) {
-                editAddressApi(values, Router, addressData[0].addressId);
+                editAddressApi(values, addressData[0].addressId);
               } else {
                 UserAddAddress(values, Router, addressList);
               }

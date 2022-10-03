@@ -119,7 +119,7 @@ function HeaderDefault({ auth }, props) {
                         </span>
                     </span>
                 </label> */}
-            <Link href="">
+            <Link href="/become-seller/guidelines">
               <a className="border-btn flex flex-center justify-center become">
                 Become a Seller
               </a>
