@@ -78,7 +78,7 @@ const createBreadCrumb = () => {
   };
   return (
     <>
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      {windowWidth <= 1024 ? "" : <HeaderDefault />}
       <div className="myorder-wrapper">
       {windowWidth <= 1024 ? 
             "" 
