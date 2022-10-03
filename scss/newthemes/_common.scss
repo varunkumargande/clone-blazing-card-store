@@ -169,6 +169,10 @@ h1{
       line-height: 14px;
       color: $danger-color;
       margin-top: 6px;
+      width: 100%;
+  }
+  .card-icon{
+    @include pos(ab,32px,10px,null,null);
   }
   select{
     appearance: none;
@@ -460,9 +464,13 @@ label{
 }
 .back{
   margin-right: 10px;
+  cursor: pointer;
   .icon{
     fill:#A1ABB7;
   }
+}
+.edit-back{
+  cursor: pointer;
 }
 .category-banner{
   @include pos(re);

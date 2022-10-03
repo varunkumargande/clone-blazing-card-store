@@ -1,7 +1,9 @@
 import React,{useState,useEffect,useRef} from "react";
 import Header from "../../components/partials/LandingPage/Header";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
+import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import IconLike from "../../components/Icons/IconLike";
+import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
 import IconShareFacebook from "../../components/Icons/IconShareFacebook"
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
@@ -69,8 +71,8 @@ export default function categoryStream(){
       };
 
     return(
-        <div className="home-container">
-            {windowWidth <= 1024 ? <MobileHeader/> : <Header />}
+        <div className="home-container profile-container-wrap">
+            {windowWidth <= 1024 ? <div className="profile-title flex flex-center"><div className="edit-back"><IconBack/></div>Profile</div> : <HeaderDefault />}
             <section className="category-banner">
                 <img src="/static/images/cover.png" alt="cover" />
                 <div className="cover-wrap flex justify-right"><button className="border-btn cover-btn">Edit Cover Photo</button></div>

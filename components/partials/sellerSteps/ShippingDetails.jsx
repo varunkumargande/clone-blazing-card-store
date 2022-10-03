@@ -1,8 +1,9 @@
 import React from "react";
+import IconBack from '../../Icons/IconBack';
 export default function PaymentDetails(){
     return(
         <div className="step-container">
-            <h3>Shipping Details</h3>
+            <h3 className="flex flex-center"><div className="edit-back"><IconBack/></div>Shipping Details</h3>
             <div className="sub-title">A return address must be added before going live on Blazing Cards. This will be used on your shipment labels.</div>
             <form>
                 <div className="flex space-between">
