@@ -16,7 +16,7 @@ export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCa
             return data[categoryName].map((detail, index) => {
                 if (subCateId == "select" || subCateId == null) {
                     return (
-                        <StreamCard detail={detail} />
+                        <StreamCard detail={detail} isLive={true} />
                     )
                 } else {
                     if (parseInt(subCateId) === detail.category_id) {
