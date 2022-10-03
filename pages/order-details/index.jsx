@@ -97,7 +97,7 @@ const createBreadCrumb = () => {
               Order Placed:{" "}
               {moment(orderDetail?.productData?.createdDate).format("MMMM DD, YYYY")}
             </div>
-            <div className="delivered">Order Delivered: August 22, 2022</div>
+            <div className="delivered">Order Delivered: In Processing</div>
           </div>
         </div>
         <div className="orderdetails-wrapper flex space-between">

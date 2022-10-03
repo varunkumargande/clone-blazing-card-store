@@ -50,19 +50,6 @@ export default function OrderDetails() {
             </div>
             <div className="billing-shipping-wrap flex space-between">
               <div className="billing-shipping wd50 box">
-                <div className="heading">Billing Information</div>
-                <div className="body">
-                  <h5>Credit Card</h5>
-                  <div className="bodyText flex flex-center">
-                    <span className="mastr">
-                      <IconMasterCard />
-                    </span>{" "}
-                    {cardDetails?.card?.brand} ending with{" "}
-                    {cardDetails?.card?.last4}
-                  </div>
-                </div>
-              </div>
-              <div className="billing-shipping wd50 box">
                 <div className="heading">Shipping Information</div>
                 <div className="body">
                   <div className="bodyText flex flex-center">
@@ -75,6 +62,19 @@ export default function OrderDetails() {
                       shippingDetails?.shippingZone +
                       ", " +
                       shippingDetails?.shippingPostcode}
+                  </div>
+                </div>
+              </div>
+              <div className="billing-shipping wd50 box">
+                <div className="heading">Billing Information</div>
+                <div className="body">
+                  <h5>Credit Card</h5>
+                  <div className="bodyText flex flex-center">
+                    <span className="mastr">
+                      <IconMasterCard />
+                    </span>{" "}
+                    {cardDetails?.card?.brand} ending with{" "}
+                    {cardDetails?.card?.last4}
                   </div>
                 </div>
               </div>
@@ -103,7 +103,7 @@ export default function OrderDetails() {
               </div>
             </div>
             <div className="download-wrap flex space-between flex-center">
-              <button className="track flex flex-center justify-center">
+              <button className="border-btn flex flex-center justify-center">
                 <IconTrack />
                 Track
               </button>
