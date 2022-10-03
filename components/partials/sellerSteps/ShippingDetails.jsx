@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import MySelect from "../../CommonComponents/MySelect";
 import { Formik, Form } from "formik";
 import { TextInput } from "../../CommonComponents/TextInput";
-import { shippingDetailsvalidation } from "../../../pages/become-seller/validations/shippingDetails";
+import { shippingDetailsvalidation } from "../../../utilities/validations/shippingDetails";
 import IconBack from '../../Icons/IconBack';
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";

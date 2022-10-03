@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { basicDetailvalidation } from "../../../pages/become-seller/validations/basicDetails";
+import { basicDetailvalidation } from "../../../utilities/validations/basicDetails";
 import { TextInput } from "../../CommonComponents/TextInput";
 import FileUpload from "../../CommonComponents/fileUpload";
 import { useRouter } from "next/router";
