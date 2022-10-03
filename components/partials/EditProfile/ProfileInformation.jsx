@@ -143,7 +143,7 @@ export default function ProfileInformation() {
               facebookUrl: profileData?.facebookUrl,
               phoneNumber: profileData?.phoneNumber,
               emailId: profileData?.emailId,
-            }}
+              }}
             validationSchema={profileSchema}
             onSubmit={(values) => {
               editProfileApi(values, newDp, Router);
