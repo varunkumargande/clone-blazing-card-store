@@ -183,15 +183,15 @@ export function PaymentInfoModal(props) {
   const addressInfo =
     addressList?.length == 0
       ? "Add Address"
-      : addressList[0].address1 +
+      : addressList[0]?.address1 +
         " ," +
-        addressList[0].address2 +
+        addressList[0]?.address2 +
         " ," +
-        addressList[0].city +
+        addressList[0]?.city +
         " ," +
-        addressList[0].state +
+        addressList[0]?.state +
         " ," +
-        addressList[0].postcode;
+        addressList[0]?.postcode;
 
   const shipSchema = Yup.object().shape({
     fullName: Yup.string().min(2, "Too Short!").required("Required"),
@@ -200,10 +200,10 @@ export function PaymentInfoModal(props) {
   const cardDetails =
     cardDetail?.length == 0
       ? "Add shipment"
-      : cardDetail[0].card.brand +
+      : cardDetail[0]?.card.brand +
         " " +
         "XXXX XXXX XXXX " +
-        cardDetail[0].card.last4;
+        cardDetail[0]?.card.last4;
 
   return (
     <div className="modalOverlay flex justify-center flex-center">

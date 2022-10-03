@@ -7,7 +7,7 @@ import { streamLikeDislike } from "../../../api/stream/streams_api";
 
 export default function LiveStreamStatus({ isLive, uuid }) {
 
-    const [likedStream, setLikedStream] = useState([]);
+  const [likedStream, setLikedStream] = useState([]);
 
   const handleLikeUnlike = async (uuid) => {
     const userDetails = JSON.parse(sessionStorage.getItem("spurtUser"));
@@ -17,7 +17,6 @@ export default function LiveStreamStatus({ isLive, uuid }) {
         user_id: userDetails?.id,
       };
       const response = await streamLikeDislike(data);
-      console.log(response);
       if (response.status) {
         setLikedStream((state) => [...state, uuid]);
       }

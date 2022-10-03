@@ -197,12 +197,12 @@ export default function PaymentDetail() {
                         </div>
                       </div>
                       <div className="button-wrapper flex mb40">
-                        <button
+                        {/* <button
                           className="border-btn mr16"
                           onClick={() => setIsCardData(true)}
                         >
                           Cancel
-                        </button>
+                        </button> */}
                         <button className="primary-btn">Save</button>
                       </div>
                     </form>
