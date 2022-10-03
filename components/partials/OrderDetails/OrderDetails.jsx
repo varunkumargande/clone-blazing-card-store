@@ -97,8 +97,9 @@ export default function OrderDetails(){
                     </div>
                 </div>
                 <div className="download-wrap flex space-between flex-center">
-                    <button className="track flex flex-center justify-center"><IconTrack/>Track</button>
-                    <button className="download flex flex-center justify-center"><IconDownload/>Track</button>
+                    <button className="border-btn flex flex-center justify-center">Download Invoice</button>
+                    {/* <button className="track flex flex-center justify-center"><IconTrack/>Track</button> */}
+                    {/* <button className="download flex flex-center justify-center"><IconDownload/>Track</button> */}
                 </div>
             </div>
         </>

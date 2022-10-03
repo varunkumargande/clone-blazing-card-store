@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import IconSearch from "../../components/Icons/IconSearch";
+import IconBack from '../../components/Icons/IconBack';
 import IconDropdown from "../../components/Icons/IconDropdown";
 import MyOrders from "../../components/partials/MyOrders/MyOrders";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
@@ -43,15 +44,16 @@ export default function Myorders() {
   }, [searchVal]);
   return (
     <>
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      {windowWidth <= 1024 ? "" : <HeaderDefault />}
       <div className="myorder-wrapper">
-        <section className="breadcrumbs-wrapper no-bg mb26">
+        
+        {windowWidth <= 1024 ? "" : <section className="breadcrumbs-wrapper no-bg mb26">
           <ul className="breadcrumbs flex flex-center">
             <li>Home</li>/<li className="current">My Orders</li>
           </ul>
-        </section>
+        </section>}
         <div className="heading-wrapper flex space-between flex-center mb16">
-          <h1>My Orders</h1>
+          <h1>{windowWidth <= 1024 ? <button className="back"><IconBack/></button> : ""}My Orders</h1>
           <div className="search-wrapper flex flex-center">
             <div className="Search">
               <input
