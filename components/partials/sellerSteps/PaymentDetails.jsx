@@ -42,11 +42,11 @@ export default function PaymentDetails() {
       </div>
       <Formik
         initialValues={{
-          cardNumber: "",
+          cardNumber:  "",
           cvv: "",
           expiry: "",
-          country: "",
-          paymentMethod: "",
+          country: paymentDetails?.country ?? "",
+          paymentMethod: paymentDetails?.paymentMethod ?? "",
         }}
         validationSchema={paymentDetailsvalidation}
 
