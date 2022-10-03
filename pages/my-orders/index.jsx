@@ -14,7 +14,15 @@ export default function Myorders() {
   const [active, setActive] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
   const wrapperRef = useRef(null);
+  const [filter, setFilter] = useState("Recent");
   const dispatch = useDispatch();
+  const DROPDOWN_FILTERS = {
+    "Recent": "",
+    "Last month": "last_1",
+    "Last 3 months": "last_3",
+  };
+  const [dropFilter, setDropFilter] = useState("Recent");
+
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
   };
@@ -41,8 +49,28 @@ export default function Myorders() {
   }, []);
 
   useEffect(() => {
-    orderListApi(dispatch, searchVal);
-  }, [searchVal]);
+    orderListApi(dispatch, searchVal, filter);
+  }, [searchVal, filter]);
+
+  const handleFilter = (filterValue) => {
+    setDropFilter(filterValue[0]);
+    setFilter(filterValue[1]);
+  };
+  const dropDownFilter = () => {
+    return Object.entries(DROPDOWN_FILTERS).map((index) => {
+      console.log(index);
+      return (
+        <>
+          <li
+            onClick={(e) => handleFilter(index)}
+          >
+            {index[0]}
+          </li>
+        </>
+      );
+    });
+  };
+
   const breadCrumb = [
     {
       text: "Home",
@@ -57,7 +85,14 @@ export default function Myorders() {
     return (
       <>
         {breadCrumb.map((link) => (
-          <li key={link.text} className={breadCrumb.indexOf(link) === (breadCrumb.length-1) ? "current" : ""}>
+          <li
+            key={link.text}
+            className={
+              breadCrumb.indexOf(link) === breadCrumb.length - 1
+                ? "current"
+                : ""
+            }
+          >
             <Link href={link.url}>
               <a>{link.text}</a>
             </Link>
@@ -96,11 +131,10 @@ export default function Myorders() {
                 onClick={handleOnClick}
                 ref={wrapperRef}
               >
-                Recent <IconDropdown />
+                {dropFilter} <IconDropdown />
               </button>
               <ul className={active ? "dropdwnList active" : "dropdwnList"}>
-                <li>Last months</li>
-                <li>Last 3 months</li>
+                {dropDownFilter()}
               </ul>
             </div>
           </div>
