@@ -94,8 +94,8 @@ export default function ProfileInformation() {
                       width={"200"}
                       height={"200"}
                       src={
-                        profileData.avatar != null
-                          ? `https://blazing-card-backend-dev.kellton.net/api/media/image-resize?path=${profileData.avatarPath}&name=${profileData.avatar}&width=300&height=300`
+                        profileData?.avatar != null
+                          ? `https://blazing-card-backend-dev.kellton.net/api/media/image-resize?path=${profileData?.avatarPath}&name=${profileData?.avatar}&width=300&height=300`
                           : "/static/images/profile-lg-image.png"
                       }
                       alt="Profile"
@@ -136,13 +136,13 @@ export default function ProfileInformation() {
         <>
           <Formik
             initialValues={{
-              firstName: profileData.firstName,
-              lastName: profileData.lastName,
-              bio: profileData.bio,
-              twitterUrl: profileData.twitterUrl,
-              facebookUrl: profileData.facebookUrl,
-              phoneNumber: profileData.phoneNumber,
-              emailId: profileData.emailId,
+              firstName: profileData?.firstName,
+              lastName: profileData?.lastName,
+              bio: profileData?.bio,
+              twitterUrl: profileData?.twitterUrl,
+              facebookUrl: profileData?.facebookUrl,
+              phoneNumber: profileData?.phoneNumber,
+              emailId: profileData?.emailId,
             }}
             validationSchema={profileSchema}
             onSubmit={(values) => {
