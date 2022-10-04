@@ -361,7 +361,7 @@ export default function ProfileInformation() {
 
       <h3>Delete Your Blazing Cards Account</h3>
       <div className="dicscription">
-        This will completely deactivate your account
+        Deleting your account will completely erase your data and information related to your account.
       </div>
       <div className="box inline">
         If you want to delete your Blazing Cards account, Please click on{" "}
