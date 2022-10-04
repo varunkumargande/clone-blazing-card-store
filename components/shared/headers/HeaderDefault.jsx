@@ -69,7 +69,7 @@ function HeaderDefault({ auth }, props) {
           )
         : setAimg("/static/img/no-image.png");
     }
-  }, [JSON.parse(sessionStorage.getItem("spurtUser"))]);
+  },[]);
 
 
   const handleLogout = (e) => {
