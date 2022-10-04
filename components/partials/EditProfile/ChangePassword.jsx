@@ -63,6 +63,7 @@ export default function ChangePassword() {
                           placeholder={"Enter here"}
                           className="grey-bg"
                           onChange={handleChange}
+                          type="password"
                         />
                         <span className="errorMessage">
                           {errors.currentPassword}
@@ -76,6 +77,7 @@ export default function ChangePassword() {
                           id="usr"
                           className="grey-bg"
                           onChange={handleChange}
+                          type="password"
                         />
                         <span className="errorMessage">
                           {errors.newPassword}
@@ -90,6 +92,7 @@ export default function ChangePassword() {
                           className="grey-bg"
                           onChange={handleChange}
                           value={values.retypeNewPassword}
+                          type="password"
                         />
                         <span className="errorMessage">
                           {errors.retypeNewPassword}

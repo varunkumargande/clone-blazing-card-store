@@ -15,7 +15,6 @@ export default function ProfileInformation() {
   const [newDp, setNewDp] = useState("");
   const inputFile = useRef(null);
   const [loader, setLoader] = useState(false);
-
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -314,18 +313,8 @@ export default function ProfileInformation() {
                     <div className="button-wrapper flex mb40">
                       <button
                         className="border-btn mr16"
-                        type="reset"
-                        onClick={() =>
-                          resetForm({
-                            firstName: "",
-                            lastName: "",
-                            bio: "",
-                            twitterUrl: "",
-                            facebookUrl: "",
-                            phoneNumber: "",
-                            emailId: "",
-                          })
-                        }
+                       type="button"
+                        onClick={resetForm}
                       >
                         Cancel
                       </button>
