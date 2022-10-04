@@ -89,7 +89,7 @@ const createBreadCrumb = () => {
         </section>}
         <div className="heading-wrapper flex space-between flex-center mb16 border-btm">
           <h1>
-            <button className="back">
+            <button className="back" onClick={e => window.history.back()}>
               <IconBack />
             </button>
             Order Detail

@@ -145,7 +145,7 @@ export default function PaymentDetail() {
                                 <IconMasterCard />
                               </span>
                               <span className="errorMessage">
-                                {errors.cardNumber}
+                              {errors.cardNumber && touched.cardNumber ? errors.cardNumber : null}
                               </span>
                             </div>
                             <div className="input-control wd50">
@@ -159,7 +159,7 @@ export default function PaymentDetail() {
                                 value={values.month}
                               />
                               <span className="errorMessage">
-                                {errors.expireDate}
+                              {errors.expireDate && touched.expireDate ? errors.expireDate : null}
                               </span>
                             </div>
                             <div className="input-control wd50">
@@ -171,7 +171,9 @@ export default function PaymentDetail() {
                                 onChange={handleChange}
                                 value={values.cvc}
                               />
-                              <span className="errorMessage"></span>
+                              <span className="errorMessage">
+                                {errors.cvc && touched.cvc ? errors.cvc : null}
+                              </span>
                             </div>
                             <div className="input-control wd50">
                               <label htmlFor="usr">Country *</label>
@@ -192,7 +194,9 @@ export default function PaymentDetail() {
                                   );
                                 })}
                               </select>
-                              <span className="errorMessage"></span>
+                              <span className="errorMessage">
+                                {errors.countryId && touched.countryId ? errors.countryId : null}
+                              </span>
                             </div>
                           </div>
                           <div className="discriptionlg">

@@ -58,7 +58,6 @@ export default function Myorders() {
   };
   const dropDownFilter = () => {
     return Object.entries(DROPDOWN_FILTERS).map((index) => {
-      console.log(index);
       return (
         <>
           <li
