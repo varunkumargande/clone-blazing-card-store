@@ -804,3 +804,27 @@ export function ChatUserModal({ setIsOpen }) {
     </div>
   );
 }
+
+export function UnfollowModal() {
+
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-body text-center">
+          <div className="profile-icon">
+            <img src="/static/images/profile-large.svg" alt="" />
+          </div>
+          <div className="profile-id">Want to follow @felix.bronco?</div>
+          <div className="btn-wrap follow-btn-wrap flex justify-center">
+            <button className="border-btn">
+              Cancel
+            </button>
+            <button className="primary-btn">
+              Unfollow
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
