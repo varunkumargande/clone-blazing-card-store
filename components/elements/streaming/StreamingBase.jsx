@@ -5,7 +5,7 @@ import { createBid } from "../../../api/stream/createBid";
 import { useSelector } from "react-redux";
 import IconSpeaker from "../../Icons/IconSpeaker";
 import IconShare from "../../Icons/IconShare";
-import IconHeart from "../../Icons/IconHeart";
+import IconLikeWhite from "../../Icons/IconLikeWhite";
 import IconDoller from "../../Icons/IconDoller";
 import IconEye from "../../Icons/IconEye";
 import {
@@ -337,7 +337,7 @@ function StreamingBase({
               <IconShare />
             </button>
             <button onClick={handleLikeUnlike} className={getlikeClass()}>
-              <IconHeart />
+              <IconLikeWhite />
             </button>
             <button className="flex flex-center justify-center br50">
               <IconDoller />
