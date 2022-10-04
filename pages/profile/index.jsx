@@ -22,7 +22,7 @@ import Followers from "../../components/partials/Profile/Followers";
 export default function PublicProfile() {
     const router = useRouter();
     const [active, setActive] = useState(false);
-    const [userId, setUserId] = useState(router.query.userId);
+    const [userId, setUserId] = useState(null);
     const [profile, setProfile] = useState(null);
     const [upcomingShows, setUpcomingShows] = useState([]);
     const [previousShows, setPreviousShows] = useState([]);
@@ -55,6 +55,14 @@ export default function PublicProfile() {
     }
 
     useEffect(() => {
+        console.log(router.query);
+        if(router.query.userId) {
+            console.log("CHECKER!!")
+            setUserId(router.query.userId);
+        }
+    }, [router.query])
+
+    useEffect(() => {
         document.addEventListener('click', handleClickOutside, false)
         return () => {
             document.removeEventListener('click', handleClickOutside, false)
@@ -63,6 +71,7 @@ export default function PublicProfile() {
 
     useEffect(() => {
         if (userId) {
+            console.log("22")
             ProfileMethods.GetPublicProfile(userId, setProfile);
         }
     }, [userId]);
