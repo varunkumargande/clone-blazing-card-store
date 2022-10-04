@@ -306,9 +306,8 @@ function StreamingBase({
                 <div className="head-title">Please login to participate</div>
               </>
             )}
-            <div className="tme-wrap flex flex-center justify-center">
-              <IconEye />
-              <span>1.2K</span> <button className="live">Live</button>
+            <div className="tme-wrap flex flex-center justify-center live">
+              <span>1.2K</span> <button className="live"></button>
             </div>
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
