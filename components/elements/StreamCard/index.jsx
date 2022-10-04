@@ -79,7 +79,7 @@ export default function StreamCard({ detail, isLive }) {
             <img
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null; // prevents looping
-                currentTarget.src = "/static/images/profile.png";
+                currentTarget.src = "/static/img/no-image.png";
               }}
               src={getImagePath("vendor")}
               alt="Card"
