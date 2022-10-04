@@ -36,18 +36,18 @@ export default function PaymentDetail() {
   const cardListApi = async () => {
     const result = await APIServices.getUser("customer-card-details/getCard");
     if (result.status == 200) {
-      console.log(result.data.data)
+      console.log(result.data.data);
       if (result.data.data != false) {
         setCardData(result.data.data[0]);
         setCardLoader(false);
         setIsCardEdit(false);
-        if(result.data.data.length != 0){
+        if (result.data.data.length != 0) {
           setIsCardData(true);
         }
       } else {
         setCardLoader(false);
         setIsCardData(false);
-        setCardData(null)
+        setCardData(null);
       }
     } else {
       modalWarning("error", result.data.message);
@@ -120,6 +120,7 @@ export default function PaymentDetail() {
                   handleBlur,
                   handleSubmit,
                   isSubmitting,
+                  resetForm,
                 }) => (
                   <>
                     <form onSubmit={handleSubmit}>
@@ -145,7 +146,9 @@ export default function PaymentDetail() {
                                 <IconMasterCard />
                               </span>
                               <span className="errorMessage">
-                              {errors.cardNumber && touched.cardNumber ? errors.cardNumber : null}
+                                {errors.cardNumber && touched.cardNumber
+                                  ? errors.cardNumber
+                                  : null}
                               </span>
                             </div>
                             <div className="input-control wd50">
@@ -159,7 +162,9 @@ export default function PaymentDetail() {
                                 value={values.month}
                               />
                               <span className="errorMessage">
-                              {errors.expireDate && touched.expireDate ? errors.expireDate : null}
+                                {errors.expireDate && touched.expireDate
+                                  ? errors.expireDate
+                                  : null}
                               </span>
                             </div>
                             <div className="input-control wd50">
@@ -170,6 +175,7 @@ export default function PaymentDetail() {
                                 className="grey-bg"
                                 onChange={handleChange}
                                 value={values.cvc}
+                                type="password"
                               />
                               <span className="errorMessage">
                                 {errors.cvc && touched.cvc ? errors.cvc : null}
@@ -195,7 +201,9 @@ export default function PaymentDetail() {
                                 })}
                               </select>
                               <span className="errorMessage">
-                                {errors.countryId && touched.countryId ? errors.countryId : null}
+                                {errors.countryId && touched.countryId
+                                  ? errors.countryId
+                                  : null}
                               </span>
                             </div>
                           </div>
@@ -207,18 +215,10 @@ export default function PaymentDetail() {
                         </div>
                       </div>
                       <div className="button-wrapper flex mb40">
-                        {!isCardData ? (
-                          <>
-                            <button
-                              className="border-btn mr16"
-                              onClick={() => setIsCardData(true)}
-                            >
-                              Cancel
-                            </button>
-                          </>
-                        ) : (
-                          ""
-                        )}
+                        <button className="border-btn mr16" onClick={() => resetForm()}>
+                          Cancel
+                        </button>
+
                         <button className="primary-btn">Save</button>
                       </div>
                     </form>

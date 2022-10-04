@@ -21,7 +21,9 @@ function Index() {
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
   const [socketObject, setSocketObject] = useState(
-    io(socketIO)
+    io(socketIO, {
+      withCredentials: true
+    })
   );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
@@ -38,6 +40,10 @@ function Index() {
     });
     socketObject.on(`${uuid}-auction`, (auction) => {
       setAuctionNotification(auction);
+    });
+    socketObject.on("connect_error", () => {
+      // revert to classic upgrade
+      socketObject.io.opts.transports = ["polling", "websocket"];
     });
     dispatch(streamData(uuid));
   }, []);
