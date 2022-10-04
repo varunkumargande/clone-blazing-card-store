@@ -12,13 +12,14 @@ const http = Axios.create({
   });
 
   export const modalSuccess = (type, message) => {
-  
+    return;
  
     toast({ type: type, message:message});
   
   }
   
   export const modalWarning = (type, message) => {
+    return;
     toast({ type: type, message:message });
   
   };
