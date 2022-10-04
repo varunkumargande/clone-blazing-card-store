@@ -15,7 +15,7 @@ function RightDiv({ streamingDetails, streamData }) {
   userDetails = JSON.parse(userDetails);
 
   useEffect(() => {
-      joinChannel();
+    joinChannel();
   }, []);
 
   useEffect(() => {
@@ -51,7 +51,12 @@ function RightDiv({ streamingDetails, streamData }) {
   const sendAndUpdateMessage = async (initialMessage = null) => {
     const options = streamData?.option;
     const message = initialMessage ?? inputValue;
-    const messageObject = { message, userId: options.audience };
+    const messageObject = { 
+      message, 
+      userId: options.audience 
+    };
+
+    console.log(streamData)
     setMessages((messages) => [...messages, messageObject]);
     await channel.sendMessage({ text: message, type: "text" });
     setInputValue("");
@@ -73,26 +78,26 @@ function RightDiv({ streamingDetails, streamData }) {
     if (!messages) return <></>;
     return (
       <>
-      <div className="chat-inner-wrap flex column justify-right">
-        {messages?.map(({ message, userId }) => {
-          return (
-            <>
-              <div className="flex flex-center chat">
-                <div className="chat-img br50">
-                  <img
-                    src={streamData?.streamPageDteails?.avatarImage}
-                    alt="profile"
-                    key={`chatBox${userId}`}
-                  />
+        <div className="chat-inner-wrap flex column justify-right">
+          {messages?.map(({ message, userId }) => {
+            return (
+              <>
+                <div className="flex flex-center chat">
+                  <div className="chat-img br50">
+                    <img
+                      src={streamData?.streamPageDteails?.avatarImage}
+                      alt="profile"
+                      key={`chatBox${userId}`}
+                    />
+                  </div>
+                  <div className="chat-text-wrap">
+                    <div className="name">{userId}</div>
+                    <div className="chat">{message}</div>
+                  </div>
                 </div>
-                <div className="chat-text-wrap">
-                  <div className="name">{userId}</div>
-                  <div className="chat">{message}</div>
-                </div>
-              </div>
-            </>
-          );
-        })}
+              </>
+            );
+          })}
         </div>
       </>
     );
