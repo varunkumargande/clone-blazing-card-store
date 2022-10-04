@@ -172,7 +172,7 @@
             height: 26px;
             background-color: rgba($blue-color,.2);
             border-radius: 13px;
-            padding: 0 8px;
+            padding: 0 7px;
             color: $blue-color;
         }
     }
@@ -371,12 +371,14 @@
     .card-list{
         flex:0 0 213px;
         padding: 0 12px;
-        
+        .inner-card-list{
+            padding: 4px 4px 38px;
+        }
         .text{
-            padding: 6px;
+            padding: 6px 6px 0;
         }    
         .title{ 
-        @include pos(re);
+             @include pos(re);
             img{
                 @include pos(ab,-28px,null,null,0);
             }
@@ -390,6 +392,7 @@
             background-color: rgba($blue-color,.2);
             border-radius: 13px;
             padding: 0 8px;
+            @include pos(ab,null,null,8px,6px);
         }
     }
     .overflow-wrap{

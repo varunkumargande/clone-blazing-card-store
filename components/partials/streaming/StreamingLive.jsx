@@ -70,7 +70,7 @@ export default function StreamingLive(){
                         <button className="primary-btn disable" onClick={CustomBidModal}>Auction Ended</button>
                     </div>
                 </div>
-                <UnfollowModal />
+                {/* <UnfollowModal /> */}
             </div>
         </div>
     );
