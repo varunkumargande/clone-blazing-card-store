@@ -59,7 +59,7 @@ function StreamingBase({
     socketObject.on(`${uuid}-auction`, (auction) => {
       setAuctionNotification(auction);
       setBidNotification(null);
-      setAuctionId(auction.id)
+      setAuctionId(auction?.auction.id)
       setWinner(null)
     });
     socketObject.on(`${uuid}-win`, (winner) => {
