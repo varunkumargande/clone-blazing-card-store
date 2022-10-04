@@ -60,7 +60,12 @@ function LiveScheduleCategory({ category, setLiveScheduleCategoryName, liveSched
             <div className="inner-container">
                 <div className="title-wrap flex space-between flex-center">
                     <div className="flex flex-center">
-                        <h3 className="title"> <a className="title active" onClick={ () => window.location.href = "/"}> Home / </a> {liveScheduleCategoryName == null ? "All" : liveScheduleCategoryName}</h3>
+                        <section className="breadcrumbs-wrapper">
+                            <ul className="breadcrumbs flex flex-center">
+                                <li><a onClick={ () => window.location.href = "/"}> Home </a></li>/
+                                <li className="current">{liveScheduleCategoryName == null ? "All" : liveScheduleCategoryName}</li>
+                            </ul>
+                        </section>
                         <div className="category-btn-wrap">
                             {/* <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
                             <ul className={active ? "dropDown active" : "dropDown"} >
