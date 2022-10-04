@@ -52,13 +52,11 @@ function StreamingBase({
    */
   useEffect(() => {
     socketObject.on(`${uuid}-bid`, (bid) => {
-      debugger
       setBidNotification(bid);
       setAuctionNotification(null);
       setWinner(null)
     });
     socketObject.on(`${uuid}-auction`, (auction) => {
-      debugger
       setAuctionNotification(auction);
       setBidNotification(null);
       setAuctionId(auction.id)
@@ -126,7 +124,6 @@ function StreamingBase({
     if (cardDetail.length == 0 && addressList.length == 0) {
       openPayment(true);
     } else {
-      debugger
       setOpen(false);
       increaseBidAmount();
       createBid(
