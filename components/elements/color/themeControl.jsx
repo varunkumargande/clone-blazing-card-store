@@ -25,23 +25,24 @@ function ThemeChanger(){
 
    const display = "blockblock"
     return(
-        <div className={`colorOption transistionColor ${showClass} ${showpannelonlyopen}`}>
+        <></>
+    //     <div className={`colorOption transistionColor ${showClass} ${showpannelonlyopen}`}>
             
-            <button className="button-palette" onClick={e=>showClass==="color-show"?dispatch(colorShowContent("")):dispatch(colorShowContent("color-show"))}>
-                <img src="/static/img/new-color-pallete.png"></img>
-            </button>
-            <div className="palette-color-container">
-                <img src="/static/img/polygon17.svg" onClick={e=>handleThemeChange("blue")}/>
-                <img src="/static/img/polygon18.svg" onClick={e=>handleThemeChange("red")}/>
-                <img src="/static/img/polygon19.svg" onClick={e=>handleThemeChange("purple")}/>
-                <img src="/static/img/polygon20.svg" onClick={e=>handleThemeChange("green")}/>
-                <img src="/static/img/polygon21.svg" onClick={e=>handleThemeChange("grey")}/>
-                <img src="/static/img/polygon22.svg" onClick={e=>handleThemeChange("normal")}/>
+    //         <button className="button-palette" onClick={e=>showClass==="color-show"?dispatch(colorShowContent("")):dispatch(colorShowContent("color-show"))}>
+    //             <img src="/static/img/new-color-pallete.png"></img>
+    //         </button>
+    //         <div className="palette-color-container">
+    //             <img src="/static/img/polygon17.svg" onClick={e=>handleThemeChange("blue")}/>
+    //             <img src="/static/img/polygon18.svg" onClick={e=>handleThemeChange("red")}/>
+    //             <img src="/static/img/polygon19.svg" onClick={e=>handleThemeChange("purple")}/>
+    //             <img src="/static/img/polygon20.svg" onClick={e=>handleThemeChange("green")}/>
+    //             <img src="/static/img/polygon21.svg" onClick={e=>handleThemeChange("grey")}/>
+    //             <img src="/static/img/polygon22.svg" onClick={e=>handleThemeChange("normal")}/>
 
                 
-            </div>
+    //         </div>
 
-    </div>
+    // </div>
     )
     
 

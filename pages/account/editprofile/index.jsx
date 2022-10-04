@@ -73,9 +73,9 @@ export default function categoryStream() {
       <div className="edit-inner-container">
         <div className="edit-inner">
           <section className="breadcrumbs-wrapper no-bg mb32">
-            <ul className="breadcrumbs flex flex-center">
+            {/* <ul className="breadcrumbs flex flex-center">
               <li>Home</li>/<li className="current">Live</li>
-            </ul>
+            </ul> */}
           </section>
           <h1 className="flex mb32">
             <div className="edit-back" onClick={handleGoBackToMyProfile}>
