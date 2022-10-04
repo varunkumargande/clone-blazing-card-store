@@ -14,5 +14,6 @@ export async function UserAddAddress(values, addressList) {
   const result = await APIServices.create("CustomerAddress/add-address", data);
   if (result.status == 200) {
     addressList();
+    modalSuccess("success", "Address Added")
   }
 }

@@ -20,7 +20,6 @@ export async function editAddressApi(values, addressId) {
   if (result.data) {
   }
   if (result.data.status === 1) {
-    // Router.push("/account/addresses");
     modalSuccess("success", result.data.message);
   } else {
     modalWarning("error", result.data.message);

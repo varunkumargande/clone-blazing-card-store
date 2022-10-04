@@ -1,7 +1,7 @@
 import { modalWarning, modalSuccess } from "../intercept";
 import APIServices from "../../services";
 
-export async function editProfileApi(values, newDp, Router) {
+export async function editProfileApi(values, newDp, Router, setLoader) {
   const data = JSON.stringify({
     firstName: values.firstName,
     lastName: values.firstName,
@@ -17,9 +17,11 @@ export async function editProfileApi(values, newDp, Router) {
   if (result && result.data && result.data.status === 1) {
     modalSuccess("success", result.data.message);
     sessionStorage.setItem("spurtUser", JSON.stringify(result.data.data));
-    Router.push("/");
+    setLoader(false)
+    // Router.push("/");
   } else {
     modalWarning("error", result.data.message);
+    setLoader(false)
   }
   return result.data;
 }

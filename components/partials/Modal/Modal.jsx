@@ -301,13 +301,13 @@ export function AddNewCardModal(props) {
       //     ? JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? ""
       //     : "",
       cardNumber:
-        payDetail.length != 0
-          ? "XXXX XXXX XXXX " + payDetail[0].card.last4
+        payDetail?.length != 0
+          ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4
           : "",
-      cvc: payDetail.length != 0 ? payDetail[0].cvc : "",
+      cvc: payDetail?.length != 0 ? payDetail[0]?.cvc : "",
       expireDate:
-        payDetail.length != 0
-          ? payDetail[0].card.exp_year + "-" + payDetail[0].card.exp_month
+        payDetail?.length != 0
+          ? payDetail[0]?.card.exp_year + "-" + payDetail[0]?.card.exp_month
           : "",
       // countryId: payDetail.length != 0 ? payDetail[0].card.countryId : "",
     },

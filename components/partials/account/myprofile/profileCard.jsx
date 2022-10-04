@@ -5,7 +5,8 @@ import IconShareWhatsup from "../../../../components/Icons/IconShareWhatsup";
 import { useDispatch, connect, useSelector } from "react-redux";
 import Router from "next/router";
 import Link from "next/link";
-// import { LineShareButton, LineIcon } from "next-share";
+import { imageUrl } from "../../../../api/url";
+
 
 function ProfileCard(props) {
   const handleGoToEditProfile = () => {
@@ -26,9 +27,9 @@ function ProfileCard(props) {
         <>
           <img
             src={
-              userDetail.avatar != null
-                ? `https://blazing-card-backend-dev.kellton.net/api/media/image-resize?path=${userDetail.avatarPath}&name=${userDetail.avatar}&width=300&height=300`
-                : "/static/images/profile-lg-image.png"
+              userDetail && userDetail.avatar != null
+                ? imageUrl+`?path=${userDetail.avatarPath}&name=${userDetail.avatar}&width=300&height=300`
+                : "/static/img/no-image.png"
             }
             alt="ProfileImg"
           />
@@ -85,9 +86,6 @@ function ProfileCard(props) {
     }
   };
 
-  const handleGoToSociaLink = (link) => {
-    window.location.href = link;
-  };
 
   return (
     <>
