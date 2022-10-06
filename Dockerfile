@@ -25,7 +25,7 @@ RUN npm install webpack -g
 
 #RUN tsc --init
 
-RUN npm install 
+RUN npm install -f
 
 
 
