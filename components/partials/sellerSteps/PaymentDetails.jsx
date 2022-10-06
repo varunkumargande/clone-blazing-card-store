@@ -3,7 +3,7 @@ import MySelect from "../../CommonComponents/MySelect";
 import { Formik, Form } from "formik";
 import { TextInput } from "../../CommonComponents/TextInput";
 import {paymentDetailsvalidation} from "../../../utilities/validations/paymentDetails"
-import { CardNumber } from "../../CommonComponents/cardNumber";
+import { CardNumber } from "../../CommonComponents/CardNumber";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { addPaymentData } from "../../../store/becomeSeller/action";
