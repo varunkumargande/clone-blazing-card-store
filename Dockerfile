@@ -11,7 +11,7 @@ COPY package*.json ./
 
 #RUN npm config set package-lock false
 
-#RUN npm install webpack -g
+RUN npm install webpack -g
 
 #RUN npm install ts-node --save-dev
 
