@@ -13,6 +13,7 @@ COPY package*.json ./
 
 RUN npm install webpack -g
 
+RUN npm install --save event-loop-stats
 #RUN npm install ts-node --save-dev
 
 #RUN npm install typescript -g 
