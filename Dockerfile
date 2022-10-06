@@ -46,4 +46,4 @@ EXPOSE 3000
 
 RUN npm run build --max-old-space-size=4096
 
-CMD ["npm","start","dev"]
+CMD ["npm","run","dev"]
