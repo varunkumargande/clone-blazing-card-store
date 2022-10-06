@@ -24,6 +24,8 @@ function StreamingBase({
   openPayment,
 }) {
   const stream = useSelector((state) => state.stream);
+  const streamNotification = useSelector((state) => state.stream?.streamNotification);
+  console.log(stream, 'streaming base')
   const [open, setOpen] = useState(false);
   const [bidAmount, setBidAmount] = useState(null);
   const [amountToBid, setAmountToBid] = useState(bidAmount + 2);
@@ -51,23 +53,11 @@ function StreamingBase({
    * Will Subscribe to all Notofication type channels
    */
   useEffect(() => {
-    socketObject.on(`${uuid}-bid`, (bid) => {
-      setBidNotification(bid);
-      setAuctionNotification(null);
-      setWinner(null)
-    });
-    socketObject.on(`${uuid}-auction`, (auction) => {
-      setAuctionNotification(auction);
-      setBidNotification(null);
-      setAuctionId(auction?.auction.id)
-      setWinner(null)
-    });
-    socketObject.on(`${uuid}-win`, (winner) => {
-      setWinnerNotification(winner);
-      setBidNotification(null);
-      setAuctionNotification(null);
-    });
-  }, []);
+      setAuctionNotification(streamNotification?.auction);
+      setBidNotification(streamNotification?.bid);
+      setAuctionId(streamNotification?.auction?.auction.id)
+      setWinnerNotification(streamNotification?.wind)
+  }, [streamNotification]);
 
 
 /**
@@ -271,7 +261,6 @@ function StreamingBase({
         user_id : stream?.streamPageData?.streamPageDteails?.loggedInUserId
       }
       const response = await streamLikeDislike(data);
-      console.log(response)
 
       if(response.status) {
         setLiked(!liked);

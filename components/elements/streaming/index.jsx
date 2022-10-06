@@ -4,7 +4,7 @@ import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { streamData } from "../../../store/stream/action";
+import { addNotification, streamData } from "../../../store/stream/action";
 import { io } from "socket.io-client";
 import { socketIO } from "../../../api/url";
 
@@ -26,27 +26,39 @@ function Index() {
     })
   );
   const [auctionNotification, setAuctionNotification] = useState(null);
-  const [bidNotification, setBidNotification] = useState(null);
   const stream = useSelector((state) => {
     return state?.stream;
   });
-  const [currentAuction, setCurrentAuction] = useState(null);
+  const streamNotification = useSelector((state) => state.stream?.streamNotification);
+
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
 
   useEffect(() => {
-    socketObject.on(`${uuid}-bid`, (bid) => {
-      setBidNotification(bid);
-    });
-    socketObject.on(`${uuid}-auction`, (auction) => {
-      setAuctionNotification(auction);
-    });
-    socketObject.on("connect_error", () => {
-      // revert to classic upgrade
-      socketObject.io.opts.transports = ["polling", "websocket"];
-    });
     dispatch(streamData(uuid));
   }, []);
+
+  useEffect(() => {
+    socketObject.on(`${uuid}-bid`, (bid) => {
+      dispatch(addNotification({
+        type: 'bid',
+        value: bid
+      }))
+    });
+    socketObject.on(`${uuid}-auction`, (auction) => {
+      dispatch(addNotification({
+        type: 'auction',
+        value: auction
+      }))
+    });
+    socketObject.on(`${uuid}-win`, (winner) => {
+      dispatch(addNotification({
+        type: 'win',
+        value: winner
+      }))
+    });
+    setAuctionNotification(streamNotification?.auction)
+  }, [streamNotification])
 
   return (
     <>
@@ -74,7 +86,6 @@ function Index() {
               setAddPayInfo={setAddPayInfo}
               customerId={customerId}
               streamDetails={selectedStream}
-              currentAuction={currentAuction}
               streamingDetails={streamingDetails}
             />
             <RightDiv

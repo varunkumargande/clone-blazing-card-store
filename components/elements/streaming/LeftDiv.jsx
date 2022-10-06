@@ -242,7 +242,6 @@ function LeftDiv({
 
   return (
     <div className="streaming-left">
-      {console.log(stream, 'sadasdasdasd')}
       <div className="flex profile-wrapper">
         <div className="image">
           {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
