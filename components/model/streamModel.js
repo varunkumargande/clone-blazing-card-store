@@ -34,7 +34,9 @@ class StreamDetailModel {
       scheduleTime:  streamData?.scheduletime,
       isLoggedIn: false,
       avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png",
-      socketObject: io(socketIO)
+      socketObject: io(socketIO, {
+        withCredentials: true
+      })
     }
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;
@@ -61,3 +63,4 @@ class StreamDetailModel {
 
 }
 export default StreamDetailModel;
+

@@ -7,6 +7,7 @@ import IconLikeWhite from '../../Icons/IconLikeWhite';
 import IconDoller from '../../Icons/IconDoller';
 import IconEye from '../../Icons/IconEye';
 import { CustomBidModal } from "../Modal/Modal";
+import { UnfollowModal } from "../Modal/Modal";
 import { AddNewCardModal,PaymentInfoModal } from "../Modal/Modal";
 
 export default function StreamingLive(){
@@ -27,7 +28,9 @@ export default function StreamingLive(){
             </div>
             <div className="inner-wrapper">  {/*add className disable when want {disable}*/}
                 <div className="stream-header flex space-between">
-                    <div className="head-title">PSA SLAB #83</div>
+                    <div className="head-title">PSA SLAB #83
+                    <span className="sub-head-title">$15 Pokemon Mystry Bags w/Mike</span>
+                    </div>
                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
                     {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
                 </div>
@@ -67,7 +70,7 @@ export default function StreamingLive(){
                         <button className="primary-btn disable" onClick={CustomBidModal}>Auction Ended</button>
                     </div>
                 </div>
-                {/* <CustomBidModal /> */}
+                {/* <UnfollowModal /> */}
             </div>
         </div>
     );

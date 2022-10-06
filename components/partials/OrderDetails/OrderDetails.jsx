@@ -21,9 +21,7 @@ export default function OrderDetails() {
                 <div className="order-body flex space-between">
                   <div className="order-text flex">
                     <img
-                      src={
-                        productData?.productImage ?? "/static/images/card.png"
-                      }
+                      src="/static/images/card.png"
                       alt=""
                     />
                     <div className="order-details">
@@ -107,10 +105,6 @@ export default function OrderDetails() {
               <button className="border-btn flex flex-center justify-center">
                 <IconTrack />
                 Track
-              </button>
-              <button className="download flex flex-center justify-center">
-                <IconDownload />
-                Download
               </button>
             </div>
           </div>

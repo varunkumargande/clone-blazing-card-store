@@ -158,13 +158,13 @@ export default function categoryStream(){
                             <div className="flex flex-center">
                                 <h3 className="title">Cards - <span>20 Shows</span></h3>
                             </div>
-                            <div className="dropdownlist">
+                            {/* <div className="dropdownlist">
                                 <button className="dropDownBtn flex flex-center space-between" onClick={handleOnClick} ref={wrapperRef}>PokemonCard <span><IconDropdown /></span></button>
                                 <ul className= {active ? "jwelleryList active" : "jwelleryList"}>
                                     <li>PokemonCard</li>
                                     <li>JwellaryCard</li>
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="overflow-none">
                             <div className="card-wrap flex inner-container">

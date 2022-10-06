@@ -138,7 +138,7 @@ function Login(props) {
                   onChange={handleChange}
                   className="errorBorder"
                 />
-                <span className="errorMessage">{errors.email}</span>
+                <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
               </div>
               <div className="input-control">
                 <label>Password</label>
@@ -150,7 +150,7 @@ function Login(props) {
                   className="errorBorder"
                   onChange={handleChange}
                 />
-                <span className="errorMessage">{errors.password}</span>
+                <span className="errorMessage">{errors.password && touched.password ? errors.password : null}</span>
                 {conpassShow ? (
                   <button
                     className="show-hide"

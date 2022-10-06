@@ -102,10 +102,6 @@ export default function MyProfile() {
     });
   };
 
-  const handleCardList = () => {
-    
-  };
-
   return (
     <div className="home-container">
       {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}

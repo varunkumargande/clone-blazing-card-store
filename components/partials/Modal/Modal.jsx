@@ -301,13 +301,13 @@ export function AddNewCardModal(props) {
       //     ? JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? ""
       //     : "",
       cardNumber:
-        payDetail.length != 0
-          ? "XXXX XXXX XXXX " + payDetail[0].card.last4
+        payDetail?.length != 0
+          ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4
           : "",
-      cvc: payDetail.length != 0 ? payDetail[0].cvc : "",
+      cvc: payDetail?.length != 0 ? payDetail[0]?.cvc : "",
       expireDate:
-        payDetail.length != 0
-          ? payDetail[0].card.exp_year + "-" + payDetail[0].card.exp_month
+        payDetail?.length != 0
+          ? payDetail[0]?.card.exp_year + "-" + payDetail[0]?.card.exp_month
           : "",
       // countryId: payDetail.length != 0 ? payDetail[0].card.countryId : "",
     },
@@ -797,6 +797,30 @@ export function ChatUserModal({ setIsOpen }) {
           <div className="btn-wrap delete" align={"center"}>
             <button className="primary-btn" type="submit">
               Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function UnfollowModal() {
+
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-body text-center">
+          <div className="profile-icon">
+            <img src="/static/images/profile-large.svg" alt="" />
+          </div>
+          <div className="profile-id">Want to follow @felix.bronco?</div>
+          <div className="btn-wrap follow-btn-wrap flex justify-center">
+            <button className="border-btn">
+              Cancel
+            </button>
+            <button className="primary-btn">
+              Unfollow
             </button>
           </div>
         </div>

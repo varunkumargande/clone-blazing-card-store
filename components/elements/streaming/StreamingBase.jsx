@@ -5,7 +5,7 @@ import { createBid } from "../../../api/stream/createBid";
 import { useSelector } from "react-redux";
 import IconSpeaker from "../../Icons/IconSpeaker";
 import IconShare from "../../Icons/IconShare";
-import IconHeart from "../../Icons/IconHeart";
+import IconLikeWhite from "../../Icons/IconLikeWhite";
 import IconDoller from "../../Icons/IconDoller";
 import IconEye from "../../Icons/IconEye";
 import IconShops from "../../Icons/IconShops";
@@ -72,8 +72,8 @@ function StreamingBase({
     socketObject.on(`${uuid}-auction`, (auction) => {
       setAuctionNotification(auction);
       setBidNotification(null);
-      setAuctionId(auctionNotification?.auction.id);
-      setWinner(null);
+      setAuctionId(auction?.auction.id)
+      setWinner(null)
     });
     socketObject.on(`${uuid}-win`, (winner) => {
       setWinnerNotification(winner);
@@ -332,9 +332,8 @@ function StreamingBase({
                 <div className="head-title">Please login to participate</div>
               </>
             )}
-            <div className="tme-wrap flex flex-center justify-center">
-              <IconEye />
-              <span>1.2K</span> <button className="live">Live</button>
+            <div className="tme-wrap flex flex-center justify-center live">
+              <span>1.2K</span> <button className="live"></button>
             </div>
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
@@ -381,7 +380,7 @@ function StreamingBase({
               <IconShare />
             </button>
             <button onClick={handleLikeUnlike} className={getlikeClass()}>
-              <IconHeart />
+              <IconLikeWhite />
             </button>
             <button className="flex flex-center justify-center br50">
               <IconDoller />

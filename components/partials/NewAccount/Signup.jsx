@@ -204,11 +204,11 @@ function Signup(auth) {
                   name="firstname"
                   placeholder={"First Name"}
                   ref={FullNameInputRef}
-                  value={values.name}
+                  value={values.firstname}
                   maxlength="30"
                   onChange={handleChange}
                 />
-                <div className="errorText">{errors.firstname}</div>
+                <div className="errorText">{errors.firstname && touched.firstname ? errors.firstname : null}</div>
               </div>
               <div className="input-control wd50">
                 <label>Last Name</label>
@@ -219,7 +219,7 @@ function Signup(auth) {
                   value={values.lastname}
                   onChange={handleChange}
                 />
-                <div className="errorText">{errors.lastname}</div>
+                <div className="errorText">{errors.lastname && touched.lastname ? errors.lastname : null}</div>
               </div>
               <div className="input-control">
                 <label>Email Address</label>
@@ -230,7 +230,7 @@ function Signup(auth) {
                   value={values.email}
                   onChange={handleChange}
                 />
-                <div className="errorText">{errors.email}</div>
+                <div className="errorText">{errors.email && touched.email ? errors.email : null}</div>
               </div>
 
               <div className="input-control">
@@ -242,7 +242,7 @@ function Signup(auth) {
                   onChange={handleChange}
                   maxlength="15"
                 />
-                <div className="errorText">{errors.number}</div>
+                <div className="errorText">{errors.number && touched.number ? errors.number : null}</div>
               </div>
 
               <div className="input-control wd50">
@@ -272,7 +272,7 @@ function Signup(auth) {
                     </button>{" "}
                   </>
                 )}
-                <div className="errorText">{errors.password}</div>
+                <div className="errorText">{errors.password && touched.password ? errors.password : null}</div>
               </div>
 
               <div className="input-control wd50">
@@ -303,7 +303,7 @@ function Signup(auth) {
                   </>
                 )}
 
-                <div className="errorText">{errors.cpass}</div>
+                <div className="errorText">{errors.cpass && touched.cpass ? errors.cpass : null}</div>
               </div>
 
               <div className="input-control">
@@ -317,7 +317,7 @@ function Signup(auth) {
                   ref={usernameInput}
                   onBlur={handleOnBlur}
                 />
-                <div className="errorText">{errors.username}</div>
+                <div className="errorText">{errors.username && touched.username ? errors.username : null}</div>
                 {usernameAvailable === false && usernameAvailable !== null ? (
                   <div className="errorText">Username already taken</div>
                 ) : null}

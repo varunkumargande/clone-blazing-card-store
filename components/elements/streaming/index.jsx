@@ -19,7 +19,11 @@ function Index() {
   const [openPayment, setOpenPayment] = useState(false);
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
-  const [socketObject, setSocketObject] = useState(io(socketIO));
+  const [socketObject, setSocketObject] = useState(
+    io(socketIO, {
+      withCredentials: true
+    })
+  );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
   const stream = useSelector((state) => {
@@ -36,6 +40,10 @@ function Index() {
     });
     socketObject.on(`${uuid}-auction`, (auction) => {
       setAuctionNotification(auction);
+    });
+    socketObject.on("connect_error", () => {
+      // revert to classic upgrade
+      socketObject.io.opts.transports = ["polling", "websocket"];
     });
     dispatch(streamData(uuid));
   }, []);

@@ -65,7 +65,6 @@ const [isLiveScheduleSeeAll, setIsLiveScheduleSeeAll] = useState(false)
   return (
     <div className="home-container">
       {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
-
       {isLiveScheduleSeeAll ? (
         <>
           {categories != undefined ? (
@@ -84,7 +83,6 @@ const [isLiveScheduleSeeAll, setIsLiveScheduleSeeAll] = useState(false)
 
         </>
       )}
-
       <div className="card-wrapper">
         {isSeeAll ? (
           <>

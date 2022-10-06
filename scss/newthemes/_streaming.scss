@@ -52,7 +52,6 @@
         }
         .primary-btn{
             font-size: 14px;
-            width: 75px;
             height: 32px;
             padding: 0 16px;
             &.following{
@@ -226,6 +225,12 @@
         font-size: 24px;
         line-height: 32px;
         font-weight: 700;
+        .sub-head-title{
+            display: block;
+            font-size: 20px;
+            line-height: 20px;
+            font-weight: 500;
+        }
     }
     .video-icon{
         width: 42px;
@@ -286,6 +291,7 @@
                             border-radius: 50%;
                             cursor: pointer;
                             border-color: $white-color;
+                            margin-top:-3px;
                         }
                         &::-moz-range-thumb {
                             width: 10px;
@@ -294,6 +300,18 @@
                             border-radius: 50%;
                             cursor: pointer;
                             border-color: $white-color;
+                            margin-top:-3px;
+                        }
+                        &::-webkit-slider-runnable-track {
+                            width: 100%;
+                            height: 4px;
+                            background: $white-color;
+                            border-radius: 2px;
+                        }
+                        &:focus{
+                            &::-webkit-slider-runnable-track {
+                                background: $white-color;
+                            }
                         }
                     }
 

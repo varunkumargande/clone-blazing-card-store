@@ -43,7 +43,7 @@ export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCa
                         <h3 className="title">{categoryName == null ? "All" : categoryName}</h3>
                     </div>
                     <div className="seeAll">
-                        <div className="dropdownlist">
+                        {/* <div className="dropdownlist">
                             <select className="dropDownBtn flex flex-center space-between" onChange={(e) => handleSubCateId(e)}>
                                 <option value={"select"}>
                                     Sub_Category
@@ -58,7 +58,7 @@ export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCa
                                     )
                                 })}
                             </select>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="overflow-none">

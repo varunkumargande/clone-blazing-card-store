@@ -68,7 +68,8 @@ function HeaderDefault({ auth }, props) {
           )
         : setAimg("/static/img/no-image.png");
     }
-  }, []);
+  },[]);
+
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -85,6 +86,7 @@ function HeaderDefault({ auth }, props) {
   const handleSearchValue = (e) => {
     dispatch(searchRequest(e.target.value));
   };
+
 
   return (
     <header>
@@ -129,7 +131,7 @@ function HeaderDefault({ auth }, props) {
 
             {auth.isLoggedIn ? (
               <>
-                <MessageButton name={"Message"} />
+                {/* <MessageButton name={"Message"} /> */}
                 <button className="message flex flex-center justify-center">
                   <IconMessage />
                 </button>
@@ -138,7 +140,34 @@ function HeaderDefault({ auth }, props) {
                 </button>
                 <button className="profile">
                   <span onClick={handleOnClick}>
+
                     <img src={aimg} alt="Profile" />
+                    {/* {userData != null ? (
+                      <>
+                        {userData.avatar != null && userData.avatarPath != null ? (
+                          <>
+                            <img
+                              src={
+                                imageUrl +
+                                "?path=" +
+                                userData.avatarPath +
+                                "&name=" +
+                                userData.avatar +
+                                "&width=500&height=500"
+                              }
+                              alt="Profile"
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <img src={"/static/img/no-image.png"} />
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      ""
+                    )} */}
+
                     <IconDropdown />
                   </span>
 
