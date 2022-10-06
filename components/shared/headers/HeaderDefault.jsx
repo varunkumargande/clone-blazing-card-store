@@ -141,7 +141,7 @@ function HeaderDefault({ auth }, props) {
                 <button className="profile">
                   <span onClick={handleOnClick}>
 
-                    <img src={aimg} alt="Profile" />
+                    <span className="profileImage"><img src={aimg} alt="Profile" /></span>
                     {/* {userData != null ? (
                       <>
                         {userData.avatar != null && userData.avatarPath != null ? (

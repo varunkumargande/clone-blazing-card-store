@@ -5,6 +5,7 @@ import StreamingLeft from "../../components/partials/streaming/StreamingLeft";
 import StreamingLive from "../../components/partials/streaming/StreamingLive";
 import StreamingRIght from "../../components/partials/streaming/StreamingRIght";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
+import { SignUPGoogle } from "../../components/partials/Modal/Modal";
 // import Footer from "../../components/partials/Landingpage/Footer";
 import IconBack from '../../components/Icons/IconBack';
 export default function LiveStreaming(){

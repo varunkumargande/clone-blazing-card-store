@@ -243,6 +243,9 @@
             margin-bottom: 16px;
             padding: 0;
             @include pos(re);
+            svg{
+                pointer-events: none;
+            }
             &.like{
                 transition:all .25s;
                 &.liked,&:hover{
