@@ -25,7 +25,7 @@ RUN npm install webpack -g
 
 #RUN tsc --init
 
-RUN npm install -f
+RUN npm install 
 
 
 
@@ -44,6 +44,6 @@ EXPOSE 3000
 ###CMD ["npm","start","serve"]
 ###RUN npm run setup
 
-RUN npm run build --max-old-space-size=4096
+RUN npm run build 
 
 CMD ["npm","run","start"]
