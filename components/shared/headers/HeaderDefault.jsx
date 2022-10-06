@@ -35,7 +35,6 @@ function HeaderDefault({ auth }, props) {
   const [aimg, setAimg] = useState("");
   const [email, setEmail] = useState("");
   let { pageName } = router.query;
-  let userData = JSON.parse(sessionStorage.getItem("spurtUser"));
 
   const authFunc = () => {
     if (sessionStorage.getItem("spurtToken") !== null) {
@@ -142,8 +141,8 @@ function HeaderDefault({ auth }, props) {
                 <button className="profile">
                   <span onClick={handleOnClick}>
 
-                    {/* <img src={aimg} alt="Profile" /> */}
-                    {userData != null ? (
+                    <img src={aimg} alt="Profile" />
+                    {/* {userData != null ? (
                       <>
                         {userData.avatar != null && userData.avatarPath != null ? (
                           <>
@@ -167,7 +166,7 @@ function HeaderDefault({ auth }, props) {
                       </>
                     ) : (
                       ""
-                    )}
+                    )} */}
 
                     <IconDropdown />
                   </span>
