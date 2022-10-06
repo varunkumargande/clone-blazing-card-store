@@ -13,7 +13,6 @@ COPY package*.json ./
 
 RUN npm install webpack -g
 
-RUN npm install --save event-loop-stats
 #RUN npm install ts-node --save-dev
 
 #RUN npm install typescript -g 
@@ -47,4 +46,4 @@ EXPOSE 3000
 
 RUN npm run build --max-old-space-size=4096
 
-CMD ["npm","start"]
+CMD ["npm","start","serve"]
