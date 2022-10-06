@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -15,6 +15,8 @@ function LeftDiv({
   productDetail,
   streamingDetails,
   auctionNotification,
+  handleLeftDiv,
+  isLeftDivOpen
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -22,6 +24,7 @@ function LeftDiv({
     PURCHASED: "purchased",
     SOLD: "sold",
   };
+  
   const TOGGLES = ["Auction", "Buy now", "Purchased", "Sold"];
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
   const router = useRouter();
@@ -39,6 +42,37 @@ function LeftDiv({
   };
   const dispatch = useDispatch();
   const [followed, setFollowed] = useState(false);
+  //to handle width of the screen and call methods accordingly
+  const [windowWidth, setWindowWidth] = useState(0);
+  let resizeWindow = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    resizeWindow();
+    window.addEventListener("resize", resizeWindow);
+    return () => window.removeEventListener("resize", resizeWindow);
+  }, []);
+
+  // to initially show left div on desktop and hide on mobile screen
+  useEffect(() => {
+    windowWidth <= 1024 ? handleLeftDiv(false) : handleLeftDiv(true);
+  }, [windowWidth]);
+
+  const leftDivRef = useRef();
+
+  //clicking somewhere except on product list panel will close the product list panel(mobile screen)
+  useEffect(() => {
+    if(windowWidth <= 1024){
+    function handler(event) {
+      if (!leftDivRef?.current?.contains(event.target) && !event.target.classList.contains("shops")) {
+        handleLeftDiv(false);
+      }
+    }
+    window.addEventListener("click", handler);
+    return () => window.removeEventListener("click", handler);
+    }
+  }, [leftDivRef.current]);
 
   /**
    * Method to get All products of a stream
@@ -233,27 +267,36 @@ function LeftDiv({
   };
 
   const getImagePath = (type) => {
-
-    if(stream?.streamData?.vendorDetails?.avatar_path && stream?.streamData?.vendorDetails?.avatar && type == 'vendor') {
-     return imageUrl + "?path=" + stream?.streamData?.vendorDetails?.avatar_path + "&name=" + stream?.streamData?.vendorDetails?.avatar + "&width=50&height=50";
+    if (
+      stream?.streamData?.vendorDetails?.avatar_path &&
+      stream?.streamData?.vendorDetails?.avatar &&
+      type == "vendor"
+    ) {
+      return (
+        imageUrl +
+        "?path=" +
+        stream?.streamData?.vendorDetails?.avatar_path +
+        "&name=" +
+        stream?.streamData?.vendorDetails?.avatar +
+        "&width=50&height=50"
+      );
     }
-      return "/static/images/profileImg.png";
-  }
+    return "/static/images/profileImg.png";
+  };
 
   return (
     <div className="streaming-left">
-      {console.log(stream, 'sadasdasdasd')}
       <div className="flex profile-wrapper">
         <div className="image">
           {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
           <img
-              onError={({ currentTarget }) => {
-                currentTarget.onerror = null; // prevents looping
-                currentTarget.src="/static/images/profileImg.png";
-              }}
-              src={getImagePath('vendor')}
-              alt="Card"
-            />
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src = "/static/images/profileImg.png";
+            }}
+            src={getImagePath("vendor")}
+            alt="Card"
+          />
         </div>
         <div className="profile-wrap">
           <div className="name">{vendorName}</div>
@@ -261,21 +304,27 @@ function LeftDiv({
         </div>
         <div className="btn-wrap">
           <button onClick={handleFollowUnfollow} className="primary-btn">
-            {followed ? "Unfollow" : 'Follow'}
+            {followed ? "Unfollow" : "Follow"}
           </button>
         </div>
       </div>
-      <div className="leftdata-wrapper">
-        <h3 className="title">{streamTitle}</h3>
-        <div className="tab-wrapper flex">{getToggles()}</div>
-        <div className="search">
-          <input type="text" placeholder="Search products..." />
+      {
+        isLeftDivOpen ? (
+          <div className="leftdata-wrapper" ref={leftDivRef}>
+          <h3 className="title">{streamTitle}</h3>
+          <div className="tab-wrapper flex">{getToggles()}</div>
+          <div className="search">
+            <input type="text" placeholder="Search products..." />
+          </div>
+          <div className={`${toggleState}-list leftdata-list`}>
+            <div className="product-count">{productCount} Products</div>
+            <ul className="product-list">{getProductList()}</ul>
+          </div>
         </div>
-        <div className={`${toggleState}-list leftdata-list`}>
-          <div className="product-count">{productCount} Products</div>
-          <ul className="product-list">{getProductList()}</ul>
-        </div>
-      </div>
+        ) : (
+          <></>
+        )
+       }
     </div>
   );
 }

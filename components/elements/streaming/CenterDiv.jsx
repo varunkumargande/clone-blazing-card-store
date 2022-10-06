@@ -15,7 +15,13 @@ import { editShipAddressApi } from "../../../api";
 import { editAddressApi } from "../../../api";
 import { getStreamingCardDetail } from "../../../api/stream/cardApi";
 
-function CenterDiv({ productDetail, isPayment, openPayment, setOpen }) {
+function CenterDiv({
+  productDetail,
+  isPayment,
+  openPayment,
+  setOpen,
+  handleLeftDiv,
+}) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
@@ -34,7 +40,7 @@ function CenterDiv({ productDetail, isPayment, openPayment, setOpen }) {
 
   const handlePaymentMethod = () => {
     setPaymentFormOpen(true);
-    fetchCardDetail()
+    fetchCardDetail();
   };
 
   const handleShippmentMethod = () => {
@@ -63,7 +69,7 @@ function CenterDiv({ productDetail, isPayment, openPayment, setOpen }) {
         cardDetail[cardDetail.length - 1],
         addressList[addressList.length - 1],
         productDetail,
-        openPayment,
+        openPayment
         // streamingDetails
       );
     } else {
@@ -93,6 +99,7 @@ function CenterDiv({ productDetail, isPayment, openPayment, setOpen }) {
         openPayment={openPayment}
         addressList={addressList}
         cardDetail={cardDetail}
+        handleLeftDiv={handleLeftDiv}
       />
 
       {isPayment ? (
@@ -122,7 +129,6 @@ function CenterDiv({ productDetail, isPayment, openPayment, setOpen }) {
             cardIndex={setCardIndex}
             payIndex={cardIndex}
             close={setPaymentFormOpen}
-            
           />
         </>
       ) : (

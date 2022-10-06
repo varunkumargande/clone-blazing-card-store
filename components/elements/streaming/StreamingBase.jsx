@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import StreamingElement from "./StreamingElement";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
@@ -8,6 +8,8 @@ import IconShare from "../../Icons/IconShare";
 import IconLikeWhite from "../../Icons/IconLikeWhite";
 import IconDoller from "../../Icons/IconDoller";
 import IconEye from "../../Icons/IconEye";
+import IconShops from "../../Icons/IconShops";
+import LeftDiv from "./LeftDiv";
 import {
   CustomBidModal,
   ShippingTaxesModal,
@@ -22,6 +24,7 @@ function StreamingBase({
   cardDetail,
   addressList,
   openPayment,
+  handleLeftDiv,
 }) {
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
@@ -42,10 +45,20 @@ function StreamingBase({
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
   const [winnerNotification, setWinnerNotification] = useState(null);
-  const [auctionId, setAuctionId] = useState(null)
+  const [auctionId, setAuctionId] = useState(null);
   const router = useRouter();
   const uuid = router.query["uuid"];
   const [liked, setLiked] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
+  let resizeWindow = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    resizeWindow();
+    window.addEventListener("resize", resizeWindow);
+    return () => window.removeEventListener("resize", resizeWindow);
+  }, []);
 
   /**
    * Will Subscribe to all Notofication type channels
@@ -54,7 +67,7 @@ function StreamingBase({
     socketObject.on(`${uuid}-bid`, (bid) => {
       setBidNotification(bid);
       setAuctionNotification(null);
-      setWinner(null)
+      setWinner(null);
     });
     socketObject.on(`${uuid}-auction`, (auction) => {
       setAuctionNotification(auction);
@@ -69,57 +82,65 @@ function StreamingBase({
     });
   }, []);
 
-
-/**
- * This useEffect will calculate time and set bid amount on changes of notification
- */
+  /**
+   * This useEffect will calculate time and set bid amount on changes of notification
+   */
   useEffect(() => {
     if (!!auctionNotification || !!bidNotification) {
-      getTimeDifference(auctionNotification?.auction?.endTime || bidNotification?.endTime)
+      getTimeDifference(
+        auctionNotification?.auction?.endTime || bidNotification?.endTime
+      );
       if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
         setDisableBid(false);
       }
       if (bidNotification) {
         setBidAmount(bidNotification?.bidAmount);
       }
-    } 
+    }
   }, [bidNotification, auctionNotification]);
 
   /**
    * Method will re-rednders on each stream api change
    */
   useEffect(() => {
-    if(stream?.streamProducts?.AuctionDetails) {
-      getTimeDifference(stream?.streamProducts?.AuctionDetails?.latestBidding?.bidEndTime ?? stream?.streamProducts?.AuctionDetails?.latestAuction?.endTime)
-      setAuctionId(stream?.streamProducts?.AuctionDetails?.latestAuction?.auctionId)
+    if (stream?.streamProducts?.AuctionDetails) {
+      getTimeDifference(
+        stream?.streamProducts?.AuctionDetails?.latestBidding?.bidEndTime ??
+          stream?.streamProducts?.AuctionDetails?.latestAuction?.endTime
+      );
+      setAuctionId(
+        stream?.streamProducts?.AuctionDetails?.latestAuction?.auctionId
+      );
     }
-  }, [stream])
-
+  }, [stream]);
 
   /**
    * Method will calculate Live Auction endtime
-   * @param {*} endTime 
+   * @param {*} endTime
    */
   const getTimeDifference = (endTime) => {
-    let [date, time] = endTime.split(" ")
-    const endTime = moment(date.replaceAll("-","/")+" "+time)
+    let [date, time] = endTime.split(" ");
+    const endTime = moment(date.replaceAll("-", "/") + " " + time);
     const duration = moment.duration(
       endTime.diff(moment.utc().format("YYYY/MM/DD, HH:mm:ss"))
     );
     let minutes = Math.floor(duration.asSeconds() / 60);
     let seconds = Math.ceil(duration.asSeconds() % 60);
-    minutes = minutes < 0? 0 : minutes;
-    seconds = seconds < 0 ? 0 : seconds;  
-    if( minutes && seconds) {
-      setBidAmount(stream?.streamProducts?.AuctionDetails?.latestBidding?.bidAmount ?? stream?.streamProducts?.AuctionDetails?.latestAuction?.bidAmount)
+    minutes = minutes < 0 ? 0 : minutes;
+    seconds = seconds < 0 ? 0 : seconds;
+    if (minutes && seconds) {
+      setBidAmount(
+        stream?.streamProducts?.AuctionDetails?.latestBidding?.bidAmount ??
+          stream?.streamProducts?.AuctionDetails?.latestAuction?.bidAmount
+      );
     }
     setMinutes(minutes);
     setSeconds(seconds);
- }
+  };
 
- /**
-  * Method will Handle bid confirmation event
-  */
+  /**
+   * Method will Handle bid confirmation event
+   */
   const handleConfirmBid = async () => {
     if (cardDetail.length == 0 && addressList.length == 0) {
       openPayment(true);
@@ -139,7 +160,7 @@ function StreamingBase({
    */
   const handleMuteButton = (e) => {
     e.preventDefault();
-    if(e.target.id !== 'vol') {
+    if (e.target.id !== "vol") {
       setIsMute(!isMute);
     }
   };
@@ -163,17 +184,17 @@ function StreamingBase({
    */
   useEffect(() => {
     let myInterval = setInterval(() => {
-      if(seconds < 0 && minutes < 0) {
+      if (seconds < 0 && minutes < 0) {
         setMinutes(0);
         setSeconds(0);
-        setBidAmount(null)
+        setBidAmount(null);
       }
       if (seconds > 0) {
         setSeconds(seconds - 1);
       }
       if (seconds === 0) {
         if (minutes === 0) {
-          setBidAmount(null)
+          setBidAmount(null);
           clearInterval(myInterval);
           setDisableBid(true);
         } else if (seconds < 60) {
@@ -189,7 +210,7 @@ function StreamingBase({
 
   /**
    * Adjust volume of Stream
-   * @param {*} event 
+   * @param {*} event
    */
   const changeVolumeLevel = (event) => {
     event.preventDefault();
@@ -258,32 +279,39 @@ function StreamingBase({
    * @returns string || null
    */
   const liveAuctionName = () => {
-    if(stream?.streamProducts?.AuctionDetails) {
-      return stream?.streamProducts?.AuctionDetails?.latestAuction?.productName ?? null;
+    if (stream?.streamProducts?.AuctionDetails) {
+      return (
+        stream?.streamProducts?.AuctionDetails?.latestAuction?.productName ??
+        null
+      );
     }
     return auctionNotification?.product?.name ?? null;
-  }
+  };
 
   const handleLikeUnlike = async () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
       const data = {
-        stream_id : uuid,
-        user_id : stream?.streamPageData?.streamPageDteails?.loggedInUserId
-      }
+        stream_id: uuid,
+        user_id: stream?.streamPageData?.streamPageDteails?.loggedInUserId,
+      };
       const response = await streamLikeDislike(data);
-      console.log(response)
+      console.log(response);
 
-      if(response.status) {
+      if (response.status) {
         setLiked(!liked);
       }
-    }    
-  }
+    }
+  };
   const getlikeClass = () => {
-    if(liked) {
+    if (liked) {
       return "like flex flex-center justify-center br50 liked";
     }
     return "like flex flex-center justify-center br50";
-  }
+  };
+  //clicking on shops icon will open product list panel 
+  const handleLeftDivVisbibility = () => {
+    handleLeftDiv(true);
+  };
 
   return (
     <>
@@ -297,9 +325,7 @@ function StreamingBase({
           <div className="stream-header flex space-between">
             {stream?.streamPageData?.streamPageDteails?.isLoggedIn ? (
               <>
-                <div className="head-title">
-                  {liveAuctionName()}
-                </div>
+                <div className="head-title">{liveAuctionName()}</div>
               </>
             ) : (
               <>
@@ -312,18 +338,35 @@ function StreamingBase({
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
           <div className="video-icon">
-          <button 
-          onClick={(e) => handleMuteButton(e)}
-          className="flex flex-center justify-center br50 valum" id='mute'>
-             {isMute ? <IconSpeakerMute /> : <IconSpeaker/>}
+            {windowWidth <= 1024 ? (
+              <button
+                className="flex flex-center justify-center br50 shops"
+                onClick={handleLeftDivVisbibility}
+              >
+                <IconShops />
+              </button>
+            ) : (
+              ""
+            )}
+            <button
+              onClick={(e) => handleMuteButton(e)}
+              className="flex flex-center justify-center br50 valum"
+              id="mute"
+            >
+              {isMute ? <IconSpeakerMute /> : <IconSpeaker />}
               <span className="range flex flex-center">
-                  <input type="range" id="vol" name="vol" min="0" max="100"
-                    onChange={(e)=> changeVolumeLevel(e)}
-                    value={volumeLevel}
-                   className="slider"
-                   />
+                <input
+                  type="range"
+                  id="vol"
+                  name="vol"
+                  min="0"
+                  max="100"
+                  onChange={(e) => changeVolumeLevel(e)}
+                  value={volumeLevel}
+                  className="slider"
+                />
               </span>
-          </button>
+            </button>
             {/* <button
               className="flex flex-center justify-center br50"
               disabled={isMute}
@@ -367,9 +410,13 @@ function StreamingBase({
                 Time left - <Timer minutes={minutes} seconds={seconds} />
               </div>
               <div className="bid-status flex flex-center">
-                {winnerNotification?.bidAmount ? <>Selling Bid - ${winnerNotification?.bidAmount } + Ship/Tax{" "}</> : <>
-                  Current Bid - ${bidAmount} + Ship/Tax{" "}
-                </>}
+                {winnerNotification?.bidAmount ? (
+                  <>
+                    Selling Bid - ${winnerNotification?.bidAmount} + Ship/Tax{" "}
+                  </>
+                ) : (
+                  <>Current Bid - ${bidAmount} + Ship/Tax </>
+                )}
                 <span
                   className="flex flex-center justify-center br50"
                   onClick={handleShipModal}
