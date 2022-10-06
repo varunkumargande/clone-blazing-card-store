@@ -44,6 +44,6 @@ EXPOSE 3000
 ###CMD ["npm","start","serve"]
 ###RUN npm run setup
 
-RUN npm run build 
+RUN npm run build --max-old-space-size=4096
 
 CMD ["npm","run","start"]
