@@ -101,7 +101,6 @@ export default function categoryStream(){
                                 <li>Sneakers</li>
                                 <li>Jewellery</li>
                                 <li>Video Game</li>
-
                               </ul>
                             </aside>
                             <div className="overflow-none">
