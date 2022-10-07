@@ -15,6 +15,7 @@ import axios from "axios";
 import { searchUsers } from "../../../chatService";
 import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
+import { Loader } from "../../reusable/Loader";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -194,7 +195,11 @@ export function PaymentInfoModal(props) {
     cardDetail,
     productDetail,
     fetchShiipmentApi,
+    paymentLoader,
+    addressLoader
   } = props;
+
+  console.log(addressList)
 
   const addressInfo =
     addressList?.length == 0
@@ -220,6 +225,8 @@ export function PaymentInfoModal(props) {
         "" +
         "XXXX XXXX XXXX " +
         cardDetail[0]?.card.last4;
+
+  console.log(paymentLoader, addressLoader)
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -248,7 +255,15 @@ export function PaymentInfoModal(props) {
             </div>
           </div>
         </div>
-        <div className="modal-body">
+        {paymentLoader || addressLoader ? (
+          <>
+          <div align={"center"}>
+            <Loader />
+            </div>
+          </>
+        ) : (
+          <>
+             <div className="modal-body">
           <div className="input-control with-bg">
             <label>Shipping Details</label>
             <input
@@ -272,6 +287,9 @@ export function PaymentInfoModal(props) {
             <span className="errorMessage"></span>
           </div>
         </div>
+          </>
+        )}
+       
         <div className="modal-footer flex justify-center">
           <div className="flex space-between btn-wrap wd310">
             <button className="disable-btn" onClick={() => openPayment(false)}>
@@ -333,10 +351,12 @@ export function AddNewCardModal(props) {
       });
 
       if (payDetail == false) {
+        setPaymentLoader(true)
         handleCardApi(jsonData, false, fetchCardDetail, setPaymentLoader);
         fetchShiipmentApi();
         close(false);
       } else {
+        setPaymentLoader(true)
         handleCardApi(jsonData, true, fetchCardDetail, setPaymentLoader);
         fetchShiipmentApi();
         close(false);
@@ -427,6 +447,7 @@ export function AddAddressModal(props) {
     setShip,
     addressList,
     countryData,
+    setAddressList
   } = props;
 
   console.log(addressList);

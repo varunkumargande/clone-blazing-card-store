@@ -63,9 +63,9 @@ export default function ShippingDetails() {
             onSubmit={(values) => {
               setAddressLoader(true)
               if (addressData.length != 0) {
-                editAddressApi(values, addressData[0].addressId, setAddressLoader);
+                editAddressApi(values, addressData[0].addressId, setAddressLoader, addressList);
               } else {
-                UserAddAddress(values, Router, setAddressLoader);
+                UserAddAddress(values, Router, setAddressLoader, addressList);
               }
             }}
           >

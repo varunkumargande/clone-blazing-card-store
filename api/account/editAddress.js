@@ -1,6 +1,6 @@
 import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from "../../services";
-export async function editAddressApi(values, addressId, setAddressLoader) {
+export async function editAddressApi(values, addressId, setAddressLoader, addressList) {
   const data = JSON.stringify({
     address1: values.address1,
     address2: values.address2,
