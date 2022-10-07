@@ -25,7 +25,8 @@ function CenterDiv({
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
-
+  const [addressLoader, setAddressLoader] = useState(true);
+  const [paymentLoader, setPaymentLoader] = useState(true);
   const [shipIndex, setShipIndex] = React.useState(null);
   const [shipData, setShipData] = React.useState([]);
 
@@ -83,11 +84,11 @@ function CenterDiv({
   const submitShipDetail = (data) => {
     setShipData(data);
     if (data.addressId) {
-      editAddressApi(data, data.addressId);
+      editAddressApi(data, data.addressId, setAddressLoader);
       setShippmentFormOpen(false);
       fetchShiipmentApi();
     } else {
-      UserAddAddress(data, fetchShiipmentApi);
+      UserAddAddress(data, setAddressLoader);
       setShippmentFormOpen(false);
       getStreamingShippmentDetail();
     }
@@ -121,6 +122,7 @@ function CenterDiv({
       {paymentForm == true ? (
         <>
           <AddNewCardModal
+          fetchCardDetail={fetchCardDetail}
             productDetail={productDetail}
             countryData={countryData}
             fetchShiipmentApi={fetchShiipmentApi}
@@ -129,6 +131,7 @@ function CenterDiv({
             cardIndex={setCardIndex}
             payIndex={cardIndex}
             close={setPaymentFormOpen}
+            setPaymentLoader={setPaymentLoader}
           />
         </>
       ) : (
@@ -147,6 +150,7 @@ function CenterDiv({
             shipData={shipData}
             close={setShippmentFormOpen}
             setShip={submitShipDetail}
+            addressLoader={addressLoader}
           />
         </>
       ) : (

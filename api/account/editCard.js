@@ -9,7 +9,7 @@ export async function handleCardApi(data, isEdit, cardListApi, setCardLoader) {
     );
     if (result && result.data && result.data.status === 1) {
       cardListApi();
-      setCardLoader(false)
+      setCardLoader(false);
     }
   } else {
     const result = await APIServices.create(
@@ -18,11 +18,11 @@ export async function handleCardApi(data, isEdit, cardListApi, setCardLoader) {
     );
     if (result.data.status == 1) {
       cardListApi();
-      setCardLoader(false)
+      setCardLoader(false);
       modalSuccess("success", "Card Addedd !");
     } else {
       modalWarning("error", result.data.message);
-      setCardLoader(false)
+      setCardLoader(false);
     }
   }
 }

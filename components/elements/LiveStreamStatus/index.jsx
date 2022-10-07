@@ -36,13 +36,23 @@ export default function LiveStreamStatus({ isLive, uuid, detail }) {
       }
     }
   };
-  const getlikedStatus = (uuid) => {
-    console.log(likedStream.indexOf(uuid) > -1, likedStream.indexOf(uuid));
-    if (detail.islike == 1 || likedStream.indexOf(uuid) > -1) {
+  const getlikedStatus = (id) => {
+
+    console.log(likedStream.indexOf(id), id)
+
+    if(likedStream.indexOf(id) > -1) {
+      // console.log(likedStream.indexOf(id), id)
       return "like flex flex-center justify-center liked";
     } else {
+      // console.log(likedStream.indexOf(id))
       return "like flex flex-center justify-center";
     }
+
+    // if (detail.islike == 1 || likedStream.indexOf(uuid) > -1) {
+    //   return "like flex flex-center justify-center liked";
+    // } else {
+    //   return "like flex flex-center justify-center";
+    // }
     
   };
 
