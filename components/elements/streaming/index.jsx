@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import LeftDiv from "./LeftDiv";
 import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNotification, streamData } from "../../../store/stream/action";
 import { io } from "socket.io-client";
 import { socketIO } from "../../../api/url";
-
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -33,7 +32,8 @@ function Index() {
 
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
-
+  const [isLeftDivOpen, setLeftDivOpen] = useState();
+  
   useEffect(() => {
     dispatch(streamData(uuid));
   }, []);
@@ -59,23 +59,29 @@ function Index() {
     });
     setAuctionNotification(streamNotification?.auction)
   }, [streamNotification])
+  //Method to show and hide left div
+  const handleLeftDiv = (toggle) => {
+    setLeftDivOpen(toggle);
+  };
 
   return (
     <>
       {streamingDetails?.uuid ? (
         <>
           <div className="streaming-page flex space-between">
-            <LeftDiv
-              auctionNotification={auctionNotification}
-              open={open}
-              productDetail={setProductDetail}
-              openPayment={setOpenPayment}
-              setOpen={setOpen}
-              addShippInfo={addShippInfo}
-              addPayInfo={addPayInfo}
-              setCustomerId={setCustomerId}
-              streamingDetails={streamingDetails}
-            />
+              <LeftDiv
+                auctionNotification={auctionNotification}
+                open={open}
+                productDetail={setProductDetail}
+                openPayment={setOpenPayment}
+                setOpen={setOpen}
+                addShippInfo={addShippInfo}
+                addPayInfo={addPayInfo}
+                setCustomerId={setCustomerId}
+                streamingDetails={streamingDetails}
+                handleLeftDiv={handleLeftDiv}
+                isLeftDivOpen={isLeftDivOpen}
+              />
             <CenterDiv
               open={open}
               productDetail={productDetail}
@@ -87,6 +93,7 @@ function Index() {
               customerId={customerId}
               streamDetails={selectedStream}
               streamingDetails={streamingDetails}
+              handleLeftDiv={handleLeftDiv}
             />
             <RightDiv
               streamingDetails={streamingDetails}

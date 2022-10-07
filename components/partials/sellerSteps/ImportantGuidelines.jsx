@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { rulesAcknowledgement } from "../../../store/becomeSeller/action";
-import IconCheck from "../../Icons/iconCheck";
+import IconCheck from "../../Icons/IconCheck";
 import IconBack from '../../Icons/IconBack';
 
 

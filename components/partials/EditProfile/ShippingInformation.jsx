@@ -40,7 +40,7 @@ export default function ShippingDetails() {
 
   const shippingSchema = Yup.object().shape({
     address1: Yup.string().required("Required"),
-    address2: Yup.string().required("Required"),
+    // address2: Yup.string().required("Required"),
     city: Yup.string().required("Required"),
     state: Yup.string().required("Required"),
     postcode: Yup.string().required("Required").max(6, "postcode is invalid !"),
@@ -95,7 +95,9 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.company}
                           />
-                          <span className="errorMessage">{errors.company}</span>
+                          <span className="errorMessage">{errors.company && touched.company
+                                ? errors.company
+                                : null}</span>
                         </div>
                         <div className="input-control wd50">
                           <label>Address Line 1 *</label>
@@ -106,7 +108,9 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.address1}
                           />
-                          <span className="errorMessage">{errors.address1}</span>
+                          <span className="errorMessage">{errors.address1 && touched.address1
+                                ? errors.address1
+                                : null}</span>
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">Address Line 2</label>
@@ -118,7 +122,7 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.address2}
                           />
-                          <span className="errorMessage">{errors.address2}</span>
+                          {/* <span className="errorMessage">{errors.address2}</span> */}
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">Country *</label>
@@ -139,7 +143,9 @@ export default function ShippingDetails() {
                               );
                             })}
                           </select>
-                          <span className="errorMessage">{errors.countryId}</span>
+                          <span className="errorMessage">{errors.countryId && touched.countryId
+                                ? errors.countryId
+                                : null}</span>
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">Postal Code *</label>
@@ -151,7 +157,9 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.postcode}
                           />
-                          <span className="errorMessage">{errors.postcode}</span>
+                          <span className="errorMessage">{errors.postcode && touched.postcode
+                                ? errors.postcode
+                                : null}</span>
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">City *</label>
@@ -163,7 +171,9 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.city}
                           />
-                          <span className="errorMessage">{errors.city}</span>
+                          <span className="errorMessage">{errors.city && touched.city
+                                ? errors.city
+                                : null}</span>
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">State *</label>
@@ -175,7 +185,9 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.state}
                           />
-                         <span className="errorMessage">{errors.state}</span>
+                         <span className="errorMessage">{errors.state && touched.state
+                                ? errors.state
+                                : null}</span>
                         </div>
                       </div>
                     </div>
