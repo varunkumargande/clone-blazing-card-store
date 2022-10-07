@@ -7,6 +7,7 @@ export const actionTypes = {
   ADD_RTM_TOKEN: 'ADD_RTM_TOKEN',
   ADD_RTC_TOKEN: 'ADD_RTC_TOKEN',
   ADD_STREAM_PRODUCTS:'ADD_STREAM_PRODUCTS',
+  ADD_NOTIFICATION: 'ADD_NOTIFICATION',
 
   GET_STREAM_DETAILS: 'GET_STREAM_DETAILS',
   GET_USER: 'GET_USER_TYPE',
@@ -93,6 +94,13 @@ export function addRtmToken(payload) {
 export function addRtcToken(payload) {
   return {
       type: actionTypes.ADD_RTC_TOKEN,
+      payload:payload,
+  };
+} 
+
+export function addNotification(payload) {
+  return {
+      type: actionTypes.ADD_NOTIFICATION,
       payload:payload,
   };
 } 

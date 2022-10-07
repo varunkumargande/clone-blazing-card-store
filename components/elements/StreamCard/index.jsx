@@ -7,6 +7,7 @@ import LiveStreamStatus from "../LiveStreamStatus";
 import { stringFormatter } from "../../../utilities/utils";
 import Router from "next/router";
 import { apiUrl, imageUrl } from "../../../api/url";
+import { useEffect } from "react";
 
 export default function StreamCard({ detail, isLive }) {
   const handleRouting = (id) => {
