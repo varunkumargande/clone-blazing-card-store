@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { Input, Button } from "antd";
 import AgoraRTM from "agora-rtm-sdk";
 import { getToken } from "../../../api/stream/getToken";
-import { FaWpbeginner } from "react-icons/fa";
 import IconChat from "../../Icons/IconChat";
 
-function RightDiv({ streamingDetails, streamData }) {
+function RightDiv({ streamData }) {
   const [channel, setChannel] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
@@ -36,12 +33,12 @@ function RightDiv({ streamingDetails, streamData }) {
     const token = await getToken(
       options.rtm,
       options.messageChannel,
-      options.audience + options.audienceId,
+      options.audience,
       options.accountType,
       options.userType
     );
 
-    await client.login({ uid: options.audience + options.audienceId, token });
+    await client.login({ uid: options.audience, token });
     const channel = client.createChannel(options.messageChannel);
     await channel.join();
     setChannel(channel);

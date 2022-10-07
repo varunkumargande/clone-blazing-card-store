@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { addPaymentData } from "../../../store/becomeSeller/action";
 import { useSelector } from "react-redux";
 import IconBack from '../../Icons/IconBack';
+import { CardExpiry } from "../../CommonComponents/CardExpiry";
+import BackButton from "../../CommonComponents/BackButton";
 
 
 
@@ -34,7 +36,7 @@ export default function PaymentDetails() {
 
   return (
     <div className="step-container">
-      <h3 className="flex flex-center"><div className="edit-back" onClick={() => router.back()} ><IconBack/></div>Payment Details</h3>
+      <BackButton name={"Payment Details"}/>
       <div className="sub-title">
         Blazing Cards takes marketplace safety seriously. Sellers must have a
         valid payment method on file. In rare occasions, sellers are charged a
@@ -78,12 +80,13 @@ export default function PaymentDetails() {
           />
         </div>
         <div className="flex space-between">
-        <TextInput
+        <CardExpiry
             className="input-control wd48"
             label="Expiry *"
             name="expiry"
             type="text"
-            placeholder="Enter here"
+            placeholder="Enter here (MM/YY)"
+            formProps={formProps}
           />
           <TextInput
             className="input-control wd48"
@@ -91,6 +94,7 @@ export default function PaymentDetails() {
             name="cvv"
             type="text"
             placeholder="Enter here"
+            maxLength={3}
           />
         </div>
         <div className="flex space-between">

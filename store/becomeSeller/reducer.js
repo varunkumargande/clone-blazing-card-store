@@ -15,10 +15,7 @@ export const initState = {
   paymentDetails: null,
   submittedDetails: null,
   stepContainer: stepState,
-  isguidelinesSubmitted: false,
-  isBasicDetailsSubmitted: false,
-  isPaymentDetailsSubmitted: false,
-  isShippingDetailsSubmitted: false,
+  currentState: 1,
 };
 
 const getStepState = (lastStep) => {
@@ -69,7 +66,7 @@ function reducer(state = initState, action) {
       return {
         ...state,
         ...{ guidelines: !!action.payload },
-        ...{isguidelinesSubmitted: !!action.payload},
+        ...{currentState: !!action.payload ? 1 : 0},
         ...{ stepContainer : {
           guidelines : 'completed',
           basicDetails: "process",
@@ -82,7 +79,7 @@ function reducer(state = initState, action) {
       return {
         ...state,
         ...{ basicDetails: action.payload },
-        ...{isBasicDetailsSubmitted: true},
+        ...{currentState: 2},
         ...{ stepContainer : {
           guidelines : 'completed',
           basicDetails: "completed",
@@ -95,12 +92,12 @@ function reducer(state = initState, action) {
       return {
         ...state,
         ...{ shippingDetails: action.payload },
-        ...{isShippingDetailsSubmitted: true},
+        ...{currentState: 4},
         ...{ stepContainer : {
           guidelines : 'completed',
           basicDetails: "completed",
           paymentDetails: "completed",
-          shippingDetails: "Completed",
+          shippingDetails: "completed",
           submitted: "process"
         } }
       }
@@ -108,7 +105,7 @@ function reducer(state = initState, action) {
       return {
         ...state,
         ...{ paymentDetails: action.payload },
-        ...{isPaymentDetailsSubmitted: true},
+        ...{currentState: 3},
         ...{ stepContainer : {
           guidelines : 'completed',
           basicDetails: "completed",
@@ -125,7 +122,8 @@ function reducer(state = initState, action) {
           ...{ paymentDetails: action.payload?.paymentDetails !== {} ? action.payload?.paymentDetails : null},
           ...{ shippingDetails: action.payload?.shippingDetails !== {} ? action.payload?.shippingDetails : null},
           ...{ submittedDetails: action.payload },
-          ...{ stepContainer : getStepState(action.payload?.steps)}
+          ...{ stepContainer : getStepState(action.payload?.steps)},
+          ...{currentState: action.payload?.steps},
 
         }
     default:

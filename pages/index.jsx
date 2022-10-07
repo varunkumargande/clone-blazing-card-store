@@ -13,6 +13,7 @@ import { categoryApi } from "../api/category/category";
 import Electronic from "../components/partials/LandingPage/Electronic";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import Vertical from "../components/partials/LandingPage/Layout/vertical";
+import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 
 export default function landingpage() {
   const [windowWidth, setWindowWidth] = useState(0);
@@ -52,6 +53,10 @@ const [isLiveScheduleSeeAll, setIsLiveScheduleSeeAll] = useState(false)
   useEffect(() => {
     categoryApi(dispatch);
   }, []);
+
+  useEffect(()=>{
+    dispatch(getBecomeSellerInfo());
+  }, [])
 
   const getAllCategoriesCard = () => {
     if (categories) {
