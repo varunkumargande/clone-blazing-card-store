@@ -1,6 +1,6 @@
 import { modalSuccess } from "../intercept";
 import APIServices from "../../services";
-export async function UserAddAddress(values, addressList) {
+export async function UserAddAddress(values, setAddressLoader) {
   const data = JSON.stringify({
     address1: values.address1,
     address2: values.address2,
@@ -13,7 +13,8 @@ export async function UserAddAddress(values, addressList) {
   });
   const result = await APIServices.create("CustomerAddress/add-address", data);
   if (result.status == 200) {
-    addressList();
+    // addressList();
+    setAddressLoader(false)
     modalSuccess("success", "Address Added")
   }
 }

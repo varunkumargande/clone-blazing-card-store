@@ -17,66 +17,12 @@ export default function ProfileHeader({
     }
   }, []);
 
-  const handleBarList = () => {
-    if (isSeller) {
-      return (
-        <>
-          {sellerBar.map((item, index) => {
-            return (
-              <>
-                <div className="category-list">
-                  <button
-                    onClick={() =>
-                      setActiveTab({ type: "seller", slug: item.slug })
-                    }
-                    className={
-                      activeTab.type == "seller" && activeTab.slug == item.slug
-                        ? "title active"
-                        : "title"
-                    }
-                  >
-                    {item.name}
-                  </button>
-                </div>
-              </>
-            );
-          })}
-        </>
-      );
-    } else {
-      return (
-        <>
-          {profileBar.map((item, index) => {
-            return (
-              <>
-                <div className="category-list">
-                  <button
-                    onClick={() =>
-                      setActiveTab({ type: "buyer", slug: item.slug })
-                    }
-                    className={
-                      activeTab.type == "buyer" && activeTab.slug == item.slug
-                        ? "title active"
-                        : "title"
-                    }
-                  >
-                    {item.name}
-                  </button>
-                </div>
-              </>
-            );
-          })}
-        </>
-      );
-    }
-  };
-
   return (
     <>
       <section className="category-wrapper cotegories-border mb35">
         <div className="overflow-wrap">
           <div className="Category-list-wrap inner-container flex">
-            {handleBarList()}
+            {/* {handleBarList()} */}
           </div>
         </div>
       </section>
