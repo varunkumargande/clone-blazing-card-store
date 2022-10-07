@@ -82,7 +82,8 @@
         .title{
             font-size: 14px;
             line-height: 21px;
-            padding: 5px 11px 12px;
+            padding: 5px 0 12px;
+            margin:0 11px;
             color:$disc-color;
             font-weight: 500;
             position: relative;
@@ -90,11 +91,10 @@
             &:after{
                 content: "";
                 position: absolute;
-                left:50%;
+                left:0;
                 bottom: 0;
-                transform: translateX(-50%);
                 height: 2px;
-                width: 40px;
+                width: 100%;
                 background-color: transparent;
             }
             &.active{
@@ -125,7 +125,8 @@
         .category-list{
             .title{
                 font-size: 18px;
-                padding: 5px 17px 15px;
+                padding: 5px 0 15px;
+                margin:0 17px;
                 &:after{
                     height: 4px;
                 }

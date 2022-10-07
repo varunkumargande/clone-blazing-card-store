@@ -49,13 +49,15 @@ export default function Electronic({
               className="flex flex-center"
               onClick={() => handleSeeAll(categoryData[0])}
             >
-              See All
+              View All
             </a>
             {/* </Link> */}
           </div>
         </div>
-        <div className="overflow-wrap">
-          <div className="card-wrap flex inner-container">
+      </div>
+      <div className="overflow-wrap">
+        <div className="flex inner-container">
+          <div className="card-wrap flex">
             {/*  */}
             {getStreamCards()}
           </div>

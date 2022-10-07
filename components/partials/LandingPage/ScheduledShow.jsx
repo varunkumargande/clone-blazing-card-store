@@ -41,11 +41,13 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
                         <h3 className="title">Scheduled</h3>
                     </div>
                     <div className="seeAll">
-                        <a className="flex flex-center" onClick={() => handleSeeAll("Scheduled")}>See All</a>
+                        <a className="flex flex-center" onClick={() => handleSeeAll("Scheduled")}>View All</a>
                     </div>
                 </div>
-                <div className="overflow-wrap">
-                    <div className="card-wrap flex inner-container">
+            </div>
+            <div className="overflow-wrap">
+                <div className="flex inner-container">
+                    <div className="card-wrap flex">
                         {/*  */}
                         {getStreamCards()}
                     </div>

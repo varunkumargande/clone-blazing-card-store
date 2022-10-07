@@ -11,10 +11,12 @@ export default function Pokeman(){
                     <div className="flex flex-center">
                         <h3 className="title">Pokeman</h3>
                     </div>
-                    <div className="seeAll"><Link href="/"><a className="flex flex-center">See All</a></Link></div>
+                    <div className="seeAll"><Link href="/"><a className="flex flex-center">View All</a></Link></div>
                 </div>
-                <div className="overflow-wrap">
-                    <div className="card-wrap flex inner-container">
+            </div>
+            <div className="overflow-wrap">
+                <div className="flex inner-container">
+                    <div className="card-wrap flex">
                         <div className="card-list flex flex-center">
                             <div class="inner-card-list">
                                 <div className="image">
@@ -267,8 +269,8 @@ export default function Pokeman(){
                                 </div>
                             </div>
                         </div>
-                    </div>                  
-                </div>
+                    </div>
+                </div>                  
             </div>
         </section>
     );

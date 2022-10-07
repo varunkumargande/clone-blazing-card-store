@@ -1,7 +1,7 @@
 
 .overflow-wrap{
     flex-wrap: nowrap;
-    width:100vw;
+    width:100%;
     margin-left: 50%;
     transform: translateX(-50%);
     overflow: auto;
@@ -16,7 +16,7 @@
     padding: 24px 0;
 }
 .card-inner{
-    padding-bottom: 24px;
+    padding-bottom: 44px;
 }
 .card-wrap,.Category-list-wrap{
     flex-wrap: nowrap;
@@ -34,7 +34,7 @@
             font-size: 12px;
             line-height: 18px;
             color:$blue-color;
-            font-weight: 700;
+            font-weight: 500;
         }
     }
 }
@@ -44,14 +44,6 @@
 .card-list{
     padding: 0 6px;
     flex:0 0 172px;
-}
-.overflow-wrap{
-    .card-list{
-        &:first-child{
-            padding-left: 0;
-            flex:0 0 166px;
-        }
-    }
 }
 .inner-card-list{
     background-color: $white-color;
@@ -134,7 +126,7 @@
             width:28px;
             height: 28px;
             svg{
-                width:16px;
+                width:17px;
             }
             .icon{
                 transition: all .25s;
@@ -150,9 +142,9 @@
     .text{
         padding: 8px;
         .title{
-            font-size: 14px;
-            line-height: 21px;
-            font-weight: 500;
+            font-size: 12px;
+            line-height: 15px;
+            font-weight: 400;
             margin-bottom: 5px;
             img{
                 width: 25px;
@@ -166,8 +158,9 @@
         }
         .disc{
             font-size: 12px;
-            line-height: 18px;
+            line-height: 15px;
             margin-bottom: 5px;
+            font-weight: 600;
             word-break: break-word;
         }
         .cate-btn{
@@ -353,7 +346,7 @@
         padding: 40px 0;
     }
     .card-inner{
-        padding-bottom: 32px;
+        padding-bottom: 48px;
     }
     .title-wrap{
         padding-bottom: 24px;
@@ -363,7 +356,7 @@
         }
         .seeAll{
             a{
-                font-size: 18px;
+                font-size: 16px;
                 line-height: 24px;
             }
         }
@@ -372,7 +365,7 @@
         margin:0 -12px;
     }
     .card-list{
-        flex:0 0 213px;
+        flex:0 0 214px;
         padding: 0 12px;
         .inner-card-list{
             padding: 4px 4px 38px;
@@ -396,13 +389,6 @@
             border-radius: 13px;
             padding: 0 8px;
             @include pos(ab,null,null,8px,6px);
-        }
-    }
-    .overflow-wrap{
-        .card-list{
-            &:first-child{
-                flex:0 0 201px;
-            }
         }
     }
     .tme-wrap{
@@ -437,11 +423,28 @@
             flex-wrap: wrap;
             margin: 0 -14px;
             .card-list{ 
-                flex:0 0 calc(100% / 6);
+                flex:0 0 218px;
                 padding:0 14px 28px;
             }
         }
     }
     
 }
-
+@media all and (min-width:1600px){
+    .overflow-none{
+        .card-wrap {
+            .card-list{ 
+                flex:0 0 207px;
+            }
+        }
+    }
+}
+@media all and (min-width:1920px){
+    .overflow-none{
+        .card-wrap {
+            .card-list{ 
+                flex:0 0 222px;
+            }
+        }
+    }
+}

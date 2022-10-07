@@ -108,15 +108,15 @@ function Category({ isSeeAllCate, isSeeAll, subCateId, seeAllHeading, setSubCate
                             </ul> */}
                         </div>
                     </div>
-                    {/* <div className="seeAll"><Link href="/"><a className="flex flex-center">See All</a></Link></div> */}
+                    {/* <div className="seeAll"><Link href="/"><a className="flex flex-center">View All</a></Link></div> */}
                 </div>
-                <div className="overflow-wrap">
-                    <div className="Category-list-wrap inner-container flex">
-                        <div className="category-like like">
-                            <button className="Like flex justify-center flex-center"><IconLike /></button>
-                        </div>
-                        {getCategoryList()}
+            </div>
+            <div className="overflow-wrap">
+                <div className="Category-list-wrap inner-container flex">
+                    <div className="category-like like">
+                        <button className="Like flex justify-center flex-center"><IconLike /></button>
                     </div>
+                    {getCategoryList()}
                 </div>
             </div>
         </section>

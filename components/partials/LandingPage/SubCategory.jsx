@@ -67,13 +67,13 @@ function SubCategory({ subCateId, seeAllHeading, setSubCateId, category }) {
                         <h3 className="title">{seeAllHeading}</h3>
                     </div>
                 </div>
-                <div className="overflow-wrap">
-                    <div className="Category-list-wrap inner-container flex">
-                        <div className="category-like like">
-                            <button className="Like flex justify-center flex-center"><IconLike /></button>
-                        </div>
-                        {getCategoryList()}
+            </div>
+            <div className="overflow-wrap">
+                <div className="Category-list-wrap inner-container flex">
+                    <div className="category-like like">
+                        <button className="Like flex justify-center flex-center"><IconLike /></button>
                     </div>
+                    {getCategoryList()}
                 </div>
             </div>
         </section>

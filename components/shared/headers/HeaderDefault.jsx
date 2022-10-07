@@ -66,7 +66,7 @@ function HeaderDefault({ auth }, props) {
               JSON.parse(sessionStorage.getItem("spurtUser")).avatar +
               "&width=500&height=500"
           )
-        : setAimg("/static/img/no-image.png");
+        : setAimg("/static/img/no-image.svg");
     }
   },[]);
 
@@ -123,15 +123,16 @@ function HeaderDefault({ auth }, props) {
                         </span>
                     </span>
                 </label> */}
-            { !stepState.includes(pageName) ? <Link href="/become-seller/guidelines">
-              <a className="border-btn flex flex-center justify-center become">
-                Become a Seller
-              </a>
-            </Link> : null}
+           
 
             {auth.isLoggedIn ? (
               <>
                 {/* <MessageButton name={"Message"} /> */}
+                { !stepState.includes(pageName) ? <Link href="/become-seller/guidelines">
+                  <a className="border-btn flex flex-center justify-center become">
+                    Become a Seller
+                  </a>
+                </Link> : null}
                 <button className="message flex flex-center justify-center">
                   <IconMessage />
                 </button>
@@ -208,6 +209,11 @@ function HeaderDefault({ auth }, props) {
             ) : (
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
+                { !stepState.includes(pageName) ? <Link href="/become-seller/guidelines">
+                  <a className="flex flex-center justify-center become Link">
+                    Become a Seller
+                  </a>
+                </Link> : null}
                 <Link href="account/login">
                   <a className="primary-btn flex flex-center justify-center ml24">
                     Sign In
