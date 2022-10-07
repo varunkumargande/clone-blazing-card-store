@@ -1,13 +1,17 @@
 import React, {useState} from "react";
-import Link from "next/link";
-import IconBack from "../../Icons/IconBack";
-import IconEye from "../../Icons/IconEye";
 import IconLike from "../../Icons/IconLike";
 import { streamLikeDislike } from "../../../api/stream/streams_api";
+import { useEffect } from "react";
 
 export default function LiveStreamStatus({ isLive, uuid, detail }) {
 
   const [likedStream, setLikedStream] = useState([]);
+
+  useEffect(() => {
+    if (!!detail?.islike) {
+      setLikedStream((state) => [...state, detail.uuid]);
+    }
+  }, [])
 
   const handleLikeUnlike = async (uuid) => {
     const userDetails = JSON.parse(sessionStorage.getItem("spurtUser"));
@@ -22,7 +26,6 @@ export default function LiveStreamStatus({ isLive, uuid, detail }) {
       }
     }
   };
-
   const getlikedStatus = (uuid) => {
     if (!!likedStream.includes(uuid) || detail.islike == 1) {
       return "like flex flex-center justify-center liked";

@@ -56,7 +56,6 @@ function RightDiv({ streamingDetails, streamData }) {
       userId: options.audience 
     };
 
-    console.log(streamData)
     setMessages((messages) => [...messages, messageObject]);
     await channel.sendMessage({ text: message, type: "text" });
     setInputValue("");
