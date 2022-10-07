@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
 import IconShareTwitter from "../../Icons/IconShareTwitter";
 import IconShareWhatsup from "../../Icons/IconShareWhatsup";
+import IconGoogle from '../../Icons/IconGoogle';
 import Timer from "../../elements/streaming/Timer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -59,6 +61,20 @@ export function ShippingTaxesModal(props) {
   const { setOpenShipPayDetails } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal-header flex Space-between flex-center">
+        <h5 className="modal-title"></h5>
+        <button
+          type="button"
+          className="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          onClick={() => setIsShareModalOpen(false)}
+        >
+          <span aria-hidden="true">
+            <IconClose />
+          </span>
+        </button>
+      </div>
       <div className="modal">
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Shipping & Taxes</h5>
@@ -822,6 +838,44 @@ export function UnfollowModal() {
             <button className="primary-btn">
               Unfollow
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SignUPGoogle() {
+
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+      <div className="modal-header flex Space-between flex-center nobg">
+          <h5 className="modal-title"></h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body text-center">
+        <div className="Stream-title text-center mb24">
+            Signup to join the stream
+          </div>
+          <button className="google-btn mb24"><IconGoogle/>Continue with Google</button>
+          <div class="or mb32 flex flex-center justify-center"><span>Or</span></div>
+          <div className="signin-signup">
+              <Link href="/account/register">
+                    <a>Sign Up</a>
+              </Link>/
+              <Link href="/account/login">
+                    <a>Sign In</a>
+              </Link> on Blazing Cards
           </div>
         </div>
       </div>
