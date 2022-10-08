@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
 import IconShareTwitter from "../../Icons/IconShareTwitter";
 import IconShareWhatsup from "../../Icons/IconShareWhatsup";
+import IconGoogle from "../../Icons/IconGoogle";
 import Timer from "../../elements/streaming/Timer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { array, element } from "prop-types";
 import { addCardDetail } from "../../../api/stream/payment";
+import { deleteAccountApi } from "../../../api/account/deleteAccount";
+import axios from "axios";
+import { searchUsers } from "../../../chatService";
+import PaymentCard from "../EditProfile/PaymentCard";
+import { handleCardApi } from "../../../api/account/editCard";
+import { Loader } from "../../reusable/Loader";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -54,6 +62,20 @@ export function ShippingTaxesModal(props) {
   const { setOpenShipPayDetails } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal-header flex Space-between flex-center">
+        <h5 className="modal-title"></h5>
+        <button
+          type="button"
+          className="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          onClick={() => setIsShareModalOpen(false)}
+        >
+          <span aria-hidden="true">
+            <IconClose />
+          </span>
+        </button>
+      </div>
       <div className="modal">
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Shipping & Taxes</h5>
@@ -172,32 +194,39 @@ export function PaymentInfoModal(props) {
     addressList,
     cardDetail,
     productDetail,
+    fetchShiipmentApi,
+    paymentLoader,
+    addressLoader
   } = props;
+
+  console.log(addressList)
 
   const addressInfo =
     addressList?.length == 0
       ? "Add Address"
-      : addressList[0].address1 +
+      : addressList[0]?.address1 +
         " ," +
-        addressList[0].address2 +
+        addressList[0]?.address2 +
         " ," +
-        addressList[0].city +
+        addressList[0]?.city +
         " ," +
-        addressList[0].state +
+        addressList[0]?.state +
         " ," +
-        addressList[0].postcode;
+        addressList[0]?.postcode;
 
   const shipSchema = Yup.object().shape({
     fullName: Yup.string().min(2, "Too Short!").required("Required"),
   });
 
   const cardDetails =
-    cardDetail?.length == 0
+    cardDetail == false
       ? "Add shipment"
-      : cardDetail[0].card.brand +
-        " " +
+      : cardDetail[0]?.card.brand +
+        "" +
         "XXXX XXXX XXXX " +
-        cardDetail[0].card.last4;
+        cardDetail[0]?.card.last4;
+
+  console.log(paymentLoader, addressLoader)
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -226,7 +255,15 @@ export function PaymentInfoModal(props) {
             </div>
           </div>
         </div>
-        <div className="modal-body">
+        {paymentLoader || addressLoader ? (
+          <>
+          <div align={"center"}>
+            <Loader />
+            </div>
+          </>
+        ) : (
+          <>
+             <div className="modal-body">
           <div className="input-control with-bg">
             <label>Shipping Details</label>
             <input
@@ -250,6 +287,9 @@ export function PaymentInfoModal(props) {
             <span className="errorMessage"></span>
           </div>
         </div>
+          </>
+        )}
+       
         <div className="modal-footer flex justify-center">
           <div className="flex space-between btn-wrap wd310">
             <button className="disable-btn" onClick={() => openPayment(false)}>
@@ -271,41 +311,56 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  const { payDetail, close, productDetail, countryData } = props;
+  const { payDetail, close, productDetail, countryData, fetchShiipmentApi, setPaymentLoader, fetchCardDetail } =
+    props;
 
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
+  const [isCardEdit, setIsCardEdit] = useState(false);
 
   const shipSchema = Yup.object().shape({
-    cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
+    // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
     cardNumber: Yup.string()
       .required("Required")
       .max(16, "Card Number is invalid !")
       .min(15, "Card Number is invalid !"),
-    cvv: Yup.string().min(2, "Too Short!").required("Required"),
-    expiration: Yup.string().required("Required"),
-    country: Yup.string().required("Required"),
+    cvc: Yup.string().min(2, "Too Short!").required("Required"),
+    expireDate: Yup.string().required("Required"),
+    // countryId: Yup.string().required("Required"),
   });
-
 
   const formik = useFormik({
     initialValues: {
-      cardHolderName:
-        userDetail != null
-          ? JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? ""
-          : "",
       cardNumber:
-        payDetail.length != 0
-          ? "XXXX XXXX XXXX " + payDetail[0].card.last4
+        payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
+      cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
+      expireDate:
+        (payDetail != false) != 0
+          ? payDetail[0]?.card.exp_year + "-" + payDetail[0]?.card.exp_month
           : "",
-      cvv: payDetail.length != 0 ? payDetail[0].cvc : "",
-      expiration:
-        payDetail.length != 0
-          ? payDetail[0].card.exp_year + "-" + payDetail[0].card.exp_month
-          : "",
-      country: payDetail.length != 0 ? payDetail[0].card.country : "",
     },
     onSubmit: (values) => {
-      addCardDetail(values, productDetail, close);
+      let expDate = "";
+      let year = values.expireDate.split("-")[0].slice(-2);
+      let month = values.expireDate.split("-")[1];
+      expDate = month + "/" + year;
+
+      const jsonData = JSON.stringify({
+        cardNumber: values.cardNumber,
+        expireDate: expDate,
+        cvc: values.cvc,
+      });
+
+      if (payDetail == false) {
+        setPaymentLoader(true)
+        handleCardApi(jsonData, false, fetchCardDetail, setPaymentLoader);
+        fetchShiipmentApi();
+        close(false);
+      } else {
+        setPaymentLoader(true)
+        handleCardApi(jsonData, true, fetchCardDetail, setPaymentLoader);
+        fetchShiipmentApi();
+        close(false);
+      }
     },
     validationSchema: () => shipSchema,
   });
@@ -314,7 +369,7 @@ export function AddNewCardModal(props) {
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal medium">
         <div className="modal-header flex Space-between flex-center">
-          <h5 className="modal-title">Add New Card</h5>
+          <h5 className="modal-title">Card Detail</h5>
           <button
             type="button"
             className="close"
@@ -327,22 +382,9 @@ export function AddNewCardModal(props) {
             </span>
           </button>
         </div>
-    );
+
         <form onSubmit={formik.handleSubmit}>
           <div className="modal-body">
-            <div className="input-control">
-              <label>Name on Card *</label>
-              <input
-                type="text"
-                name="cardHolderName"
-                placeholder={"Enter here"}
-                value={formik.values.cardHolderName}
-                onChange={formik.handleChange}
-              />
-              <span className="errorMessage">
-                {formik.errors.cardHolderName}
-              </span>
-            </div>
             <div className="input-control">
               <label>Card Number *</label>
               <input
@@ -359,39 +401,24 @@ export function AddNewCardModal(props) {
                 <label>Expiration</label>
                 <input
                   type="month"
-                  name="expiration"
+                  name="expireDate"
                   placeholder={"Enter here"}
-                  value={formik.values.expiration}
+                  value={formik.values.expireDate}
                   onChange={formik.handleChange}
                 />
-                <span className="errorMessage">{formik.errors.expiration}</span>
+                <span className="errorMessage">{formik.errors.expireDate}</span>
               </div>
               <div className="input-control wd50">
-                <label>CVV</label>
+                <label>CVC</label>
                 <input
                   type="text"
-                  name="cvv"
+                  name="cvc"
                   placeholder={"Enter here"}
-                  value={formik.values.cvv}
+                  value={formik.values.cvc}
                   onChange={formik.handleChange}
                 />
-                <span className="errorMessage">{formik.errors.cvv}</span>
+                <span className="errorMessage">{formik.errors.cvc}</span>
               </div>
-            </div>
-            <div className="input-control">
-              <label>Country *</label>
-              <select name="country" onChange={formik.handleChange} value={formik.values.country}>
-                <option value="">Select Country</option>
-
-                {countryData?.map((item, index) => {
-                  return (
-                    <>
-                      <option value={item.name}>{item.name}</option>
-                    </>
-                  );
-                })}
-              </select>
-              <span className="errorMessage">{formik.errors.country}</span>
             </div>
             <div className="infotext">
               By providing your card information, you allow Blazing Cards to
@@ -420,28 +447,27 @@ export function AddAddressModal(props) {
     setShip,
     addressList,
     countryData,
+    setAddressList
   } = props;
+
+  console.log(addressList);
 
   const shipSchema = Yup.object().shape({
     company: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
-    country: Yup.string().required("Required"),
+    countryId: Yup.string().required("Required"),
     state: Yup.string().required("Required"),
     city: Yup.string().required("Required"),
     postcode: Yup.string().min(4, "Invalide PinCode").required("Required"),
-    // phoneNumber: Yup.string().required("Required"),
-    // email: Yup.string().required("Required"),
   });
 
   const formik = useFormik({
     initialValues: {
       company: addressList[0]?.company ?? "",
-      phoneNumber: addressList[0]?.phoneNo ?? "",
-      email: addressList[0]?.emailId ?? "",
       address1: addressList[0]?.address1 ?? "",
       address2: addressList[0]?.address2 ?? "",
-      country: addressList[0]?.countryId ?? "",
+      countryId: addressList[0]?.countryId ?? "",
       postcode: addressList[0]?.postcode ?? "",
       addressId: addressList[0]?.addressId ?? "",
       state: addressList[0]?.state ?? "",
@@ -486,7 +512,7 @@ export function AddAddressModal(props) {
                   />
                   <span className="errorMessage"></span>
                 </div>
-                <div className="input-control">
+                {/* <div className="input-control">
                   <label>Phone Number *</label>
                   <input
                     name="phoneNumber"
@@ -505,7 +531,7 @@ export function AddAddressModal(props) {
                     onChange={formik.handleChange}
                   />
                   <span className="errorMessage"></span>
-                </div>
+                </div> */}
                 <div className="input-control">
                   <label>Address Line 1 *</label>
                   <input
@@ -567,9 +593,9 @@ export function AddAddressModal(props) {
                   <label>Country *</label>
                   <select
                     className="input-control"
-                    name="country"
+                    name="countryId"
                     onChange={formik.handleChange}
-                    value={formik.values.country}
+                    value={formik.values.countryId}
                   >
                     {countryData?.map((item, index) => {
                       return (
@@ -579,7 +605,7 @@ export function AddAddressModal(props) {
                       );
                     })}
                   </select>
-                  <p className="errorMessage">{formik.errors.country}</p>
+                  <p className="errorMessage">{formik.errors.countryId}</p>
                 </div>
               </div>
               <div className="modal-footer">
@@ -599,34 +625,233 @@ export function AddAddressModal(props) {
   );
 }
 
-export function DeletAccountModal(){
-  return(
-      <div className="modalOverlay flex justify-center flex-center">
-          <div className="modal medium">
-             <div className="modal-header flex Space-between flex-center">
-                  <h5 className="modal-title">Delete Account</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true"><IconClose /></span>
-                  </button>
-             </div> 
-             <div className="modal-body">
-                  <div className="infotextlg">Are you sure you want to leave?</div>
-                  <div className="input-control">
-                      <label>User Name</label>
-                      <input name="text" placeholder={"Enter here"}  />
-                      <span className="errorMessage"></span>
-                  </div>
-                  <div className="input-control">
-                      <label>Password *</label>
-                      <input name="password" placeholder={"Enter here"}  />
-                      <span className="errorMessage"></span>
-                  </div>
-                  <div className="flex btn-wrap delete">
-                      <button className="border-btn mr16">Cancel</button>
-                      <button className="primary-btn disable">Delete Account</button>
-                  </div> 
-             </div>
+export function DeletAccountModal({ setIsOpen }) {
+  const deleteSchema = Yup.object().shape({
+    emailId: Yup.string().email("Invalid email format").required("Required"),
+    password: Yup.string().required("Required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      emailId: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      deleteAccountApi(values);
+    },
+    validationSchema: () => deleteSchema,
+  });
+
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal medium">
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">Delete Account</h5>
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+
+        <form onSubmit={formik.handleSubmit}>
+          <div className="modal-body">
+            <div className="infotextlg">Are you sure you want to leave?</div>
+            <div className="input-control">
+              <label>User Name</label>
+              <input
+                type="email"
+                name="emailId"
+                onChange={formik.handleChange}
+                placeholder={"Enter here"}
+                value={formik.values.emailId}
+              />
+              <span className="errorMessage">{formik.errors.emailId}</span>
+            </div>
+            <div className="input-control">
+              <label>Password *</label>
+              <input
+                type="password"
+                name="password"
+                placeholder={"Enter here"}
+                onChange={formik.handleChange}
+                value={formik.values.password}
+              />
+              <span className="errorMessage">{formik.errors.password}</span>
+            </div>
+            <div className="flex btn-wrap delete">
+              <button
+                className="border-btn mr16"
+                onClick={() => setIsOpen(false)}
+              >
+                Cancel
+              </button>
+              <button className="primary-btn" type="submit">
+                Delete Account
+              </button>
+            </div>
           </div>
+        </form>
       </div>
+    </div>
+  );
+}
+
+export function ChatUserModal({ setIsOpen }) {
+  const [userData, setUserData] = useState([]);
+  const [userDataLoader, setUserDataLoader] = useState(false);
+
+  const handleUsername = async (e) => {
+    setUserDataLoader(true);
+    if (e.target.value != "") {
+      const data = await axios.post(searchUsers, {
+        slang: e.target.value,
+      });
+      if (data.status == 200) {
+        // console.log(data.data.user)
+        setUserData(data.data.user);
+        setUserDataLoader(false);
+      }
+    } else {
+      setUserData([]);
+      setUserDataLoader(false);
+    }
+  };
+
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal medium">
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">New Message</h5>
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+
+        <div className="modal-body">
+          <div className="input-control">
+            <label>User Name</label>
+            <input
+              type="text"
+              name="username"
+              placeholder={"Enter Username"}
+              onChange={(e) => handleUsername(e)}
+            />
+          </div>
+          <div className="profile-chat-list-wrap">
+            {userDataLoader ? (
+              <>Loading ...</>
+            ) : (
+              <>
+                {userData.map((item, index) => {
+                  return (
+                    <>
+                      <div
+                        className="profile-chat-list flex space-between"
+                        // onClick={() => changeCurrentChat(index)}
+                      >
+                        <div className="profile-image-title flex flex-center">
+                          <div className="image br50">
+                            <img src={item.avatarImage} alt="" />
+                          </div>
+                          <div className="profile-text">
+                            <div className="name">
+                              {item.username} <span className="new"></span>
+                            </div>
+                            {/* <div className="time"></div> */}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </>
+            )}
+          </div>
+          <div className="btn-wrap delete" align={"center"}>
+            <button className="primary-btn" type="submit">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function UnfollowModal() {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-body text-center">
+          <div className="profile-icon">
+            <img src="/static/images/profile-large.svg" alt="" />
+          </div>
+          <div className="profile-id">Want to follow @felix.bronco?</div>
+          <div className="btn-wrap follow-btn-wrap flex justify-center">
+            <button className="border-btn">Cancel</button>
+            <button className="primary-btn">Unfollow</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SignUPGoogle() {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-header flex Space-between flex-center nobg">
+          <h5 className="modal-title"></h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body text-center">
+          <div className="Stream-title text-center mb24">
+            Signup to join the stream
+          </div>
+          <button className="google-btn mb24">
+            <IconGoogle />
+            Continue with Google
+          </button>
+          <div class="or mb32 flex flex-center justify-center">
+            <span>Or</span>
+          </div>
+          <div className="signin-signup">
+            <Link href="/account/register">
+              <a>Sign Up</a>
+            </Link>
+            /
+            <Link href="/account/login">
+              <a>Sign In</a>
+            </Link>{" "}
+            on Blazing Cards
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

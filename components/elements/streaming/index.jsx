@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import LeftDiv from "./LeftDiv";
 import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { streamData } from "../../../store/stream/action";
+import { addNotification, streamData } from "../../../store/stream/action";
 import { io } from "socket.io-client";
 import { socketIO } from "../../../api/url";
-
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -20,27 +19,59 @@ function Index() {
   const [openPayment, setOpenPayment] = useState(false);
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
-  const [socketObject, setSocketObject] = useState(
-    io(socketIO)
-  );
   const [auctionNotification, setAuctionNotification] = useState(null);
-  const [bidNotification, setBidNotification] = useState(null);
   const stream = useSelector((state) => {
     return state?.stream;
   });
-  const [currentAuction, setCurrentAuction] = useState(null);
+  const streamNotification = useSelector(
+    (state) => state.stream?.streamNotification
+  );
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
+  const [isLeftDivOpen, setLeftDivOpen] = useState();
 
   useEffect(() => {
-    socketObject.on(`${uuid}-bid`, (bid) => {
-      setBidNotification(bid);
-    });
-    socketObject.on(`${uuid}-auction`, (auction) => {
-      setAuctionNotification(auction);
-    });
     dispatch(streamData(uuid));
   }, []);
+
+  useEffect(() => {socketInitializer()}, []);
+
+  const socketInitializer = () => {
+    const socketObject = io(socketIO);
+    socketObject.on(`${uuid}-bid`, (bid) => {
+      dispatch(
+        addNotification({
+          type: "bid",
+          value: bid,
+        })
+      );
+    });
+    socketObject.on(`${uuid}-auction`, (auction) => {
+      dispatch(
+        addNotification({
+          type: "auction",
+          value: auction,
+        })
+      );
+    });
+    socketObject.on(`${uuid}-win`, (winner) => {
+      dispatch(
+        addNotification({
+          type: "win",
+          value: winner,
+        })
+      );
+    });
+  };
+
+  useEffect(() => {
+    setAuctionNotification(streamNotification?.auction);
+  }, [streamNotification]);
+
+  //Method to show and hide left div
+  const handleLeftDiv = (toggle) => {
+    setLeftDivOpen(toggle);
+  };
 
   return (
     <>
@@ -57,6 +88,8 @@ function Index() {
               addPayInfo={addPayInfo}
               setCustomerId={setCustomerId}
               streamingDetails={streamingDetails}
+              handleLeftDiv={handleLeftDiv}
+              isLeftDivOpen={isLeftDivOpen}
             />
             <CenterDiv
               open={open}
@@ -68,8 +101,8 @@ function Index() {
               setAddPayInfo={setAddPayInfo}
               customerId={customerId}
               streamDetails={selectedStream}
-              currentAuction={currentAuction}
               streamingDetails={streamingDetails}
+              handleLeftDiv={handleLeftDiv}
             />
             <RightDiv
               streamingDetails={streamingDetails}

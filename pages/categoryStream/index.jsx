@@ -86,65 +86,65 @@ export default function categoryStream(){
                             <h3 className="title">🔥Live</h3>
                         </div>
                     </div>
-                    <div className="overflow-wrap">
-                        <div className="Category-list-wrap inner-container flex">
-                            <div className="category-like like">
-                                <button className="Like flex justify-center flex-center"><IconLike /></button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title active">Cards</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Explore</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Watches</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Music</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Jewellery</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Sneakers</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Cards</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Explore</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Watches</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Music</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Jewellery</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Sneakers</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Cards</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Explore</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Watches</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Music</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Jewellery</button>
-                            </div>
-                            <div className="category-list">
-                                <button className="title">Sneakers</button>
-                            </div>
+                </div>
+                <div className="overflow-wrap">
+                    <div className="Category-list-wrap inner-container flex">
+                        <div className="category-like like">
+                            <button className="Like flex justify-center flex-center"><IconLike /></button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title active">Cards</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Explore</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Watches</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Music</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Jewellery</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Sneakers</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Cards</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Explore</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Watches</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Music</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Jewellery</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Sneakers</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Cards</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Explore</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Watches</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Music</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Jewellery</button>
+                        </div>
+                        <div className="category-list">
+                            <button className="title">Sneakers</button>
                         </div>
                     </div>
                 </div>
@@ -158,13 +158,13 @@ export default function categoryStream(){
                             <div className="flex flex-center">
                                 <h3 className="title">Cards - <span>20 Shows</span></h3>
                             </div>
-                            <div className="dropdownlist">
+                            {/* <div className="dropdownlist">
                                 <button className="dropDownBtn flex flex-center space-between" onClick={handleOnClick} ref={wrapperRef}>PokemonCard <span><IconDropdown /></span></button>
                                 <ul className= {active ? "jwelleryList active" : "jwelleryList"}>
                                     <li>PokemonCard</li>
                                     <li>JwellaryCard</li>
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="overflow-none">
                             <div className="card-wrap flex inner-container">

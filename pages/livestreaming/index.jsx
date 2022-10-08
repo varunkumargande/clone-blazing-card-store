@@ -5,7 +5,9 @@ import StreamingLeft from "../../components/partials/streaming/StreamingLeft";
 import StreamingLive from "../../components/partials/streaming/StreamingLive";
 import StreamingRIght from "../../components/partials/streaming/StreamingRIght";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
-import Footer from "../../components/partials/Landingpage/Footer";
+import { SignUPGoogle } from "../../components/partials/Modal/Modal";
+// import Footer from "../../components/partials/Landingpage/Footer";
+import IconBack from '../../components/Icons/IconBack';
 export default function LiveStreaming(){
     const [windowWidth, setWindowWidth] = useState(0);
     let resizeWindow = () => {
@@ -20,13 +22,13 @@ export default function LiveStreaming(){
 
     return(
         <>
-            {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
+            {windowWidth <= 1024 ? <div className="stream-top-header"><div className="edit-back"><IconBack/></div></div> : <HeaderDefault />}
             <div className="streaming-page flex space-between">
                 <StreamingLeft />
                 <StreamingLive />
                 <StreamingRIght />
             </div>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     );
 }

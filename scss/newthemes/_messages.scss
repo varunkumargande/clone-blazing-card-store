@@ -30,12 +30,7 @@
     }
     .profile-chat-list-wrap{
         height: calc(100% - 48px);
-        overflow: auto;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        &::-webkit-scrollbar { 
-            height: 0;  
-        }
+        @include overflow;
     }
     .profile-chat-list{
         padding: 16px;
@@ -90,12 +85,7 @@
         max-height: 100%;
         .chat-box-wrap{
             height: calc(100% - 156px);
-            overflow: auto;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            &::-webkit-scrollbar { 
-                height: 0;  
-            }
+            @include overflow;
         }
         .chat-box{
             padding: 0 70px;

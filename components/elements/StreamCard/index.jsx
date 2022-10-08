@@ -4,23 +4,97 @@ import IconBack from "../../Icons/IconBack";
 import IconEye from "../../Icons/IconEye";
 import IconLike from "../../Icons/IconLike";
 import LiveStreamStatus from "../LiveStreamStatus";
+import { stringFormatter } from "../../../utilities/utils";
+import Router from "next/router";
+import { apiUrl, imageUrl } from "../../../api/url";
+import { useEffect } from "react";
+import DefaultServices from "../../Services/DefaultServices";
 
 export default function StreamCard({ detail, isLive }) {
+  const handleRouting = (id) => {
+    Router.push("/profile?userId=" + id);
+  };
+
+  const handleStreamingLink = (detail) => {
+    Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
+  };
+
+  const getImagePath = (type) => {
+    if (
+      detail?.preview_image_path &&
+      detail?.preview_image &&
+      type == "profile"
+    ) {
+      return (
+        imageUrl +
+        "?path=" +
+        detail?.preview_image_path +
+        "&name=" +
+        detail?.preview_image +
+        "&width=100&height=100"
+      );
+    } else if (
+      detail?.vendor_image_path &&
+      detail?.vendor_image &&
+      type == "vendor"
+    ) {
+      return (
+        imageUrl +
+        "?path=" +
+        detail?.vendor_image_path +
+        "&name=" +
+        detail?.vendor_image +
+        "&width=25&height=25"
+      );
+    }
+    if (type == "profile") {
+      return "/static/images/card.png";
+    } else {
+      return "/static/images/profile.png";
+    }
+  };
+
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
-        <a href={`/streaming?stream=${detail.id}&uuid=${detail.uuid}`}>
-          <div className="image">
-            <img src="/static/images/card.png" alt="Card" />
-            <LiveStreamStatus isLive={isLive} />
-          </div>
-        </a>
+        <div className="image">
+          <img
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src = "/static/images/card.png";
+            }}
+            src={getImagePath("profile")}
+            // src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
+            onClick={() => handleStreamingLink(detail)}
+          />
+          <LiveStreamStatus
+            isLive={isLive}
+            uuid={detail.uuid}
+            detail={detail}
+          />
+        </div>
+        {/* </Link> */}
         <div className="text">
-          <h3 className="title flex flex-center">
-            <img src="/static/images/profile.png" alt="Card" /> {detail.title}
+          <h3
+            className="title flex flex-center"
+            onClick={() => handleRouting(detail.user_id)}
+          >
+            <img
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/static/img/no-image.png";
+              }}
+              src={getImagePath("vendor")}
+              // src={DefaultServices.GetFullImageURL(detail, "vendor", "25", "25")}
+              alt="Card"
+            />
+
+            {stringFormatter(detail?.title)?.substring(0, 20) + "..."}
           </h3>
-          <div className="disc">{detail.description}</div>
-          {/* <button className="cate-btn">{stringFormatter(detail?.category_name)}</button> */}
+          <div className="disc">{detail?.description?.substring(0, 50) + "..."}</div>
+          <button className="cate-btn">
+            {stringFormatter(detail?.category_name)}
+          </button>
         </div>
       </div>
     </div>

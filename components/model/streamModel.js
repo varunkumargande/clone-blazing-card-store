@@ -18,6 +18,7 @@ class StreamDetailModel {
     var appId = bytes.toString(cryptoJs.enc.Utf8);
     let streamDetails = {
       sellerName: streamData?.vendorDetails?.username,
+      sellerId: streamData?.vendorDetails?.vendor_id,
       loggedInUserName: "Guest",
       loggedInUserId: Math.floor(Math.random() * 20),
       uuid: streamData?.uuid,
@@ -32,13 +33,12 @@ class StreamDetailModel {
       scheduleDate: streamData?.scheduleDate,
       scheduleTime:  streamData?.scheduletime,
       isLoggedIn: false,
-      avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png",
-      socketObject: io(socketIO)
+      avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"
     }
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;
       streamDetails.loggedInUserId = userDetails?.id;
-      streamDetails.isLoggedIn= true
+      streamDetails.isLoggedIn= true;
     }
     return streamDetails;
   }
@@ -60,3 +60,4 @@ class StreamDetailModel {
 
 }
 export default StreamDetailModel;
+

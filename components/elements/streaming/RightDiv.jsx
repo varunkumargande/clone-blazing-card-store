@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { Input, Button } from "antd";
 import AgoraRTM from "agora-rtm-sdk";
 import { getToken } from "../../../api/stream/getToken";
-import { FaWpbeginner } from "react-icons/fa";
 import IconChat from "../../Icons/IconChat";
 
-function RightDiv({ streamingDetails, streamData }) {
+function RightDiv({ streamData }) {
   const [channel, setChannel] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
@@ -15,7 +12,7 @@ function RightDiv({ streamingDetails, streamData }) {
   userDetails = JSON.parse(userDetails);
 
   useEffect(() => {
-      joinChannel();
+    joinChannel();
   }, []);
 
   useEffect(() => {
@@ -36,12 +33,12 @@ function RightDiv({ streamingDetails, streamData }) {
     const token = await getToken(
       options.rtm,
       options.messageChannel,
-      options.audience + options.audienceId,
+      options.audience,
       options.accountType,
       options.userType
     );
 
-    await client.login({ uid: options.audience + options.audienceId, token });
+    await client.login({ uid: options.audience, token });
     const channel = client.createChannel(options.messageChannel);
     await channel.join();
     setChannel(channel);
@@ -51,7 +48,11 @@ function RightDiv({ streamingDetails, streamData }) {
   const sendAndUpdateMessage = async (initialMessage = null) => {
     const options = streamData?.option;
     const message = initialMessage ?? inputValue;
-    const messageObject = { message, userId: options.audience };
+    const messageObject = { 
+      message, 
+      userId: options.audience 
+    };
+
     setMessages((messages) => [...messages, messageObject]);
     await channel.sendMessage({ text: message, type: "text" });
     setInputValue("");
@@ -73,25 +74,27 @@ function RightDiv({ streamingDetails, streamData }) {
     if (!messages) return <></>;
     return (
       <>
-        {messages?.map(({ message, userId }) => {
-          return (
-            <>
-              <div className="flex flex-center chat">
-                <div className="chat-img br50">
-                  <img
-                    src={streamData?.streamPageDteails?.avatarImage}
-                    alt="profile"
-                    key={`chatBox${userId}`}
-                  />
+        <div className="chat-inner-wrap flex column justify-right">
+          {messages?.map(({ message, userId }) => {
+            return (
+              <>
+                <div className="flex flex-center chat">
+                  <div className="chat-img br50">
+                    <img
+                      src={streamData?.streamPageDteails?.avatarImage}
+                      alt="profile"
+                      key={`chatBox${userId}`}
+                    />
+                  </div>
+                  <div className="chat-text-wrap">
+                    <div className="name">{userId}</div>
+                    <div className="chat">{message}</div>
+                  </div>
                 </div>
-                <div className="chat-text-wrap">
-                  <div className="name">{userId}</div>
-                  <div className="chat">{message}</div>
-                </div>
-              </div>
-            </>
-          );
-        })}
+              </>
+            );
+          })}
+        </div>
       </>
     );
   };

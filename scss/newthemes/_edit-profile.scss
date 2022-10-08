@@ -4,6 +4,14 @@
     width:100%;
     padding: 0 15px 30px;
     margin: 0 auto;
+    .breadcrumbs{
+        li{
+            color:$secondry-color;
+            &.current{
+                color:$blue-color;
+            }
+        }
+    }
     .edit-inner{
         max-width: 950px;
         width: 100%;
@@ -17,7 +25,7 @@
             margin-right: 16px;
         }
         .icon{
-            fill:#A1ABB7;
+            fill:$primary-color;
         }
     }
     h3{
@@ -37,11 +45,16 @@
         line-height: 24px;
         margin-bottom: 16px;
         font-weight: 400;
+        &.sb{
+            font-weight: 600;
+        }
     }
     .tab-link-wrap{
         border-bottom: 1px solid $border2-color;
+        @include overflow;
         .tab-link{
             margin-right: 15px;
+            white-space: nowrap;
             &:last-child{
                 margin-right: 0;
             }
@@ -71,6 +84,14 @@
             }
         }
     }
+    .select-input{
+        select{
+            width: 80px;
+        }
+        input{
+            width:calc(100% - 88px);
+        }
+    }
     .box{
         padding: 24px 22px;
         background-color: $white-color;
@@ -80,13 +101,11 @@
             font-size: 16px;
             .link{
                 color:$blue-color;
+                text-decoration: underline;
             }
         }
         .inner-box{
             max-width: 860px;
-        }
-        .wd50{
-            max-width: calc(50% - 12px);
         }
         .verify-email-btn{
             font-size: 12px;
@@ -99,6 +118,17 @@
         }
         .max-limit{
             font-size: 12px;
+        }
+    }
+    .NoCard{
+        min-height: 312px;
+        .no-payment{
+            font-size: 16px;
+            line-height: 24px;
+            margin:16px 0;
+        }
+        .primary-btn{
+            width: 233px;
         }
     }
     .button-wrapper{
@@ -141,6 +171,203 @@
         background-color: $delete-bg;
         margin-left: 28px;
     }
+    .payment-card-wrap{
+        width:100%;
+        max-width: 368px;
+        border: 1px solid $border2-color;
+        border-radius: 16px;
+        .payment-card{
+            width: calc(100% + 2px);
+            height: 200px;
+            background-color: $card-blue-color;
+            border-radius: 16px;
+            margin: -1px 0 0 -1px;
+            padding: 24px 24px 16px;
+            @include pos(re);
+            overflow: hidden;
+            &:before{
+                content: '';
+                width: 375px;
+                height: 262px;
+                background-color: rgba($white-color,.1);
+                @include pos(ab,-170px,-175px,null,null);
+                border-radius:50%;
+            }
+            &:after{
+                content: '';
+                width: 375px;
+                height: 262px;
+                background-color: rgba($white-color,.08);
+                @include pos(ab,null,null,-170px,-175px);
+                border-radius:50%;
+            }
+        }
+        .paymentCard{
+            @include pos(re);
+            z-index: 2;
+        }
+        .bank-name{
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 42px;
+            color: $white-color;
+            font-weight: 600;
+        }
+        .card-no{
+            font-size: 20px;
+            line-height: 24px;
+            margin-bottom: 24px;
+            font-weight: 500;
+            color:$white-color;
+            letter-spacing: 3px;
+        }
+        .card-holder{
+            .label{
+                font-size: 11px;
+                line-height: 13px;
+                color:#B6D3FD;
+                margin-bottom: 4px;
+            }
+            .value{
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 500;
+                color:$white-color;
+                margin-bottom: 4px;
+            }
+        }
+        .payemnt-edits{
+            height: 44px;
+            font-weight: 500;
+            padding: 0 16px;
+            button{
+                padding: 0;
+            }
+            .remove{
+                color:$disc-color;
+            }
+            .edit{
+                color: $blue-color;
+            }
+        }
+        .card-name{
+            svg{
+                width: 48px;
+            }
+            .icon{
+                fill:$white-color;
+            }
+        }
+    }
+    .payment-card-wrapper{
+        .add-card{
+            width: 368px;
+            max-width: 100%;
+            margin-left: 48px;
+            height: 200px;
+            border-radius: 16px;
+            background-color: rgba($blue-color,.05);
+            span{
+                width: 26px;
+                height: 26px;
+                color:$white-color;
+                font-size: 28px;
+                border-radius: 50%;
+                line-height: 22px;
+                padding-bottom: 2px;
+                background-color: $blue-color;
+                margin-bottom: 10px;
+            }
+            .another-card{
+                font-size: 16px;
+                line-height: 18px;
+                color:$blue-color;
+            }
+        }
+    }
+}
+
+@media all and (min-width:320px) and (max-width:1024px){
+    .edit-inner-container{ 
+        .edit-header{
+            background-color: $white-color;
+            margin: 0 -15px;
+            padding: 40px 15px 0;
+        }
+        .profile-image-upload {
+            flex-direction: column;
+            .prifile-image{
+                margin-bottom: 24px;
+                margin-right: 0;
+            }
+            .profile-btn-wrap{
+                justify-content: center;
+            }
+        }
+        .payment-card-wrapper{
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 50px;
+            .add-card{
+                max-width: 310px;
+                height: 60px;
+                margin-left: 0;
+                flex-direction: row;
+                span{
+                    margin: 0 10px 0 0;
+                    width:17px;
+                    height: 17px;
+                    font-size: 16px;
+                    line-height: 16px;
+                }
+            }
+        }
+        .payment-card-wrap{
+            max-width: 310px;
+            margin-bottom: 46px;
+            .payemnt-edits{
+                font-size: 12px;
+            }
+            .payment-card{
+                height: 168px;
+                padding: 16px 20px;
+                &:before,&:after{
+                    width:315px;
+                    height: 220px;
+                }
+                &:before{
+                    top:-140px;
+                    right:-140px;
+                }
+                &:after{
+                    left:-140px;
+                    bottom: -140px;
+                }
+                .bank-name{
+                    font-size: 14px;
+                    line-height: 16px;
+                    margin-bottom: 38px;
+                }   
+                .card-no{
+                    font-size: 14px;
+                    line-height: 16px;
+                    margin-bottom: 24px;
+                }
+                .card-holder{
+                    .label{
+                        font-size: 11px;
+                    }
+                    .value{
+                        font-size: 14px;
+                        line-height: 16px;
+                    }
+                }
+                .card-name{
+                    max-width: 32px;
+                }
+            }
+        }
+    }
 }
 
 @media all and (min-width:1025px){
@@ -155,5 +382,11 @@
                 line-height: 21px;
             }
         }
+        .box{
+            .wd50{
+                max-width: calc(50% - 12px);
+            }
+        }
     }
 }
+

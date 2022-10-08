@@ -40,18 +40,18 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
                 if (subCateId != "select") {
                     if (parseInt(subCateId) === parseInt(detail.category_id)) {
                         return (
-                            <StreamCard detail={detail} isLive={false} />
+                            <StreamCard detail={detail} isLive={true}  />
                         );
                     }
                 } else {
                     if (liveScheduleCategoryName === detail.category_name) {
                         return (
-                            <StreamCard detail={detail} isLive={false} />
+                            <StreamCard detail={detail} isLive={true} />
                         );
                     }
                     if (liveScheduleCategoryName == null) {
                         return (
-                            <StreamCard detail={detail} isLive={false} />
+                            <StreamCard detail={detail} isLive={true} />
                         );
                     }
                 }
@@ -87,7 +87,7 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
                         </>
                     ) : (
                         <>
-                            <div className="seeAll">
+                            {/* <div className="seeAll">
                                 <div className="dropdownlist">
                                     <select className="dropDownBtn flex flex-center space-between" onChange={(e) => setSubCateId(e.target.value)}>
                                         <option value={"select"}>
@@ -104,7 +104,7 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
                                         })}
                                     </select>
                                 </div>
-                            </div>
+                            </div> */}
                         </>
                     )}
                 </div>

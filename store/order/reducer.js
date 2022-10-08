@@ -1,6 +1,7 @@
 import { actionTypes } from './action';
 export const initState = {
-    orderList: null
+    orderList: null,
+    orderDetail: null
   };
 
   function reducer(state = initState, action) {
@@ -10,6 +11,11 @@ export const initState = {
         return {
           ...state,
           ...{ orderList: action.payload},
+        };
+        case actionTypes.GET_ORDER_DETAILS:
+        return {
+          ...state,
+          ...{ orderDetail: action.payload},
         };
       default:
         return state;

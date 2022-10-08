@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -7,12 +7,16 @@ import {
   addStreamProducts,
   streamProducts,
 } from "../../../store/stream/action";
+import { userFollowUnfollow } from "../../../api/stream/streams_api";
+import { imageUrl } from "../../../api/url";
 
 function LeftDiv({
   openPayment,
   productDetail,
   streamingDetails,
   auctionNotification,
+  handleLeftDiv,
+  isLeftDivOpen
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -20,6 +24,7 @@ function LeftDiv({
     PURCHASED: "purchased",
     SOLD: "sold",
   };
+  
   const TOGGLES = ["Auction", "Buy now", "Purchased", "Sold"];
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
   const router = useRouter();
@@ -36,6 +41,38 @@ function LeftDiv({
     setToggleState(index);
   };
   const dispatch = useDispatch();
+  const [followed, setFollowed] = useState(false);
+  //to handle width of the screen and call methods accordingly
+  const [windowWidth, setWindowWidth] = useState(0);
+  let resizeWindow = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    resizeWindow();
+    window.addEventListener("resize", resizeWindow);
+    return () => window.removeEventListener("resize", resizeWindow);
+  }, []);
+
+  // to initially show left div on desktop and hide on mobile screen
+  useEffect(() => {
+    windowWidth <= 1024 ? handleLeftDiv(false) : handleLeftDiv(true);
+  }, [windowWidth]);
+
+  const leftDivRef = useRef();
+
+  //clicking somewhere except on product list panel will close the product list panel(mobile screen)
+  useEffect(() => {
+    if(windowWidth <= 1024){
+    function handler(event) {
+      if (!leftDivRef?.current?.contains(event.target) && !event.target.classList.contains("shops")) {
+        handleLeftDiv(false);
+      }
+    }
+    window.addEventListener("click", handler);
+    return () => window.removeEventListener("click", handler);
+    }
+  }, [leftDivRef.current]);
 
   /**
    * Method to get All products of a stream
@@ -127,7 +164,7 @@ function LeftDiv({
     if (
       productId == auctionNotification?.product?.productId ||
       productId ==
-        stream?.streamProducts?.AuctionDetails.latestAuction?.productId
+        stream?.streamProducts?.AuctionDetails?.latestAuction?.productId
     ) {
       return "pined";
     }
@@ -215,31 +252,79 @@ function LeftDiv({
     stream?.streamProducts?.products?.length > 0
       ? stream?.streamProducts?.products?.length
       : 0;
+
+  const handleFollowUnfollow = async () => {
+    if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
+      const data = {
+        following_id: stream?.streamPageData?.streamPageDteails?.loggedInUserId,
+        follower_id: stream?.streamPageData?.streamPageDteails?.sellerId,
+      };
+      const response = await userFollowUnfollow(data);
+      if (response.status) {
+        setFollowed(!followed);
+      }
+    }
+  };
+
+  const getImagePath = (type) => {
+    if (
+      stream?.streamData?.vendorDetails?.avatar_path &&
+      stream?.streamData?.vendorDetails?.avatar &&
+      type == "vendor"
+    ) {
+      return (
+        imageUrl +
+        "?path=" +
+        stream?.streamData?.vendorDetails?.avatar_path +
+        "&name=" +
+        stream?.streamData?.vendorDetails?.avatar +
+        "&width=50&height=50"
+      );
+    }
+    return "/static/images/profileImg.png";
+  };
+
   return (
     <div className="streaming-left">
       <div className="flex profile-wrapper">
         <div className="image">
-          <img src="/static/images/profileImg.png" alt="profile" />
+          {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
+          <img
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src = "/static/images/profileImg.png";
+            }}
+            src={getImagePath("vendor")}
+            alt="Card"
+          />
         </div>
         <div className="profile-wrap">
           <div className="name">{vendorName}</div>
           <div className="followrs-count">129K Followers</div>
         </div>
         <div className="btn-wrap">
-          <button className="primary-btn">Follow</button>
+          <button onClick={handleFollowUnfollow} className="primary-btn">
+            {followed ? "Unfollow" : "Follow"}
+          </button>
         </div>
       </div>
-      <div className="leftdata-wrapper">
-        <h3 className="title">{streamTitle}</h3>
-        <div className="tab-wrapper flex">{getToggles()}</div>
-        <div className="search">
-          <input type="text" placeholder="Search products..." />
+      {
+        isLeftDivOpen ? (
+          <div className="leftdata-wrapper" ref={leftDivRef}>
+          <h3 className="title">{streamTitle}</h3>
+          <div className="tab-wrapper flex">{getToggles()}</div>
+          <div className="search">
+            <input type="text" placeholder="Search products..." />
+          </div>
+          <div className={`${toggleState}-list leftdata-list`}>
+            <div className="product-count">{productCount} Products</div>
+            <ul className="product-list">{getProductList()}</ul>
+          </div>
         </div>
-        <div className={`${toggleState}-list leftdata-list`}>
-          <div className="product-count">{productCount} Products</div>
-          <ul className="product-list">{getProductList()}</ul>
-        </div>
-      </div>
+        ) : (
+          <></>
+        )
+       }
     </div>
   );
 }

@@ -25,6 +25,7 @@
         "es6-promise": "^4.2.8",
         "express": "^4.17.3",
         "formik": "^2.2.9",
+        "gapi-script": "^1.2.0",
         "history": "^4.10.1",
         "jquery": "^3.6.1",
         "moment": "^2.27.0",
@@ -35,6 +36,7 @@
         "next-offline": "^4.0.6",
         "next-redux-saga": "^4.1.2",
         "next-redux-wrapper": "^6.0.2",
+        "next-share": "^0.18.1",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
         "react-accessible-accordion": "^5.0.0",
@@ -59,7 +61,6 @@
         "redux-thunk": "^2.3.0",
         "sass": "^1.49.9",
         "slick-carousel": "^1.8.1",
-        "socket.io": "^4.5.2",
         "socket.io-client": "^4.5.2",
         "styled-components": "^5.3.5",
         "yup": "^0.32.11"

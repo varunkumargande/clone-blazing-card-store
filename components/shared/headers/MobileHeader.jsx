@@ -5,11 +5,12 @@ import IconSearch from "../../Icons/IconSearch";
 import IconMenu from "../../Icons/IconMenu";
 import IconClose from "../../Icons/IconClose";
 import IconCategoryDrop from '../../Icons/IconCategoryDrop';
-import IconFacebook from '../../Icons/IconFacebook';
-import IconInstagram from '../../Icons/IconInstagram';
-import IconLinkedin from '../../Icons/IconLinkedin';
-import IconYoutube from '../../Icons/IconYoutube';
-import IconTwiiter from '../../Icons/IconTwiiter';
+import IconProfile from "../../Icons/IconProfile";
+import IconMyOrders from "../../Icons/IconMyOrders";
+import IconSettings from "../../Icons/IconSettings";
+import IconMessageMobile from "../../Icons/IconMessageMobile";
+import IconLogoutMobile from "../../Icons/IconLogoutMobile";
+import IconNotificationMobile from "../../Icons/IconNotificationMobile";
 import { useTranslation } from "../../../i18n";
 import { categoryListApi } from "../../../api";
 import { useRouter } from "next/router";
@@ -89,7 +90,7 @@ function MobileHeader({ auth }) {
                     <input type="search" id="search" name="search" />
                     <button className="search-btn"><IconSearch /></button>
                 </div>
-                <div className="category-btn-wrap">
+                {/* <div className="category-btn-wrap">
                     <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
                     <div className={active ? "dropDown active" : "dropDown"}>
                         <h4>Sort By</h4>
@@ -99,7 +100,7 @@ function MobileHeader({ auth }) {
                             <li>Artist</li>
                         </ul>
                     </div>
-                </div>
+                </div> */}
             </div>
 
             {/* Menu open html */}
@@ -120,45 +121,38 @@ function MobileHeader({ auth }) {
                             <input type="search" id="search" name="search" />
                             <button className="search-btn"><IconSearch /></button>
                         </div>
-                        <div className="category-btn-wrap">
+                        {/* <div className="category-btn-wrap">
                             <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
-                        </div>
+                        </div> */}
                     </div>
-                    <div className="flex flex-wrap btn-wrapper column">
-                        {auth.isLoggedIn ? (
-                            <>
-                                <Link href="/account/myorders"><a className="border-btn flex flex-center justify-center"><span>{t('OrderHistory')}</span></a></Link>
-                                <Link href="/account/dashboard"><a className="border-btn flex flex-center justify-center"><span>{t('AccountSettings')}</span></a></Link>
-                                <Link href="#"><a className="border-btn flex flex-center justify-center active" onClick={e => handleLogout(e)}>Logout</a></Link>
-                            </>
-                        ) : (
-                            <>
+                    {auth.isLoggedIn ? (
+                        <>
+                            <div className="text-center become-seller border-btn">
+                                <span>Want to sell? </span> <Link href="/"><a>Become a Seller</a></Link>
+                            </div>
+                            <div className="mob-navigation mb32">
+                                <ul>
+                                    <li><Link href="/account/myprofile"><a><IconProfile /><span>My Profile</span></a></Link></li>
+                                    <li><Link href="/account/myorders"><a><IconMyOrders /><span>{t('OrderHistory')}</span></a></Link></li>
+                                    <li><Link href="/account/dashboard"><a><IconSettings/><span>{t('AccountSettings')}</span></a></Link></li>
+                                    <li><Link href="/"><a className="message"><IconMessageMobile/><span>Message</span></a></Link></li>
+                                    <li><Link href="/"><a className="notification"><IconNotificationMobile/><span>Notification</span></a></Link></li>
+                                </ul>
+                            </div>
+                            <div className="LogOut"><Link href="#"><a className="primary-btn flex flex-center justify-center active" onClick={e => handleLogout(e)}><IconLogoutMobile />Logout</a></Link></div>
+                        </>
+                    ):(
+                        <>
+                            <div className="flex flex-wrap btn-wrapper column">
                                 <Link href="/account/login"><a className="primary-btn flex flex-center justify-center">Sign In</a></Link>
                                 <Link href="/account/register"><a className="border-btn flex flex-center justify-center">Sign up</a></Link>
-                            </>
-                        )}
-                    </div>
-                    <div className="or flex flex-center justify-center"><span>Or</span></div>
-                    <div className="text-center become-seller">
-                        Want to sell? <Link href=""><a>Become a Seller</a></Link>
-                    </div>
-                    <div className="mob-navigation">
-                        <ul>
-                            <li><Link href="/about-us"><a>About Us</a></Link></li>
-                            <li><Link href="/faqs"><a>FAQ's</a></Link></li>
-                            <li><Link href="/contact-us"><a>Contact Us</a></Link></li>
-                        </ul>
-                    </div>
-                    <div className="social-icon-wrap">
-                        <h3 className="follow mb20">Follow Us</h3>
-                        <div className="social flex flex-center space-between">
-                            <Link href="https://facebook.com" target="_blank"><a><IconFacebook /></a></Link>
-                            <Link href="https://instagram.com" target="_blank"><a><IconInstagram /></a></Link>
-                            <Link href="https://linkedin.com" target="_blank"><a><IconLinkedin /></a></Link>
-                            <Link href="https://youtube.com" target="_blank"><a><IconYoutube /></a></Link>
-                            <Link href="https://twitter.com" target="_blank"><a><IconTwiiter /></a></Link>
-                        </div>
-                    </div>
+                            </div>
+                            <div className="or flex flex-center justify-center"><span>Or</span></div>
+                            <div className="text-center become-seller">
+                                Want to sell? <Link href=""><a>Become a Seller</a></Link>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
 

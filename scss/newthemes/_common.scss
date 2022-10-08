@@ -67,7 +67,7 @@ h1{
     .inner-container{
       padding: 0 15px;
       max-width: 1310px;
-      margin: 0 auto;
+      margin:0 auto;
     }
   }
 }
@@ -113,6 +113,12 @@ h1{
 .mr16{
   margin-right: 16px;
 }
+.mr16{
+  margin-right: 16px;
+}
+.ml20{
+  margin-left: 20px;
+}
 // common input
 .input-control{
   margin-bottom: 16px;
@@ -132,8 +138,13 @@ h1{
       outline: none;
       border:1px solid $white-color;
       padding: 0 30px 0 15px;
+      filter:none;
       &.grey-bg{
         background-color: $body-bg;
+        &:focus,&.filled{
+          background-color: $white-color;
+          border-color: $border2-color;
+        }
       }
       &:focus{
           outline: none;
@@ -159,6 +170,10 @@ h1{
       line-height: 14px;
       color: $danger-color;
       margin-top: 6px;
+      width: 100%;
+  }
+  .card-icon{
+    @include pos(ab,32px,10px,null,null);
   }
   select{
     appearance: none;
@@ -312,11 +327,13 @@ label{
   justify-content: center;
   align-items: center;
   border:none;
+  transition: all .2s;
   &.disable{
     opacity: .6;
   }
   &:hover{
     color: $white-color;
+    background-color: $primary-btn-hover;
   }
 }
 .disable-btn{
@@ -332,6 +349,7 @@ label{
   align-items: center;
   border:none;
   cursor: not-allowed;
+  transition: all .2s;
   &:hover{
     color: $grey-color;
   }
@@ -339,14 +357,19 @@ label{
 .border-btn{
   font-size: 16px;
   height: 48px;
-  color:#1877F2;
+  color:$blue-color;
   font-weight: 500;
   border-radius: 8px;
-  border: 1px solid#1877F2;
+  border: 1px solid $blue-color;
   padding: 0 12px;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all .2s;
+  &:hover{
+    background-color: $blue-color;
+    color: $white-color;
+  }
 }
 // Toggle switch
 .switch {
@@ -450,9 +473,13 @@ label{
 }
 .back{
   margin-right: 10px;
+  cursor: pointer;
   .icon{
     fill:#A1ABB7;
   }
+}
+.edit-back{
+  cursor: pointer;
 }
 .category-banner{
   @include pos(re);
@@ -499,12 +526,12 @@ label{
   }  
 }
 
-@media all and (min-width:1440px){
+@media all and (min-width:1600px){
   .inner-container{
     max-width: calc(100% - 130px);
     .overflow-wrap{
       .inner-container{
-        max-width: calc(100% - 148px);
+        max-width: calc(100% - 130px);
         padding: 0 15px;
       }
     }
@@ -516,7 +543,7 @@ label{
   }
   .category-banner {
     .cover-wrap{
-      max-width: calc(100% - 160px);
+      max-width: calc(100% - 130px);
     }
   }
 

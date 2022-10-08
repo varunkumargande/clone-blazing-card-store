@@ -16,18 +16,18 @@ export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCa
             return data[categoryName].map((detail, index) => {
                 if (subCateId == "select" || subCateId == null) {
                     return (
-                        <StreamCard detail={detail} />
+                        <StreamCard detail={detail} isLive={true} />
                     )
                 } else {
                     if (parseInt(subCateId) === detail.category_id) {
                         return (
-                            <StreamCard detail={detail} />
+                            <StreamCard detail={detail} isLive={true} />
                         )
                     }
 
                     if (parseInt(subCateId) === detail.subCategory_id) {
                         return (
-                            <StreamCard detail={detail} />
+                            <StreamCard detail={detail} isLive={true} />
                         )
                     }
                 }
@@ -43,7 +43,7 @@ export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCa
                         <h3 className="title">{categoryName == null ? "All" : categoryName}</h3>
                     </div>
                     <div className="seeAll">
-                        <div className="dropdownlist">
+                        {/* <div className="dropdownlist">
                             <select className="dropDownBtn flex flex-center space-between" onChange={(e) => handleSubCateId(e)}>
                                 <option value={"select"}>
                                     Sub_Category
@@ -58,7 +58,7 @@ export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCa
                                     )
                                 })}
                             </select>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="overflow-none">

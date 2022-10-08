@@ -24101,6 +24101,7 @@ label {
   padding: 4px;
   height: 100%;
   width: 100%;
+  max-width: 225px;
 }
 .inner-card-list a {
   width: 100%;
