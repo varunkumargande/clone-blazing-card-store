@@ -17,7 +17,6 @@ export async function resetPassApi(key, newPass, Router, setError) {
 
 export async function resetConfomPassApi(key,setPageTrue) {
         const result =await APIServices.get('customer/forgot-password-key-check',key)
-        console.log(result.data.message);
         if(result&&result.data&&result.data.status===1){
             setPageTrue(true)
                     // modalSuccess("success",result.data.message)

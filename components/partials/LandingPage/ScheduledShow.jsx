@@ -28,7 +28,7 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
     const getStreamCards = () => {
         return streamDetail?.scheduled?.map((detail) => {
             return (
-                <StreamCard isLive={true} detail={detail} />
+                <StreamCard isLive={false} detail={detail} />
             );
         });
     };

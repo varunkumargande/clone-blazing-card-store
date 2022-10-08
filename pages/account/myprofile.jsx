@@ -5,70 +5,106 @@ import Footer from "../../components/partials/LandingPage/Footer";
 import { useSelector, useDispatch } from "react-redux";
 import { subcatstreamDetailApi } from "../../api/stream/subStreamDetail";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 // import all sub component from components/partials/account/myprofile
 import ProfileBanner from "../../components/partials/account/myprofile/banner";
 import ProfileCard from "../../components/partials/account/myprofile/profileCard";
 import ProfileHeader from "../../components/partials/account/myprofile/profileHeader";
+import IconShareFacebook from "../../components/Icons/IconShareFacebook";
+import IconShareTwitter from "../../components/Icons/IconShareTwitter";
+import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
+import IconBack from "../../components/Icons/IconBack";
 import StreamCard from "../../components/elements/StreamCard";
+import ProfileMethods from "../../api/profile/ProfileMethods";
+import { connect } from "react-redux";
+import PublicProfileConstants from "../../components/Constants/publicProfile";
+import Link from "next/link";
+import { imageUrl } from "../../api/url";
 // ===================================================================
 
-export default function MyProfile() {
-  const [activeTab, setActiveTab] = useState({
-    type: "buyer",
-    slug: "LIKES",
-  });
-
-  const [profileBar, setProfileBar] = useState([
-    {
-      slug: "LIKES",
-      name: "Likes Shows",
-    },
-    {
-      slug: "FOLLOWERS",
-      name: "Followers",
-    },
-    {
-      slug: "FOLLOWING",
-      name: "Following",
-    },
-  ]);
-
-  const [sellerBar, setSellerBar] = useState([
-    {
-      slug: "UPCOMING",
-      name: "Upcoming Shows",
-    },
-    {
-      slug: "PREVIOUS",
-      name: "Previous Shows",
-    },
-    {
-      slug: "FOLLOWERS",
-      name: "Followers",
-    },
-    {
-      slug: "FOLLOWING",
-      name: "Following",
-    },
-  ]);
-
+function MyProfile(props) {
+  const router = useRouter();
+  const [loader, setLoader] = useState(false);
   const [active, setActive] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [upcomingShows, setUpcomingShows] = useState([]);
+  const [previousShows, setPreviousShows] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const [likedShows, setLikedShows] = useState([]);
+  const [tabs, setTabs] = useState(null);
+  const [activeTab, setActiveTab] = useState(
+    tabs && tabs.length > 0 ? tabs[0].key : ""
+  );
+
   const wrapperRef = useRef(null);
-  const handleOnClick = () => {
-    setActive(!active);
-  };
+
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       setActive(false);
     }
   };
+
+  useEffect(() => {
+    const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
+    setUserId(userData.id);
+    setProfile(userData);
+  }, []);
+
+  const getAllBuyerDetails = () => {
+    ProfileMethods.GetLikedStreams(userId, setLikedShows);
+    ProfileMethods.GetUserFollowers(userId, setFollowers);
+    ProfileMethods.GetUserFollowings(userId, setFollowing);
+  };
+
+  const getAllVendorDetails = () => {
+    ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
+    ProfileMethods.GetLikedStreams(userId, setLikedShows);
+    ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
+    ProfileMethods.GetUserFollowers(userId, setFollowers);
+    ProfileMethods.GetUserFollowings(userId, setFollowing);
+  };
+
+  useEffect(() => {
+    console.log(router.query);
+    if (router.query.userId) {
+      console.log("CHECKER!!");
+      setUserId(router.query.userId);
+    }
+  }, [router.query]);
+
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, false);
     return () => {
       document.removeEventListener("click", handleClickOutside, false);
     };
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      console.log("22");
+      ProfileMethods.GetPublicProfile(userId, setProfile);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (profile) {
+      if (profile.isVendor) {
+        setTabs(PublicProfileConstants.VendorTabs);
+        getAllVendorDetails();
+      } else {
+        setTabs(PublicProfileConstants.BuyerTabs);
+        getAllBuyerDetails();
+      }
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    if (tabs && tabs.length > 0) {
+      setActiveTab(tabs[0].key);
+    }
+  }, [tabs]);
 
   const [windowWidth, setWindowWidth] = useState(0);
   let resizeWindow = () => {
@@ -80,58 +116,269 @@ export default function MyProfile() {
     subcatstreamDetailApi(dispatch);
   }, []);
 
-  const streamDetail = useSelector(
-    (state) => state?.stream?.streamdetails?.stream
-  );
-
   useEffect(() => {
     resizeWindow();
     window.addEventListener("resize", resizeWindow);
     return () => window.removeEventListener("resize", resizeWindow);
   }, []);
 
-  useEffect(() => {
-    if(sessionStorage.getItem("spurtUser") == null)  {
-        Router.push("/")
+  const UpcomingShowsComponent = () => {
+    if (upcomingShows) {
+      if (upcomingShows.length > 0) {
+        return (
+          <>
+            {upcomingShows.map((show, index) => (
+              <StreamCard detail={show} />
+            ))}
+          </>
+        );
+      } else {
+        return (
+          <div className="no-record flex justify-center">No Data found</div>
+        );
+      }
     }
-  }, []);
-
-  const getStreamCards = () => {
-    return streamDetail?.scheduled?.map((detail) => {
-      return <StreamCard detail={detail} />;
-    });
+    return false;
   };
 
+  const PreviousShowsComponent = () => {
+    if (previousShows) {
+      if (previousShows.length > 0) {
+        return (
+          <>
+            {previousShows.map((show, index) => (
+              <StreamCard detail={show} />
+            ))}
+          </>
+        );
+      } else {
+        return (
+          <div className="no-record flex justify-center">No Data found</div>
+        );
+      }
+    }
+    return false;
+  };
+
+  const LikedShowsComponent = () => {
+    if (likedShows) {
+      if (likedShows.length > 0) {
+        return (
+          <>
+            {likedShows.map((show, index) => (
+              <StreamCard detail={show} />
+            ))}
+          </>
+        );
+      } else {
+        return (
+          <div className="no-record flex justify-center">No Data found</div>
+        );
+      }
+    }
+    return false;
+  };
+
+  const ProfileComponent = (isForFollower) => {
+    if (isForFollower) {
+      if (followers) {
+        if (followers.length > 0) {
+          return (
+            <>
+              {followers.map((details, index) => (
+                <Followers person={details} isFollower={isForFollower} />
+              ))}
+            </>
+          );
+        } else {
+          return (
+            <div className="no-record flex justify-center">No Data found</div>
+          );
+        }
+      }
+    } else {
+      if (following) {
+        if (following.length > 0) {
+          return (
+            <>
+              {following.map((details, index) => (
+                <Followers person={details} isFollower={isForFollower} />
+              ))}
+            </>
+          );
+        } else {
+          return (
+            <div className="no-record flex justify-center">No Data found</div>
+          );
+        }
+      }
+    }
+    return false;
+  };
+
+  const renderTab = (tab, key) => {
+    return (
+      <div className="category-list" key={key}>
+        <button
+          onClick={() => {
+            setActiveTab(tab.key);
+          }}
+          className={`title ${activeTab === tab.key && "active"}`}
+        >
+          {tab.title}({renderTabContentCount(tab.key)})
+        </button>
+      </div>
+    );
+  };
+
+  const renderActiveTabContent = () => {
+    switch (activeTab) {
+      case "upcoming-shows":
+        return UpcomingShowsComponent();
+      case "previous-shows":
+        return PreviousShowsComponent();
+      case "upcoming-shows":
+        return UpcomingShowsComponent();
+      case "followers":
+        return ProfileComponent(true);
+      case "following":
+        return ProfileComponent(false);
+      case "liked-shows":
+        return LikedShowsComponent();
+      default:
+        return null;
+    }
+  };
+
+  const renderTabContentCount = (tab) => {
+    switch (tab) {
+      case "upcoming-shows":
+        return upcomingShows.length;
+      case "previous-shows":
+        return previousShows.length;
+      case "followers":
+        return followers.length;
+      case "following":
+        return following.length;
+      case "liked-shows":
+        return likedShows.length;
+      default:
+        return null;
+    }
+  };
+
+  const renderProfileName = () => {
+    if (profile) {
+      let name = "";
+      if (profile.firstName) {
+        name += profile.firstName;
+      }
+      if (profile.lastName) {
+        name += " " + profile.lastName;
+      }
+      return name;
+    }
+    return null;
+  };
+
+  const handleRoutingToEditProfile = () => {
+    Router.push("/account/editprofile");
+  };
+
+  const handleProfileImage = () => {
+    if (profile) {
+      return (
+        <>
+          <img
+            src={
+              imageUrl +
+              "?path=" +
+              profile.avatarPath +
+              "&name=" +
+              profile.avatar +
+              "&width=500&height=500"
+            }
+            alt="profileImg"
+          />
+        </>
+      );
+    } else {
+      <img src="/static/img/no-image.png" alt="profileImg" />;
+    }
+  };
+
+  
+
   return (
-    <div className="home-container">
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
-      <ProfileBanner />
+    <div className="home-container profile-container-wrap">
+      {windowWidth <= 1024 ? <div className="profile-title flex flex-center"><div className="edit-back"><IconBack /></div>Profile</div> : <HeaderDefault />}
+      <section className="category-banner">
+        <img src="/static/images/cover.png" alt="cover" />
+      </section>
       <div className="card-wrapper">
         <section className="Live-wrapper card-inner">
           <div className="inner-container">
             <div className="aside-content-wrap profile-wrapper flex flex-start space-between">
-              <ProfileCard />
+              <aside className="aside-wrapper profile-aside">
+                <div className="aside-container profile-container">
+                  <div className="profile-icon">{handleProfileImage()}</div>
+                  <div className="title flex column">
+                    {renderProfileName()}
+                    <span>@{profile && profile?.username}</span>
+                  </div>
+                  <div className="flex justify-center">
+                    <button
+                      className="border-btn edit-profile-btn"
+                      onClick={() => handleRoutingToEditProfile()}
+                    >
+                      Edit Profile
+                    </button>
+                  </div>
+                  {profile && profile?.bio && (
+                    <p className="description">{profile?.bio}</p>
+                  )}
+                  <div className="social-icons-wrapper">
+                    <div className="social-border"></div>
+                    <ul className="social-icons flex">
+                      {/* {profile && profile.facebookUrl && (<li><IconShareFacebook /></li>)}
+                                          {profile && profile.twitterUrl && (<li><IconShareTwitter /></li>)} */}
+                      <li>
+                        <IconShareFacebook />
+                      </li>
+                      <li>
+                        <IconShareTwitter />
+                      </li>
+                      <li>
+                        {" "}
+                        <IconShareWhatsup />
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </aside>
               <div className="overflow-none">
-                <ProfileHeader
-                  profileBar={profileBar}
-                  setProfileBar={setProfileBar}
-                  isSeller={false}
-                  activeTab={activeTab}
-                  setActiveTab={setActiveTab}
-                  sellerBar={sellerBar}
-                  setSellerBar={setSellerBar}
-                />
+                <section className="category-wrapper cotegories-border mb35">
+                  <div className="overflow-wrap">
+                    <div className="Category-list-wrap inner-container flex">
+                      {tabs && tabs.map((tab, index) => renderTab(tab, index))}
+                    </div>
+                  </div>
+                </section>
                 <div className="card-wrap flex inner-container">
-                  {/*  */}
-                  {/* {handleCardList()} */}
+                  {renderActiveTabContent()}
                 </div>
               </div>
             </div>
           </div>
         </section>
       </div>
-
       <Footer />
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(MyProfile);

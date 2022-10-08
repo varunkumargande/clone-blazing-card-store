@@ -9,6 +9,7 @@ import { countryListApi } from "../../../api";
 import { modalWarning, modalSuccess } from "../../../api/intercept";
 import PaymentCard from "./PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
+import { Loader } from "../../reusable/Loader";
 
 export default function PaymentDetail() {
   const [cardData, setCardData] = useState(null);
@@ -72,7 +73,8 @@ export default function PaymentDetail() {
     countryId: Yup.string().required("Required"),
   });
 
-  const submitCardDetail = async (values) => {
+  const submitCardDetail = async (values,) => {
+    setCardLoader(true)
     let expDate = "";
     let year = values.expireDate.split("-")[0].slice(-2);
     let month = values.expireDate.split("-")[1];
@@ -85,12 +87,12 @@ export default function PaymentDetail() {
       countryId: values.countryId,
     });
 
-    handleCardApi(jsonData, isCardEdit, cardListApi);
+    handleCardApi(jsonData, isCardEdit, cardListApi, setCardLoader);
   };
 
   const handleCardDetail = () => {
     if (cardLoader) {
-      return <>Loading</>;
+      return <Loader />
     } else {
       return (
         <>
@@ -215,7 +217,7 @@ export default function PaymentDetail() {
                         </div>
                       </div>
                       <div className="button-wrapper flex mb40">
-                        <button className="border-btn mr16" onClick={() => resetForm()}>
+                        <button className="border-btn mr16" type="button" onClick={() => setIsCardData(true)}>
                           Cancel
                         </button>
 

@@ -18,7 +18,7 @@ export async function editProfileApi(values, newDp, Router, setLoader) {
     modalSuccess("success", result.data.message);
     sessionStorage.setItem("spurtUser", JSON.stringify(result.data.data));
     setLoader(false)
-    // Router.push("/");
+    Router.push("/account/myprofile");
   } else {
     modalWarning("error", result.data.message);
     setLoader(false)

@@ -1,6 +1,6 @@
 import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from "../../services";
-export async function editAddressApi(values, addressId) {
+export async function editAddressApi(values, addressId, setAddressLoader, addressList) {
   const data = JSON.stringify({
     address1: values.address1,
     address2: values.address2,
@@ -21,8 +21,10 @@ export async function editAddressApi(values, addressId) {
   }
   if (result.data.status === 1) {
     modalSuccess("success", result.data.message);
+    setAddressLoader(false)
   } else {
     modalWarning("error", result.data.message);
+    setAddressLoader(false)
   }
   return result.data;
 }

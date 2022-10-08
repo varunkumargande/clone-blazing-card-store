@@ -27,6 +27,7 @@ import { stepState } from "../../Constants/becomeSeller";
 function HeaderDefault({ auth }, props) {
   const router = useRouter();
   const [active, setActive] = useState(false);
+  const [profile, setProfile] = useState(false);
   let category = useSelector((s) => s.product);
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
@@ -56,28 +57,43 @@ function HeaderDefault({ auth }, props) {
 
   useEffect(() => {
     let userData = JSON.parse(sessionStorage.getItem("spurtUser"));
-    if (userData != null) {
-      setFname(JSON.parse(sessionStorage.getItem("spurtUser")).firstName);
-      setEmail(JSON.parse(sessionStorage.getItem("spurtUser")).email);
-      JSON.parse(sessionStorage.getItem("spurtUser")).avatar
-        ? setAimg(
-            imageUrl +
-              "?path=" +
-              JSON.parse(sessionStorage.getItem("spurtUser")).avatarPath +
-              "&name=" +
-              JSON.parse(sessionStorage.getItem("spurtUser")).avatar +
-              "&width=500&height=500"
-          )
-        : setAimg("/static/img/no-image.png");
-    }
-  },[]);
+    setProfile(userData);
+  }, []);
 
+  useEffect(() => {
+    if (profile) {
+      handleProfileImage();
+    }
+  }, [profile]);
+
+  const handleProfileImage = () => {
+    if (profile) {
+      return (
+        <>
+          <img
+            src={
+              imageUrl +
+              "?path=" +
+              profile.avatarPath +
+              "&name=" +
+              profile.avatar +
+              "&width=500&height=500"
+            }
+            alt="Profile"
+          />
+        </>
+      );
+    } else {
+      return <img src={"/static/img/no-image.png"} alt="Profile" />;
+    }
+  };
 
   const handleLogout = (e) => {
     e.preventDefault();
     sessionStorage.clear();
     dispatch(logOut());
     Router.push("/");
+    window.location.href="/";
     modalSuccess("success", "successfully logged out");
   };
 
@@ -88,7 +104,6 @@ function HeaderDefault({ auth }, props) {
   const handleSearchValue = (e) => {
     dispatch(searchRequest(e.target.value));
   };
-
 
   return (
     <header>
@@ -125,11 +140,22 @@ function HeaderDefault({ auth }, props) {
                         </span>
                     </span>
                 </label> */}
-            { !stepState.includes(pageName) ? <Link href={`/become-seller/${stepState[stage]}`}>
-              <a className="border-btn flex flex-center justify-center become">
-                Become a Seller
-              </a>
-            </Link> : null}
+
+            {!stepState.includes(pageName) ? (
+              <>
+                <Link
+                  href={
+                    auth.isLoggedIn
+                      ? "/account/login"
+                      : `/become-seller/${stepState[stage]}`
+                  }
+                >
+                  <a className="border-btn flex flex-center justify-center become">
+                    Become a Seller
+                  </a>
+                </Link>
+              </>
+            ) : null}
 
             {auth.isLoggedIn ? (
               <>
@@ -143,7 +169,7 @@ function HeaderDefault({ auth }, props) {
                 <button className="profile">
                   <span onClick={handleOnClick}>
 
-                    <img src={aimg} alt="Profile" />
+                    <span className="profileImage"><img src={aimg} alt="Profile" /></span>
                     {/* {userData != null ? (
                       <>
                         {userData.avatar != null && userData.avatarPath != null ? (
