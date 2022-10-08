@@ -121,16 +121,17 @@
             border-radius: 50%;
             width:28px;
             height: 28px;
-            svg{
+            padding: 0;
+            svg,img,span{
                 width:17px;
             }
-            .icon{
-                transition: all .25s;
-            }
             &:hover,&.liked{
-                .icon{
-                    fill: $red-color;
-                    stroke: $red-color;
+                img{
+                    opacity: 0;
+                }
+                span{ 
+                    background:url('/static/images/liked.png') no-repeat center 6px;
+                    background-size: 100%;
                 }
             }
         }

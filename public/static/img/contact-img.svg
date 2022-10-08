@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="824.011" height="470.378" viewBox="0 0 824.011 470.378">
   <defs>
-    <clipPath id="clip-path">
+    <clipPath id="clipPath">
       <rect id="Rectangle_1181" data-name="Rectangle 1181" width="237.33" height="156.699" rx="14.22" fill="none"/>
     </clipPath>
     <radialGradient id="radial-gradient" cx="0.109" cy="0.359" r="0.627" gradientTransform="translate(0.159) scale(0.683 1)" gradientUnits="objectBoundingBox">
@@ -70,7 +70,7 @@
     <path id="Path_2590" data-name="Path 2590" d="M356.847,129.373A21.32,21.32,0,0,1,361.132,107s36.192,23.4,76.639,16.831c0,0,4.387,12.2-8,23.5C429.771,147.388,386.473,155.592,356.847,129.373Z" transform="translate(624.538 388.803)" fill="#d6313b"/>
     <path id="Path_2591" data-name="Path 2591" d="M483.788,93.282c-26.043-21.934-75.381-25.049-137.821-15-53.7,8.642-108.37,28.924-126.62,57.57-8.32,13.044-2.676,49.279-2.676,49.279,49.469,3.1,67.587-39.482,67.587-39.482s-3.319-12.064,7.765-17.4c38.78-18.6,98.895-24.976,121.253-19.463a16.553,16.553,0,0,1,12.839,14.082s30.547,34.686,76.536,16.231C502.652,139.1,495.6,103.255,483.788,93.282Z" transform="translate(559.554 372.997)" fill="#ff3a46"/>
     <path id="Path_2592" data-name="Path 2592" d="M294.049,142.278a21.364,21.364,0,0,0-11.084-19.858s-26.994,33.633-67.485,40.038c0,0-.38,12.985,14.974,19.8C230.454,182.184,274.147,176.393,294.049,142.278Z" transform="translate(559.868 395.931)" fill="#d6313b"/>
-    <g id="Group_1302" data-name="Group 1302" transform="translate(627.481 651.712)" clip-path="url(#clip-path)">
+    <g id="Group_1302" data-name="Group 1302" transform="translate(627.481 651.712)" clipPath="url(#clipPath)">
       <rect id="Rectangle_1180" data-name="Rectangle 1180" width="237.33" height="156.699" rx="14.22" fill="#ffd71d"/>
       <path id="Path_2593" data-name="Path 2593" d="M351.69,234.414A20.794,20.794,0,0,0,330.9,213.62H135.154a20.794,20.794,0,0,0-20.794,20.794l107.683,87.255a17.357,17.357,0,0,0,21.832,0Z" transform="translate(-114.36 -213.62)" fill="#ffd71d"/>
       <path id="Path_2594" data-name="Path 2594" d="M128.208,354.165V239.039A20.808,20.808,0,0,1,149,218.231H343.823A20.692,20.692,0,0,0,330.9,213.61H135.154A20.794,20.794,0,0,0,114.36,234.4V349.515a20.794,20.794,0,0,0,20.794,20.809h.921a20.706,20.706,0,0,1-7.867-16.158Z" transform="translate(-114.36 -213.625)" opacity="0.7" fill="url(#radial-gradient)"/>
