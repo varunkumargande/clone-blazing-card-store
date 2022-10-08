@@ -75,7 +75,7 @@ export default function StreamCard({ detail, isLive }) {
         <div className="text">
           <h3
             className="title flex flex-center"
-            onClick={() => handleRouting(detail.id)}
+            onClick={() => handleRouting(detail.user_id)}
           >
             <img
               onError={({ currentTarget }) => {
@@ -86,9 +86,9 @@ export default function StreamCard({ detail, isLive }) {
               alt="Card"
             />
 
-            {stringFormatter(detail?.title)}
+            {stringFormatter(detail?.title)?.substring(0, 20) + "..."}
           </h3>
-          <div className="disc">{detail.description}</div>
+          <div className="disc">{detail?.description?.substring(0, 50) + "..."}</div>
           <button className="cate-btn">
             {stringFormatter(detail?.category_name)}
           </button>

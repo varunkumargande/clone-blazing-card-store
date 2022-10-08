@@ -13,6 +13,7 @@ import stream from './stream/reducer'
 import search from  "./search/reducer"
 import order from "./order/reducer"
 import becomeSeller from "./becomeSeller/reducer"
+import profile from "./profile/reducer"
 
 export default combineReducers({
     auth,
@@ -28,5 +29,6 @@ export default combineReducers({
     stream,
     search,
     order,
-    becomeSeller
+    becomeSeller,
+    profile
 });
