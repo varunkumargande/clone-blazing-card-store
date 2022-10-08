@@ -78,7 +78,7 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream }) {
         </>
       ) : (
         <>
-          <div className="tme-wrap flex flex-center justify-center live">
+          <div className="tme-wrap flex flex-center justify-center">
             <span>Today {detail.scheduletime}</span>
           </div>
           <button

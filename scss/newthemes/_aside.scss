@@ -211,15 +211,10 @@
             width: 100%;
         }
         .category-wrapper{
-            width: 100%;
-            overflow: auto;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            width: 100%;            
             padding-top: 0;
             background-color: transparent;
-            &::-webkit-scrollbar { 
-                height: 0;  
-            }
+            @include overflow;
             .overflow-wrap{
                 max-width: 100%;
                 margin-left:0;

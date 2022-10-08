@@ -120,13 +120,8 @@
     }
     .product-list{
         height: calc(100vh - 444px);
-        overflow: auto;
         padding: 0 8px;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        &::-webkit-scrollbar { 
-            height: 0;  
-        }
+        @include overflow;
         li{
             @include pos(re);
             padding: 13px 26px 13px 16px;
