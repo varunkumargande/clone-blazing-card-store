@@ -15,7 +15,7 @@ export const initState = {
   paymentDetails: null,
   submittedDetails: null,
   stepContainer: stepState,
-  currentState: 1,
+  currentState: 0,
 };
 
 const getStepState = (lastStep) => {
