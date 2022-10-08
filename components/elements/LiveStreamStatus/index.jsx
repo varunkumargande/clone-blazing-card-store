@@ -73,7 +73,7 @@ export default function LiveStreamStatus({ isLive, uuid, detail }) {
         </>
       ) : (
         <>
-          <div className="tme-wrap flex flex-center justify-center live">
+          <div className="tme-wrap flex flex-center justify-center">
             <span>Today {detail.scheduletime}</span>
           </div>
           <button

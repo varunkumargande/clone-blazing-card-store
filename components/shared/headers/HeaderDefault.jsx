@@ -82,7 +82,7 @@ function HeaderDefault({ auth }, props) {
         </>
       );
     } else {
-      return <img src={"/static/img/no-image.png"} alt="Profile" />;
+      return <img src={"/static/img/no-image.svg"} alt="Profile" />;
     }
   };
 
@@ -139,7 +139,7 @@ function HeaderDefault({ auth }, props) {
                     </span>
                 </label> */}
 
-            {!stepState.includes(pageName) ? (
+            {/* {!stepState.includes(pageName) ? (
               <>
                 <Link
                   href={
@@ -153,11 +153,16 @@ function HeaderDefault({ auth }, props) {
                   </a>
                 </Link>
               </>
-            ) : null}
+            ) : null} */}
 
             {auth.isLoggedIn ? (
               <>
                 {/* <MessageButton name={"Message"} /> */}
+                { !stepState.includes(pageName) ? <Link href="/become-seller/guidelines">
+                  <a className="border-btn flex flex-center justify-center become">
+                    Become a Seller
+                  </a>
+                </Link> : null}
                 <button className="message flex flex-center justify-center">
                   <IconMessage />
                 </button>
@@ -234,6 +239,11 @@ function HeaderDefault({ auth }, props) {
             ) : (
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
+                { !stepState.includes(pageName) ? <Link href="/account/login">
+                  <a className="flex flex-center justify-center become Link">
+                    Become a Seller
+                  </a>
+                </Link> : null}
                 <Link href="account/login">
                   <a className="primary-btn flex flex-center justify-center ml24">
                     Sign In

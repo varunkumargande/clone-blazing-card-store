@@ -259,13 +259,21 @@
             height: 42px;
         }
         .primary-btn{
-            max-width: 112px;
+            max-width: 84px;
         }
         .border-btn{
-            max-width: 120px;
+            max-width: 92px;
             width: 100%;
             &.become{
-                max-width: 150px;
+                max-width: 155px;
+            }
+        }
+        .Link{
+            font-size: 16px;
+            line-height: 21px;
+            color:$blue-color;
+            &:hover{
+                text-decoration: underline;
             }
         }
         .left{
@@ -296,13 +304,13 @@
                 align-items: center;
             }
             .profileImage{
-                padding: 2px;
+                padding: 5px;
                 width: 42px;
                 height: 42px;
                 border:1px solid $border2-color;
                 border-radius: 50%;
                 overflow: hidden;
-                background-color: $search-bg;
+                background-color: $white-color;
                 display: block;
                 margin-right: 8px;
             }

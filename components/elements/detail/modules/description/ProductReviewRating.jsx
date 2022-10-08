@@ -163,7 +163,7 @@ const [starcoutid,setStarcoutid]=useState("")
                                </>}
                                <div className="cus-rev-link">
                                    
-                                   <a onClick={scrollTo} > See all customer reviews <img src="assets/img/arrow-down-blue.svg" alt="" /> </a>
+                                   <a onClick={scrollTo} > View All customer reviews <img src="assets/img/arrow-down-blue.svg" alt="" /> </a>
                                    {
                                        
                                    }

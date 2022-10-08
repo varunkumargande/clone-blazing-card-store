@@ -145,7 +145,7 @@ function Category({
               <>
                 <div className="category-like like">
                   <button
-                    className={subCateId === "liked" ? "Like flex justify-center flex-center" : "flex justify-center flex-center"}
+                    className={subCateId === "liked" ? "Like Liked flex justify-center flex-center" : "flex justify-center flex-center Like"}
                     onClick={() => handleLikedShow()}
                   >
                     <IconLike />
@@ -192,41 +192,41 @@ function Category({
 
   return (
     <section className="category-wrapper">
-      <div className="inner-container">
-        <div className="title-wrap flex space-between flex-center">
-          <div className="flex flex-center">
-            <section className="breadcrumbs-wrapper">
-              <ul className="breadcrumbs flex flex-center">
-                <li>
-                  <a onClick={() => (window.location.href = "/")}> Home </a>
-                </li>
-                /
-                <li className="current">
-                  {activeCategoryIndex == null ? "All" : activeCategoryName}
-                </li>
-              </ul>
-            </section>
-            <div className="category-btn-wrap">
-              {/* <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
-                            <ul className={active ? "dropDown active" : "dropDown"} >
-                                <li className="active">Creator</li>
-                                <li>Athelete</li>
-                                <li>Artist</li>
-                            </ul> */}
+        <div className="inner-container">
+            <div className="title-wrap flex space-between flex-center">
+            <div className="flex flex-center">
+                <section className="breadcrumbs-wrapper">
+                <ul className="breadcrumbs flex flex-center">
+                    <li>
+                    <a onClick={() => (window.location.href = "/")}> Home </a>
+                    </li>
+                    /
+                    <li className="current">
+                    {activeCategoryIndex == null ? "All" : activeCategoryName}
+                    </li>
+                </ul>
+                </section>
+                <div className="category-btn-wrap">
+                {/* <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
+                                <ul className={active ? "dropDown active" : "dropDown"} >
+                                    <li className="active">Creator</li>
+                                    <li>Athelete</li>
+                                    <li>Artist</li>
+                                </ul> */}
+                </div>
             </div>
-          </div>
-          <div className="seeAll">
-            <Link href="/">
-              <a className="flex flex-center">See All</a>
-            </Link>
-          </div>
+            <div className="seeAll">
+                <Link href="/">
+                <a className="flex flex-center">View All</a>
+                </Link>
+            </div>
+            </div>
         </div>
         <div className="overflow-wrap">
-          <div className="Category-list-wrap inner-container flex">
+            <div className="Category-list-wrap inner-container flex">
             {getCategoryList()}
-          </div>
+            </div>
         </div>
-      </div>
     </section>
   );
 }
