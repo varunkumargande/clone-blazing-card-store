@@ -67,18 +67,22 @@ function Category({
     }
   };
 
-  console.log(subCateId)
+  console.log(subCateId);
 
   const getCategoryList = () => {
     if (isSeeAll == true) {
       if (Object.keys(category).length != 0) {
         return (
           <>
-           {auth?.isLoggedIn ? (
+            {auth?.isLoggedIn ? (
               <>
                 <div className="category-like like">
                   <button
-                    className={subCateId === "liked" ? "Like flex justify-center flex-center" : "flex justify-center flex-center"}
+                    className={
+                      subCateId === "liked"
+                        ? "Like flex justify-center flex-center"
+                        : "flex justify-center flex-center"
+                    }
                     onClick={() => handleLikedShow()}
                   >
                     <IconLike />
@@ -95,7 +99,7 @@ function Category({
                 }
                 onClick={handleAllCate}
               >
-                All
+                Explore
               </button>
             </div>
             {category["categories"].map((res, index) => {
@@ -139,13 +143,15 @@ function Category({
       if (Object.keys(category).length != 0) {
         return (
           <>
-
-
             {auth?.isLoggedIn ? (
               <>
                 <div className="category-like like">
                   <button
-                    className={subCateId === "liked" ? "Like Liked flex justify-center flex-center" : "flex justify-center flex-center Like"}
+                    className={
+                      subCateId === "liked"
+                        ? "Like Liked flex justify-center flex-center"
+                        : "flex justify-center flex-center Like"
+                    }
                     onClick={() => handleLikedShow()}
                   >
                     <IconLike />
@@ -156,7 +162,6 @@ function Category({
               ""
             )}
 
-
             <div className="category-list">
               <button
                 className={
@@ -165,7 +170,7 @@ function Category({
                 // onClick={() => setActiveCategoryIndex(null)}
                 onClick={handleAllCate}
               >
-                All
+                Explore
               </button>
             </div>
             {category["categories"]?.map((res, index) => (
@@ -190,43 +195,39 @@ function Category({
     }
   };
 
-  return (
+  return (  
     <section className="category-wrapper">
-        <div className="inner-container">
-            <div className="title-wrap flex space-between flex-center">
-            <div className="flex flex-center">
-                <section className="breadcrumbs-wrapper">
-                <ul className="breadcrumbs flex flex-center">
-                    <li>
-                    <a onClick={() => (window.location.href = "/")}> Home </a>
-                    </li>
-                    /
-                    <li className="current">
-                    {activeCategoryIndex == null ? "All" : activeCategoryName}
-                    </li>
-                </ul>
-                </section>
-                <div className="category-btn-wrap">
-                {/* <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
+      <div className="inner-container">
+        <div className="title-wrap flex space-between flex-center">
+          <div className="flex flex-center">
+            <section className="breadcrumbs-wrapper">
+              <ul className="breadcrumbs flex flex-center">
+                <div className="flex flex-center">
+                  <h3 className="title">Categories</h3>
+                </div>
+              </ul>
+            </section>
+            <div className="category-btn-wrap">
+              {/* <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
                                 <ul className={active ? "dropDown active" : "dropDown"} >
                                     <li className="active">Creator</li>
                                     <li>Athelete</li>
                                     <li>Artist</li>
                                 </ul> */}
-                </div>
             </div>
-            <div className="seeAll">
-                <Link href="/">
-                <a className="flex flex-center">View All</a>
-                </Link>
-            </div>
-            </div>
+          </div>
+          <div className="seeAll">
+            <Link href="/">
+              <a className="flex flex-center">View All</a>
+            </Link>
+          </div>
         </div>
-        <div className="overflow-wrap">
-            <div className="Category-list-wrap inner-container flex">
-            {getCategoryList()}
-            </div>
+      </div>
+      <div className="overflow-wrap">
+        <div className="Category-list-wrap inner-container flex">
+          {getCategoryList()}
         </div>
+      </div>
     </section>
   );
 }
