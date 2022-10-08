@@ -51,13 +51,7 @@
     }
     .tab-link-wrap{
         border-bottom: 1px solid $border2-color;
-        overflow: auto;
-        flex-wrap: nowrap;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        &::-webkit-scrollbar { 
-            height: 0;  
-        }
+        @include overflow;
         .tab-link{
             margin-right: 15px;
             white-space: nowrap;
