@@ -12,7 +12,7 @@ import DefaultServices from "../../Services/DefaultServices";
 
 export default function StreamCard({ detail, isLive }) {
   const handleRouting = (id) => {
-    Router.push("/profile?userId" + id);
+    Router.push("/profile?userId=" + id);
   };
 
   const handleStreamingLink = (detail) => {
