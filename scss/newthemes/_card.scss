@@ -438,12 +438,30 @@
             }
         }
     }
+    .aside-content-wrap{
+        .overflow-none{
+            .card-wrap {
+                .card-list{ 
+                    flex:0 0 214px;
+                }
+            }
+        }
+    }
 }
 @media all and (min-width:1920px){
     .overflow-none{
         .card-wrap {
             .card-list{ 
                 flex:0 0 222px;
+            }
+        }
+    }
+    .aside-content-wrap{
+        .overflow-none{
+            .card-wrap {
+                .card-list{ 
+                    flex:0 0 208px;
+                }
             }
         }
     }
