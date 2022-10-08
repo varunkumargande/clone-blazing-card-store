@@ -25,13 +25,13 @@ function CenterDiv({
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
-
+  const [addressLoader, setAddressLoader] = useState(false);
+  const [paymentLoader, setPaymentLoader] = useState(false);
   const [shipIndex, setShipIndex] = React.useState(null);
   const [shipData, setShipData] = React.useState([]);
 
   const [cardIndex, setCardIndex] = useState(null);
   const [cardDetail, setCardDetail] = useState([]);
-  const [payLoader, setPayLoader] = useState(true);
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -50,17 +50,21 @@ function CenterDiv({
   const [countryData, setCountryData] = useState([]);
 
   useEffect(() => {
+    setAddressLoader(true)
+    setPaymentLoader(true)
     countryListApi(setCountryData);
-    getStreamingShippmentDetail(setAddressList);
-    getStreamingCardDetail(setCardDetail, setPayLoader);
+    getStreamingShippmentDetail(setAddressList, setAddressLoader);
+    getStreamingCardDetail(setCardDetail, setPaymentLoader);
   }, []);
 
   const fetchCardDetail = () => {
-    getStreamingCardDetail(setCardDetail, setPayLoader);
+    setPaymentLoader(true)
+    getStreamingCardDetail(setCardDetail, setPaymentLoader);
   };
 
   const fetchShiipmentApi = () => {
-    getStreamingShippmentDetail(setAddressList);
+    setAddressLoader(true)
+    getStreamingShippmentDetail(setAddressList, setAddressLoader);
   };
 
   const handleSubmitBuyProduct = () => {
@@ -83,13 +87,15 @@ function CenterDiv({
   const submitShipDetail = (data) => {
     setShipData(data);
     if (data.addressId) {
-      editAddressApi(data, data.addressId);
+      setAddressLoader(true)
+      editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi);
       setShippmentFormOpen(false);
       fetchShiipmentApi();
     } else {
-      UserAddAddress(data, fetchShiipmentApi);
+      setAddressLoader(true)
+      UserAddAddress(data, setAddressLoader, fetchShiipmentApi);
       setShippmentFormOpen(false);
-      getStreamingShippmentDetail();
+      fetchShiipmentApi()
     }
   };
 
@@ -113,6 +119,8 @@ function CenterDiv({
             handleSubmitBuyProduct={handleSubmitBuyProduct}
             addressList={addressList}
             cardDetail={cardDetail}
+            addressLoader={addressLoader}
+            paymentLoader={paymentLoader}
           />
         </>
       ) : (
@@ -121,6 +129,7 @@ function CenterDiv({
       {paymentForm == true ? (
         <>
           <AddNewCardModal
+          fetchCardDetail={fetchCardDetail}
             productDetail={productDetail}
             countryData={countryData}
             fetchShiipmentApi={fetchShiipmentApi}
@@ -129,6 +138,7 @@ function CenterDiv({
             cardIndex={setCardIndex}
             payIndex={cardIndex}
             close={setPaymentFormOpen}
+            setPaymentLoader={setPaymentLoader}
           />
         </>
       ) : (
@@ -147,6 +157,8 @@ function CenterDiv({
             shipData={shipData}
             close={setShippmentFormOpen}
             setShip={submitShipDetail}
+            addressLoader={addressLoader}
+            setAddressList={setAddressList}
           />
         </>
       ) : (

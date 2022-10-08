@@ -4,7 +4,7 @@ import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
 import IconShareTwitter from "../../Icons/IconShareTwitter";
 import IconShareWhatsup from "../../Icons/IconShareWhatsup";
-import IconGoogle from '../../Icons/IconGoogle';
+import IconGoogle from "../../Icons/IconGoogle";
 import Timer from "../../elements/streaming/Timer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -15,6 +15,7 @@ import axios from "axios";
 import { searchUsers } from "../../../chatService";
 import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
+import { Loader } from "../../reusable/Loader";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -194,7 +195,11 @@ export function PaymentInfoModal(props) {
     cardDetail,
     productDetail,
     fetchShiipmentApi,
+    paymentLoader,
+    addressLoader
   } = props;
+
+  console.log(addressList)
 
   const addressInfo =
     addressList?.length == 0
@@ -214,12 +219,14 @@ export function PaymentInfoModal(props) {
   });
 
   const cardDetails =
-    cardDetail?.length == 0
+    cardDetail == false
       ? "Add shipment"
       : cardDetail[0]?.card.brand +
-        " " +
+        "" +
         "XXXX XXXX XXXX " +
         cardDetail[0]?.card.last4;
+
+  console.log(paymentLoader, addressLoader)
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -248,7 +255,15 @@ export function PaymentInfoModal(props) {
             </div>
           </div>
         </div>
-        <div className="modal-body">
+        {paymentLoader || addressLoader ? (
+          <>
+          <div align={"center"}>
+            <Loader />
+            </div>
+          </>
+        ) : (
+          <>
+             <div className="modal-body">
           <div className="input-control with-bg">
             <label>Shipping Details</label>
             <input
@@ -272,6 +287,9 @@ export function PaymentInfoModal(props) {
             <span className="errorMessage"></span>
           </div>
         </div>
+          </>
+        )}
+       
         <div className="modal-footer flex justify-center">
           <div className="flex space-between btn-wrap wd310">
             <button className="disable-btn" onClick={() => openPayment(false)}>
@@ -293,7 +311,7 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  const { payDetail, close, productDetail, countryData, fetchShiipmentApi } =
+  const { payDetail, close, productDetail, countryData, fetchShiipmentApi, setPaymentLoader, fetchCardDetail } =
     props;
 
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
@@ -312,20 +330,13 @@ export function AddNewCardModal(props) {
 
   const formik = useFormik({
     initialValues: {
-      // cardHolderName:
-      //   userDetail != null
-      //     ? JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName ?? ""
-      //     : "",
       cardNumber:
-        payDetail?.length != 0
-          ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4
-          : "",
-      cvc: payDetail?.length != 0 ? payDetail[0]?.cvc : "",
+        payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
+      cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
       expireDate:
-        payDetail?.length != 0
+        (payDetail != false) != 0
           ? payDetail[0]?.card.exp_year + "-" + payDetail[0]?.card.exp_month
           : "",
-      // countryId: payDetail.length != 0 ? payDetail[0].card.countryId : "",
     },
     onSubmit: (values) => {
       let expDate = "";
@@ -337,24 +348,22 @@ export function AddNewCardModal(props) {
         cardNumber: values.cardNumber,
         expireDate: expDate,
         cvc: values.cvc,
-        // countryId: values.countryId,
       });
 
-      if(payDetail.length == 0){
-        handleCardApi(jsonData, false, fetchShiipmentApi);
-        fetchShiipmentApi()
-        close(false)
+      if (payDetail == false) {
+        setPaymentLoader(true)
+        handleCardApi(jsonData, false, fetchCardDetail, setPaymentLoader);
+        fetchShiipmentApi();
+        close(false);
       } else {
-        handleCardApi(jsonData, true, fetchShiipmentApi);
-        fetchShiipmentApi()
-        close(false)
+        setPaymentLoader(true)
+        handleCardApi(jsonData, true, fetchCardDetail, setPaymentLoader);
+        fetchShiipmentApi();
+        close(false);
       }
-      
     },
     validationSchema: () => shipSchema,
   });
-
-  console.log(payDetail)
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -376,19 +385,6 @@ export function AddNewCardModal(props) {
 
         <form onSubmit={formik.handleSubmit}>
           <div className="modal-body">
-            {/* <div className="input-control">
-                  <label>Name on Card *</label>
-                  <input
-                    type="text"
-                    name="cardHolderName"
-                    placeholder={"Enter here"}
-                    value={formik.values.cardHolderName}
-                    onChange={formik.handleChange}
-                  />
-                  <span className="errorMessage">
-                    {formik.errors.cardHolderName}
-                  </span>
-                </div> */}
             <div className="input-control">
               <label>Card Number *</label>
               <input
@@ -424,25 +420,6 @@ export function AddNewCardModal(props) {
                 <span className="errorMessage">{formik.errors.cvc}</span>
               </div>
             </div>
-            {/* <div className="input-control">
-              <label>Country *</label>
-              <select
-                name="countryId"
-                onChange={formik.handleChange}
-                value={formik.values.countryId}
-              >
-                <option value="">Select Country</option>
-
-                {countryData?.map((item, index) => {
-                  return (
-                    <>
-                      <option value={item.name}>{item.name}</option>
-                    </>
-                  );
-                })}
-              </select>
-              <span className="errorMessage">{formik.errors.countryId}</span>
-            </div> */}
             <div className="infotext">
               By providing your card information, you allow Blazing Cards to
               charge your card for future payments in accordance with their
@@ -470,6 +447,7 @@ export function AddAddressModal(props) {
     setShip,
     addressList,
     countryData,
+    setAddressList
   } = props;
 
   console.log(addressList);
@@ -482,15 +460,11 @@ export function AddAddressModal(props) {
     state: Yup.string().required("Required"),
     city: Yup.string().required("Required"),
     postcode: Yup.string().min(4, "Invalide PinCode").required("Required"),
-    // phoneNumber: Yup.string().required("Required"),
-    // email: Yup.string().required("Required"),
   });
 
   const formik = useFormik({
     initialValues: {
       company: addressList[0]?.company ?? "",
-      // phoneNumber: addressList[0]?.phoneNo ?? "",
-      // email: addressList[0]?.emailId ?? "",
       address1: addressList[0]?.address1 ?? "",
       address2: addressList[0]?.address2 ?? "",
       countryId: addressList[0]?.countryId ?? "",
@@ -506,8 +480,6 @@ export function AddAddressModal(props) {
     },
     validationSchema: () => shipSchema,
   });
-
-  console.log(addressList);
 
   return (
     <>
@@ -822,7 +794,6 @@ export function ChatUserModal({ setIsOpen }) {
 }
 
 export function UnfollowModal() {
-
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
@@ -832,12 +803,8 @@ export function UnfollowModal() {
           </div>
           <div className="profile-id">Want to follow @felix.bronco?</div>
           <div className="btn-wrap follow-btn-wrap flex justify-center">
-            <button className="border-btn">
-              Cancel
-            </button>
-            <button className="primary-btn">
-              Unfollow
-            </button>
+            <button className="border-btn">Cancel</button>
+            <button className="primary-btn">Unfollow</button>
           </div>
         </div>
       </div>
@@ -846,11 +813,10 @@ export function UnfollowModal() {
 }
 
 export function SignUPGoogle() {
-
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
-      <div className="modal-header flex Space-between flex-center nobg">
+        <div className="modal-header flex Space-between flex-center nobg">
           <h5 className="modal-title"></h5>
           <button
             type="button"
@@ -864,18 +830,25 @@ export function SignUPGoogle() {
           </button>
         </div>
         <div className="modal-body text-center">
-        <div className="Stream-title text-center mb24">
+          <div className="Stream-title text-center mb24">
             Signup to join the stream
           </div>
-          <button className="google-btn mb24"><IconGoogle/>Continue with Google</button>
-          <div class="or mb32 flex flex-center justify-center"><span>Or</span></div>
+          <button className="google-btn mb24">
+            <IconGoogle />
+            Continue with Google
+          </button>
+          <div class="or mb32 flex flex-center justify-center">
+            <span>Or</span>
+          </div>
           <div className="signin-signup">
-              <Link href="/account/register">
-                    <a>Sign Up</a>
-              </Link>/
-              <Link href="/account/login">
-                    <a>Sign In</a>
-              </Link> on Blazing Cards
+            <Link href="/account/register">
+              <a>Sign Up</a>
+            </Link>
+            /
+            <Link href="/account/login">
+              <a>Sign In</a>
+            </Link>{" "}
+            on Blazing Cards
           </div>
         </div>
       </div>

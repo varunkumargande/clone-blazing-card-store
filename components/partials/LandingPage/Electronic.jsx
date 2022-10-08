@@ -13,6 +13,8 @@ export default function Electronic({
   isSeeAll,
   setIsSeeAll,
   setSeeAllHeading,
+  setIsLikedShow,
+  isLikedShow
 }) {
   const dispatch = useDispatch();
   

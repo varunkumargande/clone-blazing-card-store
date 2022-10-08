@@ -7,6 +7,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { countryListApi, editAddressApi, UserAddAddress } from "../../../api";
 import Router from "next/router";
+import { Loader } from "../../reusable/Loader";
 
 export default function ShippingDetails() {
   const [addressData, setAddressData] = useState([]);
@@ -53,17 +54,18 @@ export default function ShippingDetails() {
       <h3>Shipping Information</h3>
 
       {addressLoader ? (
-        <>Loading ...</>
+        <><Loader /></>
       ) : (
         <>
           <Formik
             initialValues={initialShippingValues}
             validationSchema={shippingSchema}
             onSubmit={(values) => {
+              setAddressLoader(true)
               if (addressData.length != 0) {
-                editAddressApi(values, addressData[0].addressId);
+                editAddressApi(values, addressData[0].addressId, setAddressLoader, addressList);
               } else {
-                UserAddAddress(values, Router, addressList);
+                UserAddAddress(values, Router, setAddressLoader, addressList);
               }
             }}
           >

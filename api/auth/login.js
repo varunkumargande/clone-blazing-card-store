@@ -3,7 +3,7 @@ import { cartListApi } from "../cart/cartList";
 import getProfileApi from "../home/getInfo";
 import APIServices from '../../services'
 import { modalSuccess, modalWarning } from "../intercept";
-
+import { getProfile } from "../../store/profile/action";
 
 export async function UserLogin(email, password, loginType, Router, setLoginError, dispatch, setMail, setPassword, setLoadImg) {
     const data = JSON.stringify({
@@ -16,11 +16,11 @@ export async function UserLogin(email, password, loginType, Router, setLoginErro
         
         sessionStorage.setItem("spurtToken", result.data.data.token);
         sessionStorage.setItem("userPass", password)
-
         getProfileApi()
         modalSuccess('success', result.data.message)
         Router.push('/');
         cartListApi(dispatch)
+        // dispatch(getProfile(result.data))
     } else {
         setLoginError(result.data.message)
         modalWarning('error', result.data.message)

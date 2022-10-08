@@ -7,6 +7,7 @@ import { editProfileApi } from "../../../api";
 import Router from "next/router";
 import { DeletAccountModal } from "../Modal/Modal";
 import { imageUrl } from "../../../api/url";
+import { Loader } from "../../reusable/Loader";
 
 export default function ProfileInformation() {
   const [profileData, setProfileData] = useState(null);
@@ -330,7 +331,11 @@ export default function ProfileInformation() {
         );
       }
     } else {
-      return <>Loading ...</>;
+      return(
+        <>
+          <Loader />
+        </>
+      )
     }
   };
 

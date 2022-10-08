@@ -72,9 +72,14 @@
             height: 32px;
             background-color: $search-bg;
             border-radius: 50%;
-            .icon{ 
-                fill:$red-color;
-                stroke: $red-color;
+            .icon{
+                fill:transparent;
+            }
+            &.Liked{ 
+                .icon{ 
+                    fill:$red-color;
+                    stroke: $red-color;
+                }
             }
         }
     }

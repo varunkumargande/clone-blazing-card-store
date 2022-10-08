@@ -80,9 +80,6 @@ function LiveScheduleCategory({ category, setLiveScheduleCategoryName, liveSched
             </div>
             <div className="overflow-wrap">
                 <div className="Category-list-wrap inner-container flex">
-                    <div className="category-like like">
-                        <button className="Like flex justify-center flex-center"><IconLike /></button>
-                    </div>
                     {getCategoryList()}
                 </div>
             </div>
