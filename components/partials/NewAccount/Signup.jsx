@@ -9,6 +9,7 @@ import {
   numPresent,
   specialPresent,
 } from "../../helper/emailValidator";
+// import { gapi } from "gapi-script";
 import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
@@ -19,6 +20,15 @@ import { registerConstant } from "../../Constants/register";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
+
+// This code is required in future development for Google Signin
+// gapi.load("client:auth2", () => {
+//   gapi.client.init({
+//     clientId:
+//       "951035021628-vq6g1nr866f0cqi56kch4viedvevmkt0.apps.googleusercontent.com",
+//     plugin_name: "chat",
+//   });
+// });
 
 function Signup(auth) {
   const [name, setName] = useState("");
@@ -142,7 +152,7 @@ function Signup(auth) {
       <h1 className="title mb32">Sign up to Blazing Cards</h1>
 
       <GoogleLogin
-        clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
+        clientId="951035021628-vq6g1nr866f0cqi56kch4viedvevmkt0.apps.googleusercontent.com"
         render={(renderProps) => (
           <button className="google-btn mb42" onClick={renderProps.onClick}>
             <IconGoogle />
@@ -152,7 +162,8 @@ function Signup(auth) {
         buttonText="Login"
         onSuccess={responseGoogle}
         onFailure={responseGoogleFailure}
-        isSignedIn={false}
+        isSignedIn={true}
+        cookiePolicy={'single_host_origin'}
       />
 
       <div className="or mb32 flex flex-center justify-center">
