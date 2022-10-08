@@ -26,8 +26,6 @@ export default function LeftPannel(){
             })
         }
       }, [submittedData])
-
-      console.log(submittedData, 'submittedData')
     
     const getCurrentState = (name) => {
         return `step1 step flex flex-center ${steps[name]}`

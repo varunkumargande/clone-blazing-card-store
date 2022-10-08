@@ -36,12 +36,14 @@ function HeaderDefault({ auth }, props) {
   const [aimg, setAimg] = useState("");
   const [email, setEmail] = useState("");
   let { pageName } = router.query;
-
   const authFunc = () => {
     if (sessionStorage.getItem("spurtToken") !== null) {
       dispatch(login());
     }
   };
+
+
+  const stage = useSelector((state) => state?.becomeSeller?.currentState)
 
   const handleOnClick = () => {
     setActive(!active);
@@ -145,7 +147,7 @@ function HeaderDefault({ auth }, props) {
                   href={
                     auth.isLoggedIn
                       ? "/account/login"
-                      : "/become-seller/guidelines"
+                      : `/become-seller/${stepState[stage]}`
                   }
                 >
                   <a className="border-btn flex flex-center justify-center become">

@@ -27,9 +27,14 @@ function StreamingBase({
   handleLeftDiv,
 }) {
   const stream = useSelector((state) => state.stream);
-  const streamNotification = useSelector((state) => state.stream?.streamNotification);
+  const streamNotification = useSelector(
+    (state) => state.stream?.streamNotification
+  );
+  const auctionDetails = useSelector(
+    (state) => state?.stream?.streamProducts?.AuctionDetails
+  );
   const [open, setOpen] = useState(false);
-  const [bidAmount, setBidAmount] = useState(null);
+  const [bidAmount, setBidAmount] = useState(0);
   const [amountToBid, setAmountToBid] = useState(bidAmount + 2);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -40,9 +45,6 @@ function StreamingBase({
   const [isMute, setIsMute] = useState(false);
   const [openShipPayDetails, setOpenShipPayDetails] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [socketObject, setSocketObject] = useState(
-    stream?.streamPageData.streamPageDteails.socketObject
-  );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [bidNotification, setBidNotification] = useState(null);
   const [winnerNotification, setWinnerNotification] = useState(null);
@@ -65,49 +67,53 @@ function StreamingBase({
    * Will Subscribe to all Notofication type channels
    */
   useEffect(() => {
-      setAuctionNotification(streamNotification?.auction);
-      setBidNotification(streamNotification?.bid);
-      setAuctionId(streamNotification?.auction?.auction.id)
-      setWinnerNotification(streamNotification?.wind)
+    setAuctionNotification(streamNotification?.auction);
+    setBidNotification(streamNotification?.bid);
+    setAuctionId(
+      streamNotification?.auction?.auction.id ??
+        streamNotification?.bid?.auctionId
+    );
+    setWinnerNotification(streamNotification?.wind);
   }, [streamNotification]);
 
   /**
    * This useEffect will calculate time and set bid amount on changes of notification
    */
   useEffect(() => {
-    if (!!auctionNotification || !!bidNotification) {
-      getTimeDifference(
-        auctionNotification?.auction?.endTime || bidNotification?.endTime
-      );
+    if (!!auctionNotification || !!bidNotification || stream?.streamProducts?.AuctionDetails?.latestAuction !== {}) {
+      getTimeDifference(getTime());
       if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
         setDisableBid(false);
       }
-      if (bidNotification) {
-        setBidAmount(bidNotification?.bidAmount);
+      if(!!streamNotification?.auction?.auction?.id ||
+        !!streamNotification?.bid?.auctionId || !!auctionDetails?.latestAuction?.auctionId) {
+        setAuctionId(getAuctionId())
+       }
+      if (bidNotification || auctionDetails?.latestBidding !== {} ||auctionDetails.latestAuction !== {} ) {
+        const amount = Number(getBidAmount());
+        setBidAmount(amount);
+        setAmountToBid(amount + 1);
       }
     }
-  }, [bidNotification, auctionNotification]);
+  }, [bidNotification, auctionNotification, auctionDetails]);
 
-  /**
-   * Method will re-rednders on each stream api change
-   */
-  useEffect(() => {
-    if (stream?.streamProducts?.AuctionDetails) {
-      getTimeDifference(
-        stream?.streamProducts?.AuctionDetails?.latestBidding?.bidEndTime ??
-          stream?.streamProducts?.AuctionDetails?.latestAuction?.endTime
-      );
-      setAuctionId(
-        stream?.streamProducts?.AuctionDetails?.latestAuction?.auctionId
-      );
-    }
-  }, [stream]);
+  const getTime =() => {
+    return bidNotification?.endTime ? bidNotification?.endTime : ( auctionNotification?.auction?.endTime ? auctionNotification?.auction?.endTime : (auctionDetails?.latestBidding?.bidEndTime ? auctionDetails?.latestBidding?.bidEndTime : (auctionDetails?.latestAuction?.endTime ? auctionDetails?.latestAuction?.endTime : null) ) )
+  }
+
+  const getAuctionId = () => {
+    return streamNotification?.auction?.auction.id ? streamNotification?.auction?.auction.id : (streamNotification?.bid?.auctionId ? streamNotification?.bid?.auctionId : (auctionDetails?.latestAuction?.auctionId ? auctionDetails?.latestAuction?.auctionId : null))
+  }
+  const getBidAmount = () => {
+    return auctionNotification?.auction?.bidAmount ? auctionNotification?.auction?.bidAmount : (bidNotification?.bidAmount ? bidNotification?.bidAmount : ( auctionDetails?.latestBidding?.bidAmount ? auctionDetails?.latestBidding?.bidAmount : (auctionDetails?.latestAuction.bidAmount ? auctionDetails?.latestAuction.bidAmount : null)));  
+  }
 
   /**
    * Method will calculate Live Auction endtime
    * @param {*} endTime
    */
   const getTimeDifference = (endTime) => {
+    if(!endTime) return
     let [date, time] = endTime.split(" ");
     const endTime = moment(date.replaceAll("-", "/") + " " + time);
     const duration = moment.duration(
@@ -123,7 +129,7 @@ function StreamingBase({
           stream?.streamProducts?.AuctionDetails?.latestAuction?.bidAmount
       );
     }
-    setMinutes(minutes);
+    setMinutes(minutes, "");
     setSeconds(seconds);
   };
 
@@ -295,7 +301,7 @@ function StreamingBase({
     }
     return "like flex flex-center justify-center br50";
   };
-  //clicking on shops icon will open product list panel 
+  //clicking on shops icon will open product list panel
   const handleLeftDivVisbibility = () => {
     handleLeftDiv(true);
   };

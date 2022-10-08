@@ -13,6 +13,7 @@ import Electronic from "../components/partials/LandingPage/Electronic";
 import LikedList from "../components/partials/LandingPage/Layout/LikedList";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import Vertical from "../components/partials/LandingPage/Layout/vertical";
+import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
 
 function landingPage({ auth }) {
@@ -54,6 +55,10 @@ function landingPage({ auth }) {
   useEffect(() => {
     categoryApi(dispatch);
   }, []);
+
+  useEffect(()=>{
+    dispatch(getBecomeSellerInfo());
+  }, [])
 
   const getAllCategoriesCard = () => {
     if (categories) {

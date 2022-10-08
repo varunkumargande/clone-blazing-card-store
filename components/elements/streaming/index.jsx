@@ -19,46 +19,55 @@ function Index() {
   const [openPayment, setOpenPayment] = useState(false);
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
-  const [socketObject, setSocketObject] = useState(
-    io(socketIO, {
-      withCredentials: true
-    })
-  );
   const [auctionNotification, setAuctionNotification] = useState(null);
   const stream = useSelector((state) => {
     return state?.stream;
   });
-  const streamNotification = useSelector((state) => state.stream?.streamNotification);
-
+  const streamNotification = useSelector(
+    (state) => state.stream?.streamNotification
+  );
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
   const [isLeftDivOpen, setLeftDivOpen] = useState();
-  
+
   useEffect(() => {
     dispatch(streamData(uuid));
   }, []);
 
-  useEffect(() => {
+  useEffect(() => {socketInitializer()}, []);
+
+  const socketInitializer = () => {
+    const socketObject = io(socketIO);
     socketObject.on(`${uuid}-bid`, (bid) => {
-      dispatch(addNotification({
-        type: 'bid',
-        value: bid
-      }))
+      dispatch(
+        addNotification({
+          type: "bid",
+          value: bid,
+        })
+      );
     });
     socketObject.on(`${uuid}-auction`, (auction) => {
-      dispatch(addNotification({
-        type: 'auction',
-        value: auction
-      }))
+      dispatch(
+        addNotification({
+          type: "auction",
+          value: auction,
+        })
+      );
     });
     socketObject.on(`${uuid}-win`, (winner) => {
-      dispatch(addNotification({
-        type: 'win',
-        value: winner
-      }))
+      dispatch(
+        addNotification({
+          type: "win",
+          value: winner,
+        })
+      );
     });
-    setAuctionNotification(streamNotification?.auction)
-  }, [streamNotification])
+  };
+
+  useEffect(() => {
+    setAuctionNotification(streamNotification?.auction);
+  }, [streamNotification]);
+
   //Method to show and hide left div
   const handleLeftDiv = (toggle) => {
     setLeftDivOpen(toggle);
@@ -69,19 +78,19 @@ function Index() {
       {streamingDetails?.uuid ? (
         <>
           <div className="streaming-page flex space-between">
-              <LeftDiv
-                auctionNotification={auctionNotification}
-                open={open}
-                productDetail={setProductDetail}
-                openPayment={setOpenPayment}
-                setOpen={setOpen}
-                addShippInfo={addShippInfo}
-                addPayInfo={addPayInfo}
-                setCustomerId={setCustomerId}
-                streamingDetails={streamingDetails}
-                handleLeftDiv={handleLeftDiv}
-                isLeftDivOpen={isLeftDivOpen}
-              />
+            <LeftDiv
+              auctionNotification={auctionNotification}
+              open={open}
+              productDetail={setProductDetail}
+              openPayment={setOpenPayment}
+              setOpen={setOpen}
+              addShippInfo={addShippInfo}
+              addPayInfo={addPayInfo}
+              setCustomerId={setCustomerId}
+              streamingDetails={streamingDetails}
+              handleLeftDiv={handleLeftDiv}
+              isLeftDivOpen={isLeftDivOpen}
+            />
             <CenterDiv
               open={open}
               productDetail={productDetail}

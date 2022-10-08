@@ -47,7 +47,7 @@ export const addShippingData =  (payLoad, router) => {
     const result = await shippingDetails(payLoad)
     if(result) {
       dispatch(addShippingDetails(payLoad))
-      router.push("/become-seller/ApplicationSubmitted", undefined, {
+      router.push("/become-seller/submitted", undefined, {
         shallow: true,
       })
     }
