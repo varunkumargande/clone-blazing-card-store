@@ -97,8 +97,12 @@ function StreamingBase({
     }
   }, [bidNotification, auctionNotification, auctionDetails]);
 
+  // const getTime =() => {
+  //   return bidNotification?.endTime ? bidNotification?.endTime : ( auctionNotification?.auction?.endTime ? auctionNotification?.auction?.endTime : (auctionDetails?.latestBidding?.bidEndTime ? auctionDetails?.latestBidding?.bidEndTime : (auctionDetails?.latestAuction?.endTime ? auctionDetails?.latestAuction?.endTime : null) ) )
+  // }
+
   const getTime =() => {
-    return bidNotification?.endTime ? bidNotification?.endTime : ( auctionNotification?.auction?.endTime ? auctionNotification?.auction?.endTime : (auctionDetails?.latestBidding?.bidEndTime ? auctionDetails?.latestBidding?.bidEndTime : (auctionDetails?.latestAuction?.endTime ? auctionDetails?.latestAuction?.endTime : null) ) )
+    return bidNotification?.endTime ? bidNotification?.endTime : ( auctionNotification?.auction?.endTime ? auctionNotification?.auction?.endTime : (auctionDetails?.latestAuction?.endTime ? auctionDetails?.latestAuction?.endTime : null)  )
   }
 
   const getAuctionId = () => {
