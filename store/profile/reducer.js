@@ -5,7 +5,6 @@ export const initState = {
 };
 
 function reducer(state = initState, action) {
-    console.log(action)
   switch (action.type) {
     case actionTypes.GET_PROFILE_REQUEST:
       return {

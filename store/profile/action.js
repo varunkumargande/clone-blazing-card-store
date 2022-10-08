@@ -3,7 +3,6 @@ export const actionTypes = {
 };
 
 export function getProfile(payload) {
-    console.log(payload)
     return { type: actionTypes.GET_PROFILE_REQUEST, payload: payload };
   }
 
