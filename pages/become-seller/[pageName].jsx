@@ -49,9 +49,10 @@ export default function Steps() {
 
   return (
     <>
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      {windowWidth <= 1024 ? "" : <HeaderDefault />}
       <section className="steps-wrapper flex">
         <div className="step-left">
+          {windowWidth <= 1024 ? <div className="header-title">Become a Seller</div> : ""}
           <LeftPannel />
         </div>
         <div className="step-right">

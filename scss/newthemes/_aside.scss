@@ -234,14 +234,10 @@
             }
         }
         .overflow-none{
-            max-width: calc(100% - 326px);
+            width: calc(100% - 326px);
             .card-wrap {
                 padding: 0;
                 flex-wrap: wrap;
-                margin:0 -14px;
-                .card-list{ 
-                    flex:0 0 calc(100% / 4);
-                }
             }
         }
     }

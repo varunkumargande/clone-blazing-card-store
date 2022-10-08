@@ -89,7 +89,7 @@ function Login(props) {
         render={(renderProps) => (
           <button className="google-btn mb42" onClick={renderProps.onClick}>
             <IconGoogle />
-            Sign in with Gooogle
+            Sign in with Google
           </button>
         )}
         buttonText="Login"
