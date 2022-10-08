@@ -14,6 +14,7 @@ import search from  "./search/reducer"
 import order from "./order/reducer"
 import becomeSeller from "./becomeSeller/reducer"
 import profile from "./profile/reducer"
+import likeDislikeStream from  "./likedStream/reducer"
 
 export default combineReducers({
     auth,
@@ -30,5 +31,6 @@ export default combineReducers({
     search,
     order,
     becomeSeller,
-    profile
+    profile,
+    likeDislikeStream
 });
