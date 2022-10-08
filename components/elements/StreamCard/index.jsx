@@ -8,10 +8,11 @@ import { stringFormatter } from "../../../utilities/utils";
 import Router from "next/router";
 import { apiUrl, imageUrl } from "../../../api/url";
 import { useEffect } from "react";
+import DefaultServices from "../../Services/DefaultServices";
 
 export default function StreamCard({ detail, isLive }) {
   const handleRouting = (id) => {
-    Router.push("/profile/" + id);
+    Router.push("/profile?userId=" + id);
   };
 
   const handleStreamingLink = (detail) => {
@@ -63,6 +64,7 @@ export default function StreamCard({ detail, isLive }) {
               currentTarget.src = "/static/images/card.png";
             }}
             src={getImagePath("profile")}
+            // src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
             onClick={() => handleStreamingLink(detail)}
           />
           <LiveStreamStatus
@@ -83,6 +85,7 @@ export default function StreamCard({ detail, isLive }) {
                 currentTarget.src = "/static/img/no-image.png";
               }}
               src={getImagePath("vendor")}
+              // src={DefaultServices.GetFullImageURL(detail, "vendor", "25", "25")}
               alt="Card"
             />
 

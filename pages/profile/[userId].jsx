@@ -41,114 +41,17 @@ export default function categoryStream() {
     }
 
     const getAllBuyerDetails = () => {
-        ProfileMethods.GetLikedStreams(userId)
-            .then((res) => {
-                if (res && res.status == 200) {
-                    if (res.data.data) {
-                        setLikedShows(res.data.data);
-                    } else {
-                        setLikedShows([]);
-                    }
-                }
-            })
-            .catch((e) => {
-                console.log(e.response);
-            })
-
-        ProfileMethods.GetUserFollowers(userId)
-            .then((res) => {
-                if (res && res.status == 200) {
-                    if (res.data.data) {
-                        setFollowers(res.data.data);
-                    } else {
-                        setFollowers([]);
-                    }
-                }
-            })
-            .catch((e) => {
-                console.log(e.response);
-            })
-        ProfileMethods.GetUserFollowings(userId)
-            .then((res) => {
-                if (res && res.status == 200) {
-                    if (res.data.data) {
-                        setFollowing(res.data.data);
-                    } else {
-                        setFollowing([]);
-                    }
-                }
-            })
-            .catch((e) => {
-                console.log(e.response);
-            })
+        ProfileMethods.GetLikedStreams(userId, setLikedShows);
+        ProfileMethods.GetUserFollowers(userId, setFollowers);
+        ProfileMethods.GetUserFollowings(userId, setFollowing);
     }
 
     const getAllVendorDetails = () => {
-        ProfileMethods.GetScheduledStreams(userId)
-            .then((res) => {
-                if (res && res.status == 200) {
-                    if (res.data.data) {
-                        setUpcomingShows(res.data.data);
-                    } else {
-                        setUpcomingShows([]);
-                    }
-                }
-            })
-            .catch((e) => {
-                console.log(e.response);
-            })
-        ProfileMethods.GetLikedStreams(userId)
-            .then((res) => {
-                if (res && res.status == 200) {
-                    if (res.data.data) {
-                        setLikedShows(res.data.data);
-                    } else {
-                        setLikedShows([]);
-                    }
-                }
-            })
-            .catch((e) => {
-                console.log(e.response);
-            })
-        ProfileMethods.GetPreviousStreams(userId)
-            .then((res) => {
-                if (res && res.status == 200) {
-                    if (res.data.data) {
-                        setPreviousShows(res.data.data);
-                    } else {
-                        setPreviousShows([]);
-                    }
-                }
-            })
-            .catch((e) => {
-                console.log(e.response);
-            })
-        ProfileMethods.GetUserFollowers(userId)
-            .then((res) => {
-                if (res && res.status == 200) {
-                    if (res.data.data) {
-                        setFollowers(res.data.data);
-                    } else {
-                        setFollowers([]);
-                    }
-                }
-            })
-            .catch((e) => {
-                console.log(e.response);
-            })
-        ProfileMethods.GetUserFollowings(userId)
-            .then((res) => {
-                if (res && res.status == 200) {
-                    if (res.data.data) {
-                        setFollowing(res.data.data);
-                    } else {
-                        setFollowing([]);
-                    }
-                }
-            })
-            .catch((e) => {
-                console.log(e.response);
-            })
+        ProfileMethods.GetScheduledStreams(userId, setUpcomingShows)
+        ProfileMethods.GetLikedStreams(userId, setLikedShows);
+        ProfileMethods.GetPreviousStreams(userId, setPreviousShows)
+        ProfileMethods.GetUserFollowers(userId, setFollowers);
+        ProfileMethods.GetUserFollowings(userId, setFollowing);
     }
 
     useEffect(() => {
@@ -160,15 +63,7 @@ export default function categoryStream() {
 
     useEffect(() => {
         if (userId) {
-            ProfileMethods.GetPublicProfile(userId)
-                .then((res) => {
-                    if (res.data && res.status == 200) {
-                        setProfile(res.data.data);
-                    }
-                })
-                .catch((e) => {
-                    console.log(e.response);
-                })
+            ProfileMethods.GetPublicProfile(userId, setProfile);
         }
     }, [userId]);
 

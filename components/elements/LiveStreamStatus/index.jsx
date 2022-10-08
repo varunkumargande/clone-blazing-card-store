@@ -5,17 +5,26 @@ import IconEye from "../../Icons/IconEye";
 import IconLike from "../../Icons/IconLike";
 import { streamLikeDislike } from "../../../api/stream/streams_api";
 import { useEffect } from "react";
+import {
+  likedRequest,
+  dislikedRequest,
+  removeLikedRequest
+} from "../../../store/likedStream/action";
+import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 
-export default function LiveStreamStatus({ isLive, uuid, detail }) {
+function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream }) {
   const [likedStream, setLikedStream] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!!detail?.islike) {
       setLikedStream((state) => [...state, detail.uuid]);
     }
-  }, [])
+  }, []);
 
   const handleLikeUnlike = async (uuid) => {
+    let arr = [];
     const userDetails = JSON.parse(sessionStorage.getItem("spurtUser"));
     if (uuid && !!userDetails) {
       const data = {
@@ -25,35 +34,31 @@ export default function LiveStreamStatus({ isLive, uuid, detail }) {
       const response = await streamLikeDislike(data);
       if (response.status) {
         if (response?.data?.is_like) {
-          setLikedStream((state) => [...state, uuid]);
+          dispatch(likedRequest(uuid));
         } else {
-          var index = likedStream.indexOf(uuid);
-          if (index > -1) {
-            likedStream.splice(index, 1);
-          }
-          getlikedStatus(uuid)
+          dispatch(removeLikedRequest(uuid));
+          dispatch(dislikedRequest(uuid));
         }
       }
     }
   };
+
   const getlikedStatus = (id) => {
-
-    console.log(likedStream.indexOf(id), id)
-
-    if(likedStream.indexOf(id) > -1) {
-      // console.log(likedStream.indexOf(id), id)
+    if (likeDislikeStream?.likedData?.length != 0) {
+      if (likeDislikeStream?.likedData?.indexOf(id) > -1) {
+        return "like flex flex-center justify-center liked";
+      }
+    } 
+    if(likeDislikeStream?.dislikedData?.length != 0){
+      if (likeDislikeStream?.dislikedData?.indexOf(id) > -1) {
+        return "like flex flex-center justify-center";
+      }
+    }
+    if (detail.islike == 1) {
       return "like flex flex-center justify-center liked";
     } else {
-      // console.log(likedStream.indexOf(id))
       return "like flex flex-center justify-center";
     }
-
-    // if (detail.islike == 1 || likedStream.indexOf(uuid) > -1) {
-    //   return "like flex flex-center justify-center liked";
-    // } else {
-    //   return "like flex flex-center justify-center";
-    // }
-    
   };
 
   return (
@@ -65,7 +70,7 @@ export default function LiveStreamStatus({ isLive, uuid, detail }) {
           </div>
           <button
             className={getlikedStatus(uuid)}
-            id={uuid+"-btn"}
+            id={uuid + "-btn"}
             onClick={() => handleLikeUnlike(uuid)}
           >
             <IconLike />
@@ -73,7 +78,7 @@ export default function LiveStreamStatus({ isLive, uuid, detail }) {
         </>
       ) : (
         <>
-          <div className="tme-wrap flex flex-center justify-center">
+          <div className="tme-wrap flex flex-center justify-center live">
             <span>Today {detail.scheduletime}</span>
           </div>
           <button
@@ -88,3 +93,9 @@ export default function LiveStreamStatus({ isLive, uuid, detail }) {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(LiveStreamStatus);

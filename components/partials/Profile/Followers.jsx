@@ -16,11 +16,11 @@ export default function Followers(props) {
                     name += " " + person.follower_last_name;
                 }
             } else {
-                if (person.firstName) {
-                    name += person.firstName;
+                if (person.following_first_name) {
+                    name += person.following_first_name;
                 }
-                if (person.lastName) {
-                    name += " " + person.lastName;
+                if (person.following_last_name) {
+                    name += " " + person.following_last_name;
                 }
             }
             return name;
@@ -33,7 +33,7 @@ export default function Followers(props) {
                 <div className="profile text-center">
                     <img src="/static/images/profile-large.svg" alt="Card" />
                     <div className="f-title">{renderProfileName()}</div>
-                    <div className="f-digi">@{person.follower_username}</div>
+                    <div className="f-digi">@{person && ( isFollower ? person.follower_username : person.following_username)}</div>
                     <div className="follow-button-wrapper">
                         <button className="primary-btn">Follow</button>
                     </div>
