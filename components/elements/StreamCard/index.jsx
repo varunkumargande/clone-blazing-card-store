@@ -63,8 +63,8 @@ export default function StreamCard({ detail, isLive }) {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src = "/static/images/card.png";
             }}
-            // src={getImagePath("profile")}
-            src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
+            src={getImagePath("profile")}
+            // src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
             onClick={() => handleStreamingLink(detail)}
           />
           <LiveStreamStatus
@@ -84,8 +84,8 @@ export default function StreamCard({ detail, isLive }) {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = "/static/img/no-image.png";
               }}
-              // src={getImagePath("vendor")}
-              src={DefaultServices.GetFullImageURL(detail, "vendor", "25", "25")}
+              src={getImagePath("vendor")}
+              // src={DefaultServices.GetFullImageURL(detail, "vendor", "25", "25")}
               alt="Card"
             />
 
