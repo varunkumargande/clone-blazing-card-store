@@ -225,6 +225,20 @@ h1{
   #upload{
     display: none;
   }
+  &.pass{
+    input[type="text"]{
+      ~ .show-hide{
+        &:after{
+          content: '';
+          width: 1px;
+          height: 22px;
+          background-color: $border-color;
+          transform: rotate(45deg);
+          @include pos(ab,1px,null,null,11px);
+        }
+      }
+    }
+  }
 }
 // common forget
 .forget{
@@ -339,8 +353,8 @@ label{
 .disable-btn{
   font-size: 16px;
   font-weight: 500;
-  color:$grey-color;
-  background-color: $border2-color;
+  color:$white-color;
+  background-color: rgba($blue-color,.4);
   width: 100%;
   height: 48px;
   border-radius: 8px;
@@ -350,8 +364,9 @@ label{
   border:none;
   cursor: not-allowed;
   transition: all .2s;
+  pointer-events: none;
   &:hover{
-    color: $grey-color;
+    color: $white-color;
   }
 }
 .border-btn{
@@ -522,7 +537,7 @@ label{
         height: 48px;
     }
     .show-hide{
-        top:44px;
+        top:42px;
     }
   }  
 }

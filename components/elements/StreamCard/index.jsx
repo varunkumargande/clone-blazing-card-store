@@ -57,15 +57,15 @@ export default function StreamCard({ detail, isLive }) {
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
-        <div className="image">
+        <div className="image" onClick={() => handleStreamingLink(detail)}>
           <img
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src = "/static/images/card.png";
             }}
-            src={getImagePath("profile")}
+            src={getImagePath("profile")}  
             // src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
-            onClick={() => handleStreamingLink(detail)}
+           
           />
           <LiveStreamStatus
             isLive={isLive}

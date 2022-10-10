@@ -21,11 +21,11 @@ function LeftDiv({
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
-    PURCHASED: "purchased",
     SOLD: "sold",
+    PURCHASED: "purchased",
   };
   
-  const TOGGLES = ["Auction", "Buy now", "Purchased", "Sold"];
+  const TOGGLES = ["Auction", "Buy Now", "Sold", "Purchased"];
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
   const router = useRouter();
   const streamUuid = router.query["uuid"];

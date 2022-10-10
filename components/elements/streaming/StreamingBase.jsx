@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import IconSpeaker from "../../Icons/IconSpeaker";
 import IconShare from "../../Icons/IconShare";
 import IconLikeWhite from "../../Icons/IconLikeWhite";
-import IconDoller from "../../Icons/IconDoller";
+import IconAdd from "../../Icons/IconAdd";
 import IconEye from "../../Icons/IconEye";
 import IconShops from "../../Icons/IconShops";
 import LeftDiv from "./LeftDiv";
@@ -380,7 +380,7 @@ function StreamingBase({
               <IconLikeWhite />
             </button>
             <button className="flex flex-center justify-center br50">
-              <IconDoller />
+              <IconAdd />
             </button>
           </div>
           {winnerNotification ? (

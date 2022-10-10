@@ -252,6 +252,11 @@
         &.active{
             background-color: $green-color;
         }
+        &:hover{
+            .icon{
+                fill:$primary-btn-hover;
+            }
+        }
     }
     header{
         background: $white-color;

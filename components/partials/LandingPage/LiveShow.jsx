@@ -41,7 +41,7 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
             <div className="inner-container">
               <div className="title-wrap flex space-between flex-center">
                 <div className="flex flex-center">
-                  <h3 className="title">Live</h3>
+                  <h3 className="title">Live Shows</h3>
                 </div>
                 <div className="seeAll">
                   <a className="flex flex-center" onClick={() => handleSeeAll("Live")}>View All</a>
