@@ -12,7 +12,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { loginConstant } from "../../Constants/login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-
+import { useRouter } from "next/router";
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function Login(props) {
   const [googlePath, setgooglePath] = useState("");
   const [conpassShow, setConPassShow] = useState(false);
   const emailInputRef = React.useRef(null);
-
+  const router = useRouter();
   useEffect(() => {
     emailInputRef.current.focus();
   }, []);
@@ -83,9 +83,14 @@ function Login(props) {
       .required("Required"),
   });
 
+   //go back to previous page
+   const handleBackButton = () => {
+    router.back()
+   }
+
   return (
     <div className="login-wrapper">
-      <div className="back mb32"><IconBack /></div>
+      <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
       <h1 className="title mb32">Sign in to Blazing Cards</h1>
       <GoogleLogin
         clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import IconKey from "../../Icons/IconKey";
 import IconBack from "../../Icons/IconBack";
+import { useRouter } from "next/router";
 import { useState, useEffect } from 'react';
 import SendMail from "./SentMail";
 import { forgotApi } from '../../../api/auth/forgotPassword'
@@ -12,7 +13,7 @@ export default function ForgetPassword() {
     const [mail, setMail] = useState("")
     const [mailError, setMailError] = useState("")
     const [forgotSuccess, setForgotSuccess] = useState(false)
-
+    const router = useRouter();
     const handleSetEmail = (e) => {
         e.preventDefault()
         setMail(e.target.value)
@@ -26,12 +27,15 @@ export default function ForgetPassword() {
         }
     }
 
-    
+     //go back to previous page
+   const handleBackButton = () => {
+    router.back()
+   }
     return (
         <div className="login-wrapper">
             {forgotSuccess ? <SendMail mail={mail} /> : (
                 <>
-                    <div className="back mb32"><IconBack /></div>
+                    <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
                     <h1 className="title mb8">Forgot Password</h1>
                     <div className="infotext wd328 mb32">Enter your registered email id below. We will sent the link to reset your password</div>
                     <div className="input-control mb32">
