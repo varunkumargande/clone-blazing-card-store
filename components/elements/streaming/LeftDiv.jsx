@@ -98,11 +98,11 @@ function LeftDiv({
       dispatch(streamProducts(url));
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
-        console.log(err.response.status);
-        console.log(error.response.header);
+        
+        
+        
       } else {
-        console.log(`Error: ${error.message}`);
+        
       }
     }
   };

@@ -1,7 +1,7 @@
 import React from "react";
 import IconAddChat from "../../Icons/IconAddChat";
 export default function ProfilePannel({ contacts, changeCurrentChat, setIsOpen }) {
-  console.log(contacts);
+  
 
   return (
     <div className="profile-wrapper">

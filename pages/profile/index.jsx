@@ -55,9 +55,9 @@ export default function PublicProfile() {
     }
 
     useEffect(() => {
-        console.log(router.query);
+        
         if(router.query.userId) {
-            console.log("CHECKER!!")
+            
             setUserId(router.query.userId);
         }
     }, [router.query])
@@ -71,7 +71,7 @@ export default function PublicProfile() {
 
     useEffect(() => {
         if (userId) {
-            console.log("22")
+            
             ProfileMethods.GetPublicProfile(userId, setProfile);
         }
     }, [userId]);

@@ -25,6 +25,7 @@
         "es6-promise": "^4.2.8",
         "express": "^4.17.3",
         "formik": "^2.2.9",
+        "fs": "0.0.1-security",
         "gapi-script": "^1.2.0",
         "history": "^4.10.1",
         "jquery": "^3.6.1",

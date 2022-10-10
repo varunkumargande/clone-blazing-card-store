@@ -5,7 +5,8 @@ import IconGoogle from "../Icons/IconGoogle";
 
 export default function DynamicModal(props) {
     const {
-        title
+        title,
+        setShowModal
     } = props;
     return (
         <div className="modalOverlay flex justify-center flex-center">
@@ -17,6 +18,7 @@ export default function DynamicModal(props) {
                         className="close"
                         data-dismiss="modal"
                         aria-label="Close"
+                        onClick={() => setShowModal(false)}
                     >
                         <span aria-hidden="true">
                             <IconClose />

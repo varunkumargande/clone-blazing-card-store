@@ -611,7 +611,7 @@ const[buttondisable,setbuttondisable]=useState(false)
         setCouponApplied(false)
         setDiscountedPrice("")
         setCouponInput("")
-        console.log(product,'reeew');
+        
         if(product.maxQuantityAllowedCart===product.quantity){
             return
         }

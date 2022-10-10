@@ -47,7 +47,7 @@ export default function BasicDetails() {
       cb(reader.result);
     };
     reader.onerror = function (error) {
-      console.log("Error: ", error);
+      
     };
   };
 

@@ -6,7 +6,7 @@ let GetPublicProfile = async (userId, callback) => {
         functionCallbackSetter(res, callback);
     })
     .catch((e) => {
-        console.log(e.response);
+        
     })
 }
 
@@ -16,7 +16,7 @@ let GetScheduledStreams = async (userId, callback) => {
         functionCallbackSetter(res, callback);
     })
     .catch((e) => {
-        console.log(e.response);
+        
     })
 }
 
@@ -26,7 +26,7 @@ let GetPreviousStreams = async (userId, callback) => {
         functionCallbackSetter(res, callback);
     })
     .catch((e) => {
-        console.log(e.response);
+        
     })
 }
 
@@ -36,7 +36,7 @@ let GetLikedStreams = (userId, callback) => {
         functionCallbackSetter(res, callback);
     })
     .catch((e) => {
-        console.log(e.response);
+        
     })
 }
 
@@ -46,7 +46,7 @@ let GetUserFollowers = async (userId, callback) => {
         functionCallbackSetter(res, callback);
     })
     .catch((e) => {
-        console.log(e.response);
+        
     })
 }
 
@@ -56,7 +56,7 @@ let GetUserFollowings = async (userId, callback) => {
         functionCallbackSetter(res, callback);
     })
     .catch((e) => {
-        console.log(e.response);
+        
     })
 }
 

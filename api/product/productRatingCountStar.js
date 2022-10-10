@@ -7,7 +7,7 @@ export async function productRatingCountStarApi(productId,setstarcoutid,dispatch
     // })
     // .then(json => {
     //     if(json.data){
-    //         console.log(json.data,"balach3488")    
+    //         
     //         setstarcoutid(json.data)
 
     //     }

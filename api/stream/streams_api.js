@@ -49,7 +49,7 @@ import APIServices from "../../services"
     } catch (error) {
       if (error.response) {
       } else {
-        console.log(`Error: ${error.message}`);
+        
       }
     }
   };
@@ -69,7 +69,7 @@ import APIServices from "../../services"
     } catch (error) {
       if (error.response) {
       } else {
-        console.log(`Error: ${error.message}`);
+        
       }
     }
   };
@@ -90,7 +90,7 @@ import APIServices from "../../services"
     } catch (error) {
       if (error.response) {
       } else {
-        console.log(`Error: ${error.message}`);
+        
       }
     }
   };

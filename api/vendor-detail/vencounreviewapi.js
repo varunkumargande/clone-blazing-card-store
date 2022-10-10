@@ -9,7 +9,7 @@ export async function vendorprodus(vendorId,setcount) {
     //         if(json.data){
 
     //             setcount(json.data)
-    //             console.log(json.data,"setcount")
+    //             
     //             // setVendorLoading(false)
     //         } 
     //     })

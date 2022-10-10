@@ -102,7 +102,7 @@ function landingPage({ auth }) {
   return (
     <div className="home-container">
       {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
-      {showModal && (<DynamicModal title="Join Blazing Cards" />)}
+      {showModal && (<DynamicModal title="Join Blazing Cards" setShowModal={setShowModal}  />)}
       {isLiveScheduleSeeAll ? (
         <>
           {categories != undefined ? (

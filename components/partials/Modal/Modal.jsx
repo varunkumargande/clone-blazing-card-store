@@ -226,8 +226,6 @@ export function PaymentInfoModal(props) {
         "XXXX XXXX XXXX " +
         cardDetail[0]?.card.last4;
 
-  console.log(paymentLoader, addressLoader);
-
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal medium">
@@ -474,7 +472,7 @@ export function AddAddressModal(props) {
     setAddressList,
   } = props;
 
-  console.log(addressList);
+  
 
   const shipSchema = Yup.object().shape({
     company: Yup.string().min(2, "Too Short!").required("Required"),
@@ -738,7 +736,7 @@ export function ChatUserModal({ setIsOpen }) {
         slang: e.target.value,
       });
       if (data.status == 200) {
-        // console.log(data.data.user)
+        // 
         setUserData(data.data.user);
         setUserDataLoader(false);
       }

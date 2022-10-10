@@ -68,9 +68,9 @@ function MyProfile(props) {
   };
 
   useEffect(() => {
-    console.log(router.query);
+    
     if (router.query.userId) {
-      console.log("CHECKER!!");
+      
       setUserId(router.query.userId);
     }
   }, [router.query]);
@@ -84,7 +84,7 @@ function MyProfile(props) {
 
   useEffect(() => {
     if (userId) {
-      console.log("22");
+      
       ProfileMethods.GetPublicProfile(userId, setProfile);
     }
   }, [userId]);

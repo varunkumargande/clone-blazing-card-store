@@ -9,14 +9,20 @@ import Router from "next/router";
 import { apiUrl, imageUrl } from "../../../api/url";
 import { useEffect } from "react";
 import DefaultServices from "../../Services/DefaultServices";
+import { SignUPGoogle } from "../../partials/Modal/Modal";
+import { connect } from "react-redux";
 
-export default function StreamCard({ detail, isLive, showLoginModal }) {
+function StreamCard({ detail, isLive, showLoginModal, auth }) {
   const handleRouting = (id) => {
     Router.push("/profile?userId=" + id);
   };
 
   const handleStreamingLink = (detail) => {
-    Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
+    if (auth?.isLoggedIn) {
+      Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
+    } else {
+      showLoginModal(true);
+    }
   };
 
   const getImagePath = (type) => {
@@ -57,15 +63,14 @@ export default function StreamCard({ detail, isLive, showLoginModal }) {
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
-        <div className="image" onClick={() => handleStreamingLink(detail)}>
+        <div className="image" >
           <img
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src = "/static/images/card.png";
             }}
-            src={getImagePath("profile")}  
-            // src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
-           
+            src={getImagePath("profile")}
+            onClick={() => handleStreamingLink(detail)}
           />
           <LiveStreamStatus
             isLive={isLive}
@@ -86,13 +91,14 @@ export default function StreamCard({ detail, isLive, showLoginModal }) {
                 currentTarget.src = "/static/img/no-image.png";
               }}
               src={getImagePath("vendor")}
-              // src={DefaultServices.GetFullImageURL(detail, "vendor", "25", "25")}
               alt="Card"
             />
 
             {stringFormatter(detail?.title)?.substring(0, 20) + "..."}
           </h3>
-          <div className="disc">{detail?.description?.substring(0, 50) + "..."}</div>
+          <div className="disc">
+            {detail?.description?.substring(0, 50) + "..."}
+          </div>
           <button className="cate-btn">
             {stringFormatter(detail?.category_name)}
           </button>
@@ -101,3 +107,9 @@ export default function StreamCard({ detail, isLive, showLoginModal }) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(StreamCard);

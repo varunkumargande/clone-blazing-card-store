@@ -52,7 +52,7 @@ function InformationDefault({
 
   const availableProductStatus = useSelector((s) => s.product.hidefunavailable);
   const quantity = useSelector((s) => s.product.qut);
-  console.log(quantity, "qutmin");
+  
 
   const [colorTheme, setColorTheme] = useState();
   const dispatch = useDispatch();
@@ -107,7 +107,7 @@ function InformationDefault({
     dispatch(getQuantymin(1));
     varproduct.processImage = product.productImage;
     if (product.minQuantityAllowedCart !== null && product.hasStock !== 0) {
-      console.log(varproduct, "varproduct.minQuantityAllowedCart");
+      
       if (
         varproduct.productvarientList &&
         varproduct.productvarientList.length !== 0
@@ -134,7 +134,7 @@ function InformationDefault({
   // useEffect(() => {
   //   if(varproduct.productvarientList &&
   //     varproduct.productvarientList.length !== 0){
-  //       console.log(product.skuName,'product.skuName')
+  //       
   //       setQuantity(qutmin)
   //       // product.skuName=varproduct.skuName
   //     }
@@ -421,9 +421,9 @@ function InformationDefault({
 
     // product.skuName=varproduct.skuName
     // product.skuName=varproduct.skuName
-    // console.log(optionName, "availValueavailValue");
-    // console.log(res,'availValueavailValue')
-    // console.log(product, quantity, availValue, "availValueavailValue");
+    // 
+    // 
+    // 
     cartAdd(product, quantity, availValue);
 
     dispatch(addItem(1));
@@ -512,7 +512,7 @@ function InformationDefault({
       if (product.hasTirePrice === 1) {
         product.productTirePrices.map((tieres, index) => {
           if (tieres.quantity <= quantity + 1) {
-            // console.log(tieres.quantity,'tieres');
+            // 
             setopentlet(tieres);
             product.price = priceHelpFunc(
               JSON.parse(tieres.price),
@@ -550,7 +550,7 @@ function InformationDefault({
         //  })
         product.productTirePrices.map((tieres, index) => {
           if (tieres.quantity <= quantity + 1) {
-            // console.log(tieres.quantity,'tieres');
+            // 
             setopentlet(tieres);
             product.price = priceHelpFunc(
               JSON.parse(tieres.price),
@@ -706,7 +706,6 @@ function InformationDefault({
       />
       {availableProductStatus === false ? (
         <>
-          {console.log(skuNumber, "23423423423423")}
           <p>
             SKU:
             {skuNumber && skuNumber !== undefined ? skuNumber : product.skuName}
@@ -769,14 +768,9 @@ function InformationDefault({
                 <>
                   {availableProductStatus === false ? (
                     <>
-                      {/* {console.log(Object.keys(varproduct.selectedVariant).length,'2323varproduct')} */}
                       {varproduct.productvarientList.map((produt) => (
                         <>
-                          {console.log(
-                            varproduct.variantName,
-                            "534",
-                            produt.varientName
-                          )}
+                         
                           {varproduct.variantName == produt.varientName ? (
                             <>
                               <h3>
@@ -928,7 +922,6 @@ function InformationDefault({
                 </>
               ) : (
                 <>
-                  {console.log(product.price, "4324ffsd")}
                   {product.hasTirePrice === 1 ? (
                     <>
                       {opentlet.quantity <= quantity ? (
@@ -1026,8 +1019,6 @@ function InformationDefault({
                     <button onClick={(e) => handleDecreaseItemQty(e, product)}>
                       -
                     </button>
-                    {console.log(quantity, "555555")}
-
                     <span>{quantity}</span>
                     <button onClick={(e) => handleIncreaseItemQty(e, product)}>
                       +

@@ -14,7 +14,7 @@ import { useTranslation } from '../../../i18n'
 
 function CustomAddAddress({type,addressId}){
 
-    console.log(addressId)
+    
 
     const [fname,setFname]=useState("")
     const [email,setEmail]=useState("")
@@ -46,7 +46,7 @@ function CustomAddAddress({type,addressId}){
     const { t } = useTranslation('common');
     const editAddress =useSelector(s=>s.setting).editDetail;
 
-    console.log(editAddress)
+    
 
 
     const apiCallFunc=()=>{
