@@ -100,8 +100,19 @@
             padding: 0 3px 0 2px;
         }
     }
+    .image,.title{
+        cursor: pointer;
+    }
     .image{
         position: relative;
+        &:after{
+            content: '';
+            width: 100%;
+            height: 46%;
+            @include pos(ab,0,null,null,0,0);
+            background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+            border-radius: 8px 8px 0px 0px;
+        }
         > img{
             width: 100%;
             border-radius: 8px;
@@ -112,6 +123,7 @@
             position: absolute;
             top:4px;
             left: 4px;
+            z-index: 1;
         }
         .like{
             position: absolute;
@@ -122,15 +134,22 @@
             width:28px;
             height: 28px;
             padding: 0;
+            z-index: 1;
+            padding: 1px 0 0 1px;
             svg,img,span{
-                width:17px;
+                width:16px;
+            }
+            span{
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             &:hover,&.liked{
                 img{
                     opacity: 0;
                 }
                 span{ 
-                    background:url('/static/images/liked.png') no-repeat center 6px;
+                    background:url('/static/images/liked.png') no-repeat center center;
                     background-size: 100%;
                 }
             }

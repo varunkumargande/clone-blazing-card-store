@@ -62,8 +62,8 @@ export default function SentMail() {
                   className="reset flex space-between"
                   onSubmit={handleSubmit}
                 >
-                  <div className="input-control">
-                    <label>Password</label>
+                  <div className="input-control pass">
+                    <label>Password*</label>
                     <input
                       type={passShow ? "text" : "password"}
                       placeholder="Enter here"
@@ -90,8 +90,8 @@ export default function SentMail() {
                     )}
                     <div className="errorText">{errors.oldPass}</div>
                   </div>
-                  <div className="input-control">
-                    <label>Conform Password</label>
+                  <div className="input-control pass">
+                    <label>Confirm Password*</label>
                     <input
                       type={conpassShow ? "text" : "password"}
                       placeholder="Enter here"
@@ -127,6 +127,7 @@ export default function SentMail() {
               </>
             )}
           </Formik>
+          <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
         </>
       );
     } else {
@@ -136,15 +137,14 @@ export default function SentMail() {
 
   return (
     <div className="login-wrapper">
-      {/* <div className="back mb32"><IconBack /></div> */}
-      <div className="iconkey mb32">
-        <IconKey />
-      </div>
+      <div className="back mb32"><IconBack /></div>
+      
       <h1 className="title mb8">Set New Password</h1>
       <div className="infotext mb32">
         Your new password must be different to previously used passwords.
       </div>
       {handleResetPassword()}
+      <div className="copyright">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
     </div>
   );
 }

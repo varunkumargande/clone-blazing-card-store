@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
+import IconBack from "../../Icons/IconBack";
 import {
   EmailValidator,
   upperPresent,
@@ -149,6 +150,7 @@ function Signup(auth) {
 
   return (
     <div className="login-wrapper">
+      <div className="back mb32"><IconBack /></div>
       <h1 className="title mb32">Sign up to Blazing Cards</h1>
 
       <GoogleLogin
@@ -156,7 +158,7 @@ function Signup(auth) {
         render={(renderProps) => (
           <button className="google-btn mb42" onClick={renderProps.onClick}>
             <IconGoogle />
-            Sign up with Google
+            Continue with Google
           </button>
         )}
         buttonText="Login"
@@ -209,7 +211,7 @@ function Signup(auth) {
           <>
             <form className="signup flex space-between" onSubmit={handleSubmit}>
               <div className="input-control wd50">
-                <label>First Name</label>
+                <label>First Name*</label>
                 <input
                   type="text"
                   name="firstname"
@@ -222,7 +224,7 @@ function Signup(auth) {
                 <div className="errorText">{errors.firstname && touched.firstname ? errors.firstname : null}</div>
               </div>
               <div className="input-control wd50">
-                <label>Last Name</label>
+                <label>Last Name*</label>
                 <input
                   type="text"
                   name="lastname"
@@ -233,7 +235,7 @@ function Signup(auth) {
                 <div className="errorText">{errors.lastname && touched.lastname ? errors.lastname : null}</div>
               </div>
               <div className="input-control">
-                <label>Email Address</label>
+                <label>Email Address*</label>
                 <input
                   type="email"
                   name="email"
@@ -243,9 +245,24 @@ function Signup(auth) {
                 />
                 <div className="errorText">{errors.email && touched.email ? errors.email : null}</div>
               </div>
-
               <div className="input-control">
-                <label>Contact Number</label>
+                <label>Username*</label>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder={"username"}
+                  value={values.username}
+                  onChange={handleChange}
+                  ref={usernameInput}
+                  onBlur={handleOnBlur}
+                />
+                <div className="errorText">{errors.username && touched.username ? errors.username : null}</div>
+                {usernameAvailable === false && usernameAvailable !== null ? (
+                  <div className="errorText">Username already taken</div>
+                ) : null}
+              </div>
+              <div className="input-control">
+                <label>Contact Number*</label>
                 <input
                   name="number"
                   placeholder={"Contact Number"}
@@ -256,8 +273,8 @@ function Signup(auth) {
                 <div className="errorText">{errors.number && touched.number ? errors.number : null}</div>
               </div>
 
-              <div className="input-control wd50">
-                <label>Password</label>
+              <div className="input-control wd50 pass">
+                <label>Password*</label>
                 <input
                   name="password"
                   placeholder={"Password"}
@@ -286,8 +303,8 @@ function Signup(auth) {
                 <div className="errorText">{errors.password && touched.password ? errors.password : null}</div>
               </div>
 
-              <div className="input-control wd50">
-                <label>Confirm Password</label>
+              <div className="input-control wd50 pass">
+                <label>Confirm Password*</label>
                 <input
                   name="cpass"
                   placeholder={"Confirm Password"}
@@ -317,28 +334,13 @@ function Signup(auth) {
                 <div className="errorText">{errors.cpass && touched.cpass ? errors.cpass : null}</div>
               </div>
 
-              <div className="input-control">
-                <label>Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  placeholder={"username"}
-                  value={values.username}
-                  onChange={handleChange}
-                  ref={usernameInput}
-                  onBlur={handleOnBlur}
-                />
-                <div className="errorText">{errors.username && touched.username ? errors.username : null}</div>
-                {usernameAvailable === false && usernameAvailable !== null ? (
-                  <div className="errorText">Username already taken</div>
-                ) : null}
-              </div>
+              
 
               <div className="checkbox-wrap mb32">
                 <label className="checkbox">
                   <input type="checkbox" onClick={handlePolicyCheck} />
                   <span class="checkmark"></span>
-                  I’ve read and agree with Terms of Service & Privacy Policy
+                  I’ve read and agree with <Link href="/privacy-policy"><a>Terms of Service</a></Link> & <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
                 </label>
               </div>
 
@@ -361,6 +363,7 @@ function Signup(auth) {
           </>
         )}
       </Formik>
+      <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
     </div>
   );
 }

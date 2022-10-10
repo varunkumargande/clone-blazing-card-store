@@ -35,7 +35,7 @@ export default function ForgetPassword() {
                     <h1 className="title mb8">Forgot Password</h1>
                     <div className="infotext wd328 mb32">Enter your registered email id below. We will sent the link to reset your password</div>
                     <div className="input-control mb32">
-                        <label>Email Address</label>
+                        <label>Email Address*</label>
                         <input type="email" value={mail} name="email" placeholder="Email address" onChange={e => handleSetEmail(e)} />
                         <div className="errorText">{mail == "" ? <span>{mailError}</span> : ""}</div>
                     </div>
@@ -47,6 +47,7 @@ export default function ForgetPassword() {
                     </div>
                 </>
             )}
+            <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
         </div>
     );
 }
