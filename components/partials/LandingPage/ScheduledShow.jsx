@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { streamDetailApi } from "../../../api/stream/streamDetail";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";
 import StreamCard from "../../elements/StreamCard";
-export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, setIsLiveScheduleSeeAll, activeCategoryName }) {
+export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, setIsLiveScheduleSeeAll, activeCategoryName,showLoginModal }) {
 
 
 
@@ -28,7 +28,7 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
     const getStreamCards = () => {
         return streamDetail?.scheduled?.map((detail) => {
             return (
-                <StreamCard isLive={false} detail={detail} />
+                <StreamCard isLive={false} detail={detail} showLoginModal={showLoginModal} />
             );
         });
     };

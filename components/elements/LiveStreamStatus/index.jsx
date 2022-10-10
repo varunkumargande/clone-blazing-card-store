@@ -13,7 +13,7 @@ import {
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 
-function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream }) {
+function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginModal }) {
   const [likedStream, setLikedStream] = useState([]);
   const dispatch = useDispatch();
 
@@ -39,6 +39,10 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream }) {
           dispatch(removeLikedRequest(uuid));
           dispatch(dislikedRequest(uuid));
         }
+      }
+    } else {
+      if(showLoginModal) {
+        showLoginModal(true);
       }
     }
   };

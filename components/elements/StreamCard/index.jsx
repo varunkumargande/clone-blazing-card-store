@@ -10,7 +10,7 @@ import { apiUrl, imageUrl } from "../../../api/url";
 import { useEffect } from "react";
 import DefaultServices from "../../Services/DefaultServices";
 
-export default function StreamCard({ detail, isLive }) {
+export default function StreamCard({ detail, isLive, showLoginModal }) {
   const handleRouting = (id) => {
     Router.push("/profile?userId=" + id);
   };
@@ -71,6 +71,7 @@ export default function StreamCard({ detail, isLive }) {
             isLive={isLive}
             uuid={detail.uuid}
             detail={detail}
+            showLoginModal={showLoginModal}
           />
         </div>
         {/* </Link> */}
