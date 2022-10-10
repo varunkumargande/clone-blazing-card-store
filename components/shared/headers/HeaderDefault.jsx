@@ -42,8 +42,7 @@ function HeaderDefault({ auth }, props) {
     }
   };
 
-
-  const stage = useSelector((state) => state?.becomeSeller?.currentState)
+  const stage = useSelector((state) => state?.becomeSeller?.currentState);
 
   const handleOnClick = () => {
     setActive(!active);
@@ -93,7 +92,7 @@ function HeaderDefault({ auth }, props) {
     sessionStorage.clear();
     dispatch(logOut());
     Router.push("/");
-    window.location.href="/";
+    window.location.href = "/";
     modalSuccess("success", "successfully logged out");
   };
 
@@ -104,6 +103,10 @@ function HeaderDefault({ auth }, props) {
   const handleSearchValue = (e) => {
     dispatch(searchRequest(e.target.value));
   };
+
+  const handeGoToChat = () => {
+    Router.push("/chat")
+  }
 
   return (
     <header>
@@ -160,21 +163,26 @@ function HeaderDefault({ auth }, props) {
             {auth.isLoggedIn ? (
               <>
                 {/* <MessageButton name={"Message"} /> */}
-                { !stepState.includes(pageName) ? <Link href="/become-seller/guidelines">
-                  <a className="border-btn flex flex-center justify-center become">
-                    Become a Seller
-                  </a>
-                </Link> : null}
-                <button className="message flex flex-center justify-center">
-                  <IconMessage />
+                {!stepState.includes(pageName) ? (
+                  <Link href="/become-seller/guidelines">
+                    <a className="border-btn flex flex-center justify-center become">
+                      Become a Seller
+                    </a>
+                  </Link>
+                ) : null}
+                <button className="message flex flex-center justify-center" onClick={() => handeGoToChat()}>
+                  
+                    <IconMessage />
+                  
                 </button>
                 <button className="Notification flex flex-center justify-center">
                   <IconNotification />
                 </button>
                 <button className="profile">
                   <span onClick={handleOnClick}>
-
-                    <span className="profileImage"><img src={aimg} alt="Profile" /></span>
+                    <span className="profileImage">
+                      <img src={aimg} alt="Profile" />
+                    </span>
                     {/* {userData != null ? (
                       <>
                         {userData.avatar != null && userData.avatarPath != null ? (
@@ -241,11 +249,13 @@ function HeaderDefault({ auth }, props) {
             ) : (
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
-                { !stepState.includes(pageName) ? <Link href="/account/login">
-                  <a className="flex flex-center justify-center become Link">
-                    Become a Seller
-                  </a>
-                </Link> : null}
+                {!stepState.includes(pageName) ? (
+                  <Link href="/account/login">
+                    <a className="flex flex-center justify-center become Link">
+                      Become a Seller
+                    </a>
+                  </Link>
+                ) : null}
                 <Link href="account/login">
                   <a className="primary-btn flex flex-center justify-center ml24">
                     Sign In
