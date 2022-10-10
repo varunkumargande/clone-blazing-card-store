@@ -25,6 +25,7 @@ function StreamingBase({
   addressList,
   openPayment,
   handleLeftDiv,
+  setIsBuyNowPaymentModal
 }) {
   const stream = useSelector((state) => state.stream);
   const streamNotification = useSelector(
@@ -141,9 +142,7 @@ function StreamingBase({
    * Method will Handle bid confirmation event
    */
   const handleConfirmBid = async () => {
-    if (cardDetail.length == 0 && addressList.length == 0) {
-      openPayment(true);
-    } else {
+    if (!!cardDetail && !!addressList) {
       setOpen(false);
       increaseBidAmount();
       createBid(
@@ -151,6 +150,8 @@ function StreamingBase({
         Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
         amountToBid
       );
+    } else {
+      openPayment(true);
     }
   };
 
@@ -168,7 +169,12 @@ function StreamingBase({
    * Opens custom bid modal
    */
   const handleCustomBid = () => {
-    setOpen(true);
+    if (!!cardDetail && !!addressList) {
+      setOpen(true);
+    }
+    else{
+      openPayment(true);
+    }
   };
 
   /**
@@ -237,6 +243,7 @@ function StreamingBase({
    * Method to open shipping modal
    */
   const handleShipModal = () => {
+    setIsBuyNowPaymentModal(false)
     setOpenShipPayDetails(true);
   };
 
@@ -310,6 +317,10 @@ function StreamingBase({
     handleLeftDiv(true);
   };
 
+  const handleDollarClick = () => {
+    setIsBuyNowPaymentModal(false)
+    openPayment(true);
+  };
   return (
     <>
       <div className="stream-wrapper">
@@ -379,7 +390,7 @@ function StreamingBase({
             <button onClick={handleLikeUnlike} className={getlikeClass()}>
               <IconLikeWhite />
             </button>
-            <button className="flex flex-center justify-center br50">
+            <button className="flex flex-center justify-center br50" onClick={handleDollarClick}>
               <IconAdd />
             </button>
           </div>
