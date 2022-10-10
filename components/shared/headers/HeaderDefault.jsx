@@ -55,8 +55,14 @@ function HeaderDefault({ auth }, props) {
   }, []);
 
   useEffect(() => {
-    let userData = JSON.parse(sessionStorage.getItem("spurtUser"));
-    setProfile(userData);
+    let profileInterval = setInterval(() => {
+      let profileData = sessionStorage.getItem("spurtUser");
+      if(profileData) {
+        profileData = JSON.parse(profileData);
+        setProfile(profileData);
+        clearInterval(profileInterval);
+      }
+    }, 10)
   }, []);
 
   useEffect(() => {
