@@ -73,7 +73,7 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream }) {
             id={uuid + "-btn"}
             onClick={() => handleLikeUnlike(uuid)}
           >
-            <IconLike />
+            <span><IconLike /></span>
           </button>
         </>
       ) : (
@@ -86,7 +86,7 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream }) {
             // className="like flex flex-center justify-center"
             onClick={() => handleLikeUnlike(uuid)}
           >
-            <IconLike />
+            <span><IconLike /></span>
           </button>
         </>
       )}

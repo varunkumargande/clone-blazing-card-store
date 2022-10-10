@@ -85,7 +85,7 @@ function Category({
                     }
                     onClick={() => handleLikedShow()}
                   >
-                    <IconLike />
+                    <span><IconLike /></span>
                   </button>
                 </div>
               </>
@@ -154,7 +154,7 @@ function Category({
                     }
                     onClick={() => handleLikedShow()}
                   >
-                    <IconLike />
+                    <span><IconLike /></span>
                   </button>
                 </div>
               </>

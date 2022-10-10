@@ -121,16 +121,17 @@
             border-radius: 50%;
             width:28px;
             height: 28px;
-            svg{
+            padding: 0;
+            svg,img,span{
                 width:17px;
             }
-            .icon{
-                transition: all .25s;
-            }
             &:hover,&.liked{
-                .icon{
-                    fill: $red-color;
-                    stroke: $red-color;
+                img{
+                    opacity: 0;
+                }
+                span{ 
+                    background:url('/static/images/liked.png') no-repeat center 6px;
+                    background-size: 100%;
                 }
             }
         }
@@ -167,6 +168,67 @@
             border-radius: 13px;
             padding: 0 7px;
             color: $blue-color;
+        }
+    }
+
+    &.Loader{
+        padding-bottom: 8px !important;
+        @keyframes loader {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+        .image{
+            background-color: $loader-bg;
+            border-radius: 8px;
+            min-height: 272px;
+            @include pos(re);
+            @include animatedBg;
+        }
+        .LoaderImg{
+            @include pos(re);
+            z-index: 5;
+            animation: loader 1.25s infinite;
+            span{
+                @include pos(ab,3px,null,null,9px);
+            }
+        }
+        .loading{
+            font-size: 14px;
+            line-height: 18px;
+            margin-top: 10px;
+            color:$blue-color;
+        }
+        .title{
+            width: 100%;
+            max-width: 104px;
+            border-radius: 15px;
+            background-color: $loader-bg;
+            @include pos(re);
+            @include animatedBg;
+            height: 11px;
+            margin-bottom: 10px;
+        }
+        .disc{
+            width: 100%;
+            border-radius: 15px;
+            background-color: $loader-bg;
+            @include pos(re);
+            @include animatedBg;
+            margin-bottom: 5px; 
+            height: 11px;
+        }
+        .cate{
+            width: 100%;
+            border-radius: 15px;
+            background-color: $loader-bg;
+            @include pos(re);
+            @include animatedBg;
+            margin-top: 10px; 
+            height: 11px;
         }
     }
 }
@@ -323,6 +385,11 @@
             }
             .title,.disc{
                 color:#fff;
+            }
+        }
+        .Loader{
+            .text{
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0) 10%, #fff 100%);
             }
         }
     }
