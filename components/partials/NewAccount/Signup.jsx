@@ -21,6 +21,7 @@ import { registerConstant } from "../../Constants/register";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
+import { useRouter } from "next/router";
 
 // This code is required in future development for Google Signin
 // gapi.load("client:auth2", () => {
@@ -54,6 +55,7 @@ function Signup(auth) {
   const [policyCheck, setPolicyCheck] = useState(false);
 
   const FullNameInputRef = React.useRef(null);
+  const router = useRouter();
   useEffect(() => {
     FullNameInputRef.current.focus();
   }, []);
@@ -148,9 +150,13 @@ function Signup(auth) {
   const submitBtnDisableState = (errors) =>
     Object.keys(errors).length > 0 || policyCheck === false ? true : false;
 
+  //go back to previous page
+  const handleBackButton = () => {
+    router.back()
+   }  
   return (
     <div className="login-wrapper">
-      <div className="back mb32"><IconBack /></div>
+      <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
       <h1 className="title mb32">Sign up to Blazing Cards</h1>
 
       <GoogleLogin

@@ -11,7 +11,7 @@ import {
   resetConfomPassApi,
 } from "../../../api/account/resetPass";
 import { handleClientScriptLoad } from "next/script";
-import Router from "next/router";
+import Router,{ useRouter } from "next/router";
 
 export default function SentMail() {
   var router = useRouter();
@@ -134,10 +134,14 @@ export default function SentMail() {
       return <>Loading ....</>;
     }
   };
+//go back to previous page
+const handleBackButton = () => {
+  router.back()
+ }  
 
   return (
     <div className="login-wrapper">
-      <div className="back mb32"><IconBack /></div>
+      <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
       
       <h1 className="title mb8">Set New Password</h1>
       <div className="infotext mb32">
