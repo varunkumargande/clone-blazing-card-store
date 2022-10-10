@@ -55,8 +55,14 @@ function HeaderDefault({ auth }, props) {
   }, []);
 
   useEffect(() => {
-    let userData = JSON.parse(sessionStorage.getItem("spurtUser"));
-    setProfile(userData);
+    let profileInterval = setInterval(() => {
+      let profileData = sessionStorage.getItem("spurtUser");
+      if(profileData) {
+        profileData = JSON.parse(profileData);
+        setProfile(profileData);
+        clearInterval(profileInterval);
+      }
+    }, 10)
   }, []);
 
   useEffect(() => {
@@ -70,6 +76,10 @@ function HeaderDefault({ auth }, props) {
       return (
         <>
           <img
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = "/static/images/profileImg.png";
+            }}
             src={
               imageUrl +
               "?path=" +
@@ -83,7 +93,10 @@ function HeaderDefault({ auth }, props) {
         </>
       );
     } else {
-      return <img src={"/static/img/no-image.svg"} alt="Profile" />;
+      return <img onError={({ currentTarget }) => {
+        currentTarget.onerror = null;
+        currentTarget.src = "/static/images/profileImg.png";
+      }} src={"/static/img/no-image-new.svg"} alt="Profile" />;
     }
   };
 
@@ -180,8 +193,9 @@ function HeaderDefault({ auth }, props) {
                 </button>
                 <button className="profile">
                   <span onClick={handleOnClick}>
+
                     <span className="profileImage">
-                      <img src={aimg} alt="Profile" />
+                      {handleProfileImage()}
                     </span>
                     {/* {userData != null ? (
                       <>

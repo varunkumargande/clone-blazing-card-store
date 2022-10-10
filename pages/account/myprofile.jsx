@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import PublicProfileConstants from "../../components/Constants/publicProfile";
 import Link from "next/link";
 import { imageUrl } from "../../api/url";
+import Followers from '../../components/partials/Profile/Followers';
 // ===================================================================
 
 function MyProfile(props) {
@@ -290,6 +291,9 @@ function MyProfile(props) {
       return (
         <>
           <img
+            style={{ borderRadius: "50%" }}
+            width="123"
+            height="123"
             src={
               imageUrl +
               "?path=" +

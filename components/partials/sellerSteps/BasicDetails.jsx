@@ -10,6 +10,7 @@ import { addBasicData } from "../../../store/becomeSeller/action";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import IconBack from '../../Icons/IconBack';
+import BackButton from "../../CommonComponents/BackButton";
 
 
 export default function BasicDetails() {
