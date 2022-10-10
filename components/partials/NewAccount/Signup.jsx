@@ -340,7 +340,7 @@ function Signup(auth) {
                 <label className="checkbox">
                   <input type="checkbox" onClick={handlePolicyCheck} />
                   <span class="checkmark"></span>
-                  I’ve read and agree with <Link href="/privacy-policy"><a>Terms of Service</a></Link> & <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
+                  I’ve read and agree with <Link href="/privacy-policy"><a>Terms of Service</a></Link> & <Link href="/terms-conditions"><a>Privacy Policy</a></Link>
                 </label>
               </div>
 
