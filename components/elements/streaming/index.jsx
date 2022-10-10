@@ -20,6 +20,7 @@ function Index() {
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
   const [auctionNotification, setAuctionNotification] = useState(null);
+  const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false)
   const stream = useSelector((state) => {
     return state?.stream;
   });
@@ -90,6 +91,7 @@ function Index() {
               streamingDetails={streamingDetails}
               handleLeftDiv={handleLeftDiv}
               isLeftDivOpen={isLeftDivOpen}
+              setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
             />
             <CenterDiv
               open={open}
@@ -103,6 +105,8 @@ function Index() {
               streamDetails={selectedStream}
               streamingDetails={streamingDetails}
               handleLeftDiv={handleLeftDiv}
+              setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
+              isBuyNowPaymentModal={isBuyNowPaymentModal}
             />
             <RightDiv
               streamingDetails={streamingDetails}
