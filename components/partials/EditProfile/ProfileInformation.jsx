@@ -93,8 +93,9 @@ export default function ProfileInformation() {
                   {newDp != "" ? (
                     <>
                       <img
-                        width={"200"}
-                        height={"200"}
+                        style={{ borderRadius: "50%" }}
+                        width={"172"}
+                        height={"172"}
                         src={newDp}
                         alt="Profile"
                       />
@@ -102,8 +103,9 @@ export default function ProfileInformation() {
                   ) : (
                     <>
                       <img
-                        width={"200"}
-                        height={"200"}
+                        style={{ borderRadius: "50%" }}
+                        width={"172"}
+                        height={"172"}
                         src={
                           profileData && profileData?.avatar != null
                             ? handleImage()

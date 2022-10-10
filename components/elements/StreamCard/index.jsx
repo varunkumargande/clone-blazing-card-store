@@ -10,7 +10,7 @@ import { apiUrl, imageUrl } from "../../../api/url";
 import { useEffect } from "react";
 import DefaultServices from "../../Services/DefaultServices";
 
-export default function StreamCard({ detail, isLive }) {
+export default function StreamCard({ detail, isLive, showLoginModal }) {
   const handleRouting = (id) => {
     Router.push("/profile?userId=" + id);
   };
@@ -57,20 +57,21 @@ export default function StreamCard({ detail, isLive }) {
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
-        <div className="image">
+        <div className="image" onClick={() => handleStreamingLink(detail)}>
           <img
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src = "/static/images/card.png";
             }}
-            src={getImagePath("profile")}
+            src={getImagePath("profile")}  
             // src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
-            onClick={() => handleStreamingLink(detail)}
+           
           />
           <LiveStreamStatus
             isLive={isLive}
             uuid={detail.uuid}
             detail={detail}
+            showLoginModal={showLoginModal}
           />
         </div>
         {/* </Link> */}

@@ -22,11 +22,11 @@ function LeftDiv({
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
-    PURCHASED: "purchased",
     SOLD: "sold",
+    PURCHASED: "purchased",
   };
   
-  const TOGGLES = ["Auction", "Buy now", "Purchased", "Sold"];
+  const TOGGLES = ["Auction", "Buy Now", "Sold", "Purchased"];
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
   const router = useRouter();
   const streamUuid = router.query["uuid"];
@@ -305,9 +305,8 @@ function LeftDiv({
           <div className="followrs-count">129K Followers</div>
         </div>
         <div className="btn-wrap">
-          <button onClick={handleFollowUnfollow} className="primary-btn">
-            {followed ? "Unfollow" : "Follow"}
-          </button>
+        {followed ? <button onClick={handleFollowUnfollow} className="following primary-btn">Following</button> : <button onClick={handleFollowUnfollow} className="primary-btn">Follow</button>}
+          
         </div>
       </div>
       {

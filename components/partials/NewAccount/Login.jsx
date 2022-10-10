@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
+import IconBack from "../../Icons/IconBack";
 import { EmailValidator } from "../../helper/emailValidator";
 import { UserLogin } from "../../../api";
 import { connect, useDispatch } from "react-redux";
@@ -84,13 +85,14 @@ function Login(props) {
 
   return (
     <div className="login-wrapper">
+      <div className="back mb32"><IconBack /></div>
       <h1 className="title mb32">Sign in to Blazing Cards</h1>
       <GoogleLogin
         clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
         render={(renderProps) => (
           <button className="google-btn mb42" onClick={renderProps.onClick}>
             <IconGoogle />
-            Sign in with Google
+            Continue with Google
           </button>
         )}
         buttonText="Login"
@@ -130,7 +132,7 @@ function Login(props) {
           <>
             <form className="login flex space-between" onSubmit={handleSubmit}>
               <div className="input-control">
-                <label>Email Address</label>
+                <label>Email Address or Username*</label>
                 <input
                   name="email"
                   placeholder={"Email"}
@@ -141,8 +143,8 @@ function Login(props) {
                 />
                 <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
               </div>
-              <div className="input-control">
-                <label>Password</label>
+              <div className="input-control pass">
+                <label>Password*</label>
                 <input
                   name="password"
                   placeholder={"Password"}
@@ -172,7 +174,7 @@ function Login(props) {
                 )}
                 <div className="flex justify-right mb16 forget mb32">
                   <Link href="/account/forgot-password">
-                    <a>Forget Password</a>
+                    <a>Forgot Password</a>
                   </Link>
                 </div>
               </div>
@@ -191,6 +193,7 @@ function Login(props) {
           </>
         )}
       </Formik>
+      <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
     </div>
   );
 }

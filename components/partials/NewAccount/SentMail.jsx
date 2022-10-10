@@ -36,6 +36,7 @@ export default function SendMail({mail}) {
                     © Blazing Cards. 2022, All Rights Reserved
                 </div>
             </div>
+            <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
         </div>
     );
 }
