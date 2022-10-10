@@ -303,9 +303,8 @@ function LeftDiv({
           <div className="followrs-count">129K Followers</div>
         </div>
         <div className="btn-wrap">
-          <button onClick={handleFollowUnfollow} className="primary-btn">
-            {followed ? "Unfollow" : "Follow"}
-          </button>
+        {followed ? <button onClick={handleFollowUnfollow} className="following primary-btn">Following</button> : <button onClick={handleFollowUnfollow} className="primary-btn">Follow</button>}
+          
         </div>
       </div>
       {

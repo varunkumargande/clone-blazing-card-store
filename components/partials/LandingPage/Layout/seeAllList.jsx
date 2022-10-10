@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { subcatstreamDetailApi } from "../../../../api/stream/subStreamDetail";
 
 
-export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, setSubCateId, liveScheduleCategoryName, activeCategory }) {
+export default function SeeAllList({ data, catId, seeAllHeading, subCateId, setSubCateId, liveScheduleCategoryName, activeCategory, showLoginModal }) {
     const [active, setActive] = useState(false);
     const wrapperRef = useRef(null);
     const handleOnClick = () => {
@@ -31,7 +31,7 @@ export default function     SeeAllList({ data, catId, seeAllHeading, subCateId, 
         if (seeAllHeading == "Live") {
             return streamDetail?.live?.map((detail) => {
                 return (
-                    <StreamCard detail={detail} isLive={true} />
+                    <StreamCard showLoginModal={showLoginModal} detail={detail} isLive={true} />
                 );
             });
         } else if (seeAllHeading == "Scheduled") {
