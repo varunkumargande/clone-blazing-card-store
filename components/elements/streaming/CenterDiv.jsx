@@ -21,6 +21,8 @@ function CenterDiv({
   openPayment,
   setOpen,
   handleLeftDiv,
+  setIsBuyNowPaymentModal,
+  isBuyNowPaymentModal
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
@@ -32,7 +34,7 @@ function CenterDiv({
 
   const [cardIndex, setCardIndex] = useState(null);
   const [cardDetail, setCardDetail] = useState([]);
-
+  
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
     setOpenOptions(true);
@@ -98,7 +100,7 @@ function CenterDiv({
       fetchShiipmentApi()
     }
   };
-
+  
   return (
     <div className="streaming-live disable">
       <StreamingBase
@@ -106,6 +108,8 @@ function CenterDiv({
         addressList={addressList}
         cardDetail={cardDetail}
         handleLeftDiv={handleLeftDiv}
+        setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
+        isBuyNowPaymentModal={isBuyNowPaymentModal}
       />
 
       {isPayment ? (
@@ -121,6 +125,7 @@ function CenterDiv({
             cardDetail={cardDetail}
             addressLoader={addressLoader}
             paymentLoader={paymentLoader}
+            isBuyNowPaymentModal={isBuyNowPaymentModal}
           />
         </>
       ) : (

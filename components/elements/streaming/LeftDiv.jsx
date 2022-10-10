@@ -16,7 +16,8 @@ function LeftDiv({
   streamingDetails,
   auctionNotification,
   handleLeftDiv,
-  isLeftDivOpen
+  isLeftDivOpen,
+  setIsBuyNowPaymentModal
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -152,6 +153,7 @@ function LeftDiv({
    */
   const handleBuyNow = (product) => {
     productDetail(product);
+    setIsBuyNowPaymentModal(true);
     openPayment(true);
   };
 
