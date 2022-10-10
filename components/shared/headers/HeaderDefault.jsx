@@ -23,6 +23,7 @@ import { searchRequest } from "../../../store/search/action";
 import { imageUrl } from "../../../api/url";
 import MessageButton from "../../elements/MessageButton";
 import { stepState } from "../../Constants/becomeSeller";
+import { chatLogin } from "../../../api";
 
 function HeaderDefault({ auth }, props) {
   const router = useRouter();
@@ -118,7 +119,7 @@ function HeaderDefault({ auth }, props) {
   };
 
   const handeGoToChat = () => {
-    Router.push("/chat")
+    chatLogin()
   }
 
   return (

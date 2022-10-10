@@ -37,7 +37,7 @@ export default function PaymentDetail() {
   const cardListApi = async () => {
     const result = await APIServices.getUser("customer-card-details/getCard");
     if (result.status == 200) {
-      console.log(result.data.data);
+      
       if (result.data.data != false) {
         setCardData(result.data.data[0]);
         setCardLoader(false);
@@ -111,7 +111,7 @@ export default function PaymentDetail() {
                 validationSchema={paySchema}
                 onSubmit={(values) => {
                   submitCardDetail(values);
-                  // console.log(values);
+                  // 
                 }}
               >
                 {({
@@ -236,7 +236,7 @@ export default function PaymentDetail() {
 
   return (
     <div className="profile-detail">
-      <h3>Shipping Information</h3>
+      <h3>Payment Details</h3>
       {handleCardDetail()}
     </div>
   );

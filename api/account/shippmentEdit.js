@@ -2,7 +2,7 @@ import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from '../../services'
 
 export async function editShipAddressApi(data, fetchShiipmentApi, setShippmentFormOpen) {
-    console.log(data)
+    
     
     const dataJson = JSON.stringify({
         address1: data.address1,
@@ -17,9 +17,9 @@ export async function editShipAddressApi(data, fetchShiipmentApi, setShippmentFo
         phoneNo: data.phoneNumber
     })
 
-    console.log("datatta", data)
+    
     const result = await APIServices.update('CustomerAddress/update-address', data.addressId, dataJson)
-    console.log("result",result)
+    
         if (result.data) {
             if (result.data.status === 1) {
                 modalSuccess('success', result.data.message)

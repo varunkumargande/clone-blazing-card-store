@@ -51,7 +51,7 @@ function StockCheckoutMain({cartItems,productDetail,amount,addressData}) {
     useEffect(()=>{
         if(sessionStorage.getItem("spurtUser")){
             let a=sessionStorage.getItem("spurtUser")
-            console.log(a,'3weeweq');
+            
             setFname(JSON.parse(sessionStorage.getItem("spurtUser")).firstName),
             setEmail(JSON.parse(sessionStorage.getItem("spurtUser")).email),
             setPhone(JSON.parse(sessionStorage.getItem("spurtUser")).mobileNumber)
@@ -72,7 +72,7 @@ function StockCheckoutMain({cartItems,productDetail,amount,addressData}) {
 
     const handleLoginSubmit = () => {
         setSubmit(true)
-        console.log(cartItems,'432242342xx');
+        
         if(validate()){
             
             backCheckOutApi(fname,lname,address,phone,city,postCode,email,[cartItems],shippingZone,address2)
@@ -147,8 +147,8 @@ function StockCheckoutMain({cartItems,productDetail,amount,addressData}) {
             
                 cartItems.quantityUpdated=cartItems.quantityUpdated+1
         //        const pri =cartItems.initialPrice* cartItems.quantityUpdated
-        // console.log(pri,'pri');
-        // console.log(cartItems,'cartItemwe23s');
+        // 
+        // 
         //        cartItems.price=
         //        formatCurrency(
         //             priceHelpFunc(
@@ -161,12 +161,12 @@ function StockCheckoutMain({cartItems,productDetail,amount,addressData}) {
             }
 
         }else{
-            console.log(cartItems,'cartItemwe23s');
+            
             setQuantity(cartItems.quantityUpdated+1)
         
             cartItems.quantityUpdated=cartItems.quantityUpdated+1
     //        const pri =cartItems.initialPrice* cartItems.quantityUpdated
-    // console.log(pri,'pri');
+    // 
     //        cartItems.price= formatCurrency(
     //             priceHelpFunc(
     //                 pri,
@@ -198,8 +198,8 @@ function StockCheckoutMain({cartItems,productDetail,amount,addressData}) {
         //             )
         //           ))
         //        const pri =cartItems.initialPrice* cartItems.quantityUpdated
-        //        console.log(cartItems.quantityUpdated,'cartItemwe23s');
-        // console.log(pri,'pri');
+        //        
+        // 
             
         //        cartItems.price=pri  
         //        Math.round( formatCurrency(
@@ -213,14 +213,14 @@ function StockCheckoutMain({cartItems,productDetail,amount,addressData}) {
             }
             
         }else{
-            console.log(cartItems,'cartItemwe23s');
+            
 
             if(cartItems.quantityUpdated>1){
                 setQuantity(cartItems.quantityUpdated-1)
         
                 cartItems.quantityUpdated=cartItems.quantityUpdated-1
         //        const pri =cartItems.initialPrice* quantity
-        // console.log(pri,'pri');
+        // 
             
         //        cartItems.price=  Math.round( formatCurrency(
         //             priceHelpFunc(
@@ -302,8 +302,6 @@ function StockCheckoutMain({cartItems,productDetail,amount,addressData}) {
                                     </div>
                                 </td>
                         
-                                {console.log(cartItems,'4455cartItems')}
-
                                 <td className="sc-rht-td-data" style={{color:"red"}}>{currency ? currency.symbol + " " : '$ '}{
                                  formatCurrency(
                                         priceHelpFunc(

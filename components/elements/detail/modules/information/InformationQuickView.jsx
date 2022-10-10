@@ -16,7 +16,7 @@ function InformationQuickView({ product,compareCheckFunction,handleAddItemToComp
   const { t } = useTranslation("common");
   let currentColor = useSelector((s) => s.palette.currentColor);
   const crumbArray = useSelector((s) => s.product.crumbarrcate);
-  console.log(crumbArray,'crumbArray')
+  
 
 //   const handleAddItemToCompare = (e, productId) => {
 //     let data = 0;
@@ -78,7 +78,7 @@ function InformationQuickView({ product,compareCheckFunction,handleAddItemToComp
 
 //     if (idArray && idArray.length !== 0) {
 //       let compareCheck = idArray.some((value) => value === product.productId);
-//       console.log(compareCheck,'compareCheck');
+//       
 //       return compareCheck;
    
 //     }

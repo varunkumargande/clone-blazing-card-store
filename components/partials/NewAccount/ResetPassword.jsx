@@ -23,9 +23,9 @@ export default function SentMail() {
   useEffect(() => {
     if (router?.query?.auth) {
       resetConfomPassApi(router?.query?.auth, setPageTrue);
-      console.log("Auth Success");
+      
     } else {
-      console.log("Auth Failed");
+      
     }
 
   }, [router?.query]);

@@ -40,7 +40,7 @@ function Product({ product, image, currency,crumbArray }) {
     const { t } = useTranslation('common');
     // const tot=useToast()
 
-    // console.log(tot,'tot');
+    // 
 
     const modalWarnings = (type, message) => {
 

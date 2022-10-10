@@ -114,7 +114,7 @@ const [starcoutid,setStarcoutid]=useState("")
                    <div className="star-rating flex">
                        <div className="dd">
                            <div className="dd-a">
-                           {console.log(product,"bala42erw444")}
+                           
                                <div className="custom-product-rate-rev-subcontainer">
                                    <p>{Number(product.rating).toFixed(1)}</p>
                                    <i className="fa fa-star"></i>
@@ -125,7 +125,7 @@ const [starcoutid,setStarcoutid]=useState("")
 
                                <div className="flex star-count">
                                    <div className="strlist flex">
-                                       {console.log()}
+                                      
                                    <Rate allowHalf defaultValue={Number(product.rating).toFixed(1)} disabled={true} />
                                      
                                    </div>

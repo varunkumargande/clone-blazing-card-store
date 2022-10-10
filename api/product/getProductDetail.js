@@ -6,7 +6,7 @@ import APIServices from '../../services'
 export async function getProductDetApi(productSlug,categorySlug,dispatch,setPriceChartInfo,setQuestionInfo,setBreadCategory,setstarcoutid) {
     let dummyKeyword=""
     let dummyLoader=false
-   {console.log(productSlug,'productSlug')}
+
 
     // fetch(apiUrl + '/product-store/productdetail/'+productSlug, {
     //     method: 'GET',
@@ -16,7 +16,7 @@ export async function getProductDetApi(productSlug,categorySlug,dispatch,setPric
            
     //         dispatch(getProductsById(json.data))
     //         setBreadCategory(json.data.Category)
-    //         console.log(json.data.productId,"234234234234234234")
+    //         
     //         questionsApi(json.data.productId, setQuestionInfo, dummyKeyword, dummyLoader, 3)
     //         productRatingCountStarApi(json.data.productId,setstarcoutid)
     //         // ViewAllQuestionApi(json.data.productId)

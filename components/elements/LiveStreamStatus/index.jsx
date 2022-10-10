@@ -8,12 +8,13 @@ import { useEffect } from "react";
 import {
   likedRequest,
   dislikedRequest,
-  removeLikedRequest
+  removeLikedRequest,
 } from "../../../store/likedStream/action";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
+import { SignUPGoogle } from "../../partials/Modal/Modal";
 
-function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginModal }) {
+function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginModal, auth }) {
   const [likedStream, setLikedStream] = useState([]);
   const dispatch = useDispatch();
 
@@ -52,8 +53,8 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginMo
       if (likeDislikeStream?.likedData?.indexOf(id) > -1) {
         return "like flex flex-center justify-center liked";
       }
-    } 
-    if(likeDislikeStream?.dislikedData?.length != 0){
+    }
+    if (likeDislikeStream?.dislikedData?.length != 0) {
       if (likeDislikeStream?.dislikedData?.indexOf(id) > -1) {
         return "like flex flex-center justify-center";
       }
@@ -65,13 +66,10 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginMo
     }
   };
 
-  return (
-    <>
-      {isLive ? (
+  const handleLikeButton = () => {
+    if (auth?.isLoggedIn) {
+      return (
         <>
-          <div className="tme-wrap live flex flex-center justify-center">
-            <span>1.2K</span> <button className="live"></button>
-          </div>
           <button
             className={getlikedStatus(uuid)}
             id={uuid + "-btn"}
@@ -80,18 +78,37 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginMo
             <span><IconLike /></span>
           </button>
         </>
+      );
+    } else {
+      return (
+        <>
+          <button
+            className={"like flex flex-center justify-center"}
+            onClick = {() => showLoginModal(true)}
+          >
+            <span><IconLike /></span>
+          </button>
+        </>
+      );
+    }
+  };
+
+
+  return (
+    <>
+      {isLive ? (
+        <>
+          <div className="tme-wrap live flex flex-center justify-center">
+            <span>1.2K</span> <button className="live"></button>
+          </div>
+          {handleLikeButton()}
+        </>
       ) : (
         <>
           <div className="tme-wrap flex flex-center justify-center">
             <span>Today {detail.scheduletime}</span>
           </div>
-          <button
-            className={getlikedStatus(uuid)}
-            // className="like flex flex-center justify-center"
-            onClick={() => handleLikeUnlike(uuid)}
-          >
-            <span><IconLike /></span>
-          </button>
+          {handleLikeButton()}
         </>
       )}
     </>

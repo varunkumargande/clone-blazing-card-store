@@ -67,7 +67,7 @@ function Category({
     }
   };
 
-  console.log(subCateId);
+  
 
   const getCategoryList = () => {
     if (isSeeAll == true) {
@@ -217,8 +217,8 @@ function Category({
             </div>
           </div>
           <div className="seeAll">
-            <Link href="/">
-              <a className="flex flex-center">View All</a>
+            <Link href="/see-all?page=categories">
+              <a className="flex flex-center">See All</a>
             </Link>
           </div>
         </div>

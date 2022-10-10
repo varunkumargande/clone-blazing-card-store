@@ -6,7 +6,7 @@ export const initState = {
 };
 
 function reducer(state = initState, action) {
-  console.log(action.payload)
+  
   switch (action.type) {
     case actionTypes.LIKED_REQUEST:
       return {

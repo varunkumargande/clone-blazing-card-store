@@ -1,13 +1,14 @@
 import React from "react";
 import IconLike from "../../../Icons/IconLike";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { subcatstreamDetailApi } from "../../../../api/stream/subStreamDetail";
 import { stringFormatter } from "../../../../utilities/utils";
 import Router from "next/router";
 import StreamCard from "../../../elements/StreamCard";
 import { useSelector } from "react-redux";
 import { streamDetailApi } from "../../../../api/stream/streamDetail";
+import ProfileMethods from "../../../../api/profile/ProfileMethods";
 
 export default function LikedList({
   categoriesData,
@@ -24,6 +25,17 @@ export default function LikedList({
     (state) => state?.stream?.streamdetails?.stream
   );
 
+  const [userId, setUserId] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [likedShows, setLikedShows] = useState([]);
+
+  useEffect(() => {
+    const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
+    ProfileMethods.GetLikedStreams(userData?.id, setLikedShows);
+    setUserId(userData.id);
+    setProfile(userData);
+  }, []);
+
   const handleSeeAll = (name) => {
     setIsSeeAll(true);
     setIsLiveScheduleSeeAll(true);
@@ -31,7 +43,7 @@ export default function LikedList({
   };
 
   const getStreamCards = () => {
-    return streamDetail?.scheduled?.map((detail) => {
+    return likedShows?.map((detail) => {
       if (detail?.islike) {
         return <StreamCard isLive={false} detail={detail} />;
       }
