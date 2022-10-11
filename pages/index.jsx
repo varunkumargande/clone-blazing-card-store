@@ -76,6 +76,7 @@ function landingPage({ auth }) {
             categoryData={element}
             isLikedShow={isLikedShow}
             setIsLikedShow={setIsLikedShow}
+            showLoginModal={setShowModal}
           />
         );
       });
@@ -173,6 +174,7 @@ function landingPage({ auth }) {
                       setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
                       setSeeAllHeading={setSeeAllHeading}
                       setIsSeeAll={setIsSeeAll}
+                      showLoginModal={setShowModal}
                     />
                     <ScheduledShow
                       liveScheduleCategoryName={liveScheduleCategoryName}
