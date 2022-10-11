@@ -26,6 +26,16 @@ const GetFullImageURL = (details, type, width, height) => {
                     ImageURL += ApplyHeight(height);
                 }
                 return ImageURL;
+            } else if(details.stream_thumbnail_path && details.stream_thumbnail_image) {
+                ImageURL += GetImageAPIPath(details.stream_thumbnail_path);
+                ImageURL += GetImageAPIName(details.stream_thumbnail_image);
+                if(width && width > 0) {
+                    ImageURL += ApplyWidth(width);
+                }
+                if(height && height > 0) {
+                    ImageURL += ApplyHeight(height);
+                }
+                return ImageURL;
             } else {
                 return GetDefaulterImageURL(type);
             }
@@ -65,7 +75,7 @@ const ApplyHeight = (height) => {
 
 const GetDefaulterImageURL = (type) => {
     if(type !== "vendor") {
-        return '/static/img/no-image.png';
+        return '/static/images/card.png';
     }
     return '/static/img/no-image-new.png';
 }
