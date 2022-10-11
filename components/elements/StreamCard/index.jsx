@@ -18,11 +18,7 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
   };
 
   const handleStreamingLink = (detail) => {
-    if (auth?.isLoggedIn) {
-      Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
-    } else {
-      showLoginModal(true);
-    }
+    Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
   };
 
   const getImagePath = (type) => {
@@ -69,7 +65,7 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src = "/static/images/card.png";
             }}
-            src={getImagePath("profile")}
+            src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
             onClick={() => handleStreamingLink(detail)}
           />
           <LiveStreamStatus
@@ -90,7 +86,7 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = "/static/img/no-image.png";
               }}
-              src={getImagePath("vendor")}
+              src={DefaultServices.GetFullImageURL(detail, "vendor", "25", "25")}
               alt="Card"
             />
 

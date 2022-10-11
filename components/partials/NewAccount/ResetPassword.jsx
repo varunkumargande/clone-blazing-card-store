@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import IconKey from "../../Icons/IconKey";
 import IconBack from "../../Icons/IconBack";
 import IconEye from "../../Icons/IconEye";
-import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { changePasswordApi } from "../../../api";
