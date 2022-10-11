@@ -95,7 +95,7 @@ export default function BasicDetails() {
             </div>
             <div className="flex space-between">
               <FileUpload
-                className="input-control wd48"
+                className="input-control uplaoad-wrapper wd48"
                 label="Upload Doc *"
                 name="upload"
                 type="file"
