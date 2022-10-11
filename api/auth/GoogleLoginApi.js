@@ -8,14 +8,14 @@ import { UserGoogleRegister } from './onlyRegister';
 import axios from "axios"
 import { getProfile } from "../../store/profile/action";
 
-export async function GoogleLoginApi(firstname, lastname, mail, password, confirmPassword, username, gmail, setgoogleId, setgooglePath, googleId, googlePath, profie, Router, res, encyrpted) {
+export async function GoogleLoginApi(firstname, lastname, mail, password, confirmPassword, username, gmail, setgoogleId, setgooglePath, googleId, googlePath, profie, Router, res) {
 
     const data = {
         emailId: mail,
         firstName: firstname,
         lastName: lastname,
         userName: username,
-        oauthData: JSON.stringify(encyrpted),
+        oauthData: "Gmail-login",
         type: gmail
     };
     const result = await axios.post('http://localhost:9000/gmail-login', data);

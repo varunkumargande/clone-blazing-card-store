@@ -111,7 +111,7 @@ function Signup(auth) {
       .required("Required"),
   });
 
-  const responseGoogle = (response, encyrpted) => {
+  const responseGoogle = (response) => {
     GoogleLoginApi(
       response.given_name, 
       response.family_name, 
@@ -127,7 +127,6 @@ function Signup(auth) {
       response.picture, 
       Router, 
       response,
-      encyrpted
     );
   };
 
@@ -160,9 +159,8 @@ function Signup(auth) {
             </button>
           )}
           onSuccess={credentialResponse => {
-            let encryptedKey = credentialResponse.credential;
             let data = jwt_decode(credentialResponse.credential);
-            responseGoogle(data, encryptedKey);
+            responseGoogle(data);
           }}
           onError={(response) => {
             console.log('Login Failed');
