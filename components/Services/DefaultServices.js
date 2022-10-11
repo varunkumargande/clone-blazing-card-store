@@ -2,6 +2,7 @@ import { imageUrl } from '../../api/url';
 // import DefaultImage from '/static/img/no-image.png';
 
 const GetFullImageURL = (details, type, width, height) => {
+    
     let ImageURL = imageUrl;
     if(details) {
         if(type == "profile") {
@@ -9,25 +10,44 @@ const GetFullImageURL = (details, type, width, height) => {
                 ImageURL += GetImageAPIPath(details.preview_image_path);
                 ImageURL += GetImageAPIName(details.preview_image);
                 if(width && width > 0) {
-                    ImageURL += ApplyWidth(ImageURL, width);
+                    ImageURL += ApplyWidth(width);
                 }
+                if(height && height > 0) {
+                    ImageURL += ApplyHeight(height);
+                }
+                return ImageURL;
+            } else if(details.imagePath && details.image) {
+                ImageURL += GetImageAPIPath(details.imagePath);
+                ImageURL += GetImageAPIName(details.image);
                 if(width && width > 0) {
-                    ImageURL += ApplyHeight(ImageURL, height);
+                    ImageURL += ApplyWidth(width);
+                }
+                if(height && height > 0) {
+                    ImageURL += ApplyHeight(height);
+                }
+                return ImageURL;
+            } else if(details.stream_thumbnail_path && details.stream_thumbnail_image) {
+                ImageURL += GetImageAPIPath(details.stream_thumbnail_path);
+                ImageURL += GetImageAPIName(details.stream_thumbnail_image);
+                if(width && width > 0) {
+                    ImageURL += ApplyWidth(width);
+                }
+                if(height && height > 0) {
+                    ImageURL += ApplyHeight(height);
                 }
                 return ImageURL;
             } else {
                 return GetDefaulterImageURL(type);
             }
-        }
-        if(type == "vendor") {
+        }  else if(type == "vendor") {
             if(details.vendor_image_path && details.vendor_image) {
                 ImageURL += GetImageAPIPath(details.vendor_image_path);
                 ImageURL += GetImageAPIName(details.vendor_image);
                 if(width && width > 0) {
-                    ImageURL += ApplyWidth(ImageURL, width);
+                    ImageURL += ApplyWidth(width);
                 }
-                if(width && width > 0) {
-                    ImageURL += ApplyHeight(ImageURL, height);
+                if(height && width > 0) {
+                    ImageURL += ApplyHeight(height);
                 }
                 return ImageURL;
             } else {
@@ -46,16 +66,16 @@ const GetImageAPIName = (name) => {
     return  "&name=" + name;
 }
 
-const ApplyWidth = (path, width) => {
-    return path += "&width=" + width
+const ApplyWidth = (width) => {
+    return "&width=" + width;
 }
-const ApplyHeight = (path, height) => {
-    return path += "&height=" + height
+const ApplyHeight = (height) => {
+    return "&height=" + height;
 }
 
 const GetDefaulterImageURL = (type) => {
     if(type !== "vendor") {
-        return '/static/img/no-image.png';
+        return '/static/images/card.png';
     }
     return '/static/img/no-image-new.png';
 }
