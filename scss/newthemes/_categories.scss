@@ -76,10 +76,20 @@
             .icon{
                 fill:transparent;
             }
-            &.Liked{ 
-                .icon{ 
-                    fill:$red-color;
-                    stroke: $red-color;
+            svg,img,span{
+                min-width:17px;
+                width:17px
+            }
+            span{
+                display: block;
+            }
+            &:hover,&.Liked{
+                img{
+                    opacity: 0;
+                }
+                span{ 
+                    background:url('/static/images/liked.png') no-repeat center center;
+                    background-size: 100%;
                 }
             }
         }

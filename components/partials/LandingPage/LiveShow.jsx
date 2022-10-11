@@ -9,7 +9,7 @@ import { streamDetailApi } from "../../../api/stream/streamDetail";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";
 import StreamCard from "../../elements/StreamCard";
 
-export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, setIsLiveScheduleSeeAll }) {
+export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, setIsLiveScheduleSeeAll, showLoginModal }) {
 
   const handleSeeAll = (name) => {
     setIsSeeAll(true)
@@ -27,7 +27,7 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
     return streamDetail?.scheduled?.map((detail) => {
       return (
         <>
-          <StreamCard detail={detail} isLive={true} />
+          <StreamCard showLoginModal={showLoginModal} detail={detail} isLive={true} />
         </>
       );
     });
@@ -41,7 +41,7 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
             <div className="inner-container">
               <div className="title-wrap flex space-between flex-center">
                 <div className="flex flex-center">
-                  <h3 className="title">Live</h3>
+                  <h3 className="title">Live Shows</h3>
                 </div>
                 <div className="seeAll">
                   <a className="flex flex-center" onClick={() => handleSeeAll("Live")}>View All</a>

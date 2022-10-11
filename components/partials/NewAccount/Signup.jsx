@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
+import IconBack from "../../Icons/IconBack";
 import {
   EmailValidator,
   upperPresent,
@@ -9,26 +10,19 @@ import {
   numPresent,
   specialPresent,
 } from "../../helper/emailValidator";
-// import { gapi } from "gapi-script";
 import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
-import { GoogleLogin } from "react-google-login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept";
 import { registerConstant } from "../../Constants/register";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
+import { useRouter } from "next/router";
 
-// This code is required in future development for Google Signin
-// gapi.load("client:auth2", () => {
-//   gapi.client.init({
-//     clientId:
-//       "951035021628-vq6g1nr866f0cqi56kch4viedvevmkt0.apps.googleusercontent.com",
-//     plugin_name: "chat",
-//   });
-// });
 
 function Signup(auth) {
   const [name, setName] = useState("");
@@ -53,6 +47,7 @@ function Signup(auth) {
   const [policyCheck, setPolicyCheck] = useState(false);
 
   const FullNameInputRef = React.useRef(null);
+  const router = useRouter();
   useEffect(() => {
     FullNameInputRef.current.focus();
   }, []);
@@ -117,22 +112,21 @@ function Signup(auth) {
   });
 
   const responseGoogle = (response) => {
-    //let pass = generatePassword();
     GoogleLoginApi(
-      response.gv.gZ,
-      response.gv.tX,
-      response.profileObj.email,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      response.googleId,
-      "gmail",
-      response.googleId,
-      response.googlePath,
-      response.googleId,
-      response.googlePath,
-      response.profileObj,
-      Router,
-      response
+      response.given_name, 
+      response.family_name, 
+      response.email, 
+      "", 
+      "", 
+      response.email.split("@")[0], 
+      "gmail", 
+      "", 
+      "", 
+      "", 
+      "", 
+      response.picture, 
+      Router, 
+      response,
     );
   };
 
@@ -147,24 +141,34 @@ function Signup(auth) {
   const submitBtnDisableState = (errors) =>
     Object.keys(errors).length > 0 || policyCheck === false ? true : false;
 
+  //go back to previous page
+  const handleBackButton = () => {
+    router.back()
+   }  
   return (
     <div className="login-wrapper">
+      <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
       <h1 className="title mb32">Sign up to Blazing Cards</h1>
 
-      <GoogleLogin
-        clientId="951035021628-vq6g1nr866f0cqi56kch4viedvevmkt0.apps.googleusercontent.com"
-        render={(renderProps) => (
-          <button className="google-btn mb42" onClick={renderProps.onClick}>
-            <IconGoogle />
-            Sign up with Google
-          </button>
-        )}
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogleFailure}
-        isSignedIn={true}
-        cookiePolicy={'single_host_origin'}
-      />
+      <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+        <GoogleLogin
+          render={(renderProps) => (
+            <button className="google-btn mb42" onClick={renderProps.onClick}>
+              <IconGoogle />
+              Sign up with Google
+            </button>
+          )}
+          onSuccess={credentialResponse => {
+            let data = jwt_decode(credentialResponse.credential);
+            responseGoogle(data);
+          }}
+          onError={(response) => {
+            console.log('Login Failed');
+            responseGoogleFailure(response);
+          }}
+        />
+      </GoogleOAuthProvider>
+
 
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
@@ -209,7 +213,7 @@ function Signup(auth) {
           <>
             <form className="signup flex space-between" onSubmit={handleSubmit}>
               <div className="input-control wd50">
-                <label>First Name</label>
+                <label>First Name*</label>
                 <input
                   type="text"
                   name="firstname"
@@ -222,7 +226,7 @@ function Signup(auth) {
                 <div className="errorText">{errors.firstname && touched.firstname ? errors.firstname : null}</div>
               </div>
               <div className="input-control wd50">
-                <label>Last Name</label>
+                <label>Last Name*</label>
                 <input
                   type="text"
                   name="lastname"
@@ -233,7 +237,7 @@ function Signup(auth) {
                 <div className="errorText">{errors.lastname && touched.lastname ? errors.lastname : null}</div>
               </div>
               <div className="input-control">
-                <label>Email Address</label>
+                <label>Email Address*</label>
                 <input
                   type="email"
                   name="email"
@@ -243,9 +247,24 @@ function Signup(auth) {
                 />
                 <div className="errorText">{errors.email && touched.email ? errors.email : null}</div>
               </div>
-
               <div className="input-control">
-                <label>Contact Number</label>
+                <label>Username*</label>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder={"username"}
+                  value={values.username}
+                  onChange={handleChange}
+                  ref={usernameInput}
+                  onBlur={handleOnBlur}
+                />
+                <div className="errorText">{errors.username && touched.username ? errors.username : null}</div>
+                {usernameAvailable === false && usernameAvailable !== null ? (
+                  <div className="errorText">Username already taken</div>
+                ) : null}
+              </div>
+              <div className="input-control">
+                <label>Contact Number*</label>
                 <input
                   name="number"
                   placeholder={"Contact Number"}
@@ -256,8 +275,8 @@ function Signup(auth) {
                 <div className="errorText">{errors.number && touched.number ? errors.number : null}</div>
               </div>
 
-              <div className="input-control wd50">
-                <label>Password</label>
+              <div className="input-control wd50 pass">
+                <label>Password*</label>
                 <input
                   name="password"
                   placeholder={"Password"}
@@ -286,8 +305,8 @@ function Signup(auth) {
                 <div className="errorText">{errors.password && touched.password ? errors.password : null}</div>
               </div>
 
-              <div className="input-control wd50">
-                <label>Confirm Password</label>
+              <div className="input-control wd50 pass">
+                <label>Confirm Password*</label>
                 <input
                   name="cpass"
                   placeholder={"Confirm Password"}
@@ -317,28 +336,13 @@ function Signup(auth) {
                 <div className="errorText">{errors.cpass && touched.cpass ? errors.cpass : null}</div>
               </div>
 
-              <div className="input-control">
-                <label>Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  placeholder={"username"}
-                  value={values.username}
-                  onChange={handleChange}
-                  ref={usernameInput}
-                  onBlur={handleOnBlur}
-                />
-                <div className="errorText">{errors.username && touched.username ? errors.username : null}</div>
-                {usernameAvailable === false && usernameAvailable !== null ? (
-                  <div className="errorText">Username already taken</div>
-                ) : null}
-              </div>
+              
 
               <div className="checkbox-wrap mb32">
                 <label className="checkbox">
                   <input type="checkbox" onClick={handlePolicyCheck} />
                   <span class="checkmark"></span>
-                  I’ve read and agree with Terms of Service & Privacy Policy
+                  I’ve read and agree with <Link href="/terms-conditions"><a>Terms of Service</a></Link> & <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
                 </label>
               </div>
 
@@ -361,6 +365,7 @@ function Signup(auth) {
           </>
         )}
       </Formik>
+      <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
     </div>
   );
 }

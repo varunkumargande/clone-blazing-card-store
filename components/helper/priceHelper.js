@@ -1,5 +1,5 @@
 export const priceHelpFunc=(price, taxType, taxValue,availValue)=>{
-    console.log(price,'price')
+    
     if(availValue!==""){
 
         switch(taxType){

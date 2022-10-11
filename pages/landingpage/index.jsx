@@ -46,8 +46,9 @@ export default function landingpage(){
                 <ScheduledShow />
                 <Electronic />
                 <Jewellery /> */}
+                <Pokeman />
             </div>
-            {getCatStream()}
+            {/* {getCatStream()} */}
             <Footer />
         </div>
     );

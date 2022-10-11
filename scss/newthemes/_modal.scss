@@ -317,6 +317,9 @@
             max-width: 100%;
             border-radius: 24px 24px 0 0;
             transition: translate .2s;
+            &.medium{
+                max-width: 100%;
+            }
             .modal-header{
                 background-color: $white-color;
                 border-bottom: 1px solid $border2-color;

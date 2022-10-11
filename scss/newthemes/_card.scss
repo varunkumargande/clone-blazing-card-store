@@ -100,8 +100,19 @@
             padding: 0 3px 0 2px;
         }
     }
+    .image,.title{
+        cursor: pointer;
+    }
     .image{
         position: relative;
+        &:after{
+            content: '';
+            width: 100%;
+            height: 46%;
+            @include pos(ab,0,null,null,0,0);
+            background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+            border-radius: 8px 8px 0px 0px;
+        }
         > img{
             width: 100%;
             border-radius: 8px;
@@ -112,6 +123,7 @@
             position: absolute;
             top:4px;
             left: 4px;
+            z-index: 1;
         }
         .like{
             position: absolute;
@@ -121,16 +133,24 @@
             border-radius: 50%;
             width:28px;
             height: 28px;
-            svg{
-                width:17px;
+            padding: 0;
+            z-index: 1;
+            padding: 1px 0 0 1px;
+            svg,img,span{
+                width:16px;
             }
-            .icon{
-                transition: all .25s;
+            span{
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             &:hover,&.liked{
-                .icon{
-                    fill: $red-color;
-                    stroke: $red-color;
+                img{
+                    opacity: 0;
+                }
+                span{ 
+                    background:url('/static/images/liked.png') no-repeat center center;
+                    background-size: 100%;
                 }
             }
         }
@@ -167,6 +187,67 @@
             border-radius: 13px;
             padding: 0 7px;
             color: $blue-color;
+        }
+    }
+
+    &.Loader{
+        padding-bottom: 8px !important;
+        @keyframes loader {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+        .image{
+            background-color: $loader-bg;
+            border-radius: 8px;
+            min-height: 272px;
+            @include pos(re);
+            @include animatedBg;
+        }
+        .LoaderImg{
+            @include pos(re);
+            z-index: 5;
+            animation: loader 1.25s infinite;
+            span{
+                @include pos(ab,3px,null,null,9px);
+            }
+        }
+        .loading{
+            font-size: 14px;
+            line-height: 18px;
+            margin-top: 10px;
+            color:$blue-color;
+        }
+        .title{
+            width: 100%;
+            max-width: 104px;
+            border-radius: 15px;
+            background-color: $loader-bg;
+            @include pos(re);
+            @include animatedBg;
+            height: 11px;
+            margin-bottom: 10px;
+        }
+        .disc{
+            width: 100%;
+            border-radius: 15px;
+            background-color: $loader-bg;
+            @include pos(re);
+            @include animatedBg;
+            margin-bottom: 5px; 
+            height: 11px;
+        }
+        .cate{
+            width: 100%;
+            border-radius: 15px;
+            background-color: $loader-bg;
+            @include pos(re);
+            @include animatedBg;
+            margin-top: 10px; 
+            height: 11px;
         }
     }
 }
@@ -323,6 +404,11 @@
             }
             .title,.disc{
                 color:#fff;
+            }
+        }
+        .Loader{
+            .text{
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0) 10%, #fff 100%);
             }
         }
     }

@@ -196,10 +196,10 @@ export function PaymentInfoModal(props) {
     productDetail,
     fetchShiipmentApi,
     paymentLoader,
-    addressLoader
+    addressLoader,
+    isBuyNowPaymentModal,
   } = props;
 
-  console.log(addressList)
 
   const addressInfo =
     addressList?.length == 0
@@ -226,8 +226,6 @@ export function PaymentInfoModal(props) {
         "XXXX XXXX XXXX " +
         cardDetail[0]?.card.last4;
 
-  console.log(paymentLoader, addressLoader)
-
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal medium">
@@ -245,57 +243,63 @@ export function PaymentInfoModal(props) {
             </span>
           </button>
         </div>
-        <div className="modal-body-upper">
-          <div className="flex space-between item-amount">
-            <div className="left">
-              <strong>{productDetail.name}</strong>
-            </div>
-            <div className="right">
-              <span className="link">{productDetail.price}</span>
+        {isBuyNowPaymentModal ? (
+          <div className="modal-body-upper">
+            <div className="flex space-between item-amount">
+              <div className="left">
+                <strong>{productDetail.name}</strong>
+              </div>
+              <div className="right">
+                <span className="link">{productDetail.price}</span>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
         {paymentLoader || addressLoader ? (
           <>
-          <div align={"center"}>
-            <Loader />
+            <div align={"center"}>
+              <Loader />
             </div>
           </>
         ) : (
           <>
-             <div className="modal-body">
-          <div className="input-control with-bg">
-            <label>Shipping Details</label>
-            <input
-              readOnly
-              name="text"
-              placeholder={addressInfo}
-              className="address"
-              onClick={handleShippmentMethod}
-            />
-            <span className="errorMessage"></span>
-          </div>
-          <div className="input-control with-bg">
-            <label>Card Number *</label>
-            <input
-              readOnly
-              name="text"
-              placeholder={cardDetails}
-              className="payment"
-              onClick={handlePaymentMethod}
-            />
-            <span className="errorMessage"></span>
-          </div>
-        </div>
+            <div className="modal-body">
+              <div className="input-control with-bg">
+                <label>Shipping Details</label>
+                <input
+                  readOnly
+                  name="text"
+                  placeholder={addressInfo}
+                  className="address"
+                  onClick={handleShippmentMethod}
+                />
+                <span className="errorMessage"></span>
+              </div>
+              <div className="input-control with-bg">
+                <label>Card Number *</label>
+                <input
+                  readOnly
+                  name="text"
+                  placeholder={cardDetails}
+                  className="payment"
+                  onClick={handlePaymentMethod}
+                />
+                <span className="errorMessage"></span>
+              </div>
+            </div>
           </>
         )}
-       
+
         <div className="modal-footer flex justify-center">
           <div className="flex space-between btn-wrap wd310">
             <button className="disable-btn" onClick={() => openPayment(false)}>
               Cancel
             </button>
-            <button
+            {
+              isBuyNowPaymentModal ? (
+                <button
               className="primary-btn"
               onClick={() => {
                 handleSubmitBuyProduct();
@@ -303,6 +307,17 @@ export function PaymentInfoModal(props) {
             >
               Confirm
             </button>
+              ) : (
+                <button
+              className="primary-btn"
+              onClick={() => {
+                openPayment(false);
+              }}
+            >
+              Continue
+            </button>
+              )
+              }
           </div>
         </div>
       </div>
@@ -311,8 +326,15 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  const { payDetail, close, productDetail, countryData, fetchShiipmentApi, setPaymentLoader, fetchCardDetail } =
-    props;
+  const {
+    payDetail,
+    close,
+    productDetail,
+    countryData,
+    fetchShiipmentApi,
+    setPaymentLoader,
+    fetchCardDetail,
+  } = props;
 
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
@@ -351,12 +373,12 @@ export function AddNewCardModal(props) {
       });
 
       if (payDetail == false) {
-        setPaymentLoader(true)
+        setPaymentLoader(true);
         handleCardApi(jsonData, false, fetchCardDetail, setPaymentLoader);
         fetchShiipmentApi();
         close(false);
       } else {
-        setPaymentLoader(true)
+        setPaymentLoader(true);
         handleCardApi(jsonData, true, fetchCardDetail, setPaymentLoader);
         fetchShiipmentApi();
         close(false);
@@ -447,10 +469,10 @@ export function AddAddressModal(props) {
     setShip,
     addressList,
     countryData,
-    setAddressList
+    setAddressList,
   } = props;
 
-  console.log(addressList);
+  
 
   const shipSchema = Yup.object().shape({
     company: Yup.string().min(2, "Too Short!").required("Required"),
@@ -714,7 +736,7 @@ export function ChatUserModal({ setIsOpen }) {
         slang: e.target.value,
       });
       if (data.status == 200) {
-        // console.log(data.data.user)
+        // 
         setUserData(data.data.user);
         setUserDataLoader(false);
       }

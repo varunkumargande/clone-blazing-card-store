@@ -252,6 +252,11 @@
         &.active{
             background-color: $green-color;
         }
+        &:hover{
+            .icon{
+                fill:$primary-btn-hover;
+            }
+        }
     }
     header{
         background: $white-color;
@@ -295,7 +300,7 @@
             }
         }
         .inner-container{
-            height: 90px;
+            height: 80px;
         }
         .Search{
             margin-left: 20px;

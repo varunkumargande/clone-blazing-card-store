@@ -6,11 +6,12 @@ import { EmailValidator } from "../../helper/emailValidator";
 import { UserLogin } from "../../../api";
 import { connect, useDispatch } from "react-redux";
 import Router from "next/router";
-import { GoogleLogin } from "react-google-login";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { loginConstant } from "../../Constants/login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
 
 
 function Login(props) {
@@ -38,39 +39,25 @@ function Login(props) {
     }
   }, [props]);
 
-  const responseGoogle = (response) => {
+  
+  const responseGoogle = (response, encyrpted) => {
     GoogleLoginApi(
-      response.gv.gZ,
-      response.gv.tX,
-      response.profileObj.email,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      response.googleId,
-      "gmail",
-      response.googleId,
-      response.googlePath,
-      response.googleId,
-      response.googlePath,
-      response.profileObj,
-      Router,
-      response
+      response.given_name, 
+      response.family_name, 
+      response.email, 
+      "", 
+      "", 
+      response.email.split("@")[0], 
+      "gmail", 
+      "", 
+      "", 
+      "", 
+      "", 
+      response.picture, 
+      Router, 
+      response,
     );
   };
-
-  // const responseGoogle = (response) => {
-  //   GoogleLoginApi(
-  //     mail,
-  //     password,
-  //     "gmail",
-  //     setgoogleId,
-  //     setgooglePath,
-  //     googleId,
-  //     googlePath,
-  //     response.profileObj,
-  //     Router,
-  //     response
-  //   );
-  // };
 
   const loginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email format").required("Required"),
@@ -85,19 +72,23 @@ function Login(props) {
   return (
     <div className="login-wrapper">
       <h1 className="title mb32">Sign in to Blazing Cards</h1>
-      <GoogleLogin
-        clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
-        render={(renderProps) => (
-          <button className="google-btn mb42" onClick={renderProps.onClick}>
-            <IconGoogle />
-            Sign in with Google
-          </button>
-        )}
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        isSignedIn={false}
-      />
+      <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+        <GoogleLogin
+          render={(renderProps) => (
+            <button className="google-btn mb42" onClick={renderProps.onClick}>
+              <IconGoogle />
+              Sign up with Google
+            </button>
+          )}
+          onSuccess={credentialResponse => {
+            let data = jwt_decode(credentialResponse.credential);
+            responseGoogle(data);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
+      </GoogleOAuthProvider>
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
       </div>

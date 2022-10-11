@@ -23,6 +23,8 @@ import { searchRequest } from "../../../store/search/action";
 import { imageUrl } from "../../../api/url";
 import MessageButton from "../../elements/MessageButton";
 import { stepState } from "../../Constants/becomeSeller";
+import { chatLogin } from "../../../api";
+import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 
 function HeaderDefault({ auth }, props) {
   const router = useRouter();
@@ -42,9 +44,9 @@ function HeaderDefault({ auth }, props) {
     }
   };
 
-
-  const stage = useSelector((state) => state?.becomeSeller?.currentState)
-
+  const stage = useSelector((state) => state?.becomeSeller?.currentState) ?? 0;
+  const submittedDetails = useSelector((state) => state?.becomeSeller?.submittedDetails);
+  
   const handleOnClick = () => {
     setActive(!active);
   };
@@ -56,8 +58,14 @@ function HeaderDefault({ auth }, props) {
   }, []);
 
   useEffect(() => {
-    let userData = JSON.parse(sessionStorage.getItem("spurtUser"));
-    setProfile(userData);
+    let profileInterval = setInterval(() => {
+      let profileData = sessionStorage.getItem("spurtUser");
+      if(profileData) {
+        profileData = JSON.parse(profileData);
+        setProfile(profileData);
+        clearInterval(profileInterval);
+      }
+    }, 10)
   }, []);
 
   useEffect(() => {
@@ -71,6 +79,10 @@ function HeaderDefault({ auth }, props) {
       return (
         <>
           <img
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = "/static/images/profileImg.png";
+            }}
             src={
               imageUrl +
               "?path=" +
@@ -84,7 +96,10 @@ function HeaderDefault({ auth }, props) {
         </>
       );
     } else {
-      return <img src={"/static/img/no-image.svg"} alt="Profile" />;
+      return <img onError={({ currentTarget }) => {
+        currentTarget.onerror = null;
+        currentTarget.src = "/static/images/profileImg.png";
+      }} src={"/static/img/no-image-new.svg"} alt="Profile" />;
     }
   };
 
@@ -93,7 +108,7 @@ function HeaderDefault({ auth }, props) {
     sessionStorage.clear();
     dispatch(logOut());
     Router.push("/");
-    window.location.href="/";
+    window.location.href = "/";
     modalSuccess("success", "successfully logged out");
   };
 
@@ -104,6 +119,10 @@ function HeaderDefault({ auth }, props) {
   const handleSearchValue = (e) => {
     dispatch(searchRequest(e.target.value));
   };
+
+  const handeGoToChat = () => {
+    chatLogin()
+  }
 
   return (
     <header>
@@ -160,13 +179,23 @@ function HeaderDefault({ auth }, props) {
             {auth.isLoggedIn ? (
               <>
                 {/* <MessageButton name={"Message"} /> */}
-                { !stepState.includes(pageName) ? <Link href="/become-seller/guidelines">
-                  <a className="border-btn flex flex-center justify-center become">
-                    Become a Seller
-                  </a>
-                </Link> : null}
-                <button className="message flex flex-center justify-center">
-                  <IconMessage />
+                {
+                  (!!submittedDetails && stage < 4) ? (
+                    (!stepState.includes(pageName) )? (
+                      <Link href={`/become-seller/${stepState[stage]}`}>
+                        <a className="border-btn flex flex-center justify-center become">
+                          Become a Seller
+                        </a>
+                      </Link>
+                    ) : null
+                  ) : (
+                    <></>
+                  )
+                }
+                <button className="message flex flex-center justify-center" onClick={() => handeGoToChat()}>
+                  
+                    <IconMessage />
+                  
                 </button>
                 <button className="Notification flex flex-center justify-center">
                   <IconNotification />
@@ -174,7 +203,9 @@ function HeaderDefault({ auth }, props) {
                 <button className="profile">
                   <span onClick={handleOnClick}>
 
-                    <span className="profileImage"><img src={aimg} alt="Profile" /></span>
+                    <span className="profileImage">
+                      {handleProfileImage()}
+                    </span>
                     {/* {userData != null ? (
                       <>
                         {userData.avatar != null && userData.avatarPath != null ? (
@@ -241,11 +272,13 @@ function HeaderDefault({ auth }, props) {
             ) : (
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
-                { !stepState.includes(pageName) ? <Link href="/account/login">
-                  <a className="flex flex-center justify-center become Link">
-                    Become a Seller
-                  </a>
-                </Link> : null}
+                {!stepState.includes(pageName) ? (
+                  <Link href="/account/login">
+                    <a className="flex flex-center justify-center become Link">
+                      Become a Seller
+                    </a>
+                  </Link>
+                ) : null}
                 <Link href="account/login">
                   <a className="primary-btn flex flex-center justify-center ml24">
                     Sign In

@@ -10,6 +10,7 @@ import { addBasicData } from "../../../store/becomeSeller/action";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import IconBack from '../../Icons/IconBack';
+import BackButton from "../../CommonComponents/BackButton";
 
 
 export default function BasicDetails() {
@@ -46,7 +47,7 @@ export default function BasicDetails() {
       cb(reader.result);
     };
     reader.onerror = function (error) {
-      console.log("Error: ", error);
+      
     };
   };
 
@@ -94,7 +95,7 @@ export default function BasicDetails() {
             </div>
             <div className="flex space-between">
               <FileUpload
-                className="input-control wd48"
+                className="input-control uplaoad-wrapper wd48"
                 label="Upload Doc *"
                 name="upload"
                 type="file"

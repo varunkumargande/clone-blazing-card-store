@@ -89,7 +89,7 @@ useEffect(()=>{
                 },
             ],
         };
-        // console.log(varientdefultid,'varientdefultid')
+        // 
         const productImages = [];
         const varientdefultidtt=[]
         // if(varientdefultid.length>0){
@@ -138,7 +138,7 @@ useEffect(()=>{
             arrarpus.push(variant)
          
              
-             console.log(arrarpus,'variant423413');
+             
             if(arrarpus){
                 setimagesliders(arrarpus)
             }
@@ -157,7 +157,7 @@ useEffect(()=>{
                     <div className="ps-wrapper " >
                         {playerVideo===true?<>
                         {/* {imagesliders&&imagesliders&&<> */}
-                            {console.log( imagesliders&&imagesliders[0]&&imagesliders[0].containerName,'4442233')}
+                        
                         {/* </>} */}
                        
                         <Slider

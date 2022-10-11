@@ -4,7 +4,7 @@ import APIServices from "../../services";
 export async function editProfileApi(values, newDp, Router, setLoader) {
   const data = JSON.stringify({
     firstName: values.firstName,
-    lastName: values.firstName,
+    lastName: values.lastName,
     emailId: values.emailId,
     image: newDp,
     phoneNumber: values.phoneNumber,

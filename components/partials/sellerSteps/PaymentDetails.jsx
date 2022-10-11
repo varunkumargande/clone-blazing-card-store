@@ -13,7 +13,6 @@ import { CardExpiry } from "../../CommonComponents/CardExpiry";
 import BackButton from "../../CommonComponents/BackButton";
 
 
-
 export default function PaymentDetails() {
 
   const router = useRouter();

@@ -9,10 +9,7 @@ import { useEffect } from "react";
 import { streamDetailApi } from "../../../api/stream/streamDetail";
 import { subcatstreamDetailApi } from "../../../api/stream/subStreamDetail";
 import StreamCard from "../../elements/StreamCard";
-export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, setIsLiveScheduleSeeAll, activeCategoryName }) {
-
-
-
+export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, setIsLiveScheduleSeeAll, activeCategoryName,showLoginModal }) {
     const dispatch = useDispatch();
     useEffect(() => {
         subcatstreamDetailApi(dispatch, catId)
@@ -28,7 +25,7 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
     const getStreamCards = () => {
         return streamDetail?.scheduled?.map((detail) => {
             return (
-                <StreamCard isLive={false} detail={detail} />
+                <StreamCard isLive={false} detail={detail} showLoginModal={showLoginModal} />
             );
         });
     };
@@ -38,10 +35,12 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
             <div className="inner-container">
                 <div className="title-wrap flex space-between flex-center">
                     <div className="flex flex-center">
-                        <h3 className="title">Scheduled</h3>
+                        <h3 className="title">Schedule Shows</h3>
                     </div>
                     <div className="seeAll">
-                        <a className="flex flex-center" onClick={() => handleSeeAll("Scheduled")}>View All</a>
+                        <Link href="/see-all?page=schedule">
+                            <a className="flex flex-center">View All</a>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@ export async function AddWishlist(productId,dispatch) {
     //             dispatch(addItemToWishlist(1))
     //         }
     //     })
-    //  console.log(productId,'proid')
+    //  
     const data = JSON.stringify({
                 productId: productId,
             productOptionValueId: "",

@@ -71,7 +71,7 @@ function SubCategory({ subCateId, seeAllHeading, setSubCateId, category }) {
             <div className="overflow-wrap">
                 <div className="Category-list-wrap inner-container flex">
                     <div className="category-like like">
-                        <button className="Like flex justify-center flex-center"><IconLike /></button>
+                        <button className="Like flex justify-center flex-center"><span><IconLike /></span></button>
                     </div>
                     {getCategoryList()}
                 </div>

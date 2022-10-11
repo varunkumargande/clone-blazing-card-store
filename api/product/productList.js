@@ -68,7 +68,7 @@ export async function productListApi(dispatch,setProductData,offset,setLoader,or
             //     })
             //     .then(json => {
             //         setCrumbArray(json.categoryLevel)
-            //         console.log(json.categoryLevel,"234rwesdfbbbbbbbbb")
+            //         
             //         if(json.data){
                    
                 

@@ -15,6 +15,7 @@ import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import Vertical from "../components/partials/LandingPage/Layout/vertical";
 import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
+import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
 
 function landingPage({ auth }) {
   const [windowWidth, setWindowWidth] = useState(0);
@@ -52,6 +53,8 @@ function landingPage({ auth }) {
   const [seeAllHeading, setSeeAllHeading] = useState(null);
   const [seeAllData, setSeeAllData] = useState(null);
 
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     categoryApi(dispatch);
   }, []);
@@ -73,6 +76,7 @@ function landingPage({ auth }) {
             categoryData={element}
             isLikedShow={isLikedShow}
             setIsLikedShow={setIsLikedShow}
+            showLoginModal={setShowModal}
           />
         );
       });
@@ -99,7 +103,7 @@ function landingPage({ auth }) {
   return (
     <div className="home-container">
       {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
-
+      {showModal && (<DynamicModal title="Join Blazing Cards" setShowModal={setShowModal}  />)}
       {isLiveScheduleSeeAll ? (
         <>
           {categories != undefined ? (
@@ -155,6 +159,7 @@ function landingPage({ auth }) {
               subCateId={subCateId}
               seeAllHeading={seeAllHeading}
               activeCategory={activeCategory}
+              showLoginModal={setShowModal}
             />
           </>
         ) : (
@@ -169,6 +174,7 @@ function landingPage({ auth }) {
                       setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
                       setSeeAllHeading={setSeeAllHeading}
                       setIsSeeAll={setIsSeeAll}
+                      showLoginModal={setShowModal}
                     />
                     <ScheduledShow
                       liveScheduleCategoryName={liveScheduleCategoryName}
@@ -176,6 +182,7 @@ function landingPage({ auth }) {
                       setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
                       setSeeAllHeading={setSeeAllHeading}
                       setIsSeeAll={setIsSeeAll}
+                      showLoginModal={setShowModal}
                     />
                     {getAllCategoriesCard()}
                   </>

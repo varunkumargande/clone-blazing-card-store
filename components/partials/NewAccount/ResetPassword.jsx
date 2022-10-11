@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import IconKey from "../../Icons/IconKey";
 import IconBack from "../../Icons/IconBack";
 import IconEye from "../../Icons/IconEye";
-import { useRouter } from "next/router";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { changePasswordApi } from "../../../api";
@@ -11,7 +10,7 @@ import {
   resetConfomPassApi,
 } from "../../../api/account/resetPass";
 import { handleClientScriptLoad } from "next/script";
-import Router from "next/router";
+import Router,{ useRouter } from "next/router";
 
 export default function SentMail() {
   var router = useRouter();
@@ -23,9 +22,9 @@ export default function SentMail() {
   useEffect(() => {
     if (router?.query?.auth) {
       resetConfomPassApi(router?.query?.auth, setPageTrue);
-      console.log("Auth Success");
+      
     } else {
-      console.log("Auth Failed");
+      
     }
 
   }, [router?.query]);
@@ -62,8 +61,8 @@ export default function SentMail() {
                   className="reset flex space-between"
                   onSubmit={handleSubmit}
                 >
-                  <div className="input-control">
-                    <label>Password</label>
+                  <div className="input-control pass">
+                    <label>Password*</label>
                     <input
                       type={passShow ? "text" : "password"}
                       placeholder="Enter here"
@@ -90,8 +89,8 @@ export default function SentMail() {
                     )}
                     <div className="errorText">{errors.oldPass}</div>
                   </div>
-                  <div className="input-control">
-                    <label>Conform Password</label>
+                  <div className="input-control pass">
+                    <label>Confirm Password*</label>
                     <input
                       type={conpassShow ? "text" : "password"}
                       placeholder="Enter here"
@@ -127,24 +126,28 @@ export default function SentMail() {
               </>
             )}
           </Formik>
+          <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
         </>
       );
     } else {
       return <>Loading ....</>;
     }
   };
+//go back to previous page
+const handleBackButton = () => {
+  router.back()
+ }  
 
   return (
     <div className="login-wrapper">
-      {/* <div className="back mb32"><IconBack /></div> */}
-      <div className="iconkey mb32">
-        <IconKey />
-      </div>
+      <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
+      
       <h1 className="title mb8">Set New Password</h1>
       <div className="infotext mb32">
         Your new password must be different to previously used passwords.
       </div>
       {handleResetPassword()}
+      <div className="copyright">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
     </div>
   );
 }

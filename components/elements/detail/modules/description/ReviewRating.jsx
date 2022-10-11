@@ -12,7 +12,6 @@ function ReviewRating({product}) {
           <i className="fa fa-star"></i>
         </div>
         <div className="rat">
-          {console.log(product,"4343reviewCount")}
           {product.ratingCount&&<>
             {product.ratingCount !=0?<>{product.ratingCount} Ratings & </>:"" } 
                   {product.reviewCount !== "null" ? <>{product.reviewCount}Reviews</> : ""}

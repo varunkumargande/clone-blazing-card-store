@@ -2,7 +2,7 @@ import  Router  from "next/router";
 import {modalSuccess, modalWarning} from "../intercept";
 import APIServices from '../../services'
 export async function checkOutApi(fname,lname,address,num,city,postCode,email,productDetail,method,address11,address111,postCode1,email1,city1,countryId1,countryId,zoneName1,zoneName,fname1,discountedPrice,couponInput,name,address1,setButtonLoader,coupandata,buttonLoader,cpassword,setbuttondisable) {
-        console.log(lname,'accountPassword')
+        
     // fetch(apiUrl+'/orders/customer-checkout', {
     //         method: 'POST',
     //         body: JSON.stringify({
@@ -102,7 +102,7 @@ if(result&&result.data&&result.data.status===3){
         sessionStorage.setItem("cartItem",JSON.stringify([]))
 }
 if(result&&result.data&&result.data.status===0){
-   // console.log(result.data.data.message[0],'books342')
+   // 
     modalWarning("error",result.data.data.message)
 }
 setButtonLoader(false)

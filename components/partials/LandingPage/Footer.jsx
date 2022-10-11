@@ -20,7 +20,7 @@ export default function Footer(){
                         <div className="links flex column">
                             <Link href="/about-us"><a>About Us</a></Link>
                             <Link href="/"><a>Faq's</a></Link>        
-                            <Link href="/contact"><a>Contact Us</a></Link>        
+                            <Link href="/contact-us"><a>Contact Us</a></Link>        
                         </div>
                     </div>
                     <div className="box">
