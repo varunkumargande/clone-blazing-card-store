@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { addShippingData } from "../../../store/becomeSeller/action";
-
+import BackButton from "../../CommonComponents/BackButton";
 export default function ShippingDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
