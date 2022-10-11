@@ -7,6 +7,7 @@ import { UserOauthLogin } from "./oAuthLogin";
 import { UserGoogleRegister } from './onlyRegister';
 import axios from "axios"
 import { getProfile } from "../../store/profile/action";
+import { apiBaseUrl } from '../url';
 
 export async function GoogleLoginApi(firstname, lastname, mail, password, confirmPassword, username, gmail, setgoogleId, setgooglePath, googleId, googlePath, profie, Router, res) {
 
@@ -18,7 +19,7 @@ export async function GoogleLoginApi(firstname, lastname, mail, password, confir
         oauthData: "Gmail-login",
         type: gmail
     };
-    const result = await axios.post('http://localhost:9000/gmail-login', data);
+    const result = await axios.post(`${apiBaseUrl}/gmail-login`, data);
     if (result && result.data && result.data.status === 1) {
         sessionStorage.setItem("spurtToken", result.data.data.token);
         sessionStorage.setItem("spurtUser", JSON.stringify(result.data.data.user));
