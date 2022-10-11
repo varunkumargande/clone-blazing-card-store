@@ -16,6 +16,7 @@ import ProfileMethods from "../../api/profile/ProfileMethods";
 import PublicProfileConstants from "../../components/Constants/publicProfile";
 import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
+import DefaultServices from "../../components/Services/DefaultServices";
 
 
 
@@ -265,7 +266,7 @@ export default function PublicProfile() {
                             <aside className="aside-wrapper profile-aside">
                                 <div className="aside-container profile-container">
                                     <div className="profile-icon">
-                                        <img src="/static/images/profile-large.svg" alt="profileImg" />
+                                        <img width="124" height="124" style={{ borderRadius:"50%" }} src={DefaultServices.GetFullImageURL(profile, "profile", "124", "124")} alt="profileImg" />
                                     </div>
                                     <div className="title flex column">
                                         {renderProfileName()}

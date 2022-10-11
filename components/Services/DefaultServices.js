@@ -36,6 +36,16 @@ const GetFullImageURL = (details, type, width, height) => {
                     ImageURL += ApplyHeight(height);
                 }
                 return ImageURL;
+            } else if(details.avatarPath && details.avatar) {
+                ImageURL += GetImageAPIPath(details.avatarPath);
+                ImageURL += GetImageAPIName(details.avatar);
+                if(width && width > 0) {
+                    ImageURL += ApplyWidth(width);
+                }
+                if(height && height > 0) {
+                    ImageURL += ApplyHeight(height);
+                }
+                return ImageURL;
             } else {
                 return GetDefaulterImageURL(type);
             }
