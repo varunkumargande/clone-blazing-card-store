@@ -24,6 +24,7 @@ import { imageUrl } from "../../../api/url";
 import MessageButton from "../../elements/MessageButton";
 import { stepState } from "../../Constants/becomeSeller";
 import { chatLogin } from "../../../api";
+import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 
 function HeaderDefault({ auth }, props) {
   const router = useRouter();
@@ -43,8 +44,9 @@ function HeaderDefault({ auth }, props) {
     }
   };
 
-  const stage = useSelector((state) => state?.becomeSeller?.currentState);
-
+  const stage = useSelector((state) => state?.becomeSeller?.currentState) ?? 0;
+  const submittedDetails = useSelector((state) => state?.becomeSeller?.submittedDetails);
+  
   const handleOnClick = () => {
     setActive(!active);
   };
@@ -177,13 +179,19 @@ function HeaderDefault({ auth }, props) {
             {auth.isLoggedIn ? (
               <>
                 {/* <MessageButton name={"Message"} /> */}
-                {!stepState.includes(pageName) ? (
-                  <Link href="/become-seller/guidelines">
-                    <a className="border-btn flex flex-center justify-center become">
-                      Become a Seller
-                    </a>
-                  </Link>
-                ) : null}
+                {
+                  (!!submittedDetails && stage < 4) ? (
+                    (!stepState.includes(pageName) )? (
+                      <Link href={`/become-seller/${stepState[stage]}`}>
+                        <a className="border-btn flex flex-center justify-center become">
+                          Become a Seller
+                        </a>
+                      </Link>
+                    ) : null
+                  ) : (
+                    <></>
+                  )
+                }
                 <button className="message flex flex-center justify-center" onClick={() => handeGoToChat()}>
                   
                     <IconMessage />
