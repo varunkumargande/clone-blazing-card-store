@@ -191,6 +191,7 @@ function Signup(auth) {
         validationSchema={registerSchema}
         onSubmit={(values) => {
           if (policyCheck == true && usernameAvailable) {
+            console.log(values)
             UserRegister(
               values.firstname,
               values.lastname,
