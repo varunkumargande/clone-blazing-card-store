@@ -14,7 +14,8 @@ export default function Electronic({
   setIsSeeAll,
   setSeeAllHeading,
   setIsLikedShow,
-  isLikedShow
+  isLikedShow,
+  showLoginModal
 }) {
   const dispatch = useDispatch();
   
@@ -33,7 +34,7 @@ export default function Electronic({
     if (categoryData)
       return categoryData[1]?.map((detail) => {
         return (
-          <StreamCard detail={detail} isLive={true} />
+          <StreamCard showLoginModal={showLoginModal} detail={detail} isLive={true} />
         );
       });
   };

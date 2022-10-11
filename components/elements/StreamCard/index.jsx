@@ -18,11 +18,7 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
   };
 
   const handleStreamingLink = (detail) => {
-    if (auth?.isLoggedIn) {
-      Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
-    } else {
-      showLoginModal(true);
-    }
+    Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
   };
 
   const getImagePath = (type) => {
