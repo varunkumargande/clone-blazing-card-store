@@ -19,23 +19,25 @@ export default function ProfileInformation() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+
     if (sessionStorage.getItem("spurtUser")) {
+      setLoader(true)
       let jsonObject = {
-        firstName: JSON.parse(sessionStorage.getItem("spurtUser")).firstName,
-        lastName: JSON.parse(sessionStorage.getItem("spurtUser")).lastName,
-        bio: JSON.parse(sessionStorage.getItem("spurtUser")).bio,
-        twitterUrl: JSON.parse(sessionStorage.getItem("spurtUser")).twitterUrl,
-        facebookUrl: JSON.parse(sessionStorage.getItem("spurtUser"))
-          .facebookUrl,
-        phoneNumber: JSON.parse(sessionStorage.getItem("spurtUser"))
-          .mobileNumber,
-        emailId: JSON.parse(sessionStorage.getItem("spurtUser")).email,
-        avatar: JSON.parse(sessionStorage.getItem("spurtUser")).avatar,
-        avatarPath: JSON.parse(sessionStorage.getItem("spurtUser")).avatarPath,
+        firstName: JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName,
+        lastName: JSON.parse(sessionStorage.getItem("spurtUser"))?.lastName,
+        bio: JSON.parse(sessionStorage.getItem("spurtUser"))?.bio,
+        twitterUrl: JSON.parse(sessionStorage.getItem("spurtUser"))?.twitterUrl,
+        facebookUrl: JSON.parse(sessionStorage.getItem("spurtUser"))?.facebookUrl,
+        phoneNumber: JSON.parse(sessionStorage.getItem("spurtUser"))?.mobileNumber,
+        emailId: JSON.parse(sessionStorage.getItem("spurtUser"))?.email,
+        avatar: JSON.parse(sessionStorage.getItem("spurtUser"))?.avatar,
+        avatarPath: JSON.parse(sessionStorage.getItem("spurtUser"))?.avatarPath,
+        username: JSON.parse(sessionStorage.getItem("spurtUser"))?.username,
       };
       setProfileData(jsonObject);
+      setLoader(false)
     }
-  }, []);
+  }, [loader]);
 
   const changeDP = (e) => {
     setNewDpError("");
@@ -81,6 +83,11 @@ export default function ProfileInformation() {
       `?path=${profileData?.avatarPath}&name=${profileData?.avatar}&width=300&height=300`
     );
   };
+  
+
+  const handleCancelButton = () => {
+    setLoader(true)
+  }
 
   const handleImageUpload = () => {
     return (
@@ -150,7 +157,7 @@ export default function ProfileInformation() {
 
   const handleProfileForm = () => {
     if (loader == false) {
-      if (profileData != null) {
+      if (!!profileData) {
         return (
           <>
             {handleImageUpload()}
@@ -217,41 +224,35 @@ export default function ProfileInformation() {
                           </div>
                         </div>
 
-                        {/* <div className="flex space-between">
+                        <div className="flex space-between">
                           <div className="input-control wd50">
                             <div className="flex space-between flex-center">
                               <label htmlFor="usr">Username *</label>
-                              <button className="verify-email-btn">
-                                Verify email
-                              </button>
                             </div>
                             <input
                               name="text"
                               placeholder={"Enter here"}
                               id="usr"
                               className="grey-bg"
+                              value={profileData?.username}
+                              disabled
                             />
                             <span className="errorMessage"></span>
                           </div>
                           <div className="input-control wd50">
-                            <div className="flex space-between flex-center">
-                              <label htmlFor="usr">Phone Number *</label>
-                            </div>
-                            <div className="flex space-between select-input">
-                              <select className="grey-bg">
-                                <option>+ 1</option>
-                                <option>+ 2</option>
-                              </select>
-                              <input
-                                name="text"
-                                placeholder={"Enter here"}
-                                id="usr"
-                                className="grey-bg"
-                              />
-                            </div>
+                            <label htmlFor="usr">Phone Number *</label>
+                            <input
+                              name="phoneNumber"
+                              placeholder={"Enter here"}
+                              id="usr"
+                              className="grey-bg"
+                              onChange={handleChange}
+                              value={values.phoneNumber}
+                            />
+
                             <span className="errorMessage"></span>
                           </div>
-                        </div> */}
+                        </div>
 
                         <div className="input-control">
                           <div className="flex space-between flex-center">
@@ -316,8 +317,8 @@ export default function ProfileInformation() {
                     <div className="button-wrapper flex mb40">
                       <button
                         className="border-btn mr16"
-                       type="button"
-                        onClick={resetForm}
+                        type="button"
+                        onClick={() => handleCancelButton()}
                       >
                         Cancel
                       </button>
@@ -333,11 +334,11 @@ export default function ProfileInformation() {
         );
       }
     } else {
-      return(
+      return (
         <>
           <Loader />
         </>
-      )
+      );
     }
   };
 
@@ -357,7 +358,8 @@ export default function ProfileInformation() {
 
       <h3>Delete Your Blazing Cards Account</h3>
       <div className="dicscription">
-        Deleting your account will completely erase your data and information related to your account.
+        Deleting your account will completely erase your data and information
+        related to your account.
       </div>
       <div className="box inline">
         If you want to delete your Blazing Cards account, Please click on{" "}
