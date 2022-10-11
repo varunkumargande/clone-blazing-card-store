@@ -8,6 +8,7 @@ import Router from "next/router";
 import { DeletAccountModal } from "../Modal/Modal";
 import { imageUrl } from "../../../api/url";
 import { Loader } from "../../reusable/Loader";
+import { uploadImageToServer } from "../../../utilities/common-helpers";
 
 export default function ProfileInformation() {
   const [profileData, setProfileData] = useState(null);
@@ -47,15 +48,23 @@ export default function ProfileInformation() {
       const file = Math.round(fsize / 1024);
       if (file < 2048) {
         // setNewDp(files[0])
-        let reader = new FileReader();
-        reader.readAsDataURL(files[0]);
-        reader.onloadend = () => setNewDp(reader.result);
-        setimpuploadsuccess(true);
+        uploadImage(files[0])
       } else {
         setNewDpError("Please upload minimum 2 MB");
       }
     }
   };
+
+  const uploadImage = async (file) => {
+    const uploadImage = await uploadImageToServer(file)
+    console.log("uploadImage: ", uploadImage)
+    if(uploadImage) {
+      let reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onloadend = () => setNewDp(reader.result);
+      setimpuploadsuccess(true);
+    }
+  }
 
   const profileSchema = Yup.object().shape({
     firstName: Yup.string().required("Required"),
