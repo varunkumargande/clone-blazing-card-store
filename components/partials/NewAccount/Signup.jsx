@@ -10,27 +10,19 @@ import {
   numPresent,
   specialPresent,
 } from "../../helper/emailValidator";
-// import { gapi } from "gapi-script";
 import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
-import { GoogleLogin } from "react-google-login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept";
 import { registerConstant } from "../../Constants/register";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 
-// This code is required in future development for Google Signin
-// gapi.load("client:auth2", () => {
-//   gapi.client.init({
-//     clientId:
-//       "951035021628-vq6g1nr866f0cqi56kch4viedvevmkt0.apps.googleusercontent.com",
-//     plugin_name: "chat",
-//   });
-// });
 
 function Signup(auth) {
   const [name, setName] = useState("");
@@ -119,23 +111,23 @@ function Signup(auth) {
       .required("Required"),
   });
 
-  const responseGoogle = (response) => {
-    //let pass = generatePassword();
+  const responseGoogle = (response, encyrpted) => {
     GoogleLoginApi(
-      response.gv.gZ,
-      response.gv.tX,
-      response.profileObj.email,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      response.googleId,
-      "gmail",
-      response.googleId,
-      response.googlePath,
-      response.googleId,
-      response.googlePath,
-      response.profileObj,
-      Router,
-      response
+      response.given_name, 
+      response.family_name, 
+      response.email, 
+      "", 
+      "", 
+      response.email.split("@")[0], 
+      "gmail", 
+      "", 
+      "", 
+      "", 
+      "", 
+      response.picture, 
+      Router, 
+      response,
+      encyrpted
     );
   };
 
@@ -159,20 +151,26 @@ function Signup(auth) {
       <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
       <h1 className="title mb32">Sign up to Blazing Cards</h1>
 
-      <GoogleLogin
-        clientId="951035021628-vq6g1nr866f0cqi56kch4viedvevmkt0.apps.googleusercontent.com"
-        render={(renderProps) => (
-          <button className="google-btn mb42" onClick={renderProps.onClick}>
-            <IconGoogle />
-            Continue with Google
-          </button>
-        )}
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogleFailure}
-        isSignedIn={true}
-        cookiePolicy={'single_host_origin'}
-      />
+      <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+        <GoogleLogin
+          render={(renderProps) => (
+            <button className="google-btn mb42" onClick={renderProps.onClick}>
+              <IconGoogle />
+              Sign up with Google
+            </button>
+          )}
+          onSuccess={credentialResponse => {
+            let encryptedKey = credentialResponse.credential;
+            let data = jwt_decode(credentialResponse.credential);
+            responseGoogle(data, encryptedKey);
+          }}
+          onError={(response) => {
+            console.log('Login Failed');
+            responseGoogleFailure(response);
+          }}
+        />
+      </GoogleOAuthProvider>
+
 
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
