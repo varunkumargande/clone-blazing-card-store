@@ -56,7 +56,6 @@ function Login(props) {
       response.picture, 
       Router, 
       response,
-      encyrpted
     );
   };
 
@@ -82,9 +81,8 @@ function Login(props) {
             </button>
           )}
           onSuccess={credentialResponse => {
-            let encryptedKey = credentialResponse;
             let data = jwt_decode(credentialResponse.credential);
-            responseGoogle(data, encryptedKey);
+            responseGoogle(data);
           }}
           onError={() => {
             console.log('Login Failed');
