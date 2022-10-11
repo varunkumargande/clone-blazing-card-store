@@ -7,6 +7,7 @@ import StreamingRIght from "../../components/partials/streaming/StreamingRIght";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import { SignUPGoogle } from "../../components/partials/Modal/Modal";
 // import Footer from "../../components/partials/Landingpage/Footer";
+import {SuceesTostmessage,ErorrTostmessage} from '../../components/partials/ToastMessage/ToastMessage'
 import IconBack from '../../components/Icons/IconBack';
 export default function LiveStreaming(){
     const [windowWidth, setWindowWidth] = useState(0);
@@ -28,7 +29,8 @@ export default function LiveStreaming(){
                 <StreamingLive />
                 <StreamingRIght />
             </div>
-            {/* <Footer/> */}
+            <SuceesTostmessage/>
+            <ErorrTostmessage/>
         </>
     );
 }
