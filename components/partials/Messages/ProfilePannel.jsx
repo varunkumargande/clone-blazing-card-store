@@ -1,8 +1,10 @@
 import React from "react";
 import IconAddChat from "../../Icons/IconAddChat";
-export default function ProfilePannel({ contacts, changeCurrentChat, setIsOpen }) {
-  
-
+export default function ProfilePannel({
+  contacts,
+  changeCurrentChat,
+  setIsOpen,
+}) {
   return (
     <div className="profile-wrapper">
       {/* <div className=" static-content flex justify-center flex-center column">
@@ -12,7 +14,10 @@ export default function ProfilePannel({ contacts, changeCurrentChat, setIsOpen }
         <div className="title">
           <span>2</span>New Message
         </div>
-        <button className="btn-chat flex flex-center justify-center br50" onClick={() => setIsOpen(true)}>
+        <button
+          className="btn-chat flex flex-center justify-center br50"
+          onClick={() => setIsOpen(true)}
+        >
           <IconAddChat />
         </button>
       </div>
@@ -26,7 +31,10 @@ export default function ProfilePannel({ contacts, changeCurrentChat, setIsOpen }
               >
                 <div className="profile-image-title flex flex-center">
                   <div className="image br50">
-                    <img src={item.avatarImage} alt="" />
+                    <img
+                      src={item?.avatarImage == "" ? "/static/img/no-image.png" : item?.avatarImage}
+                      alt=""
+                    />
                   </div>
                   <div className="profile-text">
                     <div className="name">

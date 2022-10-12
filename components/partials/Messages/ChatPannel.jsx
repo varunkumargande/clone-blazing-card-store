@@ -25,9 +25,15 @@ export default function ChatPannel({
     }
   };
 
+  const handleEnterPressEvent = (event) => {
+    if (event.key == "Enter") {
+      sendChat(event);
+    }
+  };
+
   return (
     <>
-      {contactDetail != undefined ? (
+      {!!contactDetail ? (
         <>
           <div className="right-pannel">
             {/* <div className=" static-content flex justify-center flex-center column">
@@ -36,7 +42,14 @@ export default function ChatPannel({
             </div> */}
             <div className="profile-header-title flex flex-center">
               <div className="image">
-                <img src={contactDetail.avatarImage} alt="" />
+                <img
+                  src={
+                    contactDetail.avatarImage == ""
+                      ? "/static/img/no-image.png"
+                      : contactDetail.avatarImage
+                  }
+                  alt=""
+                />
               </div>
               <div className="profile-text">
                 <div className="name">
@@ -77,6 +90,7 @@ export default function ChatPannel({
                 type="text"
                 placeholder="Start conversation..."
                 onChange={(e) => setMsg(e.target.value)}
+                onKeyDown={(event) => handleEnterPressEvent(event)}
               />
               {/* <button className="g-btn">
                 <IconGallery />
@@ -84,6 +98,7 @@ export default function ChatPannel({
               <button
                 className="chat-btn flex flex-center justify-center br50"
                 onClick={(event) => sendChat(event)}
+                onKeyDown={(event) => handleEnterPressEvent(event)}
               >
                 <IconChat />
               </button>
