@@ -24,7 +24,6 @@ export const getCardImagesByName = (cardNumber = "") => {
 
   for (const key in re) {
     if (re[key].test(number)) {
-      console.log(key)
       switch (key) {
         case 'visa':
           return <IconVisaCard />
