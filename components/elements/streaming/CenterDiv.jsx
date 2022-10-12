@@ -65,7 +65,6 @@ function CenterDiv({
   };
 
   const fetchShiipmentApi = () => {
-    setAddressLoader(true)
     getStreamingShippmentDetail(setAddressList, setAddressLoader);
   };
 
@@ -92,12 +91,10 @@ function CenterDiv({
       setAddressLoader(true)
       editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi);
       setShippmentFormOpen(false);
-      fetchShiipmentApi();
     } else {
       setAddressLoader(true)
       UserAddAddress(data, setAddressLoader, fetchShiipmentApi);
       setShippmentFormOpen(false);
-      fetchShiipmentApi()
     }
   };
   

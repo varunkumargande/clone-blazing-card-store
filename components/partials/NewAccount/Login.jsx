@@ -85,7 +85,7 @@ function Login(props) {
             responseGoogle(data);
           }}
           onError={() => {
-            console.log('Login Failed');
+            
           }}
         />
       </GoogleOAuthProvider>
@@ -121,7 +121,7 @@ function Login(props) {
           <>
             <form className="login flex space-between" onSubmit={handleSubmit}>
               <div className="input-control">
-                <label>Email Address</label>
+                <label>Email Address*</label>
                 <input
                   name="email"
                   placeholder={"Email"}
@@ -129,6 +129,7 @@ function Login(props) {
                   value={values.email}
                   onChange={handleChange}
                   className="errorBorder"
+                  onBlur={handleBlur}
                 />
                 <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
               </div>
@@ -141,6 +142,7 @@ function Login(props) {
                   value={values.password}
                   className="errorBorder"
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <span className="errorMessage">{errors.password && touched.password ? errors.password : null}</span>
                 {conpassShow ? (

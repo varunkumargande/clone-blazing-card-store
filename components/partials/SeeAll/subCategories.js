@@ -5,19 +5,26 @@ export default function SeeAllSubCategories({
   categories,
   activeCategory,
   setActiveSubCategory,
-  activeSubCategory
+  activeSubCategory,
+  setActiveSubCategoryId
 }) {
-  const handleSubCategorySelect = () => {};
+  const handleSubCategorySelect = (name, id) => {
+    setActiveSubCategory(name)
+    setActiveSubCategoryId(id)
+  };
 
   const getAllSubCategoriesCard = () => {
-    if (categories) {
+    if (!!categories) {
       return categories.map((element) => {
         if (element.name === activeCategory) {
           return element?.children.map((item) => {
             return (
               <>
                 <div className="category-list">
-                  <button className="title active">{item.name}</button>
+                  <button className=
+                  {activeSubCategory === item.name ? "title active" : "title"}
+                  onClick={() => handleSubCategorySelect(item.name, item.categoryId)}
+                  >{item.name}</button>
                 </div>
               </>
             );
@@ -33,7 +40,10 @@ export default function SeeAllSubCategories({
         <div className="overflow-wrap">
           <div className="Category-list-wrap inner-container flex">
             <div className="category-list">
-              <button className="title active">All</button>
+              <button 
+              className={activeSubCategory === "all" ? "title active" : "title"}
+              onClick={() => handleSubCategorySelect("all")}
+              >All</button>
             </div>
             {getAllSubCategoriesCard()}
           </div>
