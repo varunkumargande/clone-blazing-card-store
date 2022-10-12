@@ -82,7 +82,7 @@ function StreamingBase({
    */
   useEffect(() => {
     if (!!auctionNotification || !!bidNotification || stream?.streamProducts?.AuctionDetails?.latestAuction !== {}) {
-      getTimeDifference(getTime());
+      getTimeDifference(getTime(), getCurrentTime());
       if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
         setDisableBid(false);
       }
@@ -98,12 +98,11 @@ function StreamingBase({
     }
   }, [bidNotification, auctionNotification, auctionDetails]);
 
-  // const getTime =() => {
-  //   return bidNotification?.endTime ? bidNotification?.endTime : ( auctionNotification?.auction?.endTime ? auctionNotification?.auction?.endTime : (auctionDetails?.latestBidding?.bidEndTime ? auctionDetails?.latestBidding?.bidEndTime : (auctionDetails?.latestAuction?.endTime ? auctionDetails?.latestAuction?.endTime : null) ) )
-  // }
-
   const getTime =() => {
     return bidNotification?.endTime ? bidNotification?.endTime : ( auctionNotification?.auction?.endTime ? auctionNotification?.auction?.endTime : (auctionDetails?.latestAuction?.endTime ? auctionDetails?.latestAuction?.endTime : null)  )
+  }
+  const getCurrentTime =() => {
+    return bidNotification?.currentTime ? bidNotification?.currentTime : ( auctionNotification?.auction?.currentTime ? auctionNotification?.auction?.currentTime : (auctionDetails?.latestAuction?.currentTime ? auctionDetails?.latestAuction?.currentTime : null)  )
   }
 
   const getAuctionId = () => {
@@ -117,13 +116,26 @@ function StreamingBase({
    * Method will calculate Live Auction endtime
    * @param {*} endTime
    */
-  const getTimeDifference = (endTime) => {
+  
+  const getTimeDifference = (endTime, currentTime) => {
     if(!endTime) return
+
+    if(!currentTime) return;
+
     let [date, time] = endTime.split(" ");
     const endTime = moment(date.replaceAll("-", "/") + " " + time);
+    console.log("endTime",endTime)
+
+    let [cdate, ctime] = currentTime.split(" ");
+    const currentTime = moment(cdate.replaceAll("-", "/") + " " + ctime);
+    console.log("currentTime",currentTime)
+    //moment.utc().format("YYYY/MM/DD, HH:mm:ss")
+    
     const duration = moment.duration(
-      endTime.diff(moment.utc().format("YYYY/MM/DD, HH:mm:ss"))
+      endTime.diff(currentTime)
     );
+    
+
     let minutes = Math.floor(duration.asSeconds() / 60);
     let seconds = Math.ceil(duration.asSeconds() % 60);
     minutes = minutes < 0 ? 0 : minutes;
