@@ -20,6 +20,4 @@ export default function Register(auth) {
             </main>
         </div>
     );
-
 }
-

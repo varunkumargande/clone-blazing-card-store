@@ -95,7 +95,7 @@ function Signup(auth) {
     email: Yup.string().email("Invalid email format").required("Required"),
     number: Yup.string()
       .matches(phoneRegExp, "Phone number is not valid")
-      .required("Required"),
+      .required("Required").min(10).max(12),
     password: Yup.string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
@@ -107,7 +107,7 @@ function Signup(auth) {
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
     username: Yup.string()
       .matches(/^[a-zA-Z0-9]*$/, "Please enter valid username")
-      .max(40)
+      .max(8)
       .required("Required"),
   });
 
@@ -163,7 +163,7 @@ function Signup(auth) {
             responseGoogle(data);
           }}
           onError={(response) => {
-            console.log('Login Failed');
+            
             responseGoogleFailure(response);
           }}
         />
@@ -187,6 +187,7 @@ function Signup(auth) {
         validationSchema={registerSchema}
         onSubmit={(values) => {
           if (policyCheck == true && usernameAvailable) {
+            
             UserRegister(
               values.firstname,
               values.lastname,
@@ -194,7 +195,8 @@ function Signup(auth) {
               values.password,
               values.cpass,
               values.number,
-              usernameInput.current.value,
+              values.username,
+              // usernameInput.current.value,
               Router
             );
           }
@@ -222,8 +224,9 @@ function Signup(auth) {
                   value={values.firstname}
                   maxlength="30"
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
-                <div className="errorText">{errors.firstname && touched.firstname ? errors.firstname : null}</div>
+                <div className="errorText">{ touched.firstname && errors.firstname ? errors.firstname : null}</div>
               </div>
               <div className="input-control wd50">
                 <label>Last Name*</label>
@@ -233,6 +236,7 @@ function Signup(auth) {
                   placeholder={"Last Name"}
                   value={values.lastname}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <div className="errorText">{errors.lastname && touched.lastname ? errors.lastname : null}</div>
               </div>
@@ -244,6 +248,7 @@ function Signup(auth) {
                   placeholder={"Email Address"}
                   value={values.email}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <div className="errorText">{errors.email && touched.email ? errors.email : null}</div>
               </div>
@@ -258,7 +263,7 @@ function Signup(auth) {
                   ref={usernameInput}
                   onBlur={handleOnBlur}
                 />
-                <div className="errorText">{errors.username && touched.username ? errors.username : null}</div>
+                <div className="errorText">{errors.username ? errors.username : null}</div>
                 {usernameAvailable === false && usernameAvailable !== null ? (
                   <div className="errorText">Username already taken</div>
                 ) : null}
@@ -271,6 +276,7 @@ function Signup(auth) {
                   value={values.number}
                   onChange={handleChange}
                   maxlength="15"
+                  onBlur={handleBlur}
                 />
                 <div className="errorText">{errors.number && touched.number ? errors.number : null}</div>
               </div>
@@ -283,6 +289,7 @@ function Signup(auth) {
                   type={passShow ? "text" : "password"}
                   value={values.password}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 {passShow ? (
                   <button
@@ -313,6 +320,7 @@ function Signup(auth) {
                   type={conpassShow ? "text" : "password"}
                   value={values.cpass}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 {conpassShow ? (
                   <button
@@ -340,7 +348,7 @@ function Signup(auth) {
 
               <div className="checkbox-wrap mb32">
                 <label className="checkbox">
-                  <input type="checkbox" onClick={handlePolicyCheck} />
+                  <input type="checkbox" onClick={() => handlePolicyCheck()} />
                   <span class="checkmark"></span>
                   I’ve read and agree with <Link href="/terms-conditions"><a>Terms of Service</a></Link> & <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
                 </label>
