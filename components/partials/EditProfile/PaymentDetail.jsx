@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import IconDelete from "../../Icons/IconDelete";
-import IconMasterCard from "../../Icons/IconMasterCard";
 import Link from "next/link";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -10,6 +9,7 @@ import { modalWarning, modalSuccess } from "../../../api/intercept";
 import PaymentCard from "./PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
+import { getCardImagesByName } from "../../helper/cardImageHelper";
 
 export default function PaymentDetail() {
   const [cardData, setCardData] = useState(null);
@@ -145,7 +145,7 @@ export default function PaymentDetail() {
                                 value={values.cardNumber}
                               />
                               <span className="card-icon">
-                                <IconMasterCard />
+                                {values?.cardNumber?.length >= 3 ? getCardImagesByName(values.cardNumber) : ''}
                               </span>
                               <span className="errorMessage">
                                 {errors.cardNumber && touched.cardNumber
