@@ -92,7 +92,7 @@ export default function ProfileInformation() {
   const handleImage = () => {
     return (
       imageUrl +
-      `?path=${profileData?.avatarPath}&name=${profileData?.avatar}&width=300&height=300`
+      `?path=${profileData?.avatarPath}&name=/${profileData?.avatar}&width=300&height=300`
     );
   };
   

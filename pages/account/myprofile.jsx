@@ -298,7 +298,7 @@ function MyProfile(props) {
               imageUrl +
               "?path=" +
               profile.avatarPath +
-              "&name=" +
+              "&name=/" +
               profile.avatar +
               "&width=500&height=500"
             }
