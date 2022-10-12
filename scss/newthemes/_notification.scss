@@ -50,3 +50,21 @@
     }
 
  }
+
+ .noNotifications{
+    background-color: $white-color;
+    min-height: 300px;
+    border-radius: 8px;
+    h3{
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 400;
+    }
+ }
+
+ @media all and (min-width:1025px){
+    .noNotifications{
+        min-height: 622px;
+    }
+ }
+
