@@ -1,5 +1,6 @@
 import axiosRequest from "axios";
 import { getImageSignedUrl } from "../api/common/common";
+import DefaultConstants from "./constants";
 
 export const stickyHeader = () => {
     let number =
@@ -31,24 +32,22 @@ export const getFileNameAndExtension = (fileName, validFileExtensions) => {
     return file
 }
 
-export const uploadImageToServer = async (file, base64) => {
+export const uploadImageToServer = async (file) => {
     try {
         const { name, extension } = getFileNameAndExtension(file.name)
         const { type } = file;
         const time = new Date().getTime();
         const fileName  = `${time}_${name}${extension}`
-        const signedUrl = await getImageSignedUrl({ path: 'NewFolder', key: fileName })
-        console.log("uploadImageToServer signedUrl: ", signedUrl)
+        const signedUrl = await getImageSignedUrl({ path: DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH, key: fileName });
         if (signedUrl?.url) {
             const signedRequest = signedUrl.url;
-            var options = { headers: { "Content-Type": type } };
+            const options = { headers: { "Content-Type": type } };
             const s3Response = await axiosRequest.put(signedRequest, file, options);
-            // const s3Response = await axiosRequest.put(signedRequest, { key: base64 }, options);
             return { ...s3Response, fileName };
         }
         return false
     } catch (error) {
-        console.log("uploadImageToServer error: ", error)
+        modalWarning("error", error);
         return false
     }
 }

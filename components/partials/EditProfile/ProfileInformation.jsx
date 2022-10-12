@@ -15,6 +15,7 @@ export default function ProfileInformation() {
   const [newDpError, setNewDpError] = useState("");
   const [impuploadsuccess, setimpuploadsuccess] = useState(false);
   const [newDp, setNewDp] = useState("");
+  const [newDpName, setNewDpName] = useState("");
   const inputFile = useRef(null);
   const [loader, setLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -60,11 +61,12 @@ export default function ProfileInformation() {
   };
 
   const uploadImage = async (file, base64) => {
-    const uploadImage = await uploadImageToServer(file, base64)
-    // if(uploadImage) {
-      setNewDp(reader.result)
+    const uploadImage = await uploadImageToServer(file);
+    if(uploadImage) {
+      setNewDp(base64);
+      setNewDpName(uploadImage?.fileName);
       setimpuploadsuccess(true);
-    // }
+    }
   }
 
   const profileSchema = Yup.object().shape({
@@ -184,7 +186,7 @@ export default function ProfileInformation() {
               validationSchema={profileSchema}
               onSubmit={(values) => {
                 setLoader(true);
-                editProfileApi(values, newDp, Router, setLoader);
+                editProfileApi(values, newDpName, Router, setLoader);
               }}
             >
               {({
