@@ -31,7 +31,7 @@ export const getFileNameAndExtension = (fileName, validFileExtensions) => {
     return file
 }
 
-export const uploadImageToServer = async (file) => {
+export const uploadImageToServer = async (file, base64) => {
     try {
         const { name, extension } = getFileNameAndExtension(file.name)
         const { type } = file;
@@ -41,8 +41,9 @@ export const uploadImageToServer = async (file) => {
         console.log("uploadImageToServer signedUrl: ", signedUrl)
         if (signedUrl?.url) {
             const signedRequest = signedUrl.url;
-            var options = { headers: { "Content-Type": type, 'Access-Control-Allow-Origin': '*' } };
+            var options = { headers: { "Content-Type": type } };
             const s3Response = await axiosRequest.put(signedRequest, file, options);
+            // const s3Response = await axiosRequest.put(signedRequest, { key: base64 }, options);
             return { ...s3Response, fileName };
         }
         return false

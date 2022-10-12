@@ -48,22 +48,23 @@ export default function ProfileInformation() {
       const file = Math.round(fsize / 1024);
       if (file < 2048) {
         // setNewDp(files[0])
-        uploadImage(files[0])
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          uploadImage(files[0], reader.result)
+        };
+        reader.readAsDataURL(files[0]);
       } else {
         setNewDpError("Please upload minimum 2 MB");
       }
     }
   };
 
-  const uploadImage = async (file) => {
-    const uploadImage = await uploadImageToServer(file)
-    console.log("uploadImage: ", uploadImage)
-    if(uploadImage) {
-      let reader = new FileReader();
-      reader.readAsDataURL(files[0]);
-      reader.onloadend = () => setNewDp(reader.result);
+  const uploadImage = async (file, base64) => {
+    const uploadImage = await uploadImageToServer(file, base64)
+    // if(uploadImage) {
+      setNewDp(reader.result)
       setimpuploadsuccess(true);
-    }
+    // }
   }
 
   const profileSchema = Yup.object().shape({
