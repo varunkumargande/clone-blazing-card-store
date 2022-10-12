@@ -29,14 +29,14 @@ export default function ShippingDetails() {
   };
 
   const initialShippingValues = {
-    address1: addressData.length != 0 ? addressData[0]?.address1 : "",
-    address2: addressData.length != 0 ? addressData[0]?.address2 : "",
-    city: addressData.length != 0 ? addressData[0]?.city : "",
-    state: addressData.length != 0 ? addressData[0]?.state : "",
-    postcode: addressData.length != 0 ? addressData[0]?.postcode : "",
-    countryId: addressData.length != 0 ? addressData[0]?.countryId : "",
-    addressType: addressData.length != 0 ? addressData[0]?.addressType : "",
-    company: addressData.length != 0 ? addressData[0]?.company : "",
+    address1: addressData?.length != 0 ? addressData[0]?.address1 : "",
+    address2: addressData?.length != 0 ? addressData[0]?.address2 : "",
+    city: addressData?.length != 0 ? addressData[0]?.city : "",
+    state: addressData?.length != 0 ? addressData[0]?.state : "",
+    postcode: addressData?.length != 0 ? addressData[0]?.postcode : "",
+    countryId: addressData?.length != 0 ? addressData[0]?.countryId : "",
+    addressType: addressData?.length != 0 ? addressData[0]?.addressType : "",
+    company: addressData?.length != 0 ? addressData[0]?.company : "",
   };
 
   const shippingSchema = Yup.object().shape({

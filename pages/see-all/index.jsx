@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Header from "../../components/partials/LandingPage/Header";
+import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import IconEye from "../../components/Icons/IconEye";
 import IconLike from "../../components/Icons/IconLike";
@@ -15,12 +15,11 @@ import SeeAllSubCategories from "../../components/partials/SeeAll/subCategories"
 import StreamCard from "../../components/elements/StreamCard";
 import Router from "next/router";
 
-function categoryStream() {
+function categoryStream({ auth }) {
   const [active, setActive] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
-  const [activeCategoryId, setActiveCategoryId] = useState(null);
-  const [activeSubCategory, setActiveSubCategory] = useState(null);
-  
+  const [activeSubCategoryId, setActiveSubCategoryId] = useState(null);
+  const [activeSubCategory, setActiveSubCategory] = useState("all");
 
   const wrapperRef = useRef(null);
   const handleOnClick = () => {
@@ -61,26 +60,62 @@ function categoryStream() {
 
   useEffect(() => {
     if (!!categories) {
-        setActiveCategory(categories[0]?.name);
-        setActiveCategoryId(categories[0]?.categoryId)
+      setActiveCategory(categories[0]?.name);
     }
   }, [categories]);
 
   const getStreamCards = () => {
     if (activeCategory != null) {
       return streamDetail?.[activeCategory].map((detail) => {
-        return <StreamCard isLive={false} detail={detail} />;
+        if (detail?.subCategory_id == parseInt(activeSubCategoryId)) {
+          return <StreamCard isLive={false} detail={detail} />;
+        }
+        if (!activeSubCategoryId) {
+          return <StreamCard isLive={false} detail={detail} />;
+        }
       });
     }
   };
 
+  const handleShowParentCategories = () => {
+    if (!!categories) {
+      return (
+        <SeeAllParentCategories
+          categories={categories}
+          setActiveCategory={setActiveCategory}
+          activeCategory={activeCategory}
+          setActiveSubCategory={setActiveSubCategory}
+        />
+      );
+    }
+  };
+
+  const handleShowSubCategories = () => {
+    if (!!categories) {
+      return (
+        <SeeAllSubCategories
+          categories={categories}
+          activeCategory={activeCategory}
+          setActiveSubCategory={setActiveSubCategory}
+          activeSubCategory={activeSubCategory}
+          setActiveSubCategoryId={setActiveSubCategoryId}
+        />
+      );
+    }
+  };
+
+  const handleToGoHome = () => {
+    Router.push("/");
+  };
+
   return (
     <div className="home-container">
-      {windowWidth <= 1024 ? <MobileHeader /> : <Header />}
+      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
       <section className="breadcrumbs-wrapper">
         <div className="inner-container">
           <ul className="breadcrumbs flex flex-center">
-            <li>Home</li>/<li className="current">Live</li>
+            <li onClick={() => handleToGoHome()}>Home</li>/
+            <li className="current">All Categories</li>
           </ul>
         </div>
       </section>
@@ -97,21 +132,9 @@ function categoryStream() {
         <section className="Live-wrapper card-inner">
           <div className="inner-container">
             <div className="aside-content-wrap flex flex-start space-between">
-              <SeeAllParentCategories
-                categories={categories}
-                setActiveCategory={setActiveCategory}
-                activeCategory={activeCategory}
-                activeCategoryId={activeCategoryId}
-                setActiveCategoryId={setActiveCategoryId}
-              />
+              {handleShowParentCategories()}
               <div className="overflow-none">
-                <SeeAllSubCategories
-                  categories={categories}
-                  activeCategory={activeCategory}
-                  setActiveSubCategory={setActiveSubCategory}
-                  activeSubCategory={activeSubCategory}
-                />
-
+                {handleShowSubCategories()}
                 <div className="card-wrap flex inner-container">
                   {getStreamCards()}
                 </div>

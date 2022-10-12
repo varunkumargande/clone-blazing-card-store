@@ -4,6 +4,7 @@ import IconBack from "../../../Icons/IconBack";
 import IconEye from "../../../Icons/IconEye";
 import IconLike from "../../../Icons/IconLike"
 import StreamCard from "../../../elements/StreamCard";
+import { stringFormatter } from "../../../../utilities/utils";
 
 export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCategory, subCateId, setSubCateId }) {
 
@@ -40,7 +41,8 @@ export default function Vertical({ setIsSeeAllCate, categoryName, data, activeCa
             <div className="inner-container">
                 <div className="title-wrap flex space-between flex-center">
                     <div className="flex flex-center">
-                        <h3 className="title">{categoryName == null ? "All" : categoryName}</h3>
+                        <h3 className="title">
+                            {categoryName == null ? "All" : stringFormatter(categoryName)}</h3>
                     </div>
                     <div className="seeAll">
                         {/* <div className="dropdownlist">

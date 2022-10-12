@@ -21,7 +21,7 @@ export async function editAddressApi(values, addressId, setAddressLoader, addres
   }
   if (result.data.status === 1) {
     modalSuccess("success", result.data.message);
-    setAddressLoader(false)
+    addressList()
   } else {
     modalWarning("error", result.data.message);
     setAddressLoader(false)
