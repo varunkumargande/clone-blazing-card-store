@@ -135,7 +135,10 @@
             @include pos(re);
             > img{
                 max-width: 98px;
+                max-height: 98px;
                 width: 100%;
+                border-radius: 50%;
+                object-fit: cover;
             }
             .f-title{
                 font-size: 18px;
