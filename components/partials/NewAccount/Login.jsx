@@ -186,6 +186,7 @@ function Login(props) {
           </>
         )}
       </Formik>
+      <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
     </div>
   );
 }
