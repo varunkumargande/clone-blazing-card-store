@@ -373,6 +373,7 @@
         .card-wrap {
             .card-list{ 
                 flex:0 0 50%;
+                max-width: 50%;
             }
         }
     }
@@ -382,6 +383,7 @@
         .card-wrap {
             .card-list{ 
                 flex:0 0 33.333%;
+                max-width: 33.333%;
             }
         }
     }
@@ -448,7 +450,8 @@
         margin:0 -12px;
     }
     .card-list{
-        flex:0 0 214px;
+        flex:0 0 218px;
+        max-width: 218px;
         padding: 0 12px;
         .inner-card-list{
             padding: 4px 4px 38px;
@@ -507,6 +510,7 @@
             margin: 0 -14px;
             .card-list{ 
                 flex:0 0 218px;
+                max-width: 218px;
                 padding:0 14px 28px;
             }
         }
@@ -518,6 +522,7 @@
         .card-wrap {
             .card-list{ 
                 flex:0 0 207px;
+                max-width: 207px;
             }
         }
     }
@@ -525,7 +530,8 @@
         .overflow-none{
             .card-wrap {
                 .card-list{ 
-                    flex:0 0 214px;
+                    flex:0 0 218px;
+                    max-width: 218px;
                 }
             }
         }
@@ -536,6 +542,7 @@
         .card-wrap {
             .card-list{ 
                 flex:0 0 222px;
+                max-width: 222px;
             }
         }
     }
@@ -544,6 +551,7 @@
             .card-wrap {
                 .card-list{ 
                     flex:0 0 208px;
+                    max-width: 208px;
                 }
             }
         }

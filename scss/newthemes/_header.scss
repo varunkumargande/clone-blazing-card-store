@@ -250,7 +250,9 @@
             border-radius: 50%;
         }
         &.active{
-            background-color: $green-color;
+            &:after{ 
+                background-color: $green-color;
+            }
         }
         &:hover{
             .icon{
