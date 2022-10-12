@@ -135,7 +135,7 @@ function Login(props) {
                 />
                 <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
               </div>
-              <div className="input-control">
+              <div className="input-control pass">
                 <label>Password</label>
                 <input
                   name="password"
