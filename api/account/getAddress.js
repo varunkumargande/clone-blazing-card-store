@@ -7,5 +7,4 @@ export async function addressListApi(setAddressData,setAddressLoader) {
         setAddressData(result.data.data)
                 setAddressLoader(false)
     }
-
 }

@@ -217,7 +217,7 @@ function Category({
             </div>
           </div>
           <div className="seeAll">
-            <Link href="/see-all?page=categories">
+            <Link href="/see-all">
               <a className="flex flex-center">View All</a>
             </Link>
           </div>

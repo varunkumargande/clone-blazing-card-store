@@ -38,7 +38,7 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
                         <h3 className="title">Schedule Shows</h3>
                     </div>
                     <div className="seeAll">
-                        <Link href="/see-all?page=schedule">
+                        <Link href="/see-all">
                             <a className="flex flex-center">View All</a>
                         </Link>
                     </div>

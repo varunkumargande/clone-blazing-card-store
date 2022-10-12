@@ -73,12 +73,12 @@ function Login(props) {
     <div className="login-wrapper">
       <h1 className="title mb32">Sign in to Blazing Cards</h1>
       <div className="GoogleWrap mb42">
-        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com"> 
+        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
           <GoogleLogin
             render={(renderProps) => (
               <button className="google-btn" onClick={renderProps.onClick}>
                 <IconGoogle />
-                Continue with Google
+                Sign up with Google
               </button>
             )}
             onSuccess={credentialResponse => {
@@ -86,7 +86,7 @@ function Login(props) {
               responseGoogle(data);
             }}
             onError={() => {
-              console.log('Login Failed');
+              
             }}
           />
         </GoogleOAuthProvider>
@@ -123,7 +123,7 @@ function Login(props) {
           <>
             <form className="login flex space-between" onSubmit={handleSubmit}>
               <div className="input-control">
-                <label>Email Address</label>
+                <label>Email Address*</label>
                 <input
                   name="email"
                   placeholder={"Email"}
@@ -131,6 +131,7 @@ function Login(props) {
                   value={values.email}
                   onChange={handleChange}
                   className="errorBorder"
+                  onBlur={handleBlur}
                 />
                 <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
               </div>
@@ -143,6 +144,7 @@ function Login(props) {
                   value={values.password}
                   className="errorBorder"
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <span className="errorMessage">{errors.password && touched.password ? errors.password : null}</span>
                 {conpassShow ? (
