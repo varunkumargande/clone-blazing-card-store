@@ -1,5 +1,6 @@
 import axiosRequest from "axios";
 import { getImageSignedUrl } from "../api/common/common";
+import { modalWarning } from "../api/intercept";
 import DefaultConstants from "./constants";
 
 export const stickyHeader = () => {
@@ -47,7 +48,7 @@ export const uploadImageToServer = async (file) => {
         }
         return false
     } catch (error) {
-        modalWarning("error", error);
+        modalWarning('error', error);
         return false
     }
 }
