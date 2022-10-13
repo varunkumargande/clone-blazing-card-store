@@ -10,9 +10,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { loginConstant } from "../../Constants/login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -39,23 +38,22 @@ function Login(props) {
     }
   }, [props]);
 
-  
   const responseGoogle = (response, encyrpted) => {
     GoogleLoginApi(
-      response.given_name, 
-      response.family_name, 
-      response.email, 
-      "", 
-      "", 
-      response.email.split("@")[0], 
-      "gmail", 
-      "", 
-      "", 
-      "", 
-      "", 
-      response.picture, 
-      Router, 
-      response,
+      response.given_name,
+      response.family_name,
+      response.email,
+      "",
+      "",
+      response.email.split("@")[0],
+      "gmail",
+      "",
+      "",
+      "",
+      "",
+      response.picture,
+      Router,
+      response
     );
   };
 
@@ -81,13 +79,11 @@ function Login(props) {
                 Sign up with Google
               </button>
             )}
-            onSuccess={credentialResponse => {
+            onSuccess={(credentialResponse) => {
               let data = jwt_decode(credentialResponse.credential);
               responseGoogle(data);
             }}
-            onError={() => {
-              
-            }}
+            onError={() => {}}
           />
         </GoogleOAuthProvider>
       </div>
@@ -133,7 +129,9 @@ function Login(props) {
                   className="errorBorder"
                   onBlur={handleBlur}
                 />
-                <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
+                <span className="errorMessage">
+                  {errors.email && touched.email ? errors.email : null}
+                </span>
               </div>
               <div className="input-control pass">
                 <label>Password</label>
@@ -146,7 +144,9 @@ function Login(props) {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <span className="errorMessage">{errors.password && touched.password ? errors.password : null}</span>
+                <span className="errorMessage">
+                  {errors.password && touched.password ? errors.password : null}
+                </span>
                 {conpassShow ? (
                   <button
                     className="show-hide"
@@ -170,6 +170,9 @@ function Login(props) {
                     <a>Forget Password</a>
                   </Link>
                 </div>
+                <div align={"center"}>
+                  <h5 className="errorMessage">{loginError}</h5>
+                </div>
               </div>
               <div className="submitWrap mb32">
                 <button type="submit" className="primary-btn">
@@ -186,7 +189,9 @@ function Login(props) {
           </>
         )}
       </Formik>
-      <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
+      <div className="copyright flex justify-center flex-center">
+        &copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved
+      </div>
     </div>
   );
 }

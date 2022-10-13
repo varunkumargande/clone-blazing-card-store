@@ -12,7 +12,8 @@ export async function UserRegister(
   confirmPassword,
   number,
   usernameInput,
-  Router
+  Router,
+  setSingupError
 ) {
   const data = JSON.stringify({
     name: firstname,
@@ -48,6 +49,7 @@ export async function UserRegister(
       Router.push("/account/login");
       modalSuccess("success", result.data.message);
     } else {
+      setSingupError(result.data.data.data.message[0])
       modalWarning("error", result.data.data.data.message[0]);
     }
   }

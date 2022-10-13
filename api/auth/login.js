@@ -12,6 +12,7 @@ export async function UserLogin(email, password, loginType, Router, setLoginErro
         type: loginType
     })
     const result = await APIServices.create('customer/login', data)
+
     if (result && result.data && result.data.status === 1) {
         
         sessionStorage.setItem("spurtToken", result.data.data.token);
@@ -24,6 +25,7 @@ export async function UserLogin(email, password, loginType, Router, setLoginErro
     } else {
         setLoginError(result.data.message)
         modalWarning('error', result.data.message)
+        
         setMail("")
         setPassword("")
     }
