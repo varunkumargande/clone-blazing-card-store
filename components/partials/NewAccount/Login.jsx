@@ -72,23 +72,25 @@ function Login(props) {
   return (
     <div className="login-wrapper">
       <h1 className="title mb32">Sign in to Blazing Cards</h1>
-      <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
-        <GoogleLogin
-          render={(renderProps) => (
-            <button className="google-btn mb42" onClick={renderProps.onClick}>
-              <IconGoogle />
-              Sign up with Google
-            </button>
-          )}
-          onSuccess={credentialResponse => {
-            let data = jwt_decode(credentialResponse.credential);
-            responseGoogle(data);
-          }}
-          onError={() => {
-            
-          }}
-        />
-      </GoogleOAuthProvider>
+      <div className="GoogleWrap mb42">
+        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+          <GoogleLogin
+            render={(renderProps) => (
+              <button className="google-btn" onClick={renderProps.onClick}>
+                <IconGoogle />
+                Sign up with Google
+              </button>
+            )}
+            onSuccess={credentialResponse => {
+              let data = jwt_decode(credentialResponse.credential);
+              responseGoogle(data);
+            }}
+            onError={() => {
+              
+            }}
+          />
+        </GoogleOAuthProvider>
+      </div>
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
       </div>
@@ -133,7 +135,7 @@ function Login(props) {
                 />
                 <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
               </div>
-              <div className="input-control">
+              <div className="input-control pass">
                 <label>Password</label>
                 <input
                   name="password"
@@ -184,6 +186,7 @@ function Login(props) {
           </>
         )}
       </Formik>
+      <div className="copyright flex justify-center flex-center">&copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved</div>
     </div>
   );
 }

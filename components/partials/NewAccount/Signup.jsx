@@ -149,26 +149,26 @@ function Signup(auth) {
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
       <h1 className="title mb32">Sign up to Blazing Cards</h1>
-
-      <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
-        <GoogleLogin
-          render={(renderProps) => (
-            <button className="google-btn mb42" onClick={renderProps.onClick}>
-              <IconGoogle />
-              Sign up with Google
-            </button>
-          )}
-          onSuccess={credentialResponse => {
-            let data = jwt_decode(credentialResponse.credential);
-            responseGoogle(data);
-          }}
-          onError={(response) => {
-            
-            responseGoogleFailure(response);
-          }}
-        />
-      </GoogleOAuthProvider>
-
+      <div className="GoogleWrap mb42">
+        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+          <GoogleLogin
+            render={(renderProps) => (
+              <button className="google-btn" onClick={renderProps.onClick}>
+                <IconGoogle />
+                Sign up with Google
+              </button>
+            )}
+            onSuccess={credentialResponse => {
+              let data = jwt_decode(credentialResponse.credential);
+              responseGoogle(data);
+            }}
+            onError={(response) => {
+              
+              responseGoogleFailure(response);
+            }}
+          />
+        </GoogleOAuthProvider>
+      </div>
 
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
