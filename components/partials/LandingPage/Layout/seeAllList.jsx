@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { subcatstreamDetailApi } from "../../../../api/stream/subStreamDetail";
 
 
-export default function SeeAllList({ data, catId, seeAllHeading, subCateId, setSubCateId, liveScheduleCategoryName, activeCategory, showLoginModal }) {
+export default function SeeAllList({ data, catId, seeAllHeading, subCateId, setSubCateId, liveScheduleCategoryName, activeCategory, showLoginModal, activeCategoryName }) {
     const [active, setActive] = useState(false);
     const wrapperRef = useRef(null);
     const handleOnClick = () => {
@@ -75,14 +75,16 @@ export default function SeeAllList({ data, catId, seeAllHeading, subCateId, setS
         }
     }
 
+    
+
     return (
         <section className="Pokomon-wrapper card-inner">
             <div className="inner-container">
                 <div className="title-wrap flex space-between flex-center">
                     <div className="flex flex-center">
-                        <h3 className="title">{seeAllHeading}</h3>
+                        <h3 className="title">{activeCategoryName}</h3>
                     </div>
-                    {liveScheduleCategoryName == null ? (
+                    {!!liveScheduleCategoryName ? (
                         <>
                         </>
                     ) : (

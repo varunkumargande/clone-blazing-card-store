@@ -22,9 +22,11 @@ function landingPage({ auth }) {
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
   };
+
   const categories = useSelector(
     (state) => state?.stream?.streamdetails?.category
   );
+
   const dispatch = useDispatch();
   useEffect(() => {
     resizeWindow();
@@ -34,9 +36,10 @@ function landingPage({ auth }) {
 
   // ========================= category for home page ==============================
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(null);
-  const [activeCategoryName, setActiveCategoryName] = useState();
+  const [activeCategoryName, setActiveCategoryName] = useState("All");
   const [activeCategory, setActiveCategory] = useState([]);
   const [subCateId, setSubCateId] = useState("select");
+  const [subCateName, setSubCateName] = useState("Explore");
   const [isLikedShow, setIsLikedShow] = useState(false);
   // ===============================================================================
 
@@ -109,6 +112,7 @@ function landingPage({ auth }) {
           {categories != undefined ? (
             <>
               <LiveScheduleCategory
+              seeAllHeading={seeAllHeading}
                 setSubCateId={setSubCateId}
                 subCateId={subCateId}
                 activeCategory={activeCategory}
@@ -116,6 +120,7 @@ function landingPage({ auth }) {
                 category={categories}
                 liveScheduleCategoryName={liveScheduleCategoryName}
                 setLiveScheduleCategoryName={setLiveScheduleCategoryName}
+                subCateName={subCateName}
               />
             </>
           ) : (
@@ -140,6 +145,7 @@ function landingPage({ auth }) {
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
                 isLikedShow={isLikedShow}
+                setSubCateName={setSubCateName}
               />
             </>
           ) : (
@@ -160,6 +166,9 @@ function landingPage({ auth }) {
               seeAllHeading={seeAllHeading}
               activeCategory={activeCategory}
               showLoginModal={setShowModal}
+              setSubCateName={setSubCateName}
+              activeCategoryName={activeCategoryName}
+              
             />
           </>
         ) : (

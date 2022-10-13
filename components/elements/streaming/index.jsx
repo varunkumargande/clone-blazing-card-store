@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNotification, streamData } from "../../../store/stream/action";
 import { io } from "socket.io-client";
 import { socketIO } from "../../../api/url";
+import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -20,7 +21,8 @@ function Index() {
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
   const [auctionNotification, setAuctionNotification] = useState(null);
-  const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false)
+  const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const stream = useSelector((state) => {
     return state?.stream;
   });
@@ -78,8 +80,10 @@ function Index() {
     <>
       {streamingDetails?.uuid ? (
         <>
+          {showLoginModal && (<DynamicModal title="Join Blazing Cards" setShowModal={setShowLoginModal} />)}
           <div className="streaming-page flex space-between">
             <LeftDiv
+              setShowLoginModal={setShowLoginModal}
               auctionNotification={auctionNotification}
               open={open}
               productDetail={setProductDetail}
@@ -107,6 +111,7 @@ function Index() {
               handleLeftDiv={handleLeftDiv}
               setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
               isBuyNowPaymentModal={isBuyNowPaymentModal}
+              setShowLoginModal={setShowLoginModal}
             />
             <RightDiv
               streamingDetails={streamingDetails}

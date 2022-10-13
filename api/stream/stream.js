@@ -3,14 +3,20 @@ import { modalSuccess } from "../intercept";
 import { apiUrl } from "../url";
 
 async function getStreamData(streamUuid) {
-
+  let user = null;
+  if(sessionStorage.getItem("spurtUser")) {
+    user = JSON.parse(sessionStorage.getItem("spurtUser"));
+  }
   const http = Axios.create({
     baseURL: apiUrl,
     headers: {
       "Content-type": "application/json",
     },
   });
-  const url = `stream/getStream?uuid=${streamUuid}`
+  let url = `stream/getStream?uuid=${streamUuid}`
+  if(user) {
+    url += "&user_id=" + user.id;
+  }
 
   const result = await http.get(url)
 
