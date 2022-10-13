@@ -25,7 +25,8 @@ function StreamingBase({
   addressList,
   openPayment,
   handleLeftDiv,
-  setIsBuyNowPaymentModal
+  setIsBuyNowPaymentModal,
+  setShowLoginModal
 }) {
   const stream = useSelector((state) => state.stream);
   const streamNotification = useSelector(
@@ -52,7 +53,7 @@ function StreamingBase({
   const [auctionId, setAuctionId] = useState(null);
   const router = useRouter();
   const uuid = router.query["uuid"];
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(stream?.streamData?.isLike ? stream?.streamData?.isLike : false);
   const [windowWidth, setWindowWidth] = useState(0);
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
@@ -124,11 +125,11 @@ function StreamingBase({
 
     let [date, time] = endTime.split(" ");
     const endTime = moment(date.replaceAll("-", "/") + " " + time);
-    console.log("endTime",endTime)
+    
 
     let [cdate, ctime] = currentTime.split(" ");
     const currentTime = moment(cdate.replaceAll("-", "/") + " " + ctime);
-    console.log("currentTime",currentTime)
+    
     //moment.utc().format("YYYY/MM/DD, HH:mm:ss")
     
     const duration = moment.duration(
@@ -316,6 +317,8 @@ function StreamingBase({
       if (response.status) {
         setLiked(!liked);
       }
+    } else {
+      setShowLoginModal(true);
     }
   };
   const getlikeClass = () => {

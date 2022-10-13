@@ -11,6 +11,7 @@ import { userFollowUnfollow } from "../../../api/stream/streams_api";
 import { imageUrl } from "../../../api/url";
 
 function LeftDiv({
+  setShowLoginModal,
   openPayment,
   productDetail,
   streamingDetails,
@@ -42,7 +43,7 @@ function LeftDiv({
     setToggleState(index);
   };
   const dispatch = useDispatch();
-  const [followed, setFollowed] = useState(false);
+  const [followed, setFollowed] = useState(streamingDetails.isFollow ? streamingDetails.isFollow : false);
   //to handle width of the screen and call methods accordingly
   const [windowWidth, setWindowWidth] = useState(0);
   let resizeWindow = () => {
@@ -258,13 +259,15 @@ function LeftDiv({
   const handleFollowUnfollow = async () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
       const data = {
-        following_id: stream?.streamPageData?.streamPageDteails?.loggedInUserId,
-        follower_id: stream?.streamPageData?.streamPageDteails?.sellerId,
+        following_id: stream?.streamPageData?.streamPageDteails?.sellerId,
+        follower_id: stream?.streamPageData?.streamPageDteails?.loggedInUserId,
       };
       const response = await userFollowUnfollow(data);
       if (response.status) {
         setFollowed(!followed);
       }
+    } else {
+      setShowLoginModal(true);
     }
   };
 
@@ -285,7 +288,9 @@ function LeftDiv({
     }
     return "/static/images/profileImg.png";
   };
-
+  const handleProfileClick = () => {
+    router.push("/profile?userId=" + stream?.streamData?.vendorDetails?.vendor_id)
+  }
   return (
     <div className="streaming-left">
       <div className="flex profile-wrapper">
@@ -300,7 +305,7 @@ function LeftDiv({
             alt="Card"
           />
         </div>
-        <div className="profile-wrap">
+        <div className="profile-wrap" onClick={handleProfileClick}>
           <div className="name">{vendorName}</div>
           <div className="followrs-count">129K Followers</div>
         </div>

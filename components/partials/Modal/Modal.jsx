@@ -62,20 +62,6 @@ export function ShippingTaxesModal(props) {
   const { setOpenShipPayDetails } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal-header flex Space-between flex-center">
-        <h5 className="modal-title"></h5>
-        <button
-          type="button"
-          className="close"
-          data-dismiss="modal"
-          aria-label="Close"
-          onClick={() => setIsShareModalOpen(false)}
-        >
-          <span aria-hidden="true">
-            <IconClose />
-          </span>
-        </button>
-      </div>
       <div className="modal">
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Shipping & Taxes</h5>
@@ -200,7 +186,6 @@ export function PaymentInfoModal(props) {
     isBuyNowPaymentModal,
   } = props;
 
-
   const addressInfo =
     addressList?.length == 0
       ? "Add Address"
@@ -297,27 +282,25 @@ export function PaymentInfoModal(props) {
             <button className="disable-btn" onClick={() => openPayment(false)}>
               Cancel
             </button>
-            {
-              isBuyNowPaymentModal ? (
-                <button
-              className="primary-btn"
-              onClick={() => {
-                handleSubmitBuyProduct();
-              }}
-            >
-              Confirm
-            </button>
-              ) : (
-                <button
-              className="primary-btn"
-              onClick={() => {
-                openPayment(false);
-              }}
-            >
-              Continue
-            </button>
-              )
-              }
+            {isBuyNowPaymentModal ? (
+              <button
+                className="primary-btn"
+                onClick={() => {
+                  handleSubmitBuyProduct();
+                }}
+              >
+                Confirm
+              </button>
+            ) : (
+              <button
+                className="primary-btn"
+                onClick={() => {
+                  openPayment(false);
+                }}
+              >
+                Continue
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -471,8 +454,6 @@ export function AddAddressModal(props) {
     countryData,
     setAddressList,
   } = props;
-
-  
 
   const shipSchema = Yup.object().shape({
     company: Yup.string().min(2, "Too Short!").required("Required"),
@@ -728,6 +709,8 @@ export function DeletAccountModal({ setIsOpen }) {
 export function ChatUserModal({ setIsOpen }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState("");
 
   const handleUsername = async (e) => {
     setUserDataLoader(true);
@@ -736,7 +719,7 @@ export function ChatUserModal({ setIsOpen }) {
         slang: e.target.value,
       });
       if (data.status == 200) {
-        // 
+        //
         setUserData(data.data.user);
         setUserDataLoader(false);
       }
@@ -745,6 +728,12 @@ export function ChatUserModal({ setIsOpen }) {
       setUserDataLoader(false);
     }
   };
+
+  const handleAddUserForChat = (id, name) => {
+    setUserId(id)
+    setUsername(name)
+    
+  }
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -776,25 +765,29 @@ export function ChatUserModal({ setIsOpen }) {
           </div>
           <div className="profile-chat-list-wrap">
             {userDataLoader ? (
-              <>Loading ...</>
+              <>
+                <div align={"center"}>
+                  <Loader />
+                </div>
+              </>
             ) : (
               <>
                 {userData.map((item, index) => {
                   return (
                     <>
                       <div
-                        className="profile-chat-list flex space-between"
-                        // onClick={() => changeCurrentChat(index)}
+                        className=
+                        {!!userId ? "profile-chat-list flex space-between active-user" : "profile-chat-list flex space-between" }
+                        onClick={() => handleAddUserForChat(item._id, item.username)}
                       >
                         <div className="profile-image-title flex flex-center">
                           <div className="image br50">
-                            <img src={item.avatarImage} alt="" />
+                            <img src={item?.avatarImage == "" ? "/static/img/no-image.png" : item?.avatarImage} alt="" />
                           </div>
                           <div className="profile-text">
                             <div className="name">
                               {item.username} <span className="new"></span>
                             </div>
-                            {/* <div className="time"></div> */}
                           </div>
                         </div>
                       </div>

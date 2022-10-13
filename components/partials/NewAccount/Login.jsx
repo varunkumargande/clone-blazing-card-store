@@ -10,9 +10,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { loginConstant } from "../../Constants/login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -39,23 +38,22 @@ function Login(props) {
     }
   }, [props]);
 
-  
   const responseGoogle = (response, encyrpted) => {
     GoogleLoginApi(
-      response.given_name, 
-      response.family_name, 
-      response.email, 
-      "", 
-      "", 
-      response.email.split("@")[0], 
-      "gmail", 
-      "", 
-      "", 
-      "", 
-      "", 
-      response.picture, 
-      Router, 
-      response,
+      response.given_name,
+      response.family_name,
+      response.email,
+      "",
+      "",
+      response.email.split("@")[0],
+      "gmail",
+      "",
+      "",
+      "",
+      "",
+      response.picture,
+      Router,
+      response
     );
   };
 
@@ -72,23 +70,23 @@ function Login(props) {
   return (
     <div className="login-wrapper">
       <h1 className="title mb32">Sign in to Blazing Cards</h1>
-      <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
-        <GoogleLogin
-          render={(renderProps) => (
-            <button className="google-btn mb42" onClick={renderProps.onClick}>
-              <IconGoogle />
-              Sign up with Google
-            </button>
-          )}
-          onSuccess={credentialResponse => {
-            let data = jwt_decode(credentialResponse.credential);
-            responseGoogle(data);
-          }}
-          onError={() => {
-            
-          }}
-        />
-      </GoogleOAuthProvider>
+      <div className="GoogleWrap mb42">
+        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+          <GoogleLogin
+            render={(renderProps) => (
+              <button className="google-btn" onClick={renderProps.onClick}>
+                <IconGoogle />
+                Continue with Google
+              </button>
+            )}
+            onSuccess={(credentialResponse) => {
+              let data = jwt_decode(credentialResponse.credential);
+              responseGoogle(data);
+            }}
+            onError={() => {}}
+          />
+        </GoogleOAuthProvider>
+      </div>
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
       </div>
@@ -131,9 +129,11 @@ function Login(props) {
                   className="errorBorder"
                   onBlur={handleBlur}
                 />
-                <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
+                <span className="errorMessage">
+                  {errors.email && touched.email ? errors.email : null}
+                </span>
               </div>
-              <div className="input-control">
+              <div className="input-control pass">
                 <label>Password</label>
                 <input
                   name="password"
@@ -144,7 +144,9 @@ function Login(props) {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <span className="errorMessage">{errors.password && touched.password ? errors.password : null}</span>
+                <span className="errorMessage">
+                  {errors.password && touched.password ? errors.password : null}
+                </span>
                 {conpassShow ? (
                   <button
                     className="show-hide"
@@ -168,6 +170,9 @@ function Login(props) {
                     <a>Forget Password</a>
                   </Link>
                 </div>
+                <div align={"center"}>
+                  <h5 className="errorMessage">{loginError}</h5>
+                </div>
               </div>
               <div className="submitWrap mb32">
                 <button type="submit" className="primary-btn">
@@ -184,6 +189,9 @@ function Login(props) {
           </>
         )}
       </Formik>
+      <div className="copyright flex justify-center flex-center">
+        &copy; Blazing Cards. {new Date().getFullYear()}, All Rights Reserved
+      </div>
     </div>
   );
 }

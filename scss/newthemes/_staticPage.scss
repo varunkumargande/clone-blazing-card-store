@@ -4,6 +4,9 @@
     max-width: 1090px;
     margin:0 auto;
     min-height: calc(100vh - 310px);
+    .breadcrumbs-wrapper{
+        padding-top: 0;
+    }
     h1{
         font-size: 24px;
         line-height: 30px;
@@ -13,6 +16,27 @@
     .last-update{
         font-size: 16px;
         line-height: 20px;
+    }
+    .edit-back{
+        margin-right: 15px;
+        .icon{
+            fill:#5C646C;
+        }
+    }
+    .category-wrapper{
+        background-color: transparent;
+        padding-top: 20px;
+        .category-list{
+            .title{
+                &:after{
+                    height: 3px;
+                }
+            }
+       }
+    }
+    .Category-list-wrap{
+        max-width: 100%;
+        padding: 0;
     }
 }
 .static-inner-container{
@@ -44,4 +68,81 @@
             margin-bottom: 28px;
         }
     }
+}
+.faq-inner-container{ 
+    .accordion-wrapper {
+        &+* {
+            margin-top: 0.5em;
+        }
+    }
+
+    .accordion-item {
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
+        height: auto;
+        max-height: 9999px;
+    }
+
+    .accordion-item.collapsed {
+        max-height: 0;
+        transition: max-height 0.35s cubic-bezier(0, 1, 0, 1);
+    }
+    .accordion-wrapper{
+        padding: 16px;
+        border-radius: 4px;
+        background-color: #FFFFFF;
+        box-shadow: 0px 4px 12px rgba(137, 143, 191, 0.1);
+        margin-bottom: 16px;
+    }
+    .accordion-title {
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color:$primary-color;
+        font-size: 16px;
+        line-height: 25px;
+        &::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 7px solid currentColor;
+        }
+
+        &:hover,
+        &.open {
+            color:$primary-color;
+        }
+
+        &.open {
+            &::after {
+                content: "";
+                border-top: 0;
+                border-bottom: 7px solid;
+            }
+        }
+    }
+
+    .accordion-content {
+        padding: 16px 20px 16px 0;
+        font-size: 14px;
+        line-height: 22px;
+        color: $primary-color;
+    }
+    
+}
+
+@media all and (min-width:1025px){
+    .static-container{
+        .category-wrapper{
+           .category-list{
+                .title{
+                    font-size: 16px;
+                }
+           }
+        }
+    }  
 }

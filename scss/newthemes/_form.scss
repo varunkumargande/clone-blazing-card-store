@@ -84,6 +84,23 @@
         margin-right: 6px;
     }
 }
+.GoogleWrap{
+    > div{
+        min-height: 42px;
+    }
+    .S9gUrf-YoZ4jf{
+        height: 100%;
+        max-width: 236px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+    }
+    iframe{
+        min-height: 100%;
+        margin: 0 !important;
+    }
+}
 .already{
     font-size: 14px;
     line-height: 21px;
@@ -152,5 +169,13 @@
     .login-right{
         padding: 100px 60px 100px;
         max-width: 50%;
+    }
+    
+}
+@media all and (min-width:768px){
+    .GoogleWrap{
+        > div{
+            min-height: 48px;
+        }
     }
 }

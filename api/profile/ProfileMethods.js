@@ -60,6 +60,19 @@ let GetUserFollowings = async (userId, callback) => {
     })
 }
 
+let UserFollowUser = (userId, followerId, callback) => {
+    http.post('follow/follow_unfollow', {
+        "following_id" : followerId,
+        "follower_id" : userId
+    })
+    .then((res) => {
+        console.log(res);
+    })
+    .catch((error) => {
+        console.log(error.response);
+    })
+}
+
 let functionCallbackSetter = (response, callback) => {
     if (response && response.status == 200) {
         if (response.data.data) {
@@ -76,7 +89,8 @@ const ProfileMethods = {
     GetPreviousStreams,
     GetLikedStreams,
     GetUserFollowers,
-    GetUserFollowings
+    GetUserFollowings,
+    UserFollowUser
 }
 
 export default ProfileMethods;

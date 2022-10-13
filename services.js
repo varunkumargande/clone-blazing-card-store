@@ -46,6 +46,9 @@ class APIServices {
   deletePut(url) {
     return http.put(`/${url}`);
   }
+  put(url) {
+    return http.put(`/${url}`);
+  }
 }
 
 export default new APIServices();

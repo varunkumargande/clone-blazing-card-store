@@ -142,7 +142,7 @@
                 height: 32px;
                 font-size: 12px;
                 margin-bottom: 2px;
-                &.selected{
+                &.selected,&.active,&:hover{
                     color:$blue-color;
                     border-color: $white-color;
                     background-color: $white-color;

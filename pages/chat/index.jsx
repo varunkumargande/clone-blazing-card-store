@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import ProfilePannel from "../../components/partials/Messages/ProfilePannel";
 import ChatPannel from "../../components/partials/Messages/ChatPannel";
 import { ChatUserModal } from "../../components/partials/Modal/Modal";
+import { Loader } from "../../components/reusable/Loader";
 
 export default function Chat() {
   // const navigate = useNavigate();
@@ -36,6 +37,7 @@ export default function Chat() {
   const [userIndex, setUserIndex] = useState([]);
   const [msg, setMsg] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -114,7 +116,7 @@ export default function Chat() {
       from: data._id,
       to: currentChat._id,
       message: msg,
-    });
+    })
 
     const msgs = [...messages];
     msgs.push({ fromSelf: true, message: msg });
@@ -146,17 +148,25 @@ export default function Chat() {
   };
   // ====================================================================================
 
-  return (
-    <>
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
-      <div className="messages-wrapper">
-        <h1>Messages</h1>
-        <div className="flex space-between message-inner">
-          <ProfilePannel
+
+  // ======================= profile panel view ========================
+  const handleProfilePanel = () => {
+    return(
+      <>
+        <ProfilePannel
             contacts={contacts}
             changeCurrentChat={changeCurrentChat}
             setIsOpen={setIsOpen}
           />
+      </>
+    )
+  }
+  // ===================================================================
+
+  // =========================== chat panel view ================================
+  const handleChatPanel = () => {
+      return(
+        <>
           <ChatPannel
             handleSendMsg={handleSendMsg}
             msg={msg}
@@ -164,6 +174,19 @@ export default function Chat() {
             setMsg={setMsg}
             contactDetail={contacts[currentSelected]}
           />
+        </>
+      )
+    }
+  // ============================================================================
+
+  return (
+    <>
+      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      <div className="messages-wrapper">
+        <h1>Messages</h1>
+        <div className="flex space-between message-inner">
+          {handleProfilePanel()}
+          {handleChatPanel()}
           {chatUserFind()}
         </div>
       </div>

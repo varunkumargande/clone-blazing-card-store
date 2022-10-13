@@ -23,12 +23,12 @@ const BuyerTabs = [
         "key": "liked-shows"
     },
     {
-        "title": "Followers",
-        "key": "followers"
-    },
-    {
         "title": "Following",
         "key": "following"
+    },
+    {
+        "title": "Followers",
+        "key": "followers"
     }
 ];
 
