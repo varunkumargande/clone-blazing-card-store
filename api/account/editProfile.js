@@ -1,16 +1,18 @@
 import { modalWarning, modalSuccess } from "../intercept";
 import APIServices from "../../services";
+import DefaultConstants from "../../utilities/constants";
 
-export async function editProfileApi(values, newDp, Router, setLoader) {
+export async function editProfileApi(values, newDpName, Router, setLoader) {
   const data = JSON.stringify({
     firstName: values.firstName,
     lastName: values.lastName,
     emailId: values.emailId,
-    image: newDp,
+    image: newDpName,
     phoneNumber: values.phoneNumber,
     bio: values.bio,
     twitterUrl: values.twitterUrl,
     facebookUrl: values.facebookUrl,
+    path: DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH
   });
 
   const result = await APIServices.create("customer/edit-profile", data);

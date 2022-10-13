@@ -8,14 +8,17 @@ import Router from "next/router";
 import { DeletAccountModal } from "../Modal/Modal";
 import { imageUrl } from "../../../api/url";
 import { Loader } from "../../reusable/Loader";
+import { uploadImageToServer } from "../../../utilities/common-helpers";
 
 export default function ProfileInformation() {
   const [profileData, setProfileData] = useState(null);
   const [newDpError, setNewDpError] = useState("");
   const [impuploadsuccess, setimpuploadsuccess] = useState(false);
   const [newDp, setNewDp] = useState("");
+  const [newDpName, setNewDpName] = useState("");
   const inputFile = useRef(null);
   const [loader, setLoader] = useState(false);
+  const [showImageLoader, setShowImageLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -47,15 +50,27 @@ export default function ProfileInformation() {
       const file = Math.round(fsize / 1024);
       if (file < 2048) {
         // setNewDp(files[0])
-        let reader = new FileReader();
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          uploadImage(files[0], reader.result)
+        };
         reader.readAsDataURL(files[0]);
-        reader.onloadend = () => setNewDp(reader.result);
-        setimpuploadsuccess(true);
       } else {
         setNewDpError("Please upload minimum 2 MB");
       }
     }
   };
+
+  const uploadImage = async (file, base64) => {
+    setShowImageLoader(true);
+    const uploadImage = await uploadImageToServer(file);
+    setShowImageLoader(false);
+    if(uploadImage) {
+      setNewDp(base64);
+      setNewDpName(uploadImage?.fileName);
+      setimpuploadsuccess(true);
+    }
+  }
 
   const profileSchema = Yup.object().shape({
     firstName: Yup.string().required("Required"),
@@ -80,7 +95,7 @@ export default function ProfileInformation() {
   const handleImage = () => {
     return (
       imageUrl +
-      `?path=${profileData?.avatarPath}&name=${profileData?.avatar}&width=300&height=300`
+      `?path=${profileData?.avatarPath}&name=/${profileData?.avatar}&width=300&height=300`
     );
   };
   
@@ -96,6 +111,9 @@ export default function ProfileInformation() {
           <div className="profile-image-upload flex flex-center">
             <div className="prifile-image br50">
               {profileData != null ? (
+                showImageLoader ?
+                  <Loader />
+                  :
                 <>
                   {newDp != "" ? (
                     <>
@@ -129,11 +147,12 @@ export default function ProfileInformation() {
             </div>
             <div className="profile-text">
               <div className="profile-btn-wrap flex flex-center mb16">
-                <label className="upload-btn flex justify-center flex-center">
+                <label className={`upload-btn flex justify-center flex-center ${showImageLoader && 'disable-upload-image'}`}>
                   Update Profile Image
                   <input
                     type="file"
                     ref={inputFile}
+                    disabled={showImageLoader}
                     onChange={(e) => changeDP(e)}
                   />
                 </label>
@@ -174,7 +193,7 @@ export default function ProfileInformation() {
               validationSchema={profileSchema}
               onSubmit={(values) => {
                 setLoader(true);
-                editProfileApi(values, newDp, Router, setLoader);
+                editProfileApi(values, newDpName, Router, setLoader);
               }}
             >
               {({
