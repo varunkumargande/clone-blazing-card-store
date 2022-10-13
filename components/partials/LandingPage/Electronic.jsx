@@ -15,8 +15,10 @@ export default function Electronic({
   setSeeAllHeading,
   setIsLikedShow,
   isLikedShow,
-  showLoginModal
+  showLoginModal,
 }) {
+
+
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -38,6 +40,7 @@ export default function Electronic({
         );
       });
   };
+  
 
   return (
     <section className="Live-wrapper card-inner">

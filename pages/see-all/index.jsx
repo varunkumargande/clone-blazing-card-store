@@ -61,7 +61,7 @@ function categoryStream({ auth }) {
     (state) => state?.stream?.streamdetails?.stream?.scheduled
   );
   
-  console.log(streams)
+  
 
   useEffect(() => {
     subcatstreamDetailApi(dispatch);
@@ -78,7 +78,7 @@ function categoryStream({ auth }) {
 
   const getStreamCards = () => {
     if (activeCategory != null) {
-      return streamDetail?.[activeCategory].map((detail) => {
+      return streamDetail?.[activeCategory]?.map((detail) => {
         if (detail?.subCategory_id == parseInt(activeSubCategoryId)) {
           return <StreamCard isLive={false} detail={detail} />;
         }
@@ -127,7 +127,7 @@ function categoryStream({ auth }) {
         <div className="inner-container">
           <ul className="breadcrumbs flex flex-center">
             <li onClick={() => handleToGoHome()}>Home</li>/
-            <li className="current">All Categories</li>
+            <li className="current">{stringFormatter(query?.page)}</li>
           </ul>
         </div>
       </section>
@@ -138,7 +138,7 @@ function categoryStream({ auth }) {
             <div className="edit-back" onClick={() => handleToGoHome()}>
               <IconBack />
             </div>
-            &nbsp; <h3 className="title">
+            &nbsp;&nbsp;&nbsp; <h3 className="title">
               {stringFormatter(query?.page)}
               {/* All Categories */}
               </h3>

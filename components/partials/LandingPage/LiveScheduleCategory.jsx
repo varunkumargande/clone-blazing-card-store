@@ -11,6 +11,8 @@ function LiveScheduleCategory({
   setActiveCategory,
   subCateId,
   setSubCateId,
+  seeAllHeading,
+  subCateName
 }) {
   const [active, setActive] = useState(false);
   const [categoryName, setCategoryName] = useState([]);
@@ -89,24 +91,30 @@ function LiveScheduleCategory({
                 <div className="flex flex-center">
                   <h3 className="title">Categories</h3>
                 </div>
+
                 {/* <li><a onClick={ () => window.location.href = "/"}> Home </a></li>/ */}
                 {/* <li className="current">
                   {liveScheduleCategoryName == null
                     ? "Explore"
                     : liveScheduleCategoryName}
                 </li> */}
+
               </ul>
             </section>
             <div className="category-btn-wrap">
+
               {/* <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
                             <ul className={active ? "dropDown active" : "dropDown"} >
                                 <li className="active">Creator</li>
                                 <li>Athelete</li>
                                 <li>Artist</li>
                             </ul> */}
+
             </div>
           </div>
+
           {/* <div className="seeAll"><Link href="/"><a className="flex flex-center">View All</a></Link></div> */}
+
         </div>
       </div>
       <div className="overflow-wrap">

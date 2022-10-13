@@ -86,11 +86,11 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = "/static/img/no-image.png";
               }}
-              src={DefaultServices.GetFullImageURL(detail, "vendor", "25", "25")}
+              src={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25")}
               alt="Card"
             />
 
-            {stringFormatter(detail?.title)?.substring(0, 20) + "..."}
+            {stringFormatter(detail?.username)}
           </h3>
           <div className="disc">
             {detail?.description?.substring(0, 50) + "..."}

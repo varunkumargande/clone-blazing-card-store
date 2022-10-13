@@ -3,8 +3,9 @@ import Link from "next/link";
 import IconCategoryDrop from "../../Icons/IconCategoryDrop";
 import IconLike from "../../Icons/IconLike";
 import { connect } from "react-redux";
-import { stringFormatter } from "../../../utilities/utils";
 import Router from "next/router";
+import IconBack from "../../Icons/IconBack";
+import { stringFormatter } from "../../../utilities/utils";
 
 function Category({
   isSeeAllCate,
@@ -23,6 +24,7 @@ function Category({
   isLikedShow,
   auth,
 }) {
+  
   const [active, setActive] = useState(false);
   const [categoryName, setCategoryName] = useState([]);
 
@@ -42,6 +44,8 @@ function Category({
     };
   }, []);
 
+  
+
   const handleActiveCategory = (index, name, id) => {
     setActiveCategoryIndex(index);
     setActiveCategoryName(name);
@@ -51,6 +55,7 @@ function Category({
   };
 
   const handleAllCate = () => {
+    setActiveCategoryName("All")
     setSubCateId("select");
     setActiveCategoryIndex(null);
     setIsLikedShow(false);
@@ -68,14 +73,11 @@ function Category({
     }
   };
 
-  
-
   const getCategoryList = () => {
     if (isSeeAll == true) {
       if (Object.keys(category).length != 0) {
         return (
           <>
-           
             <div className="category-list">
               <button
                 className={
@@ -83,7 +85,7 @@ function Category({
                 }
                 onClick={handleAllCate}
               >
-                Explore
+                All
               </button>
             </div>
             {category["categories"]?.map((res, index) => {
@@ -138,7 +140,9 @@ function Category({
                     }
                     onClick={() => handleLikedShow()}
                   >
-                    <span><IconLike /></span>
+                    <span>
+                      <IconLike />
+                    </span>
                   </button>
                 </div>
               </>
@@ -183,22 +187,49 @@ function Category({
     Router.push({
       pathname: "/see-all",
       query: {
-        page: "all-categories",
-        category: ""
-      }
-    })
-  }
+        page: "all categories",
+        category: "",
+      },
+    });
+  };
 
-  return (  
+
+  const handleToGoHome = () => {
+    window.location.href = "/";
+  };
+
+  const handleSubCateHead = () => {
+    if (!!seeAllHeading) {
+      return (
+        <>
+          <div className="edit-back" onClick={() => handleToGoHome()}>
+            <IconBack />
+          </div>
+          &nbsp;&nbsp;&nbsp;
+          <h3 className="title">
+            {stringFormatter(seeAllHeading)}
+          </h3>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <h3 className="title">
+            Categories
+          </h3>
+        </>
+      );
+    }
+  };
+
+  return (
     <section className="category-wrapper">
       <div className="inner-container">
         <div className="title-wrap flex space-between flex-center">
           <div className="flex flex-center">
             <section className="breadcrumbs-wrapper">
               <ul className="breadcrumbs flex flex-center">
-                <div className="flex flex-center">
-                  <h3 className="title">Categories</h3>
-                </div>
+               {handleSubCateHead()}
               </ul>
             </section>
             <div className="category-btn-wrap">
