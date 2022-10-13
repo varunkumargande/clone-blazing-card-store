@@ -205,7 +205,7 @@ export function PaymentInfoModal(props) {
 
   const cardDetails =
     cardDetail == false
-      ? "Add shipment"
+      ? "Add Card Detail"
       : cardDetail[0]?.card.brand +
         "" +
         "XXXX XXXX XXXX " +
@@ -370,6 +370,16 @@ export function AddNewCardModal(props) {
     validationSchema: () => shipSchema,
   });
 
+
+  const handleExpDate = (values) => {
+    return values.expireDate
+      .replace(/^(\d\d)(\d)$/g, "$1/$2")
+      .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
+      .replace(/[^\d\/]/g, "")
+      .trim();
+  };
+
+
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal medium">
@@ -405,11 +415,12 @@ export function AddNewCardModal(props) {
               <div className="input-control wd50">
                 <label>Expiration</label>
                 <input
-                  type="month"
+                  type="text"
                   name="expireDate"
-                  placeholder={"Enter here"}
-                  value={formik.values.expireDate}
+                  placeholder={"MM/YY"}
                   onChange={formik.handleChange}
+                  value={handleExpDate(formik.values)}
+                  maxLength={5}
                 />
                 <span className="errorMessage">{formik.errors.expireDate}</span>
               </div>

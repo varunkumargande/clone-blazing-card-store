@@ -37,7 +37,6 @@ export default function PaymentDetail() {
   const cardListApi = async () => {
     const result = await APIServices.getUser("customer-card-details/getCard");
     if (result.status == 200) {
-      
       if (result.data.data != false) {
         setCardData(result.data.data[0]);
         setCardLoader(false);
@@ -73,8 +72,8 @@ export default function PaymentDetail() {
     countryId: Yup.string().required("Required"),
   });
 
-  const submitCardDetail = async (values,) => {
-    setCardLoader(true)
+  const submitCardDetail = async (values) => {
+    setCardLoader(true);
     let expDate = "";
     let year = values.expireDate.split("-")[0].slice(-2);
     let month = values.expireDate.split("-")[1];
@@ -90,9 +89,17 @@ export default function PaymentDetail() {
     handleCardApi(jsonData, isCardEdit, cardListApi, setCardLoader);
   };
 
+  const handleExpDate = (values) => {
+    return values.expireDate
+      .replace(/^(\d\d)(\d)$/g, "$1/$2")
+      .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
+      .replace(/[^\d\/]/g, "")
+      .trim();
+  };
+
   const handleCardDetail = () => {
     if (cardLoader) {
-      return <Loader />
+      return <Loader />;
     } else {
       return (
         <>
@@ -111,7 +118,6 @@ export default function PaymentDetail() {
                 validationSchema={paySchema}
                 onSubmit={(values) => {
                   submitCardDetail(values);
-                  // 
                 }}
               >
                 {({
@@ -145,7 +151,9 @@ export default function PaymentDetail() {
                                 value={values.cardNumber}
                               />
                               <span className="card-icon">
-                                {values?.cardNumber?.length >= 3 ? getCardImagesByName(values.cardNumber) : ''}
+                                {values?.cardNumber?.length >= 3
+                                  ? getCardImagesByName(values.cardNumber)
+                                  : ""}
                               </span>
                               <span className="errorMessage">
                                 {errors.cardNumber && touched.cardNumber
@@ -157,11 +165,12 @@ export default function PaymentDetail() {
                               <label htmlFor="usr">Expiry *</label>
                               <input
                                 name="expireDate"
-                                placeholder={"Enter here"}
-                                type={"month"}
+                                placeholder={"MM/YY"}
+                                type={"text"}
                                 className="grey-bg"
                                 onChange={handleChange}
-                                value={values.month}
+                                value={handleExpDate(values)}
+                                maxLength={5}
                               />
                               <span className="errorMessage">
                                 {errors.expireDate && touched.expireDate
@@ -217,7 +226,11 @@ export default function PaymentDetail() {
                         </div>
                       </div>
                       <div className="button-wrapper flex mb40">
-                        <button className="border-btn mr16" type="button" onClick={() => setIsCardData(true)}>
+                        <button
+                          className="border-btn mr16"
+                          type="button"
+                          onClick={() => setIsCardData(true)}
+                        >
                           Cancel
                         </button>
 
