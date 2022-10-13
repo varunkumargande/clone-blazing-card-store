@@ -2,12 +2,39 @@ import React from "react";
 import Link from "next/link";
 import IconClose from "../Icons/IconClose";
 import IconGoogle from "../Icons/IconGoogle";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
+import { GoogleLoginApi } from "../../api/auth/GoogleLoginApi";
+import Router from "next/router";
 
 export default function DynamicModal(props) {
     const {
         title,
         setShowModal
     } = props;
+
+    const responseGoogle = (response) => {
+        GoogleLoginApi(
+          response.given_name, 
+          response.family_name, 
+          response.email, 
+          "", 
+          "", 
+          response.email.split("@")[0], 
+          "gmail", 
+          "", 
+          "", 
+          "", 
+          "", 
+          response.picture, 
+          Router, 
+          response,
+        );
+    };
+
+    const responseGoogleFailure = (response) => {
+        console.error("Failure response", response);
+    };
     return (
         <div className="modalOverlay flex justify-center flex-center">
             <div className="modal">
@@ -29,10 +56,24 @@ export default function DynamicModal(props) {
                     <div className="Stream-title text-center mb24">
                         {title}
                     </div>
-                    <button className="google-btn mb24">
-                        <IconGoogle />
-                        Continue with Google
-                    </button>
+                    <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+                        <GoogleLogin
+                            render={(renderProps) => (
+                            <button className="google-btn" onClick={renderProps.onClick}>
+                                <IconGoogle />
+                                Sign up with Google
+                            </button>
+                            )}
+                            onSuccess={credentialResponse => {
+                            let data = jwt_decode(credentialResponse.credential);
+                            responseGoogle(data);
+                            }}
+                            onError={(response) => {
+                            
+                            responseGoogleFailure(response);
+                            }}
+                        />
+                    </GoogleOAuthProvider>
                     <div class="or mb32 flex flex-center justify-center">
                         <span>Or</span>
                     </div>

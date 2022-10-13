@@ -17,6 +17,7 @@ import PublicProfileConstants from "../../components/Constants/publicProfile";
 import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
 import DefaultServices from "../../components/Services/DefaultServices";
+import DynamicModal from "../../components/CommonComponents/ModalWithDynamicTitle";
 
 
 
@@ -32,6 +33,7 @@ export default function PublicProfile() {
     const [likedShows, setLikedShows] = useState([]);
     const [tabs, setTabs] = useState(null);
     const [activeTab, setActiveTab] = useState(tabs && tabs.length > 0 ? tabs[0].key : "");
+    const [showModal, setShowModal] = useState(false);
 
     const wrapperRef = useRef(null);
 
@@ -117,7 +119,7 @@ export default function PublicProfile() {
                 return (
                     <>
                         {upcomingShows.map((show, index) => (
-                            <StreamCard detail={show} />
+                            <StreamCard detail={show} showLoginModal={setShowModal} />
                         ))}
                     </>
                 )
@@ -134,7 +136,7 @@ export default function PublicProfile() {
                 return (
                     <>
                         {previousShows.map((show, index) => (
-                            <StreamCard detail={show} />
+                            <StreamCard detail={show} showLoginModal={setShowModal} />
                         ))}
                     </>
                 )
@@ -151,7 +153,7 @@ export default function PublicProfile() {
                 return (
                     <>
                         {likedShows.map((show, index) => (
-                            <StreamCard detail={show} />
+                            <StreamCard detail={show} showLoginModal={setShowModal} />
                         ))}
                     </>
                 )
@@ -253,8 +255,26 @@ export default function PublicProfile() {
         return null;
     }
 
+    const handleSocialLinks = (url) => {
+        let path = url;
+        if(!path.includes("https://")) {
+            path = "https://" + path;
+        }
+        window.open(path, "_blank");
+    }
+
+    const handleFollow = () => {
+        if(sessionStorage.getItem("spurtUser")) {
+            let user = JSON.parse(sessionStorage.getItem("spurtUser"));
+            ProfileMethods.UserFollowUser(user.id, profile.id);
+        } else {
+            setShowModal(true);
+        }
+    }
+
     return (
         <div className="home-container profile-container-wrap">
+            {showModal && (<DynamicModal title="Join Blazing Cards" setShowModal={setShowModal} />)}
             {windowWidth <= 1024 ? <div className="profile-title flex flex-center"><div className="edit-back"><IconBack /></div>Profile</div> : <HeaderDefault />}
             <section className="category-banner">
                 <img src="/static/images/cover.png" alt="cover" />
@@ -266,25 +286,22 @@ export default function PublicProfile() {
                             <aside className="aside-wrapper profile-aside">
                                 <div className="aside-container profile-container">
                                     <div className="profile-icon">
-                                        <img width="124" height="124" style={{ borderRadius:"50%" }} src={DefaultServices.GetFullImageURL(profile, "profile", "124", "124")} alt="profileImg" />
+                                        <img width="124" height="124" style={{ borderRadius:"50%" }} src={DefaultServices.GetFullImageURL(profile, "vendor", "124", "124")} alt="profileImg" />
                                     </div>
                                     <div className="title flex column">
                                         {renderProfileName()}
                                         <span>@{profile && (profile.username)}</span>
                                     </div>
                                     <div className="flex justify-center">
-                                        <button className="primary-btn follow-btn">Follow</button>
+                                        <button className="primary-btn follow-btn" onClick={handleFollow}>Follow</button>
                                         <button className="border-btn edit-profile-btn">Message</button>
                                     </div>
                                     {profile && profile.bio && (<p className="description">{profile.bio}</p>)}
                                     <div className="social-icons-wrapper">
                                         <div className="social-border"></div>
                                         <ul className="social-icons flex">
-                                            {/* {profile && profile.facebookUrl && (<li><IconShareFacebook /></li>)}
-                                            {profile && profile.twitterUrl && (<li><IconShareTwitter /></li>)} */}
-                                            <li><IconShareFacebook /></li>
-                                            <li><IconShareTwitter /></li>
-                                            <li> <IconShareWhatsup /></li>
+                                            {profile && profile.facebookUrl && (<li onClick={() => handleSocialLinks(profile.facebookUrl)}><IconShareFacebook /></li>)}
+                                            {profile && profile.twitterUrl && (<li onClick={() => handleSocialLinks(profile.twitterUrl)}><IconShareTwitter /></li>)}
                                         </ul>
                                     </div>
                                 </div>
