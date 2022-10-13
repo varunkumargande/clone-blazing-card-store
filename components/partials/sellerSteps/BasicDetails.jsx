@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import IconBack from '../../Icons/IconBack';
 import BackButton from "../../CommonComponents/BackButton";
+import { uploadImageToServer } from "../../../utilities/common-helpers";
+import DefaultConstants from "../../../utilities/constants";
 
 
 export default function BasicDetails() {
@@ -21,35 +23,25 @@ export default function BasicDetails() {
     (state) => state?.becomeSeller?.basicDetails
   );
 
-  const handleSubmit = (values) => {
-    const data = {
-      fullName: values.fullName,
-      ssn: values.ssn,
-      documents: {
-        fileName: values?.upload?.name,
-        image: imageData,
-        path: "user/",
-      },
-    };
-    dispatch(addBasicData(data, router));
+  const handleSubmit = async (values) => {
+    const uploadImage = await uploadImageToServer(imageData, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH);
+    if (uploadImage) {
+      const data = {
+        fullName: values.fullName,
+        ssn: values.ssn,
+        documents: {
+          fileName: values?.upload?.name,
+          image: uploadImage?.fileName,
+          path: DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH,
+        },
+      };
+      dispatch(addBasicData(data, router));
+  }
   };
 
   const setImage = (file) => {
-    getBase64(file, (result) => {
-      setImageData(result)
-    });
+    setImageData(file)
   }
-
-  const getBase64 = (file, cb) => {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      cb(reader.result);
-    };
-    reader.onerror = function (error) {
-      
-    };
-  };
 
 
   return (
