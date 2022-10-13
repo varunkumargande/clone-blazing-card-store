@@ -746,7 +746,7 @@ export function ChatUserModal({ setIsOpen }) {
   const handleAddUserForChat = (id, name) => {
     setUserId(id)
     setUsername(name)
-    console.log(id)
+    
   }
 
   return (

@@ -4,6 +4,7 @@ import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import IconEye from "../../components/Icons/IconEye";
 import IconLike from "../../components/Icons/IconLike";
 import IconDropdown from "../../components/Icons/IconDropdown";
+import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -14,8 +15,12 @@ import SeeAllParentCategories from "../../components/partials/SeeAll/parentCateg
 import SeeAllSubCategories from "../../components/partials/SeeAll/subCategories";
 import StreamCard from "../../components/elements/StreamCard";
 import Router from "next/router";
+import { useRouter } from "next/router";
+import { stringFormatter } from "../../utilities/utils";
 
 function categoryStream({ auth }) {
+
+  const { query } = useRouter();
   const [active, setActive] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeSubCategoryId, setActiveSubCategoryId] = useState(null);
@@ -51,6 +56,13 @@ function categoryStream({ auth }) {
   const streamDetail = useSelector(
     (state) => state?.stream?.streamdetails?.category
   );
+
+  const streams = useSelector(
+    (state) => state?.stream?.streamdetails?.stream?.scheduled
+  );
+  
+  
+
   useEffect(() => {
     subcatstreamDetailApi(dispatch);
   }, []);
@@ -66,7 +78,7 @@ function categoryStream({ auth }) {
 
   const getStreamCards = () => {
     if (activeCategory != null) {
-      return streamDetail?.[activeCategory].map((detail) => {
+      return streamDetail?.[activeCategory]?.map((detail) => {
         if (detail?.subCategory_id == parseInt(activeSubCategoryId)) {
           return <StreamCard isLive={false} detail={detail} />;
         }
@@ -115,7 +127,7 @@ function categoryStream({ auth }) {
         <div className="inner-container">
           <ul className="breadcrumbs flex flex-center">
             <li onClick={() => handleToGoHome()}>Home</li>/
-            <li className="current">All Categories</li>
+            <li className="current">{stringFormatter(query?.page)}</li>
           </ul>
         </div>
       </section>
@@ -123,7 +135,13 @@ function categoryStream({ auth }) {
         <div className="inner-container">
           <div className="title-wrap flex space-between flex-center">
             <div className="flex flex-center">
-              <h3 className="title">All Categories</h3>
+            <div className="edit-back" onClick={() => handleToGoHome()}>
+              <IconBack />
+            </div>
+            &nbsp;&nbsp;&nbsp; <h3 className="title">
+              {stringFormatter(query?.page)}
+              {/* All Categories */}
+              </h3>
             </div>
           </div>
         </div>
