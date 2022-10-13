@@ -343,8 +343,12 @@ function StreamingBase({
   };
 
   const handleDollarClick = () => {
-    setIsBuyNowPaymentModal(false)
-    openPayment(true);
+    if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
+      setIsBuyNowPaymentModal(false)
+      openPayment(true);
+    } else {
+      setShowLoginModal(true);
+    }
   };
   return (
     <>
