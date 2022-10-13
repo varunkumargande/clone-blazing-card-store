@@ -18,6 +18,7 @@ export default function ProfileInformation() {
   const [newDpName, setNewDpName] = useState("");
   const inputFile = useRef(null);
   const [loader, setLoader] = useState(false);
+  const [showImageLoader, setShowImageLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -61,7 +62,9 @@ export default function ProfileInformation() {
   };
 
   const uploadImage = async (file, base64) => {
+    setShowImageLoader(true);
     const uploadImage = await uploadImageToServer(file);
+    setShowImageLoader(false);
     if(uploadImage) {
       setNewDp(base64);
       setNewDpName(uploadImage?.fileName);
@@ -108,6 +111,9 @@ export default function ProfileInformation() {
           <div className="profile-image-upload flex flex-center">
             <div className="prifile-image br50">
               {profileData != null ? (
+                showImageLoader ?
+                  <Loader />
+                  :
                 <>
                   {newDp != "" ? (
                     <>
@@ -141,11 +147,12 @@ export default function ProfileInformation() {
             </div>
             <div className="profile-text">
               <div className="profile-btn-wrap flex flex-center mb16">
-                <label className="upload-btn flex justify-center flex-center">
+                <label className={`upload-btn flex justify-center flex-center ${showImageLoader && 'disable-upload-image'}`}>
                   Update Profile Image
                   <input
                     type="file"
                     ref={inputFile}
+                    disabled={showImageLoader}
                     onChange={(e) => changeDP(e)}
                   />
                 </label>
