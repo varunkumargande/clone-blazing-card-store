@@ -18,6 +18,7 @@ export default function PaymentDetail() {
   const [countryData, setCountryData] = useState([]);
   const [isCardData, setIsCardData] = useState(false);
   const [isCardEdit, setIsCardEdit] = useState(false);
+  const [expValid, setExpValid] = useState(null);
 
   useEffect(() => {
     setDelStatus(0);
@@ -90,12 +91,18 @@ export default function PaymentDetail() {
   };
 
   const handleExpDate = (values) => {
-    return values.expireDate
+    const dateFor = values.expireDate
       .replace(/^(\d\d)(\d)$/g, "$1/$2")
       .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
       .replace(/[^\d\/]/g, "")
       .trim();
+      handleExpValidation(dateFor)
+      return dateFor
   };
+
+   const handleExpValidation = (value) => {
+    setExpValid(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value))
+   }
 
   const handleCardDetail = () => {
     if (cardLoader) {
@@ -117,7 +124,10 @@ export default function PaymentDetail() {
                 initialValues={initialCardValues}
                 validationSchema={paySchema}
                 onSubmit={(values) => {
-                  submitCardDetail(values);
+                  if(!!expValid) {
+                    console.log("errro")
+                  }
+                  // submitCardDetail(values);
                 }}
               >
                 {({
@@ -176,6 +186,7 @@ export default function PaymentDetail() {
                                 {errors.expireDate && touched.expireDate
                                   ? errors.expireDate
                                   : null}
+                                  {expValid == false ? "Expiary date is invalide": ""}
                               </span>
                             </div>
                             <div className="input-control wd50">

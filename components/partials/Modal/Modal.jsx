@@ -321,6 +321,7 @@ export function AddNewCardModal(props) {
 
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
+  const [expValid, setExpValid] = useState(null);
 
   const shipSchema = Yup.object().shape({
     // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
@@ -370,15 +371,20 @@ export function AddNewCardModal(props) {
     validationSchema: () => shipSchema,
   });
 
-
   const handleExpDate = (values) => {
-    return values.expireDate
+    const dateExp = values.expireDate
       .replace(/^(\d\d)(\d)$/g, "$1/$2")
       .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
       .replace(/[^\d\/]/g, "")
       .trim();
+
+    handleExpValidation(dateExp);
+    return dateExp;
   };
 
+  const handleExpValidation = (value) => {
+    setExpValid(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value));
+  };
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -423,6 +429,7 @@ export function AddNewCardModal(props) {
                   maxLength={5}
                 />
                 <span className="errorMessage">{formik.errors.expireDate}</span>
+                {expValid == false ? "Expiary date is invalide": ""}
               </div>
               <div className="input-control wd50">
                 <label>CVC</label>
@@ -741,10 +748,9 @@ export function ChatUserModal({ setIsOpen }) {
   };
 
   const handleAddUserForChat = (id, name) => {
-    setUserId(id)
-    setUsername(name)
-    
-  }
+    setUserId(id);
+    setUsername(name);
+  };
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -787,13 +793,25 @@ export function ChatUserModal({ setIsOpen }) {
                   return (
                     <>
                       <div
-                        className=
-                        {!!userId ? "profile-chat-list flex space-between active-user" : "profile-chat-list flex space-between" }
-                        onClick={() => handleAddUserForChat(item._id, item.username)}
+                        className={
+                          !!userId
+                            ? "profile-chat-list flex space-between active-user"
+                            : "profile-chat-list flex space-between"
+                        }
+                        onClick={() =>
+                          handleAddUserForChat(item._id, item.username)
+                        }
                       >
                         <div className="profile-image-title flex flex-center">
                           <div className="image br50">
-                            <img src={item?.avatarImage == "" ? "/static/img/no-image.png" : item?.avatarImage} alt="" />
+                            <img
+                              src={
+                                item?.avatarImage == ""
+                                  ? "/static/img/no-image.png"
+                                  : item?.avatarImage
+                              }
+                              alt=""
+                            />
                           </div>
                           <div className="profile-text">
                             <div className="name">
