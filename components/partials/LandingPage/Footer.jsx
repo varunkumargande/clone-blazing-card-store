@@ -19,7 +19,7 @@ export default function Footer(){
                         <h3 className="follow mb20">Company</h3>
                         <div className="links flex column">
                             <Link href="/about-us"><a>About Us</a></Link>
-                            <Link href="/"><a>Faq's</a></Link>        
+                            <Link href="/FAQs"><a>FAQ's</a></Link>        
                             <Link href="/contact-us"><a>Contact Us</a></Link>        
                         </div>
                     </div>

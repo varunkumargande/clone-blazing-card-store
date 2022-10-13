@@ -36,6 +36,16 @@ const GetFullImageURL = (details, type, width, height) => {
                     ImageURL += ApplyHeight(height);
                 }
                 return ImageURL;
+            } else if(details.avatarPath && details.avatar) {
+                ImageURL += GetImageAPIPath(details.avatarPath);
+                ImageURL += GetImageAPIName(details.avatar);
+                if(width && width > 0) {
+                    ImageURL += ApplyWidth(width);
+                }
+                if(height && height > 0) {
+                    ImageURL += ApplyHeight(height);
+                }
+                return ImageURL;
             } else {
                 return GetDefaulterImageURL(type);
             }
@@ -47,6 +57,26 @@ const GetFullImageURL = (details, type, width, height) => {
                     ImageURL += ApplyWidth(width);
                 }
                 if(height && width > 0) {
+                    ImageURL += ApplyHeight(height);
+                }
+                return ImageURL;
+            } else if(details.follower_avatar_path && details.follower_avatar) {
+                ImageURL += GetImageAPIPath(details.follower_avatar_path);
+                ImageURL += GetImageAPIName(details.follower_avatar);
+                if(width && width > 0) {
+                    ImageURL += ApplyWidth(width);
+                }
+                if(height && height > 0) {
+                    ImageURL += ApplyHeight(height);
+                }
+                return ImageURL;
+            } else if(details.following_avatar_path && details.following_avatar) {
+                ImageURL += GetImageAPIPath(details.following_avatar_path);
+                ImageURL += GetImageAPIName(details.following_avatar);
+                if(width && width > 0) {
+                    ImageURL += ApplyWidth(width);
+                }
+                if(height && height > 0) {
                     ImageURL += ApplyHeight(height);
                 }
                 return ImageURL;

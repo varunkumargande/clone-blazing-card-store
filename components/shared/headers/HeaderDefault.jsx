@@ -24,8 +24,9 @@ import { imageUrl } from "../../../api/url";
 import MessageButton from "../../elements/MessageButton";
 import { stepState } from "../../Constants/becomeSeller";
 import { chatLogin } from "../../../api";
+import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 
-function HeaderDefault({ auth }, props) {
+function HeaderDefault({ auth }) {
   const router = useRouter();
   const [active, setActive] = useState(false);
   const [profile, setProfile] = useState(false);
@@ -43,8 +44,9 @@ function HeaderDefault({ auth }, props) {
     }
   };
 
-  const stage = useSelector((state) => state?.becomeSeller?.currentState);
-
+  const stage = useSelector((state) => state?.becomeSeller?.currentState) ?? 0;
+  const submittedDetails = useSelector((state) => state?.becomeSeller?.submittedDetails);
+  
   const handleOnClick = () => {
     setActive(!active);
   };
@@ -58,15 +60,16 @@ function HeaderDefault({ auth }, props) {
   useEffect(() => {
     let profileInterval = setInterval(() => {
       let profileData = sessionStorage.getItem("spurtUser");
-      if(profileData) {
+      if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);
         clearInterval(profileInterval);
       }
-    }, 10)
+    }, 10);
   }, []);
 
   useEffect(() => {
+    
     if (profile) {
       handleProfileImage();
     }
@@ -94,10 +97,16 @@ function HeaderDefault({ auth }, props) {
         </>
       );
     } else {
-      return <img onError={({ currentTarget }) => {
-        currentTarget.onerror = null;
-        currentTarget.src = "/static/images/profileImg.png";
-      }} src={"/static/img/no-image-new.svg"} alt="Profile" />;
+      return (
+        <img
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src = "/static/images/profileImg.png";
+          }}
+          src={"/static/img/no-image-new.svg"}
+          alt="Profile"
+        />
+      );
     }
   };
 
@@ -119,8 +128,8 @@ function HeaderDefault({ auth }, props) {
   };
 
   const handeGoToChat = () => {
-    chatLogin()
-  }
+    chatLogin();
+  };
 
   return (
     <header>
@@ -184,46 +193,18 @@ function HeaderDefault({ auth }, props) {
                     </a>
                   </Link>
                 ) : null}
-                <button className="message flex flex-center justify-center" onClick={() => handeGoToChat()}>
-                  
-                    <IconMessage />
-                  
+                <button
+                  className="message flex flex-center justify-center"
+                  onClick={() => handeGoToChat()}
+                >
+                  <IconMessage />
                 </button>
                 <button className="Notification flex flex-center justify-center">
                   <IconNotification />
                 </button>
                 <button className="profile">
                   <span onClick={handleOnClick}>
-
-                    <span className="profileImage">
-                      {handleProfileImage()}
-                    </span>
-                    {/* {userData != null ? (
-                      <>
-                        {userData.avatar != null && userData.avatarPath != null ? (
-                          <>
-                            <img
-                              src={
-                                imageUrl +
-                                "?path=" +
-                                userData.avatarPath +
-                                "&name=" +
-                                userData.avatar +
-                                "&width=500&height=500"
-                              }
-                              alt="Profile"
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <img src={"/static/img/no-image.png"} />
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      ""
-                    )} */}
-
+                    <span className="profileImage">{handleProfileImage()}</span>
                     <IconDropdown />
                   </span>
 

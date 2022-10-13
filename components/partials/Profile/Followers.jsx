@@ -1,4 +1,5 @@
 import React from "react";
+import DefaultServices from "../../Services/DefaultServices";
 
 export default function Followers(props) {
     const {
@@ -31,7 +32,7 @@ export default function Followers(props) {
         <>
             <div className="card-list flex flex-center">
                 <div className="profile text-center">
-                    <img src="/static/images/profile-large.svg" alt="Card" />
+                    <img style={{ borderRadius:"50%" }} width="115" height="115" src={DefaultServices.GetFullImageURL(person, "vendor", "115", "115")} alt="Card" />
                     <div className="f-title">{renderProfileName()}</div>
                     <div className="f-digi">@{person && ( isFollower ? person.follower_username : person.following_username)}</div>
                     <div className="follow-button-wrapper">

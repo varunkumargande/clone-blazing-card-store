@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
-import IconBack from "../../Icons/IconBack";
 import { EmailValidator } from "../../helper/emailValidator";
 import { UserLogin } from "../../../api";
 import { connect, useDispatch } from "react-redux";
 import Router from "next/router";
-import { GoogleLogin } from "react-google-login";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { loginConstant } from "../../Constants/login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { useRouter } from "next/router";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
+
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function Login(props) {
   const [googlePath, setgooglePath] = useState("");
   const [conpassShow, setConPassShow] = useState(false);
   const emailInputRef = React.useRef(null);
-  const router = useRouter();
+
   useEffect(() => {
     emailInputRef.current.focus();
   }, []);
@@ -39,39 +39,25 @@ function Login(props) {
     }
   }, [props]);
 
-  const responseGoogle = (response) => {
+  
+  const responseGoogle = (response, encyrpted) => {
     GoogleLoginApi(
-      response.gv.gZ,
-      response.gv.tX,
-      response.profileObj.email,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      response.googleId,
-      "gmail",
-      response.googleId,
-      response.googlePath,
-      response.googleId,
-      response.googlePath,
-      response.profileObj,
-      Router,
-      response
+      response.given_name, 
+      response.family_name, 
+      response.email, 
+      "", 
+      "", 
+      response.email.split("@")[0], 
+      "gmail", 
+      "", 
+      "", 
+      "", 
+      "", 
+      response.picture, 
+      Router, 
+      response,
     );
   };
-
-  // const responseGoogle = (response) => {
-  //   GoogleLoginApi(
-  //     mail,
-  //     password,
-  //     "gmail",
-  //     setgoogleId,
-  //     setgooglePath,
-  //     googleId,
-  //     googlePath,
-  //     response.profileObj,
-  //     Router,
-  //     response
-  //   );
-  // };
 
   const loginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email format").required("Required"),
@@ -83,28 +69,28 @@ function Login(props) {
       .required("Required"),
   });
 
-   //go back to previous page
-   const handleBackButton = () => {
-    router.back()
-   }
-
   return (
     <div className="login-wrapper">
-      <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
       <h1 className="title mb32">Sign in to Blazing Cards</h1>
-      <GoogleLogin
-        clientId="326680404078-fm2pbkgomc4nic42o6ua4difup6ff2dn.apps.googleusercontent.com"
-        render={(renderProps) => (
-          <button className="google-btn mb42" onClick={renderProps.onClick}>
-            <IconGoogle />
-            Continue with Google
-          </button>
-        )}
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        isSignedIn={false}
-      />
+      <div className="GoogleWrap mb42">
+        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+          <GoogleLogin
+            render={(renderProps) => (
+              <button className="google-btn" onClick={renderProps.onClick}>
+                <IconGoogle />
+                Sign up with Google
+              </button>
+            )}
+            onSuccess={credentialResponse => {
+              let data = jwt_decode(credentialResponse.credential);
+              responseGoogle(data);
+            }}
+            onError={() => {
+              
+            }}
+          />
+        </GoogleOAuthProvider>
+      </div>
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
       </div>
@@ -137,7 +123,7 @@ function Login(props) {
           <>
             <form className="login flex space-between" onSubmit={handleSubmit}>
               <div className="input-control">
-                <label>Email Address or Username*</label>
+                <label>Email Address*</label>
                 <input
                   name="email"
                   placeholder={"Email"}
@@ -145,11 +131,12 @@ function Login(props) {
                   value={values.email}
                   onChange={handleChange}
                   className="errorBorder"
+                  onBlur={handleBlur}
                 />
                 <span className="errorMessage">{errors.email && touched.email ? errors.email : null}</span>
               </div>
               <div className="input-control pass">
-                <label>Password*</label>
+                <label>Password</label>
                 <input
                   name="password"
                   placeholder={"Password"}
@@ -157,6 +144,7 @@ function Login(props) {
                   value={values.password}
                   className="errorBorder"
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <span className="errorMessage">{errors.password && touched.password ? errors.password : null}</span>
                 {conpassShow ? (
@@ -179,7 +167,7 @@ function Login(props) {
                 )}
                 <div className="flex justify-right mb16 forget mb32">
                   <Link href="/account/forgot-password">
-                    <a>Forgot Password</a>
+                    <a>Forget Password</a>
                   </Link>
                 </div>
               </div>

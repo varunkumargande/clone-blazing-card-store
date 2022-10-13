@@ -6,45 +6,42 @@ import { useRouter } from "next/router";
 export default function SeeAllParentCategories({
   categories,
   setActiveCategory,
-  setActiveCategoryId,
-  activeCategoryId
+  activeCategoryId,
+  setActiveSubCategory
 }) {
   const { query } = useRouter();
-  const [queryState, setQueryState] = useState(null)
+  const [queryState, setQueryState] = useState(null);
 
   const handleSelectCategory = (name, id) => {
     setActiveCategory(name);
-    setActiveCategoryId(id);
+    setActiveSubCategory("all")
     Router.push({
       pathname: "/see-all",
       query: {
-        category: id,
+        category: name,
       },
     });
   };
 
   useEffect(() => {
-    if(Object.keys(query).length != 0){
-        setQueryState(query?.category)
+    if (Object.keys(query).length != 0 && query?.category != "") {
+      setQueryState(query?.category);
+    } else {
+      Router.push({
+        pathname: "/see-all",
+        query: {
+          category: categories[0]?.name,
+        },
+      });
     }
-    
-    if(Object.keys(query).length == 0) {
-        
-        Router.push({
-            pathname: "/see-all",
-            query: {
-              category: activeCategoryId,
-            },
-          });
-    }
-  }, [query, categories]);
+  }, [query]);
 
   const getAllCategoriesCard = () => {
     if (categories) {
       return categories.map((element) => {
         return (
           <li
-            className={parseInt(queryState) === element?.categoryId ? "active" : ""}
+            className={queryState === element?.name ? "active" : ""}
             onClick={() =>
               handleSelectCategory(element?.name, element?.categoryId)
             }

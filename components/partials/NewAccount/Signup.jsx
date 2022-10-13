@@ -10,27 +10,19 @@ import {
   numPresent,
   specialPresent,
 } from "../../helper/emailValidator";
-// import { gapi } from "gapi-script";
 import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
-import { GoogleLogin } from "react-google-login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept";
 import { registerConstant } from "../../Constants/register";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 
-// This code is required in future development for Google Signin
-// gapi.load("client:auth2", () => {
-//   gapi.client.init({
-//     clientId:
-//       "951035021628-vq6g1nr866f0cqi56kch4viedvevmkt0.apps.googleusercontent.com",
-//     plugin_name: "chat",
-//   });
-// });
 
 function Signup(auth) {
   const [name, setName] = useState("");
@@ -103,7 +95,7 @@ function Signup(auth) {
     email: Yup.string().email("Invalid email format").required("Required"),
     number: Yup.string()
       .matches(phoneRegExp, "Phone number is not valid")
-      .required("Required"),
+      .required("Required").min(10).max(12),
     password: Yup.string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
@@ -115,27 +107,26 @@ function Signup(auth) {
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
     username: Yup.string()
       .matches(/^[a-zA-Z0-9]*$/, "Please enter valid username")
-      .max(40)
+      .max(8)
       .required("Required"),
   });
 
   const responseGoogle = (response) => {
-    //let pass = generatePassword();
     GoogleLoginApi(
-      response.gv.gZ,
-      response.gv.tX,
-      response.profileObj.email,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      process.env.NEXT_PUBLIC_DEFAULT_EMAIL_PASSWORD,
-      response.googleId,
-      "gmail",
-      response.googleId,
-      response.googlePath,
-      response.googleId,
-      response.googlePath,
-      response.profileObj,
-      Router,
-      response
+      response.given_name, 
+      response.family_name, 
+      response.email, 
+      "", 
+      "", 
+      response.email.split("@")[0], 
+      "gmail", 
+      "", 
+      "", 
+      "", 
+      "", 
+      response.picture, 
+      Router, 
+      response,
     );
   };
 
@@ -158,21 +149,26 @@ function Signup(auth) {
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
       <h1 className="title mb32">Sign up to Blazing Cards</h1>
-
-      <GoogleLogin
-        clientId="951035021628-vq6g1nr866f0cqi56kch4viedvevmkt0.apps.googleusercontent.com"
-        render={(renderProps) => (
-          <button className="google-btn mb42" onClick={renderProps.onClick}>
-            <IconGoogle />
-            Continue with Google
-          </button>
-        )}
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogleFailure}
-        isSignedIn={true}
-        cookiePolicy={'single_host_origin'}
-      />
+      <div className="GoogleWrap mb42">
+        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+          <GoogleLogin
+            render={(renderProps) => (
+              <button className="google-btn" onClick={renderProps.onClick}>
+                <IconGoogle />
+                Sign up with Google
+              </button>
+            )}
+            onSuccess={credentialResponse => {
+              let data = jwt_decode(credentialResponse.credential);
+              responseGoogle(data);
+            }}
+            onError={(response) => {
+              
+              responseGoogleFailure(response);
+            }}
+          />
+        </GoogleOAuthProvider>
+      </div>
 
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
@@ -191,6 +187,7 @@ function Signup(auth) {
         validationSchema={registerSchema}
         onSubmit={(values) => {
           if (policyCheck == true && usernameAvailable) {
+            
             UserRegister(
               values.firstname,
               values.lastname,
@@ -198,7 +195,8 @@ function Signup(auth) {
               values.password,
               values.cpass,
               values.number,
-              usernameInput.current.value,
+              values.username,
+              // usernameInput.current.value,
               Router
             );
           }
@@ -226,8 +224,9 @@ function Signup(auth) {
                   value={values.firstname}
                   maxlength="30"
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
-                <div className="errorText">{errors.firstname && touched.firstname ? errors.firstname : null}</div>
+                <div className="errorText">{ touched.firstname && errors.firstname ? errors.firstname : null}</div>
               </div>
               <div className="input-control wd50">
                 <label>Last Name*</label>
@@ -237,6 +236,7 @@ function Signup(auth) {
                   placeholder={"Last Name"}
                   value={values.lastname}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <div className="errorText">{errors.lastname && touched.lastname ? errors.lastname : null}</div>
               </div>
@@ -248,6 +248,7 @@ function Signup(auth) {
                   placeholder={"Email Address"}
                   value={values.email}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <div className="errorText">{errors.email && touched.email ? errors.email : null}</div>
               </div>
@@ -262,7 +263,7 @@ function Signup(auth) {
                   ref={usernameInput}
                   onBlur={handleOnBlur}
                 />
-                <div className="errorText">{errors.username && touched.username ? errors.username : null}</div>
+                <div className="errorText">{errors.username ? errors.username : null}</div>
                 {usernameAvailable === false && usernameAvailable !== null ? (
                   <div className="errorText">Username already taken</div>
                 ) : null}
@@ -275,6 +276,7 @@ function Signup(auth) {
                   value={values.number}
                   onChange={handleChange}
                   maxlength="15"
+                  onBlur={handleBlur}
                 />
                 <div className="errorText">{errors.number && touched.number ? errors.number : null}</div>
               </div>
@@ -287,6 +289,7 @@ function Signup(auth) {
                   type={passShow ? "text" : "password"}
                   value={values.password}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 {passShow ? (
                   <button
@@ -317,6 +320,7 @@ function Signup(auth) {
                   type={conpassShow ? "text" : "password"}
                   value={values.cpass}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 {conpassShow ? (
                   <button
@@ -344,7 +348,7 @@ function Signup(auth) {
 
               <div className="checkbox-wrap mb32">
                 <label className="checkbox">
-                  <input type="checkbox" onClick={handlePolicyCheck} />
+                  <input type="checkbox" onClick={() => handlePolicyCheck()} />
                   <span class="checkmark"></span>
                   I’ve read and agree with <Link href="/terms-conditions"><a>Terms of Service</a></Link> & <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
                 </label>
