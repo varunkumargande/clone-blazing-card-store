@@ -55,6 +55,7 @@ function StreamingBase({
   const uuid = router.query["uuid"];
   const [liked, setLiked] = useState(stream?.streamData?.isLike ? stream?.streamData?.isLike : false);
   const [windowWidth, setWindowWidth] = useState(0);
+  const [currentAuctionName, setCurrentAuctionName] = useState(null);
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
   };
@@ -75,7 +76,13 @@ function StreamingBase({
       streamNotification?.auction?.auction.id ??
         streamNotification?.bid?.auctionId
     );
-    setWinnerNotification(streamNotification?.wind);
+    setWinnerNotification(streamNotification?.win);
+    if(!!streamNotification?.auction) {
+      setCurrentAuctionName(streamNotification?.auction?.product?.name);
+    }
+    if(!!streamNotification?.win) {
+      setCurrentAuctionName(null);
+    }
   }, [streamNotification]);
 
   /**
@@ -109,6 +116,7 @@ function StreamingBase({
   const getAuctionId = () => {
     return streamNotification?.auction?.auction.id ? streamNotification?.auction?.auction.id : (streamNotification?.bid?.auctionId ? streamNotification?.bid?.auctionId : (auctionDetails?.latestAuction?.auctionId ? auctionDetails?.latestAuction?.auctionId : null))
   }
+
   const getBidAmount = () => {
     return auctionNotification?.auction?.bidAmount ? auctionNotification?.auction?.bidAmount : (bidNotification?.bidAmount ? bidNotification?.bidAmount : ( auctionDetails?.latestBidding?.bidAmount ? auctionDetails?.latestBidding?.bidAmount : (auctionDetails?.latestAuction.bidAmount ? auctionDetails?.latestAuction.bidAmount : null)));  
   }
@@ -168,6 +176,7 @@ function StreamingBase({
     }
   };
 
+  
   /**
    * Method will handle mute and untmute of stream
    */
@@ -215,6 +224,7 @@ function StreamingBase({
           setBidAmount(null);
           clearInterval(myInterval);
           setDisableBid(true);
+          setCurrentAuctionName(null)
         } else if (seconds < 60) {
           setMinutes(minutes - 1);
           setSeconds(59);
@@ -304,7 +314,7 @@ function StreamingBase({
         null
       );
     }
-    return auctionNotification?.product?.name ?? null;
+    return auctionNotification?.product?.name ?? currentAuctionName;
   };
 
   const handleLikeUnlike = async () => {
