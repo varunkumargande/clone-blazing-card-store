@@ -13,6 +13,8 @@ export default function ForgetPassword() {
     const [mail, setMail] = useState("")
     const [mailError, setMailError] = useState("")
     const [forgotSuccess, setForgotSuccess] = useState(false)
+    const [forError, setForError] = useState("");
+
     const router = useRouter();
     const handleSetEmail = (e) => {
         e.preventDefault()
@@ -23,7 +25,7 @@ export default function ForgetPassword() {
         if(mail == "") {
             setMailError(forgotPasswordConstant["requiredEmail"])
         }else {
-            forgotApi(mail, setForgotSuccess)
+            forgotApi(mail, setForgotSuccess, setForError)
         }
     }
 
