@@ -307,7 +307,7 @@ function LeftDiv({
         </div>
         <div className="profile-wrap" onClick={handleProfileClick}>
           <div className="name">{vendorName}</div>
-          <div className="followrs-count">129K Followers</div>
+          <div className="followrs-count">{stream.streamData.vendorDetails.follower_count ? stream.streamData.vendorDetails.follower_count : "0"} Followers</div>
         </div>
         <div className="btn-wrap">
         {followed ? <button onClick={handleFollowUnfollow} className="following primary-btn">Following</button> : <button onClick={handleFollowUnfollow} className="primary-btn">Follow</button>}
