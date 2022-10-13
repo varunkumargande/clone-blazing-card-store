@@ -16,7 +16,9 @@ export default function SeeAllSubCategories({
   const getAllSubCategoriesCard = () => {
     if (!!categories) {
       return categories.map((element) => {
+        console.log(activeCategory)
         if (element.name === activeCategory) {
+          console.log(element)
           return element?.children.map((item) => {
             return (
               <>

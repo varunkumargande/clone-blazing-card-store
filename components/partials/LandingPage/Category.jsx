@@ -4,6 +4,7 @@ import IconCategoryDrop from "../../Icons/IconCategoryDrop";
 import IconLike from "../../Icons/IconLike";
 import { connect } from "react-redux";
 import { stringFormatter } from "../../../utilities/utils";
+import Router from "next/router";
 
 function Category({
   isSeeAllCate,
@@ -74,24 +75,7 @@ function Category({
       if (Object.keys(category).length != 0) {
         return (
           <>
-            {auth?.isLoggedIn ? (
-              <>
-                <div className="category-like like">
-                  <button
-                    className={
-                      subCateId === "liked"
-                        ? "Like flex justify-center flex-center"
-                        : "flex justify-center flex-center"
-                    }
-                    onClick={() => handleLikedShow()}
-                  >
-                    <span><IconLike /></span>
-                  </button>
-                </div>
-              </>
-            ) : (
-              ""
-            )}
+           
             <div className="category-list">
               <button
                 className={
@@ -102,7 +86,7 @@ function Category({
                 Explore
               </button>
             </div>
-            {category["categories"].map((res, index) => {
+            {category["categories"]?.map((res, index) => {
               if (res.name === seeAllHeading) {
                 if (res.length != 0) {
                   return (
@@ -195,6 +179,16 @@ function Category({
     }
   };
 
+  const handleGoToSeeAll = () => {
+    Router.push({
+      pathname: "/see-all",
+      query: {
+        page: "all-categories",
+        category: ""
+      }
+    })
+  }
+
   return (  
     <section className="category-wrapper">
       <div className="inner-container">
@@ -216,10 +210,8 @@ function Category({
                                 </ul> */}
             </div>
           </div>
-          <div className="seeAll">
-            <Link href="/see-all">
-              <a className="flex flex-center">View All</a>
-            </Link>
+          <div className="seeAll" onClick={() => handleGoToSeeAll()}>
+            <a className="flex flex-center">View All</a>
           </div>
         </div>
       </div>

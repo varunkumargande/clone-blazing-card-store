@@ -18,6 +18,7 @@ export default function SeeAllParentCategories({
     Router.push({
       pathname: "/see-all",
       query: {
+        page: query.page,
         category: name,
       },
     });
@@ -30,6 +31,7 @@ export default function SeeAllParentCategories({
       Router.push({
         pathname: "/see-all",
         query: {
+          page: query.page,
           category: categories[0]?.name,
         },
       });

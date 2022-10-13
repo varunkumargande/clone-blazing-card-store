@@ -69,7 +69,7 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
             onClick={() => handleStreamingLink(detail)}
           />
           <LiveStreamStatus
-            isLive={isLive}
+            isLive={detail?.isLive}
             uuid={detail.uuid}
             detail={detail}
             showLoginModal={showLoginModal}

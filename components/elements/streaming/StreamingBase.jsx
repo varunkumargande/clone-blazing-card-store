@@ -124,11 +124,11 @@ function StreamingBase({
 
     let [date, time] = endTime.split(" ");
     const endTime = moment(date.replaceAll("-", "/") + " " + time);
-    console.log("endTime",endTime)
+    
 
     let [cdate, ctime] = currentTime.split(" ");
     const currentTime = moment(cdate.replaceAll("-", "/") + " " + ctime);
-    console.log("currentTime",currentTime)
+    
     //moment.utc().format("YYYY/MM/DD, HH:mm:ss")
     
     const duration = moment.duration(
