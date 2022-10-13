@@ -62,20 +62,6 @@ export function ShippingTaxesModal(props) {
   const { setOpenShipPayDetails } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal-header flex Space-between flex-center">
-        <h5 className="modal-title"></h5>
-        <button
-          type="button"
-          className="close"
-          data-dismiss="modal"
-          aria-label="Close"
-          onClick={() => setIsShareModalOpen(false)}
-        >
-          <span aria-hidden="true">
-            <IconClose />
-          </span>
-        </button>
-      </div>
       <div className="modal">
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Shipping & Taxes</h5>

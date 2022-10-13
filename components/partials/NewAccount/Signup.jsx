@@ -158,7 +158,7 @@ function Signup(auth) {
             render={(renderProps) => (
               <button className="google-btn" onClick={renderProps.onClick}>
                 <IconGoogle />
-                Sign up with Google
+                Continue with Google
               </button>
             )}
             onSuccess={(credentialResponse) => {
