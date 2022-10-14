@@ -76,7 +76,7 @@ function HeaderDefault({ auth }) {
   }, [profile]);
 
   const handleProfileImage = () => {
-    if (profile) {
+    if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
           <img
@@ -88,9 +88,9 @@ function HeaderDefault({ auth }) {
               imageUrl +
               "?path=" +
               profile.avatarPath +
-              "&name=" +
+              "&name=/" +
               profile.avatar +
-              "&width=500&height=500"
+              "&width=100&height=100"
             }
             alt="Profile"
           />
@@ -141,7 +141,7 @@ function HeaderDefault({ auth }) {
             </a>
           </div>
 
-          <div className="Search">
+          {/* <div className="Search">
             <input
               type="search"
               id="search"
@@ -151,7 +151,7 @@ function HeaderDefault({ auth }) {
             <button className="search-btn" disabled>
               <IconSearch />
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">

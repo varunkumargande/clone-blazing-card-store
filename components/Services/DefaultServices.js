@@ -1,12 +1,15 @@
 import { imageUrl } from '../../api/url';
 // import DefaultImage from '/static/img/no-image.png';
 
-const GetFullImageURL = (details, type, width, height) => {
-    
+const GetFullImageURL = (details, type, width, height, fullpath=true) => {
+
     let ImageURL = imageUrl;
     if(details) {
         if(type == "profile") {
             if(details.preview_image_path && details.preview_image) {
+                if(!fullpath) {
+                    return details.preview_image_path + "/" +details.preview_image
+                }
                 ImageURL += GetImageAPIPath(details.preview_image_path);
                 ImageURL += GetImageAPIName(details.preview_image);
                 if(width && width > 0) {
@@ -17,6 +20,9 @@ const GetFullImageURL = (details, type, width, height) => {
                 }
                 return ImageURL;
             } else if(details.imagePath && details.image) {
+                if(!fullpath) {
+                    return details.imagePath + "/"+details.image
+                }
                 ImageURL += GetImageAPIPath(details.imagePath);
                 ImageURL += GetImageAPIName(details.image);
                 if(width && width > 0) {
@@ -27,6 +33,9 @@ const GetFullImageURL = (details, type, width, height) => {
                 }
                 return ImageURL;
             } else if(details.stream_thumbnail_path && details.stream_thumbnail_image) {
+                if(!fullpath) {
+                    return details.stream_thumbnail_path+ '/' +details.stream_thumbnail_image
+                }
                 ImageURL += GetImageAPIPath(details.stream_thumbnail_path);
                 ImageURL += GetImageAPIName(details.stream_thumbnail_image);
                 if(width && width > 0) {
@@ -37,6 +46,9 @@ const GetFullImageURL = (details, type, width, height) => {
                 }
                 return ImageURL;
             } else if(details.avatarPath && details.avatar) {
+                if(!fullpath) {
+                    return details.avatarPath+ "/" +details.avatar
+                }
                 ImageURL += GetImageAPIPath(details.avatarPath);
                 ImageURL += GetImageAPIName(details.avatar);
                 if(width && width > 0) {
@@ -51,6 +63,9 @@ const GetFullImageURL = (details, type, width, height) => {
             }
         }  else if(type == "vendor") {
             if(details.vendor_image_path && details.vendor_image) {
+                if(!fullpath) {
+                    return details.vendor_image_path + "/"+details.vendor_image
+                }
                 ImageURL += GetImageAPIPath(details.vendor_image_path);
                 ImageURL += GetImageAPIName(details.vendor_image);
                 if(width && width > 0) {
@@ -61,6 +76,9 @@ const GetFullImageURL = (details, type, width, height) => {
                 }
                 return ImageURL;
             } else if(details.follower_avatar_path && details.follower_avatar) {
+                if(!fullpath) {
+                    return details.follower_avatar_path + '/'+details.follower_avatar
+                }
                 ImageURL += GetImageAPIPath(details.follower_avatar_path);
                 ImageURL += GetImageAPIName(details.follower_avatar);
                 if(width && width > 0) {
@@ -70,7 +88,10 @@ const GetFullImageURL = (details, type, width, height) => {
                     ImageURL += ApplyHeight(height);
                 }
                 return ImageURL;
-            }else if(details.avatarPath && details.avatar) {
+            }else if((details.avatarPath || details.avatar_path)  && details.avatar) {
+                if(!fullpath) {
+                    return (details.avatarPath ?? details.avatar_path)+ "/" + details.avatar
+                }
                 ImageURL += GetImageAPIPath(details.avatarPath);
                 ImageURL += GetImageAPIName(details.avatar);
                 if(width && width > 0) {
@@ -81,6 +102,9 @@ const GetFullImageURL = (details, type, width, height) => {
                 }
                 return ImageURL;
             } else if(details.following_avatar_path && details.following_avatar) {
+                if(!fullpath) {
+                    return details.following_avatar_path + "/" + details.following_avatar
+                }
                 ImageURL += GetImageAPIPath(details.following_avatar_path);
                 ImageURL += GetImageAPIName(details.following_avatar);
                 if(width && width > 0) {
@@ -91,6 +115,9 @@ const GetFullImageURL = (details, type, width, height) => {
                 }
                 return ImageURL;
             } else {
+                if(!fullpath) {
+                    return "defaultCard.png";
+                }
                 return GetDefaulterImageURL(type);
             }
         }
@@ -115,9 +142,9 @@ const ApplyHeight = (height) => {
 
 const GetDefaulterImageURL = (type) => {
     if(type !== "vendor") {
-        return '/static/images/card.png';
+        return 'defaultCard.png';
     }
-    return '/static/img/no-image-new.png';
+    return 'defaultCard.png';
 }
 
 const DefaultServices = {
