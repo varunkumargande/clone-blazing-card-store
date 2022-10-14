@@ -139,7 +139,7 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
             {detail?.title?.substring(0, 25) + "..."}
           </div>
           <button className="cate-btn">
-            {stringFormatter(detail?.category_name)}
+            {stringFormatter(detail?.subCategory_name)}
           </button>
         </div>
       </div>
