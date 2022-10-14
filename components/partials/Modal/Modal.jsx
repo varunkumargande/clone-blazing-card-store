@@ -340,20 +340,14 @@ export function AddNewCardModal(props) {
       cardNumber:
         payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
       cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
-      expireDate:
-        (payDetail != false) != 0
-          ? payDetail[0]?.card.exp_year + "-" + payDetail[0]?.card.exp_month
-          : "",
+      expireDate: ""
+      // expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card.exp_year: "",
     },
     onSubmit: (values) => {
-      let expDate = "";
-      let year = values.expireDate.split("-")[0].slice(-2);
-      let month = values.expireDate.split("-")[1];
-      expDate = month + "/" + year;
 
       const jsonData = JSON.stringify({
         cardNumber: values.cardNumber,
-        expireDate: expDate,
+        expireDate: values.expireDate,
         cvc: values.cvc,
       });
 
@@ -378,13 +372,7 @@ export function AddNewCardModal(props) {
       .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
       .replace(/[^\d\/]/g, "")
       .trim();
-
-    handleExpValidation(dateExp);
     return dateExp;
-  };
-
-  const handleExpValidation = (value) => {
-    setExpValid(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value));
   };
 
   return (
@@ -433,7 +421,7 @@ export function AddNewCardModal(props) {
                   maxLength={5}
                 />
                 <span className="errorMessage">{formik.errors.expireDate}</span>
-                {expValid == false ? "Expiary date is invalide": ""}
+                {expValid == false ? "Expiary date is invalide" : ""}
               </div>
               <div className="input-control wd50">
                 <label>CVC</label>
