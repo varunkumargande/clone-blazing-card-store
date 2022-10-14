@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { connect } from "react-redux";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
 
 function StreamCard({ detail, isLive, showLoginModal, auth }) {
   const handleRouting = (id) => {
@@ -20,6 +22,26 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
   const handleStreamingLink = (detail) => {
     Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
   };
+
+  const getCloudImagePath = (type) => {
+    let imagePath = "";
+    let image = "";
+    if (type === "profile") {
+      imagePath = detail?.preview_image_path;
+      image = detail?.preview_image;
+    } else if (type === "vendor") {
+      imagePath = detail?.vendor_image_path;
+      image = detail?.vendor_image;
+    };
+    if (!image) {
+      image = "defaultCard.png";
+    }
+    if (imagePath) {
+      return `${imagePath}${image}`;
+    } else {
+      return image;
+    }
+  }
 
   const getImagePath = (type) => {
     if (
@@ -59,14 +81,26 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
         <div className="image" >
-          <img
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = "/static/images/card.png";
-            }}
-            src={DefaultServices.GetFullImageURL(detail, "profile")}
+          <CloudinaryImage
+            imageUrl={
+              getCloudImagePath("profile")
+            }
+            keyId={getCloudImagePath("profile")}
+            transformation={ImageTransformation.card}
             onClick={() => handleStreamingLink(detail)}
+            alternative={""}
           />
+
+          {/* ToDo: Need to remove old image code. Keeping it right now for reference */}
+          {/* <img
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/static/images/card.png";
+              }}
+              src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
+              onClick={() => handleStreamingLink(detail)}
+            />
+          } */}
           <LiveStreamStatus
             isLive={detail?.isLive}
             uuid={detail.uuid}
@@ -80,14 +114,24 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
             className="title flex flex-center"
             onClick={() => handleRouting(detail.user_id)}
           >
-            <img
+            <CloudinaryImage
+              imageUrl={
+                getCloudImagePath("vendor")
+              }
+              keyId={getCloudImagePath("vendor")}
+              transformation={ImageTransformation.profileImageCard}
+              alternative={""}
+            />
+
+            {/* ToDo: Need to remove old image code. Keeping it right now for reference */}
+            {/* <img
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = "/static/img/no-image.png";
               }}
               src={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25")}
               alt="Card"
-            />
+            /> */}
 
             {stringFormatter(detail?.username)}
           </h3>
