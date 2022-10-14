@@ -76,7 +76,7 @@ function HeaderDefault({ auth }) {
   }, [profile]);
 
   const handleProfileImage = () => {
-    if (profile) {
+    if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
           <img
@@ -88,9 +88,9 @@ function HeaderDefault({ auth }) {
               imageUrl +
               "?path=" +
               profile.avatarPath +
-              "&name=" +
+              "&name=/" +
               profile.avatar +
-              "&width=500&height=500"
+              "&width=100&height=100"
             }
             alt="Profile"
           />
