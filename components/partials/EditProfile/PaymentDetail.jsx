@@ -75,14 +75,9 @@ export default function PaymentDetail() {
 
   const submitCardDetail = async (values) => {
     setCardLoader(true);
-    let expDate = "";
-    let year = values.expireDate.split("-")[0].slice(-2);
-    let month = values.expireDate.split("-")[1];
-    expDate = month + "/" + year;
-
     const jsonData = JSON.stringify({
       cardNumber: values.cardNumber,
-      expireDate: expDate,
+      expireDate: values.expireDate,
       cvc: values.cvc,
       countryId: values.countryId,
     });
@@ -91,18 +86,13 @@ export default function PaymentDetail() {
   };
 
   const handleExpDate = (values) => {
-    const dateFor = values.expireDate
+    const dates = values.expireDate
       .replace(/^(\d\d)(\d)$/g, "$1/$2")
       .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
       .replace(/[^\d\/]/g, "")
       .trim();
-      handleExpValidation(dateFor)
-      return dateFor
+    return dates;
   };
-
-   const handleExpValidation = (value) => {
-    setExpValid(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value))
-   }
 
   const handleCardDetail = () => {
     if (cardLoader) {
@@ -124,10 +114,8 @@ export default function PaymentDetail() {
                 initialValues={initialCardValues}
                 validationSchema={paySchema}
                 onSubmit={(values) => {
-                  if(!!expValid) {
-                    console.log("errro")
-                  }
-                  // submitCardDetail(values);
+                  console.log(values);
+                  submitCardDetail(values);
                 }}
               >
                 {({
@@ -186,7 +174,7 @@ export default function PaymentDetail() {
                                 {errors.expireDate && touched.expireDate
                                   ? errors.expireDate
                                   : null}
-                                  {expValid == false ? "Expiary date is invalide": ""}
+                                {/* {expValid == false ? "Expiary date is invalide": ""} */}
                               </span>
                             </div>
                             <div className="input-control wd50">

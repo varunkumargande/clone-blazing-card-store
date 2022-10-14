@@ -141,7 +141,7 @@ function HeaderDefault({ auth }) {
             </a>
           </div>
 
-          <div className="Search">
+          {/* <div className="Search">
             <input
               type="search"
               id="search"
@@ -151,7 +151,7 @@ function HeaderDefault({ auth }) {
             <button className="search-btn" disabled>
               <IconSearch />
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">
