@@ -287,7 +287,7 @@ function MyProfile(props) {
   };
 
   const handleProfileImage = () => {
-    if (profile) {
+    if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
           <img
@@ -307,7 +307,7 @@ function MyProfile(props) {
         </>
       );
     } else {
-      <img src="/static/img/no-image.png" alt="profileImg" />;
+     return <img src="/static/images/profileImg.png" alt="profileImg" />;
     }
   };
 
