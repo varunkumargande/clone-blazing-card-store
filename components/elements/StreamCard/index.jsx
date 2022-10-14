@@ -77,7 +77,6 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
       return "/static/images/profile.png";
     }
   };
-
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
@@ -137,7 +136,7 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
             {stringFormatter(detail?.username)}
           </h3>
           <div className="disc">
-            {detail?.description?.substring(0, 50) + "..."}
+            {detail?.title?.substring(0, 25) + "..."}
           </div>
           <button className="cate-btn">
             {stringFormatter(detail?.category_name)}

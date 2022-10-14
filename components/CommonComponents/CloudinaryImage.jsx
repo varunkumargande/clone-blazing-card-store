@@ -11,7 +11,7 @@ export default function CloudinaryImage(props) {
 		let returnElement = <></>;
 		let imageTransformation =
 			props.transformation !== undefined
-			? props.transformation : ''
+				? props.transformation : ''
 
 		//#endregion
 
