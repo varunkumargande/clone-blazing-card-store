@@ -6,7 +6,7 @@ export const stringFormatter = (string) => {
   return string ? (string.toLowerCase()).charAt(0).toUpperCase() + (string.toLowerCase()).slice(1) : '';
 }
 
-export const getCardImagesByName = (cardNumber = "") => {
+export const getCardImagesByName = (cardNumber = "", cardBrand = "") => {
   const number = cardNumber.replaceAll(" ", "")
   const re = {
     electron: /^(4026|417500|4405|4508|4844|4913|4917)\d+$/,
@@ -21,31 +21,38 @@ export const getCardImagesByName = (cardNumber = "") => {
     discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/,
     jcb: /^(?:2131|1800|35\d{3})\d{11}$/
   }
-
-  for (const key in re) {
-    if (re[key].test(number)) {
-      switch (key) {
-        case 'visa':
-          return <IconVisaCard />
-        case 'mastercard':
-          return <IconMasterCard />
-        case 'amex':
-          return <IconAmericanExpressCard />
-        case 'dankort':
-          return <IconDankortCard />
-        case 'diners':
-          return <IconDCICard />
-        case 'discover':
-          return <IconDiscoverCard />
-        case 'jcb':
-          return <IconJCBCard />
-        case 'maestro':
-          return <IconMaestroCard />
-        case 'unionpay':
-          return <IconUnionPayCard />
-        default:
-          return "";
+  const getImage = (key) => {
+    switch (key) {
+      case 'visa':
+        return <IconVisaCard />
+      case 'mastercard':
+        return <IconMasterCard />
+      case 'amex':
+        return <IconAmericanExpressCard />
+      case 'dankort':
+        return <IconDankortCard />
+      case 'diners':
+        return <IconDCICard />
+      case 'discover':
+        return <IconDiscoverCard />
+      case 'jcb':
+        return <IconJCBCard />
+      case 'maestro':
+        return <IconMaestroCard />
+      case 'unionpay':
+        return <IconUnionPayCard />
+      default:
+        return "";
+    }
+  }
+  if (re[`${cardBrand}`]) {
+    return getImage(cardBrand)
+  } else if (number) {
+    for (const key in re) {
+      if (re[key].test(number)) {
+        return getImage(key)
       }
     }
   }
+  return ""
 }

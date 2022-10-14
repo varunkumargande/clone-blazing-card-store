@@ -16,6 +16,7 @@ import { searchUsers } from "../../../chatService";
 import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
+import { getCardImagesByName } from "../../helper/cardImageHelper";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -399,6 +400,9 @@ export function AddNewCardModal(props) {
                 value={formik.values.cardNumber}
                 onChange={formik.handleChange}
               />
+              <span className="card-icon">
+                {formik?.values?.cardNumber >= 3 ? getCardImagesByName(formik.values.cardNumber) : ''}
+              </span>
               <span className="errorMessage">{formik.errors.cardNumber}</span>
             </div>
             <div className="flex space-between">
