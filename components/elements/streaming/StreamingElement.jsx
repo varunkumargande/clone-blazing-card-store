@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { agoraGettToken } from "../../../api/stream/agora";
+import { imageUrl } from "../../../api/url";
 import AgoraRTC from "agora-rtc-sdk-ng";
 
 const StreamingElement = ({ volume, isMute }) => {
   const options = useSelector((state) => state?.stream?.streamPageData?.option);
-
+  const streamData = useSelector((state) => state?.stream?.streamData);
   const [volumeLevel, setVolumeLevel] = useState(volume);
   const rtc = useRef({});
   const [remoteUser, setRemoteUser] = useState(null);
@@ -99,16 +100,32 @@ const StreamingElement = ({ volume, isMute }) => {
           className="local_stream"
           style={{ width: "100%", height: "100%" }}
         ></div>
-      ) :
-      // Do not remove this code
+      ) : // Do not remove this code
       // <img
       //     onError={({ currentTarget }) => {
       //       currentTarget.onerror = null; // prevents looping
       //       currentTarget.src="/static/images/stream-image.jpg";
       //     }}
       //       src={getImagePath('profile')}
-      //     />  
-      <img src="/static/images/stream-image.jpg" alt="stream" />
+      //     />
+      !!streamData ? (
+        streamData?.preview_image_path && streamData?.preview_image ? (
+          <img
+            src={
+              imageUrl +
+              "?path=" +
+              streamData.preview_image_path +
+              "&name=" +
+              streamData.preview_image
+            }
+            alt="stream"
+          />
+        ) : (
+          <><img src="/static/img/no-image.png" alt="stream" /></>
+        )
+      ): (
+        <img src="/static/img/no-image.png" alt="stream" />
+      )
       }
     </>
   );
