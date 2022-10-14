@@ -1,10 +1,4 @@
-import { login } from "../../store/auth/action";
-import { cartListApi } from "../cart/cartList";
-import getProfileApi from "../home/getInfo";
-import APIServices from '../../services'
-import { modalSuccess, modalWarning } from "../intercept";
-import { UserOauthLogin } from "./oAuthLogin";
-import { UserGoogleRegister } from './onlyRegister';
+import { modalSuccess } from "../intercept";
 import axios from "axios"
 import { getProfile } from "../../store/profile/action";
 import { apiBaseUrl } from '../url';
@@ -25,6 +19,7 @@ export async function GoogleLoginApi(firstname, lastname, mail, password, confir
         sessionStorage.setItem("spurtUser", JSON.stringify(result.data.data.user));
         getProfile(JSON.stringify(result.data.data.user));
         modalSuccess('success', result.data.message)
-        Router.push('/');
+        // Router.push('/');
+        window.location.href = "/"
     }
 };
