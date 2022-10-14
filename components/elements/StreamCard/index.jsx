@@ -23,69 +23,16 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
     Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
   };
 
-  const getCloudImagePath = (type) => {
-    let imagePath = "";
-    let image = "";
-    if (type === "profile") {
-      imagePath = detail?.preview_image_path;
-      image = detail?.preview_image;
-    } else if (type === "vendor") {
-      imagePath = detail?.vendor_image_path;
-      image = detail?.vendor_image;
-    };
-    if (!image) {
-      image = "defaultCard.png";
-    }
-    if (imagePath) {
-      return `${imagePath}${image}`;
-    } else {
-      return image;
-    }
-  }
 
-  const getImagePath = (type) => {
-    if (
-      detail?.preview_image_path &&
-      detail?.preview_image &&
-      type == "profile"
-    ) {
-      return (
-        imageUrl +
-        "?path=" +
-        detail?.preview_image_path +
-        "&name=" +
-        detail?.preview_image +
-        "&width=100&height=100"
-      );
-    } else if (
-      detail?.vendor_image_path &&
-      detail?.vendor_image &&
-      type == "vendor"
-    ) {
-      return (
-        imageUrl +
-        "?path=" +
-        detail?.vendor_image_path +
-        "&name=" +
-        detail?.vendor_image +
-        "&width=25&height=25"
-      );
-    }
-    if (type == "profile") {
-      return "/static/images/card.png";
-    } else {
-      return "/static/images/profile.png";
-    }
-  };
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
         <div className="image" >
           <CloudinaryImage
             imageUrl={
-              getCloudImagePath("profile")
+              DefaultServices?.GetFullImageURL(detail, "profile", "25", "25", false)
             }
-            keyId={getCloudImagePath("profile")}
+            keyId={DefaultServices?.GetFullImageURL(detail, "profile", "25", "25", false)}
             transformation={ImageTransformation.card}
             onClick={() => handleStreamingLink(detail)}
             alternative={""}
@@ -116,9 +63,9 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
           >
             <CloudinaryImage
               imageUrl={
-                getCloudImagePath("vendor")
+                DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25", false)
               }
-              keyId={getCloudImagePath("vendor")}
+              keyId={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25", false)}
               transformation={ImageTransformation.profileImageCard}
               alternative={""}
             />
@@ -129,7 +76,7 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = "/static/img/no-image.png";
               }}
-              src={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25")}
+              src={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25", false)}
               alt="Card"
             /> */}
 
