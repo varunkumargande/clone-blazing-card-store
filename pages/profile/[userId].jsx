@@ -121,6 +121,7 @@ export default function categoryStream() {
     const PreviousShowsComponent = () => {
         if (previousShows) {
             if(previousShows.length > 0) {
+
                 return (
                     <>
                         {previousShows.map((show, index) => (

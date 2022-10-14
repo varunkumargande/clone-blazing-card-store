@@ -24,7 +24,6 @@ var ExpiryInput = React.createClass({
           delimiter = this.props.delimiter,
           yearMin = (new Date).getFullYear() - 2000,
           yearMax = (new Date).getFullYear() - 2000 + 25;
-          debugger;
       if (/(\d|ArrowLeft|ArrowRight|Backspace|Delete|Tab)/.test(key)) {
         if (/(\d)/.test(key)) {
           typeKey = 'number';
