@@ -301,9 +301,9 @@ function LeftDiv({
           {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
           <CloudinaryImage
               imageUrl={
-                DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor", "25", "25", false)
+                DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor")
               }
-              keyId={DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor", "25", "25", false)}
+              keyId={DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor")}
               transformation={ImageTransformation.streamPageProfile}
               alternative={"Card"}
             />

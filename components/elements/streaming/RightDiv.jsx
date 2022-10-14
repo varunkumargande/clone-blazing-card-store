@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import AgoraRTM from "agora-rtm-sdk";
 import { getToken } from "../../../api/stream/getToken";
 import IconChat from "../../Icons/IconChat";
+import { ImageTransformation } from "../../Constants/imageTransformation";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 
 function RightDiv({ streamData }) {
   const [channel, setChannel] = useState(null);
@@ -80,11 +82,20 @@ function RightDiv({ streamData }) {
               <>
                 <div className="flex flex-center chat">
                   <div className="chat-img br50">
-                    <img
+
+                    <CloudinaryImage
+                      imageUrl={streamData?.streamPageDteails?.avatarImage}
+                      keyId={`chatBox${userId}`}
+                      transformation={ImageTransformation.streamChatProfile}
+                      alternative="profile"
+                    />
+
+                    {/* // ToDo: Need to remove commented code. Keeping it for refrence for now. */}
+                    {/* <img
                       src={streamData?.streamPageDteails?.avatarImage}
                       alt="profile"
                       key={`chatBox${userId}`}
-                    />
+                    /> */}
                   </div>
                   <div className="chat-text-wrap">
                     <div className="name">{userId}</div>

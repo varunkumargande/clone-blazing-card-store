@@ -30,9 +30,9 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
         <div className="image" >
           <CloudinaryImage
             imageUrl={
-              DefaultServices?.GetFullImageURL(detail, "profile", "25", "25", false)
+              DefaultServices?.GetFullImageURL(detail, "profile")
             }
-            keyId={DefaultServices?.GetFullImageURL(detail, "profile", "25", "25", false)}
+            keyId={DefaultServices?.GetFullImageURL(detail, "profile")}
             transformation={ImageTransformation.card}
             onClick={() => handleStreamingLink(detail)}
             alternative={""}
@@ -63,9 +63,9 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
           >
             <CloudinaryImage
               imageUrl={
-                DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25", false)
+                DefaultServices?.GetFullImageURL(detail, "vendor")
               }
-              keyId={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25", false)}
+              keyId={DefaultServices?.GetFullImageURL(detail, "vendor")}
               transformation={ImageTransformation.profileImageCard}
               alternative={""}
             />
