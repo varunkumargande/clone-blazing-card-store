@@ -5,5 +5,6 @@ export const ImageTransformation = {
     profileImageHeader: "w_32,h_32,c_fill,q_auto,fl_any_format,dpr_auto",
     profileImageCard: "w_24,h_24,c_fill,q_auto,fl_any_format,dpr_auto",
     followersCard: "w_115,h_115,c_fill,q_auto,fl_any_format,dpr_auto",
-    ProfileImage: "w_124,h_124,c_fill,r_100,q_auto,fl_any_format,dpr_auto"
+    ProfileImage: "w_124,h_124,c_fill,r_100,q_auto,fl_any_format,dpr_auto",
+    streamPageProfile: "w_32,h_32,c_fill,q_auto,r_100,fl_any_format,dpr_auto",
 };

@@ -88,9 +88,9 @@ const GetFullImageURL = (details, type, width, height, fullpath=true) => {
                     ImageURL += ApplyHeight(height);
                 }
                 return ImageURL;
-            }else if(details.avatarPath && details.avatar) {
+            }else if((details.avatarPath || details.avatar_path)  && details.avatar) {
                 if(!fullpath) {
-                    return details.avatarPath +details.avatar
+                    return (details.avatarPath ?? details.avatar_path)+ "/" + details.avatar
                 }
                 ImageURL += GetImageAPIPath(details.avatarPath);
                 ImageURL += GetImageAPIName(details.avatar);
@@ -103,7 +103,7 @@ const GetFullImageURL = (details, type, width, height, fullpath=true) => {
                 return ImageURL;
             } else if(details.following_avatar_path && details.following_avatar) {
                 if(!fullpath) {
-                    return details.following_avatar_path+details.following_avatar
+                    return details.following_avatar_path + "/" + details.following_avatar
                 }
                 ImageURL += GetImageAPIPath(details.following_avatar_path);
                 ImageURL += GetImageAPIName(details.following_avatar);
