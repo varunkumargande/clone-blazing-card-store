@@ -24,23 +24,27 @@
                 transition: all 0.3s;
                 position: relative;
                 cursor: pointer;
+                transition: color .2s;
                 &:last-child {
                     border: none;
                 }
-
-                &.active {
+                &:after {
+                    content: '';
+                    width: 4px;
+                    height: 40px;
+                    background-color: transparent;
+                    border-radius: 2px;
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    transition: background-color .2s;
+                }
+                &.active,&:hover {
                     color: $blue-color;
 
                     &:after {
-                        content: '';
-                        width: 4px;
-                        height: 40px;
                         background-color: $blue-color;
-                        border-radius: 2px;
-                        position: absolute;
-                        left: 0;
-                        top: 50%;
-                        transform: translateY(-50%);
                     }
                 }
             }
@@ -221,7 +225,6 @@
             width: 100%;            
             padding-top: 0;
             background-color: transparent;
-            @include overflow;
             .overflow-wrap{
                 max-width: 100%;
                 margin-left:0;
