@@ -135,7 +135,7 @@ export default function ProfileInformation() {
                         src={
                           profileData && profileData?.avatar != null
                             ? handleImage()
-                            : "/static/img/no-image.png"
+                            : "/static/images/profileImg.png"
                         }
                         alt="Profile"
                       />
