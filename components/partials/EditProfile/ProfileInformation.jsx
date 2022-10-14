@@ -9,6 +9,7 @@ import { DeletAccountModal } from "../Modal/Modal";
 import { imageUrl } from "../../../api/url";
 import { Loader } from "../../reusable/Loader";
 import { uploadImageToServer } from "../../../utilities/common-helpers";
+import DefaultConstants from "../../../utilities/constants";
 
 export default function ProfileInformation() {
   const [profileData, setProfileData] = useState(null);
@@ -63,7 +64,7 @@ export default function ProfileInformation() {
 
   const uploadImage = async (file, base64) => {
     setShowImageLoader(true);
-    const uploadImage = await uploadImageToServer(file);
+    const uploadImage = await uploadImageToServer(file, DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH);
     setShowImageLoader(false);
     if(uploadImage) {
       setNewDp(base64);
@@ -147,7 +148,7 @@ export default function ProfileInformation() {
             </div>
             <div className="profile-text">
               <div className="profile-btn-wrap flex flex-center mb16">
-                <label className={`upload-btn flex justify-center flex-center ${showImageLoader && 'disable-upload-image'}`}>
+                <label className={`upload-btn flex justify-center flex-center ${showImageLoader && 'disable-upload-image-btn'}`}>
                   Update Profile Image
                   <input
                     type="file"
