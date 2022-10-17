@@ -27,16 +27,17 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
-        <div className="image" >
-          <CloudinaryImage
-            imageUrl={
-              DefaultServices?.GetFullImageURL(detail, "profile")
-            }
-            keyId={DefaultServices?.GetFullImageURL(detail, "profile")}
-            transformation={ImageTransformation.card}
-            onClick={() => handleStreamingLink(detail)}
-            alternative={""}
-          />
+        <div className="image">
+          <div class="innerImage" onClick={() => handleStreamingLink(detail)}>
+            <CloudinaryImage
+              imageUrl={
+                DefaultServices?.GetFullImageURL(detail, "profile")
+              }
+              keyId={DefaultServices?.GetFullImageURL(detail, "profile")}
+              transformation={ImageTransformation.card}
+              alternative={""}
+            />
+          </div>
 
           {/* ToDo: Need to remove old image code. Keeping it right now for reference */}
           {/* <img
