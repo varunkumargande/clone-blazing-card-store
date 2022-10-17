@@ -167,7 +167,7 @@ function Login(props) {
                 )}
                 <div className="flex justify-right mb16 forget mb32">
                   <Link href="/account/forgot-password">
-                    <a>Forget Password</a>
+                    <a>Forgot Password</a>
                   </Link>
                 </div>
                 <div align={"center"}>

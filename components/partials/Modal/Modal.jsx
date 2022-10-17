@@ -16,6 +16,7 @@ import { searchUsers } from "../../../chatService";
 import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
+import { getCardImagesByName } from "../../helper/cardImageHelper";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -205,7 +206,7 @@ export function PaymentInfoModal(props) {
 
   const cardDetails =
     cardDetail == false
-      ? "Add shipment"
+      ? "Add Card Detail"
       : cardDetail[0]?.card.brand +
         "" +
         "XXXX XXXX XXXX " +
@@ -321,6 +322,7 @@ export function AddNewCardModal(props) {
 
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
+  const [expValid, setExpValid] = useState(null);
 
   const shipSchema = Yup.object().shape({
     // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
@@ -338,20 +340,14 @@ export function AddNewCardModal(props) {
       cardNumber:
         payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
       cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
-      expireDate:
-        (payDetail != false) != 0
-          ? payDetail[0]?.card.exp_year + "-" + payDetail[0]?.card.exp_month
-          : "",
+      expireDate: ""
+      // expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card.exp_year: "",
     },
     onSubmit: (values) => {
-      let expDate = "";
-      let year = values.expireDate.split("-")[0].slice(-2);
-      let month = values.expireDate.split("-")[1];
-      expDate = month + "/" + year;
 
       const jsonData = JSON.stringify({
         cardNumber: values.cardNumber,
-        expireDate: expDate,
+        expireDate: values.expireDate,
         cvc: values.cvc,
       });
 
@@ -369,6 +365,15 @@ export function AddNewCardModal(props) {
     },
     validationSchema: () => shipSchema,
   });
+
+  const handleExpDate = (values) => {
+    const dateExp = values.expireDate
+      .replace(/^(\d\d)(\d)$/g, "$1/$2")
+      .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
+      .replace(/[^\d\/]/g, "")
+      .trim();
+    return dateExp;
+  };
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -399,19 +404,24 @@ export function AddNewCardModal(props) {
                 value={formik.values.cardNumber}
                 onChange={formik.handleChange}
               />
+              <span className="card-icon">
+                {formik?.values?.cardNumber >= 3 ? getCardImagesByName(formik.values.cardNumber) : ''}
+              </span>
               <span className="errorMessage">{formik.errors.cardNumber}</span>
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
                 <label>Expiration</label>
                 <input
-                  type="month"
+                  type="text"
                   name="expireDate"
-                  placeholder={"Enter here"}
-                  value={formik.values.expireDate}
+                  placeholder={"MM/YY"}
                   onChange={formik.handleChange}
+                  value={handleExpDate(formik.values)}
+                  maxLength={5}
                 />
                 <span className="errorMessage">{formik.errors.expireDate}</span>
+                {expValid == false ? "Expiary date is invalide" : ""}
               </div>
               <div className="input-control wd50">
                 <label>CVC</label>
@@ -730,10 +740,9 @@ export function ChatUserModal({ setIsOpen }) {
   };
 
   const handleAddUserForChat = (id, name) => {
-    setUserId(id)
-    setUsername(name)
-    
-  }
+    setUserId(id);
+    setUsername(name);
+  };
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -776,13 +785,25 @@ export function ChatUserModal({ setIsOpen }) {
                   return (
                     <>
                       <div
-                        className=
-                        {!!userId ? "profile-chat-list flex space-between active-user" : "profile-chat-list flex space-between" }
-                        onClick={() => handleAddUserForChat(item._id, item.username)}
+                        className={
+                          !!userId
+                            ? "profile-chat-list flex space-between active-user"
+                            : "profile-chat-list flex space-between"
+                        }
+                        onClick={() =>
+                          handleAddUserForChat(item._id, item.username)
+                        }
                       >
                         <div className="profile-image-title flex flex-center">
                           <div className="image br50">
-                            <img src={item?.avatarImage == "" ? "/static/img/no-image.png" : item?.avatarImage} alt="" />
+                            <img
+                              src={
+                                item?.avatarImage == ""
+                                  ? "/static/img/no-image.png"
+                                  : item?.avatarImage
+                              }
+                              alt=""
+                            />
                           </div>
                           <div className="profile-text">
                             <div className="name">
