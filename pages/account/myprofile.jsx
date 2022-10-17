@@ -22,6 +22,8 @@ import Link from "next/link";
 import { imageUrl } from "../../api/url";
 import Followers from '../../components/partials/Profile/Followers';
 import BackButton from "../../components/CommonComponents/BackButton";
+import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../components/Constants/imageTransformation";
 // ===================================================================
 
 function MyProfile(props) {
@@ -290,7 +292,15 @@ function MyProfile(props) {
     if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
-          <img
+          <CloudinaryImage
+            imageUrl={`${profile.avatarPath}/${profile.avatar}`}
+            keyId={`${profile.avatarPath}/${profile.avatar}`}
+            transformation={ImageTransformation.profilePageImage}
+            alternative="profileImg"
+          />
+
+          {/* ToDo: Need to remove old image code. Keeping it right now for reference  */}
+          {/* <img
             style={{ borderRadius: "50%" }}
             width="123"
             height="123"
@@ -303,7 +313,7 @@ function MyProfile(props) {
               "&width=500&height=500"
             }
             alt="profileImg"
-          />
+          /> */}
         </>
       );
     } else {

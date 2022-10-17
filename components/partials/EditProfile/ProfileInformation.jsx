@@ -10,6 +10,8 @@ import { imageUrl } from "../../../api/url";
 import { Loader } from "../../reusable/Loader";
 import { uploadImageToServer } from "../../../utilities/common-helpers";
 import DefaultConstants from "../../../utilities/constants";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
 
 export default function ProfileInformation() {
   const [profileData, setProfileData] = useState(null);
@@ -66,7 +68,7 @@ export default function ProfileInformation() {
     setShowImageLoader(true);
     const uploadImage = await uploadImageToServer(file, DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH);
     setShowImageLoader(false);
-    if(uploadImage) {
+    if (uploadImage) {
       setNewDp(base64);
       setNewDpName(uploadImage?.fileName);
       setimpuploadsuccess(true);
@@ -99,7 +101,7 @@ export default function ProfileInformation() {
       `?path=${profileData?.avatarPath}&name=/${profileData?.avatar}&width=300&height=300`
     );
   };
-  
+
 
   const handleCancelButton = () => {
     setLoader(true)
@@ -115,33 +117,36 @@ export default function ProfileInformation() {
                 showImageLoader ?
                   <Loader />
                   :
-                <>
-                  {newDp != "" ? (
-                    <>
-                      <img
-                        style={{ borderRadius: "50%" }}
-                        width={"172"}
-                        height={"172"}
-                        src={newDp}
-                        alt="Profile"
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <img
-                        style={{ borderRadius: "50%" }}
-                        width={"172"}
-                        height={"172"}
-                        src={
-                          profileData && profileData?.avatar != null
-                            ? handleImage()
-                            : "/static/images/profileImg.png"
-                        }
-                        alt="Profile"
-                      />
-                    </>
-                  )}
-                </>
+                  <>
+                    {newDp != "" ? (
+                      <>
+                        <img
+                          style={{ borderRadius: "50%" }}
+                          width={"172"}
+                          height={"172"}
+                          src={newDp}
+                          alt="Profile"
+                        />
+                      </>
+                    ) : (
+                      <>
+                      {profileData?.avatar ? 
+                        <CloudinaryImage
+                          imageUrl={`${profileData?.avatarPath}/${profileData?.avatar}`}
+                          keyId={`${profileData?.avatarPath}/${profileData?.avatar}`}
+                          transformation={ImageTransformation.profilePageImage}
+                          alternative="Profile"
+                        /> :
+                        <img
+                          style={{ borderRadius: "50%" }}
+                          width={"172"}
+                          height={"172"}
+                          src={"/static/images/profileImg.png"}
+                          alt="Profile"
+                        /> }
+                      </>
+                    )}
+                  </>
               ) : (
                 ""
               )}

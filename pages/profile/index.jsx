@@ -335,16 +335,10 @@ export default function PublicProfile() {
                                             imageUrl={DefaultServices?.GetFullImageURL(
                                                 profile,
                                                 "profile",
-                                                "25",
-                                                "25",
-                                                false
                                             )}
                                             keyId={DefaultServices?.GetFullImageURL(
                                                 profile,
                                                 "profile",
-                                                "25",
-                                                "25",
-                                                false
                                             )}
                                             transformation={ImageTransformation.ProfileImage}
                                             alternative={"profileImg"}
