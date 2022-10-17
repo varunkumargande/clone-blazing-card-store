@@ -30,6 +30,7 @@
     }
     h3{
         font-size: 16px;
+
         line-height: 24px;
         margin-bottom: 8px;
         font-weight: 600;
@@ -288,6 +289,16 @@
 }
 
 @media all and (min-width:320px) and (max-width:1024px){
+    .edit-profile-title{
+        padding: 40px 15px 32px;
+        font-size: 24px;
+        line-height: 34px;
+        font-weight: 700;
+        background-color: $white-color;
+        .edit-back{
+            margin-right: 15px;
+        }
+    }
     .edit-inner-container{ 
         .edit-header{
             background-color: $white-color;

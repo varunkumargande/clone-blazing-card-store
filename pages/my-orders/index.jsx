@@ -9,6 +9,7 @@ import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import { orderListApi } from "../../api";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
+import BackButton from "../../components/CommonComponents/BackButton";
 export default function Myorders() {
   const [searchVal, setSearchVal] = useState("");
   const [active, setActive] = useState(false);
@@ -108,8 +109,10 @@ export default function Myorders() {
         {windowWidth <= 1024 ? "" : <section className="breadcrumbs-wrapper no-bg mb26">
           <ul className="breadcrumbs flex flex-center">{createBreadCrumb()}</ul>
         </section>}
-        <div className="heading-wrapper flex space-between flex-center mb16">
-          <h1>{windowWidth <= 1024 ? <button className="back"><IconBack/></button> : ""}My Orders</h1>
+        <div className="heading-wrapper flex space-between flex-center mb16 mt16">
+        {windowWidth <= 1024 &&
+          <BackButton name={"My Orders"} />
+        }
           <div className="search-wrapper flex flex-center">
             <div className="Search">
               <input
