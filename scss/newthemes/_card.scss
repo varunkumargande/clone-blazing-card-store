@@ -123,8 +123,8 @@
         > img{
             width: 100%;
             border-radius: 8px;
-            height: 272px;
             object-fit: cover;
+            min-height: 100px;
         }
         .tme-wrap{
             position: absolute;
