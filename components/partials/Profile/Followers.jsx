@@ -35,16 +35,10 @@ export default function Followers(props) {
             imageUrl={DefaultServices?.GetFullImageURL(
               person,
               "vendor",
-              "25",
-              "25",
-              false
             )}
             keyId={DefaultServices?.GetFullImageURL(
               person,
               "vendor",
-              "25",
-              "25",
-              false
             )}
             transformation={ImageTransformation.followersCard}
             alternative={"Card"}
