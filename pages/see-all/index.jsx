@@ -122,18 +122,20 @@ function categoryStream({ auth }) {
 
   return (
     <div className="home-container">
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
-      <section className="breadcrumbs-wrapper">
-        <div className="inner-container">
-          <ul className="breadcrumbs flex flex-center">
-            <li onClick={() => handleToGoHome()}>Home</li>/
-            <li className="current">{stringFormatter(query?.page)}</li>
-          </ul>
-        </div>
-      </section>
+      {windowWidth <= 1024 ?"" : <HeaderDefault />}
+      {windowWidth <= 1024 ? "":
+        <section className="breadcrumbs-wrapper">
+          <div className="inner-container">
+            <ul className="breadcrumbs flex flex-center">
+              <li onClick={() => handleToGoHome()}>Home</li>/
+              <li className="current">{stringFormatter(query?.page)}</li>
+            </ul>
+          </div>
+        </section>
+      }
       <section className="category-wrapper">
         <div className="inner-container">
-          <div className="title-wrap flex space-between flex-center">
+          <div className="title-wrap see-all-back flex space-between flex-center">
             <div className="flex flex-center">
             <div className="edit-back" onClick={() => handleToGoHome()}>
               <IconBack />

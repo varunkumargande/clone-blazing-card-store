@@ -150,6 +150,14 @@
             display: none;
         }
     }
+    .see-all-back{
+        &.title-wrap{
+            padding: 40px 0 32px;
+            .title{
+                font-size: 24px;
+            }
+        }
+    }
 }
 @media all and (min-width:1025px){
     .category-wrapper{

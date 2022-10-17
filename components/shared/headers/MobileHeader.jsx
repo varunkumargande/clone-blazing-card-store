@@ -20,10 +20,12 @@ import Router from 'next/router';
 import { modalSuccess } from "../../../api/intercept";
 import { logOut } from '../../../store/auth/action';
 import { useSelector, useDispatch } from "react-redux";
-
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
 function MobileHeader({ auth }) {
     const [active, setActive] = useState(false);
     const [mobActive, mobSetActive] = useState(false);
+    const [profile, setProfile] = useState(false);
     const wrapperRef = useRef(null);
     const dispatch = useDispatch();
     const { t } = useTranslation("common");
@@ -66,7 +68,63 @@ function MobileHeader({ auth }) {
         modalSuccess('success', "successfully logged out")
     };
 
+    useEffect(() => {
+    let profileInterval = setInterval(() => {
+        let profileData = sessionStorage.getItem("spurtUser");
+        if (profileData) {
+        profileData = JSON.parse(profileData);
+        setProfile(profileData);
+        clearInterval(profileInterval);
+        }
+    }, 10);
+    }, []);
+    useEffect(() => {
+        if (profile) {
+          handleProfileImage();
+        }
+    }, [profile]);
+    const handleProfileImage = () => {
+        if (!!profile?.avatarPath && !!profile?.avatar) {
+            return (
+            <>
+                <CloudinaryImage
+                imageUrl={`${profile.avatarPath}/${profile.avatar}`}
+                keyId={`${profile.avatarPath}/${profile.avatar}`}
+                transformation={ImageTransformation.ProfileImage}
+                alternative="/static/images/profileImg.png"
+                />
 
+                {/* ToDo: Need to remove old image code. Keeping it right now for reference  */}
+                {/* <img
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = "/static/images/profileImg.png";
+                }}
+                src={
+                    imageUrl +
+                    "?path=" +
+                    profile.avatarPath +
+                    "&name=/" +
+                    profile.avatar +
+                    "&width=100&height=100"
+                }
+                alt="Profile"
+                /> */}
+            </>
+        );
+        } else {
+            return (
+            <img
+                onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src = "/static/images/profileImg.png";
+                }}
+                src={"/static/img/no-image-new.svg"}
+                alt="Profile"
+            />
+            );
+        }
+    };
     return (
         <div className="mobile-header">
             <div className="mobile-inner flex flex-wrap flex-center space-between">
@@ -77,7 +135,12 @@ function MobileHeader({ auth }) {
                     </div>
                 </div>
                 <div className="right flex flex-wrap flex-center">
-                    {auth.isLoggedIn ? "" : (
+                    {auth.isLoggedIn ? 
+                    <Link href="/account/myprofile">
+                        <button className="profileImage">{handleProfileImage()}</button>
+                    </Link> 
+                    
+                    : (
                         <>
                             <Link href="/account/login"><a className="primary-btn flex flex-center justify-center ml24">Sign In</a></Link>
                         </>
