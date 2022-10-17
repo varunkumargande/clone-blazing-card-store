@@ -109,9 +109,9 @@ export default function Myorders() {
         {windowWidth <= 1024 ? "" : <section className="breadcrumbs-wrapper no-bg mb26">
           <ul className="breadcrumbs flex flex-center">{createBreadCrumb()}</ul>
         </section>}
-        <div className="heading-wrapper flex space-between flex-center mb16 mt16">
+        <div className="heading-wrapper flex space-between flex-center mb16">
         {windowWidth <= 1024 &&
-          <BackButton name={"My Orders"} />
+          <h1><BackButton name={"My Orders"} /></h1>
         }
           <div className="search-wrapper flex flex-center">
             <div className="Search">
