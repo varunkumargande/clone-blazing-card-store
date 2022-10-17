@@ -891,3 +891,34 @@ export function SignUPGoogle() {
     </div>
   );
 }
+
+
+export function BidCreatedModal(props) {
+  const {setIsBidResponseModal} = props
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-header flex Space-between flex-center nobg">
+          <h5 className="modal-title"></h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            onClick={() => setIsBidResponseModal(false)}
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body text-center">
+          <div className="Stream-title text-center mb24">
+            Bid Placed
+          </div>
+          <div className="">You have bid successfully!!</div>
+        </div>
+      </div>
+    </div>
+  );
+}
