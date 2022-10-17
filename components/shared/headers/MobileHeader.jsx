@@ -133,8 +133,7 @@ function MobileHeader({ auth }) {
                             <div className="mob-navigation mb32">
                                 <ul>
                                     <li><Link href="/account/myprofile"><a><IconProfile /><span>My Profile</span></a></Link></li>
-                                    <li><Link href="/account/myorders"><a><IconMyOrders /><span>{t('OrderHistory')}</span></a></Link></li>
-                                    <li><Link href="/account/dashboard"><a><IconSettings/><span>{t('AccountSettings')}</span></a></Link></li>
+                                    <li><Link href="/my-orders"><a><IconMyOrders /><span>{t('OrderHistory')}</span></a></Link></li>
                                     <li><Link href="/"><a className="message"><IconMessageMobile/><span>Message</span></a></Link></li>
                                     <li><Link href="/"><a className="notification"><IconNotificationMobile/><span>Notification</span></a></Link></li>
                                 </ul>
