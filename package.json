@@ -66,6 +66,7 @@
         "slick-carousel": "^1.8.1",
         "socket.io-client": "^4.5.2",
         "styled-components": "^5.3.5",
+        "cloudinary-core": "^2.11.4",
         "yup": "^0.32.11"
     }
 }

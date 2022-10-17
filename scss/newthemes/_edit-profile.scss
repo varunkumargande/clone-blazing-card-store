@@ -52,6 +52,8 @@
     .tab-link-wrap{
         border-bottom: 1px solid $border2-color;
         @include overflow;
+        padding: 0;
+        flex-wrap: nowrap;
         .tab-link{
             margin-right: 15px;
             white-space: nowrap;
@@ -366,6 +368,22 @@
                     max-width: 32px;
                 }
             }
+        }
+        
+        .edit-inner{
+            .breadcrumbs-wrapper{
+                display: none;
+            }
+            h1{
+                margin: 0 -15px 32px;
+                padding: 40px 15px 30px;
+                background-color: $white-color;
+            }
+        }
+    }
+    .Edit-profile{
+        .mobile-header{
+            display: none;
         }
     }
 }

@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { connect } from "react-redux";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
 
 function StreamCard({ detail, isLive, showLoginModal, auth }) {
   const handleRouting = (id) => {
@@ -21,53 +23,31 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
     Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
   };
 
-  const getImagePath = (type) => {
-    if (
-      detail?.preview_image_path &&
-      detail?.preview_image &&
-      type == "profile"
-    ) {
-      return (
-        imageUrl +
-        "?path=" +
-        detail?.preview_image_path +
-        "&name=" +
-        detail?.preview_image +
-        "&width=100&height=100"
-      );
-    } else if (
-      detail?.vendor_image_path &&
-      detail?.vendor_image &&
-      type == "vendor"
-    ) {
-      return (
-        imageUrl +
-        "?path=" +
-        detail?.vendor_image_path +
-        "&name=" +
-        detail?.vendor_image +
-        "&width=25&height=25"
-      );
-    }
-    if (type == "profile") {
-      return "/static/images/card.png";
-    } else {
-      return "/static/images/profile.png";
-    }
-  };
 
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">
         <div className="image" >
-          <img
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = "/static/images/card.png";
-            }}
-            src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
+          <CloudinaryImage
+            imageUrl={
+              DefaultServices?.GetFullImageURL(detail, "profile")
+            }
+            keyId={DefaultServices?.GetFullImageURL(detail, "profile")}
+            transformation={ImageTransformation.card}
             onClick={() => handleStreamingLink(detail)}
+            alternative={""}
           />
+
+          {/* ToDo: Need to remove old image code. Keeping it right now for reference */}
+          {/* <img
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "/static/images/card.png";
+              }}
+              src={DefaultServices.GetFullImageURL(detail, "profile", "100", "100")}
+              onClick={() => handleStreamingLink(detail)}
+            />
+          } */}
           <LiveStreamStatus
             isLive={detail?.isLive}
             uuid={detail.uuid}
@@ -81,22 +61,32 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
             className="title flex flex-center"
             onClick={() => handleRouting(detail.user_id)}
           >
-            <img
+            <CloudinaryImage
+              imageUrl={
+                DefaultServices?.GetFullImageURL(detail, "vendor")
+              }
+              keyId={DefaultServices?.GetFullImageURL(detail, "vendor")}
+              transformation={ImageTransformation.profileImageCard}
+              alternative={""}
+            />
+
+            {/* ToDo: Need to remove old image code. Keeping it right now for reference */}
+            {/* <img
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null; // prevents looping
                 currentTarget.src = "/static/img/no-image.png";
               }}
-              src={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25")}
+              src={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25", false)}
               alt="Card"
-            />
+            /> */}
 
             {stringFormatter(detail?.username)}
           </h3>
           <div className="disc">
-            {detail?.description?.substring(0, 50) + "..."}
+            {detail?.title?.substring(0, 25) + "..."}
           </div>
           <button className="cate-btn">
-            {stringFormatter(detail?.category_name)}
+            {stringFormatter(detail?.subCategory_name)}
           </button>
         </div>
       </div>

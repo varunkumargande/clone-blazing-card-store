@@ -9,6 +9,9 @@ import {
 } from "../../../store/stream/action";
 import { userFollowUnfollow } from "../../../api/stream/streams_api";
 import { imageUrl } from "../../../api/url";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
+import DefaultServices from "../../Services/DefaultServices";
 
 function LeftDiv({
   setShowLoginModal,
@@ -296,18 +299,26 @@ function LeftDiv({
       <div className="flex profile-wrapper">
         <div className="image">
           {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
-          <img
+          <CloudinaryImage
+              imageUrl={
+                DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor")
+              }
+              keyId={DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor")}
+              transformation={ImageTransformation.streamPageProfile}
+              alternative={"Card"}
+            />
+          {/* <img
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src = "/static/images/profileImg.png";
             }}
             src={getImagePath("vendor")}
             alt="Card"
-          />
+          /> */}
         </div>
         <div className="profile-wrap" onClick={handleProfileClick}>
           <div className="name">{vendorName}</div>
-          <div className="followrs-count">129K Followers</div>
+          <div className="followrs-count">{stream.streamData.vendorDetails.follower_count ? stream.streamData.vendorDetails.follower_count : "0"} Followers</div>
         </div>
         <div className="btn-wrap">
         {followed ? <button onClick={handleFollowUnfollow} className="following primary-btn">Following</button> : <button onClick={handleFollowUnfollow} className="primary-btn">Follow</button>}

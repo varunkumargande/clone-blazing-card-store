@@ -52,5 +52,8 @@ export async function UserRegister(
       setSingupError(result.data.data.data.message[0])
       modalWarning("error", result.data.data.data.message[0]);
     }
+  }else {
+    setSingupError(result.data.message)
+    modalWarning("error", result.data.message);
   }
 }

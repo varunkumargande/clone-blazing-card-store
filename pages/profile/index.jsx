@@ -6,7 +6,7 @@ import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import IconLike from "../../components/Icons/IconLike";
 import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
-import IconShareFacebook from "../../components/Icons/IconShareFacebook"
+import IconShareFacebook from "../../components/Icons/IconShareFacebook";
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
 import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,8 +18,8 @@ import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
 import DefaultServices from "../../components/Services/DefaultServices";
 import DynamicModal from "../../components/CommonComponents/ModalWithDynamicTitle";
-
-
+import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../components/Constants/imageTransformation";
 
 export default function PublicProfile() {
     const router = useRouter();
@@ -34,8 +34,19 @@ export default function PublicProfile() {
     const [tabs, setTabs] = useState(null);
     const [activeTab, setActiveTab] = useState(tabs && tabs.length > 0 ? tabs[0].key : "");
     const [showModal, setShowModal] = useState(false);
+    const [key, setKey] = useState(1);
 
     const wrapperRef = useRef(null);
+
+    const getSessionUser = () => {
+        if (typeof window !== 'undefined') {
+            if (window && window.sessionStorage.getItem("spurtUser")) {
+                let user = JSON.parse(sessionStorage.getItem("spurtUser"));
+                return user;
+            }
+        }
+        return false;
+    }
 
     const handleClickOutside = (event) => {
         if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -47,37 +58,35 @@ export default function PublicProfile() {
         ProfileMethods.GetLikedStreams(userId, setLikedShows);
         ProfileMethods.GetUserFollowers(userId, setFollowers);
         ProfileMethods.GetUserFollowings(userId, setFollowing);
-    }
+    };
 
     const getAllVendorDetails = () => {
-        ProfileMethods.GetScheduledStreams(userId, setUpcomingShows)
+        ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
         ProfileMethods.GetLikedStreams(userId, setLikedShows);
-        ProfileMethods.GetPreviousStreams(userId, setPreviousShows)
+        ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
         ProfileMethods.GetUserFollowers(userId, setFollowers);
         ProfileMethods.GetUserFollowings(userId, setFollowing);
-    }
+    };
 
     useEffect(() => {
-        
-        if(router.query.userId) {
-            
+        if (router.query.userId) {
             setUserId(router.query.userId);
         }
-    }, [router.query])
+    }, [router.query]);
 
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside, false)
+        document.addEventListener("click", handleClickOutside, false);
         return () => {
-            document.removeEventListener('click', handleClickOutside, false)
-        }
-    }, [])
+            document.removeEventListener("click", handleClickOutside, false);
+        };
+    }, []);
 
     useEffect(() => {
         if (userId) {
-            
-            ProfileMethods.GetPublicProfile(userId, setProfile);
+            let user = getSessionUser();
+            ProfileMethods.GetPublicProfile(userId, setProfile, user.id);
         }
-    }, [userId]);
+    }, [userId, key]);
 
     useEffect(() => {
         if (profile) {
@@ -89,13 +98,13 @@ export default function PublicProfile() {
                 getAllBuyerDetails();
             }
         }
-    }, [profile])
+    }, [profile]);
 
     useEffect(() => {
         if (tabs && tabs.length > 0) {
             setActiveTab(tabs[0].key);
         }
-    }, [tabs])
+    }, [tabs]);
 
     const [windowWidth, setWindowWidth] = useState(0);
     let resizeWindow = () => {
@@ -104,8 +113,8 @@ export default function PublicProfile() {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        subcatstreamDetailApi(dispatch)
-    }, [])
+        subcatstreamDetailApi(dispatch);
+    }, []);
 
     useEffect(() => {
         resizeWindow();
@@ -115,54 +124,60 @@ export default function PublicProfile() {
 
     const UpcomingShowsComponent = () => {
         if (upcomingShows) {
-            if(upcomingShows.length > 0) {
+            if (upcomingShows.length > 0) {
                 return (
                     <>
                         {upcomingShows.map((show, index) => (
                             <StreamCard detail={show} showLoginModal={setShowModal} />
                         ))}
                     </>
-                )
+                );
             } else {
-                return <div className="no-record flex justify-center">No Data found</div>;
+                return (
+                    <div className="no-record flex justify-center">No Data found</div>
+                );
             }
         }
         return false;
-    }
+    };
 
     const PreviousShowsComponent = () => {
         if (previousShows) {
-            if(previousShows.length > 0) {
+            if (previousShows.length > 0) {
                 return (
                     <>
                         {previousShows.map((show, index) => (
                             <StreamCard detail={show} showLoginModal={setShowModal} />
                         ))}
                     </>
-                )
+                );
             } else {
-                return <div className="no-record flex justify-center">No Data found</div>;
+                return (
+                    <div className="no-record flex justify-center">No Data found</div>
+                );
             }
         }
         return false;
-    }
+    };
 
     const LikedShowsComponent = () => {
         if (likedShows) {
-            if(likedShows.length > 0) {
+            if (likedShows.length > 0) {
                 return (
                     <>
                         {likedShows.map((show, index) => (
                             <StreamCard detail={show} showLoginModal={setShowModal} />
                         ))}
                     </>
-                )
+                );
             } else {
-                return <div className="no-record flex justify-center">No Data found</div>;
+                return (
+                    <div className="no-record flex justify-center">No Data found</div>
+                );
             }
         }
         return false;
-    }
+    };
 
     const ProfileComponent = (isForFollower) => {
         if (isForFollower) {
@@ -174,9 +189,11 @@ export default function PublicProfile() {
                                 <Followers person={details} isFollower={isForFollower} />
                             ))}
                         </>
-                    )
+                    );
                 } else {
-                    return <div className="no-record flex justify-center">No Data found</div>;
+                    return (
+                        <div className="no-record flex justify-center">No Data found</div>
+                    );
                 }
             }
         } else {
@@ -188,22 +205,31 @@ export default function PublicProfile() {
                                 <Followers person={details} isFollower={isForFollower} />
                             ))}
                         </>
-                    )
+                    );
                 } else {
-                    return <div className="no-record flex justify-center">No Data found</div>;
+                    return (
+                        <div className="no-record flex justify-center">No Data found</div>
+                    );
                 }
             }
         }
         return false;
-    }
+    };
 
     const renderTab = (tab, key) => {
         return (
             <div className="category-list" key={key}>
-                <button onClick={() => { setActiveTab(tab.key); }} className={`title ${activeTab === tab.key && "active"}`}>{tab.title}({renderTabContentCount(tab.key)})</button>
+                <button
+                    onClick={() => {
+                        setActiveTab(tab.key);
+                    }}
+                    className={`title ${activeTab === tab.key && "active"}`}
+                >
+                    {tab.title}({renderTabContentCount(tab.key)})
+                </button>
             </div>
-        )
-    }
+        );
+    };
 
     const renderActiveTabContent = () => {
         switch (activeTab) {
@@ -222,7 +248,7 @@ export default function PublicProfile() {
             default:
                 return null;
         }
-    }
+    };
 
     const renderTabContentCount = (tab) => {
         switch (tab) {
@@ -239,7 +265,7 @@ export default function PublicProfile() {
             default:
                 return null;
         }
-    }
+    };
 
     const renderProfileName = () => {
         if (profile) {
@@ -253,29 +279,50 @@ export default function PublicProfile() {
             return name;
         }
         return null;
-    }
+    };
 
     const handleSocialLinks = (url) => {
         let path = url;
-        if(!path.includes("https://")) {
+        if (!path.includes("https://")) {
             path = "https://" + path;
         }
         window.open(path, "_blank");
-    }
+    };
 
     const handleFollow = () => {
-        if(sessionStorage.getItem("spurtUser")) {
+        if (sessionStorage.getItem("spurtUser")) {
             let user = JSON.parse(sessionStorage.getItem("spurtUser"));
-            ProfileMethods.UserFollowUser(user.id, profile.id);
+
+            ProfileMethods.UserFollowUser(user.id, profile.id, setKey);
         } else {
             setShowModal(true);
         }
     }
-
+    const handleFollowButtonText = () => {
+        let user = getSessionUser();
+        if (user) {
+            if (profile?.isFollow) {
+                return "Following"
+            }
+            return "Follow";
+        }
+        return "Follow";
+    }
     return (
         <div className="home-container profile-container-wrap">
-            {showModal && (<DynamicModal title="Join Blazing Cards" setShowModal={setShowModal} />)}
-            {windowWidth <= 1024 ? <div className="profile-title flex flex-center"><div className="edit-back"><IconBack /></div>Profile</div> : <HeaderDefault />}
+            {showModal && (
+                <DynamicModal title="Join Blazing Cards" setShowModal={setShowModal} />
+            )}
+            {windowWidth <= 1024 ? (
+                <div className="profile-title flex flex-center">
+                    <div className="edit-back">
+                        <IconBack />
+                    </div>
+                    Profile
+                </div>
+            ) : (
+                <HeaderDefault />
+            )}
             <section className="category-banner">
                 <img src="/static/images/cover.png" alt="cover" />
             </section>
@@ -286,22 +333,55 @@ export default function PublicProfile() {
                             <aside className="aside-wrapper profile-aside">
                                 <div className="aside-container profile-container">
                                     <div className="profile-icon">
-                                        <img width="124" height="124" style={{ borderRadius:"50%" }} src={DefaultServices.GetFullImageURL(profile, "vendor", "124", "124")} alt="profileImg" />
+                                        <CloudinaryImage
+                                            imageUrl={DefaultServices?.GetFullImageURL(
+                                                profile,
+                                                "profile",
+                                            )}
+                                            keyId={DefaultServices?.GetFullImageURL(
+                                                profile,
+                                                "profile",
+                                            )}
+                                            transformation={ImageTransformation.ProfileImage}
+                                            alternative={"profileImg"}
+                                        />
+                                        {/* <img width="124" height="124" style={{ borderRadius:"50%" }} src={DefaultServices.GetFullImageURL(profile, "vendor", "124", "124")} alt="profileImg" /> */}
                                     </div>
                                     <div className="title flex column">
                                         {renderProfileName()}
-                                        <span>@{profile && (profile.username)}</span>
+                                        <span>@{profile && profile.username}</span>
                                     </div>
                                     <div className="flex justify-center">
-                                        <button className="primary-btn follow-btn" onClick={handleFollow}>Follow</button>
-                                        <button className="border-btn edit-profile-btn">Message</button>
+                                        <button
+                                            className="primary-btn follow-btn"
+                                            onClick={handleFollow}
+                                        >
+                                            Follow
+                                        </button>
+                                        <button className="border-btn edit-profile-btn">
+                                            Message
+                                        </button>
                                     </div>
-                                    {profile && profile.bio && (<p className="description">{profile.bio}</p>)}
+                                    {profile && profile.bio && (
+                                        <p className="description">{profile.bio}</p>
+                                    )}
                                     <div className="social-icons-wrapper">
                                         <div className="social-border"></div>
                                         <ul className="social-icons flex">
-                                            {profile && profile.facebookUrl && (<li onClick={() => handleSocialLinks(profile.facebookUrl)}><IconShareFacebook /></li>)}
-                                            {profile && profile.twitterUrl && (<li onClick={() => handleSocialLinks(profile.twitterUrl)}><IconShareTwitter /></li>)}
+                                            {profile && profile.facebookUrl && (
+                                                <li
+                                                    onClick={() => handleSocialLinks(profile.facebookUrl)}
+                                                >
+                                                    <IconShareFacebook />
+                                                </li>
+                                            )}
+                                            {profile && profile.twitterUrl && (
+                                                <li
+                                                    onClick={() => handleSocialLinks(profile.twitterUrl)}
+                                                >
+                                                    <IconShareTwitter />
+                                                </li>
+                                            )}
                                         </ul>
                                     </div>
                                 </div>
@@ -310,9 +390,7 @@ export default function PublicProfile() {
                                 <section className="category-wrapper cotegories-border mb35">
                                     <div className="overflow-wrap">
                                         <div className="Category-list-wrap inner-container flex">
-                                            {tabs && (
-                                                tabs.map((tab, index) => (renderTab(tab, index)))
-                                            )}
+                                            {tabs && tabs.map((tab, index) => renderTab(tab, index))}
                                         </div>
                                     </div>
                                 </section>

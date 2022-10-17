@@ -169,10 +169,23 @@
 
 @mixin overflow{
     overflow: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar { 
-        height: 0;  
+    scrollbar-width: thin;
+    padding: 5px 0 8px;
+    &::-webkit-scrollbar-track{
+         background-color: rgba(#e6e6e6,.5);
+    }
+
+    &::-webkit-scrollbar
+    {
+        width: 6px;
+        height: 6px;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+        background-color: rgba($border-color,.2);
+        border-radius: 3px;
     }
 }
 
@@ -184,7 +197,6 @@
         left:100%;
     }
 }
-
 @mixin animatedBg{
     &:after{
         content: '';

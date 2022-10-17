@@ -1,7 +1,6 @@
 import axiosRequest from "axios";
 import { getImageSignedUrl } from "../api/common/common";
 import { modalWarning } from "../api/intercept";
-import DefaultConstants from "./constants";
 
 export const stickyHeader = () => {
     let number =
@@ -33,13 +32,13 @@ export const getFileNameAndExtension = (fileName, validFileExtensions) => {
     return file
 }
 
-export const uploadImageToServer = async (file) => {
+export const uploadImageToServer = async (file, path) => {
     try {
         const { name, extension } = getFileNameAndExtension(file.name)
         const { type } = file;
         const time = new Date().getTime();
         const fileName  = `${time}_${name}${extension}`
-        const signedUrl = await getImageSignedUrl({ path: DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH, key: fileName });
+        const signedUrl = await getImageSignedUrl({ path, key: fileName });
         if (signedUrl?.url) {
             const signedRequest = signedUrl.url;
             const options = { headers: { "Content-Type": type } };
