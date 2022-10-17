@@ -41,6 +41,10 @@
         }
         .image{
             margin-right: 7px;
+            img{
+                max-width: 32px;
+                border-radius: 50%;
+            }
         }
         .name{
             font-size: 20px;

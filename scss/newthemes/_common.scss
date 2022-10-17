@@ -64,6 +64,7 @@ h1{
   max-width: 1310px;
   margin: 0 auto;
   .overflow-wrap{
+    overflow-x: auto;
     .inner-container{
       padding: 0 15px;
       max-width: 1310px;
@@ -206,6 +207,7 @@ h1{
       .icon{
         transition: all .12s;
       }
+      
   }
   .uplad-wrapper{
     width:100%;
@@ -246,6 +248,28 @@ h1{
           border-left: 1px solid $white-color;
           transition: all .12s;
         }
+        &:hover{
+          &:after{
+            background-color: $primary-color;
+          }
+          .icon{
+            fill: $primary-color;
+          }
+        }
+      }
+      &:focus{
+        ~ .show-hide{
+          &:after{
+            background-color: $primary-color;
+          }
+          .icon{
+            fill: $primary-color;
+          }
+        }
+      }
+    }
+    input[type="text"]{
+      ~ .show-hide{
         &:hover{
           &:after{
             background-color: $primary-color;

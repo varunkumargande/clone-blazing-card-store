@@ -9,6 +9,9 @@ import {
 } from "../../../store/stream/action";
 import { userFollowUnfollow } from "../../../api/stream/streams_api";
 import { imageUrl } from "../../../api/url";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
+import DefaultServices from "../../Services/DefaultServices";
 
 function LeftDiv({
   setShowLoginModal,
@@ -296,14 +299,22 @@ function LeftDiv({
       <div className="flex profile-wrapper">
         <div className="image">
           {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
-          <img
+          <CloudinaryImage
+              imageUrl={
+                DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor")
+              }
+              keyId={DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor")}
+              transformation={ImageTransformation.streamPageProfile}
+              alternative={"Card"}
+            />
+          {/* <img
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
               currentTarget.src = "/static/images/profileImg.png";
             }}
             src={getImagePath("vendor")}
             alt="Card"
-          />
+          /> */}
         </div>
         <div className="profile-wrap" onClick={handleProfileClick}>
           <div className="name">{vendorName}</div>

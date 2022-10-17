@@ -2,6 +2,7 @@ import React from "react";
 import * as cryptoJs from "crypto-js";
 import { socketIO, imageUrl } from "../../api/url";
 import { io } from "socket.io-client";
+import { DefaultImagePath } from "../Constants/defaultImage";
 
 
 class StreamDetailModel {
@@ -33,7 +34,10 @@ class StreamDetailModel {
       scheduleDate: streamData?.scheduleDate,
       scheduleTime:  streamData?.scheduletime,
       isLoggedIn: false,
-      avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"
+      avatarImage : userDetails?.avatar ? userDetails?.avatarPath + '/' + userDetails?.avatar : DefaultImagePath.defaultImage
+      
+      // ToDo: Need to remove commented code. Keeping it for refrence for now.
+      // avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"
     }
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;

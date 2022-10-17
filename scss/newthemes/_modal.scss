@@ -69,8 +69,16 @@
     }
     .modal-body{
         max-height: calc(100vh - 170px);
-        padding: 20px 18px 20px;
         @include overflow;
+        padding: 20px 18px 20px;
+        .Stream-title{
+            + div{
+                height: auto !important;
+            }
+        }
+        iframe{
+            margin: 0 auto 30px !important;
+        }
         h6{
             font-size: 16px;
             line-height: 24px;
