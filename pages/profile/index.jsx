@@ -20,6 +20,7 @@ import DefaultServices from "../../components/Services/DefaultServices";
 import DynamicModal from "../../components/CommonComponents/ModalWithDynamicTitle";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
+import BackButton from "../../components/CommonComponents/BackButton";
 
 export default function PublicProfile() {
     const router = useRouter();
@@ -315,10 +316,7 @@ export default function PublicProfile() {
             )}
             {windowWidth <= 1024 ? (
                 <div className="profile-title flex flex-center">
-                    <div className="edit-back">
-                        <IconBack />
-                    </div>
-                    Profile
+                  <BackButton name={"Profile"} />
                 </div>
             ) : (
                 <HeaderDefault />
