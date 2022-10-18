@@ -275,7 +275,7 @@
                         max-width: 100%;
                     }
                     .slider {
-                        -webkit-appearance: none;
+                        appearance: none;
                         width: 100%;
                         height: 4px;
                         background: $white-color;
@@ -603,10 +603,12 @@
                     border-color: $border2-color;
                 }
                 .list{
-                    .border-btn{
-                        &.selected{
-                            background-color: $blue-color;
-                            color:$white-color;
+                    .right{ 
+                        .border-btn{
+                            &:hover,&.active,&.selected{
+                                background-color: $blue-color;
+                                color:$white-color;
+                            }
                         }
                     }
                 }
@@ -649,6 +651,8 @@
         }
     }
 }   
+
+
 @media all and (min-width:1025px){
     .streaming-page{
         min-height: calc(100vh - 80px);

@@ -264,7 +264,7 @@ export function PaymentInfoModal(props) {
                 <span className="errorMessage"></span>
               </div>
               <div className="input-control with-bg">
-                <label>Card Number *</label>
+                <label>Payment Details</label>
                 <input
                   readOnly
                   name="text"
@@ -280,7 +280,7 @@ export function PaymentInfoModal(props) {
 
         <div className="modal-footer flex justify-center">
           <div className="flex space-between btn-wrap wd310">
-            <button className="disable-btn" onClick={() => openPayment(false)}>
+            <button className="border-btn" onClick={() => openPayment(false)}>
               Cancel
             </button>
             {isBuyNowPaymentModal ? (
