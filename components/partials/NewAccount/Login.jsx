@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
+import IconBack from "../../Icons/IconBack";
 import { EmailValidator } from "../../helper/emailValidator";
 import { UserLogin } from "../../../api";
 import { connect, useDispatch } from "react-redux";
@@ -12,7 +13,7 @@ import { loginConstant } from "../../Constants/login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-
+import { useRouter } from "next/router";
 function Login(props) {
   const dispatch = useDispatch();
   const [mail, setMail] = useState("");
@@ -27,7 +28,7 @@ function Login(props) {
   const [googlePath, setgooglePath] = useState("");
   const [conpassShow, setConPassShow] = useState(false);
   const emailInputRef = React.useRef(null);
-
+  const router = useRouter();
   useEffect(() => {
     emailInputRef.current.focus();
   }, []);
@@ -66,9 +67,15 @@ function Login(props) {
       )
       .required("Required"),
   });
-
+  //go back to previous page
+  const handleBackButton = () => {
+    router.back();
+  };
   return (
     <div className="login-wrapper">
+      <div className="back mb32" onClick={handleBackButton}>
+        <IconBack />
+      </div>
       <h1 className="title mb32">Sign in to Blazing Cards</h1>
       <div className="GoogleWrap mb42">
         <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">

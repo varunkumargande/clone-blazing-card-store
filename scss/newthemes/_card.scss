@@ -112,19 +112,22 @@
     }
     .image{
         position: relative;
-        &:after{
-            content: '';
-            width: 100%;
-            height: 46%;
-            @include pos(ab,0,null,null,0,0);
-            background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
-            border-radius: 8px 8px 0px 0px;
-        }
-        > img{
-            width: 100%;
-            border-radius: 8px;
-            object-fit: cover;
-            min-height: 100px;
+        .innerImage{ 
+            position: relative;
+            &:after{
+                content: '';
+                width: 100%;
+                height: 46%;
+                @include pos(ab,0,null,null,0,0);
+                background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+                border-radius: 8px 8px 0px 0px;
+            }
+            > img{
+                width: 100%;
+                border-radius: 8px;
+                object-fit: cover;
+                min-height: 100px;
+            }
         }
         .tme-wrap{
             position: absolute;
