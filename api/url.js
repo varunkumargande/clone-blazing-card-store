@@ -1,4 +1,5 @@
 export const apiUrl='https://blazing-card-backend-dev.kellton.net/api' //http://localhost:8000/api/'
+// export const apiUrl='https://afe5-180-151-230-178.in.ngrok.io/api' //http://localhost:8000/api/'
 export const imageUrl='https://blazing-card-backend-dev.kellton.net/api/media/image-resize'
 export const env='development'
 export const port = "3000"

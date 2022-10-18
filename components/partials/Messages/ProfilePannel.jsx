@@ -4,7 +4,9 @@ export default function ProfilePannel({
   contacts,
   changeCurrentChat,
   setIsOpen,
+    userCount
 }) {
+    console.log(contacts)
   return (
     <div className="profile-wrapper">
       {/* <div className=" static-content flex justify-center flex-center column">
@@ -12,7 +14,7 @@ export default function ProfilePannel({
             </div> */}
       <div className="profile-title-wrap flex space-between flex-center">
         <div className="title">
-          <span>2</span>New Message
+          <span>{userCount}</span>Total User
         </div>
         <button
           className="btn-chat flex flex-center justify-center br50"
@@ -22,7 +24,7 @@ export default function ProfilePannel({
         </button>
       </div>
       <div className="profile-chat-list-wrap">
-        {contacts.map((item, index) => {
+        {contacts?.map((item, index) => {
           return (
             <>
               <div
@@ -38,9 +40,9 @@ export default function ProfilePannel({
                   </div>
                   <div className="profile-text">
                     <div className="name">
-                      {item.username} <span className="new"></span>
+                        {item?.firstName} {item?.lastName} <span className="new"></span>
                     </div>
-                    <div className="time">Just Now</div>
+                    <div className="time">@{item?.username}</div>
                   </div>
                 </div>
                 {/* <div className="option">

@@ -153,7 +153,6 @@ function landingPage({ auth }) {
           )}
         </>
       )}
-
       <div className="card-wrapper">
         {isSeeAll ? (
           <>
