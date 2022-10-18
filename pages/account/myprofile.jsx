@@ -21,6 +21,7 @@ import PublicProfileConstants from "../../components/Constants/publicProfile";
 import Link from "next/link";
 import { imageUrl } from "../../api/url";
 import Followers from '../../components/partials/Profile/Followers';
+import BackButton from "../../components/CommonComponents/BackButton";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 // ===================================================================
@@ -40,7 +41,6 @@ function MyProfile(props) {
   const [activeTab, setActiveTab] = useState(
     tabs && tabs.length > 0 ? tabs[0].key : ""
   );
-
   const wrapperRef = useRef(null);
 
   const handleClickOutside = (event) => {
@@ -325,7 +325,11 @@ function MyProfile(props) {
 
   return (
     <div className="home-container profile-container-wrap">
-      {windowWidth <= 1024 ? <div className="profile-title flex flex-center"><div className="edit-back"><IconBack /></div>Profile</div> : <HeaderDefault />}
+      {windowWidth <= 1024 ?
+        <div className="profile-title flex flex-center">
+          <BackButton name={"Profile"}/>
+        </div>
+        : <HeaderDefault />}
       <section className="category-banner">
         <img src="/static/images/cover.png" alt="cover" />
       </section>
