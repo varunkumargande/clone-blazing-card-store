@@ -80,7 +80,7 @@ function Index() {
     <>
       {streamingDetails?.uuid ? (
         <>
-          {showLoginModal && (<DynamicModal title="Join Blazing Cards" setShowModal={setShowLoginModal} />)}
+          {showLoginModal && (<DynamicModal title="Signup to Join Blazing Cards" setShowModal={setShowLoginModal} />)}
           <div className="streaming-page flex space-between">
             <LeftDiv
               setShowLoginModal={setShowLoginModal}

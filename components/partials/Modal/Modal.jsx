@@ -851,7 +851,7 @@ export function UnfollowModal() {
 export function SignUPGoogle() {
   return (
     <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+      <div className="modal signup">
         <div className="modal-header flex Space-between flex-center nobg">
           <h5 className="modal-title"></h5>
           <button
@@ -866,14 +866,14 @@ export function SignUPGoogle() {
           </button>
         </div>
         <div className="modal-body text-center">
-          <div className="Stream-title text-center mb24">
+          <div className="Stream-title text-center mb16">
             Signup to join the stream
           </div>
-          <button className="google-btn mb24">
+          <button className="google-btn mb16">
             <IconGoogle />
             Continue with Google
           </button>
-          <div class="or mb32 flex flex-center justify-center">
+          <div class="or mb26 flex flex-center justify-center">
             <span>Or</span>
           </div>
           <div className="signin-signup">

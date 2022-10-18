@@ -312,7 +312,7 @@ export default function PublicProfile() {
     return (
         <div className="home-container profile-container-wrap">
             {showModal && (
-                <DynamicModal title="Join Blazing Cards" setShowModal={setShowModal} />
+                <DynamicModal title="SJoin Blazing Cards" setShowModal={setShowModal} />
             )}
             {windowWidth <= 1024 ? (
                 <div className="profile-title flex flex-center">
