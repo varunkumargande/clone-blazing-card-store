@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { agoraGettToken } from "../../../api/stream/agora";
 import { imageUrl } from "../../../api/url";
 import AgoraRTC from "agora-rtc-sdk-ng";
-
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
 const StreamingElement = ({ volume, isMute }) => {
   const options = useSelector((state) => state?.stream?.streamPageData?.option);
   const streamData = useSelector((state) => state?.stream?.streamData);
+  const loading = useSelector((state) => state?.stream?.loading)
   const [volumeLevel, setVolumeLevel] = useState(volume);
   const rtc = useRef({});
   const [remoteUser, setRemoteUser] = useState(null);
@@ -18,8 +20,9 @@ const StreamingElement = ({ volume, isMute }) => {
       remoteUser?.audioTrack?.setVolume(volumeLevel);
     }
   }, [isMute]);
-
+  
   useEffect(() => {
+
     rtc.current.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
     joinChannelAsAudience();
     return async () => {
@@ -108,25 +111,23 @@ const StreamingElement = ({ volume, isMute }) => {
       //     }}
       //       src={getImagePath('profile')}
       //     />
+
       !!streamData ? (
         streamData?.preview_image_path && streamData?.preview_image ? (
-          <img
-            src={
-              imageUrl +
-              "?path=" +
-              streamData.preview_image_path +
-              "&name=" +
-              streamData.preview_image
-            }
-            alt="stream"
+          <CloudinaryImage
+            imageUrl={streamData?.preview_image_path+"/"+streamData?.preview_image}
+            keyId={`streamID${streamData?.uuid}`}
+            transformation={ImageTransformation.streamThumnail}
+            alternative="stream Image"
           />
         ) : (
-          <><img src="/static/img/no-image.png" alt="stream" /></>
+          <>
+          <CloudinaryImage imageUrl="defaultCard.png" />
+          </>
         )
-      ): (
-        <img src="/static/img/no-image.png" alt="stream" />
-      )
-      }
+      ) : (
+        <CloudinaryImage imageUrl="defaultCard.png" />
+      )}
     </>
   );
 };
