@@ -36,8 +36,6 @@ export async function UserRegister(
   if (result.status == 200) {
     if (result && result.data && result.data.status) {
       sessionStorage.setItem("userPass", password)
-
-
       const { data } = await axios.post(registerRoute, chatData);
       if (data.status === true) {
         localStorage.setItem(
