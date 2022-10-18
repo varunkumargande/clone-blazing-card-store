@@ -354,7 +354,7 @@ export default function PublicProfile() {
                                             className="primary-btn follow-btn"
                                             onClick={handleFollow}
                                         >
-                                            Follow
+                                            {handleFollowButtonText()}
                                         </button>
                                         <button className="border-btn edit-profile-btn">
                                             Message
