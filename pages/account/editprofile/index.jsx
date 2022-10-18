@@ -12,6 +12,7 @@ import PaymentDetails from "../../../components/partials/EditProfile/PaymentDeta
 import ShippingInformation from "../../../components/partials/EditProfile/ShippingInformation";
 import Router from "next/router";
 import EditProfileTab from "../../../components/partials/EditProfile/EditProfileTab";
+import BackButton from "../../../components/CommonComponents/BackButton";
 
 export default function categoryStream() {
   const [activeTab, setActiveTab] = useState("PROFILE");
@@ -63,13 +64,12 @@ export default function categoryStream() {
     });
   };
 
-  const handleGoBackToMyProfile = () => {
-    Router.push("/account/myprofile");
-  };
-
   return (
     <div className="Edit-profile">
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      {windowWidth <= 1024 ? null : <HeaderDefault />}
+      <div className="edit-profile-title">
+        <BackButton name={"Edit Profile"} />
+      </div>
       <div className="edit-inner-container">
         <div className="edit-inner">
           <section className="breadcrumbs-wrapper no-bg mb32">
@@ -77,12 +77,7 @@ export default function categoryStream() {
               <li>Home</li>/<li className="current">Live</li>
             </ul> */}
           </section>
-          <h1 className="flex mb32">
-            <div className="edit-back" onClick={handleGoBackToMyProfile}>
-              <IconBack />
-            </div>
-            Edit Profile
-          </h1>
+
 
           <EditProfileTab setActiveTab={setActiveTab} activeTab={activeTab} />
 
