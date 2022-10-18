@@ -14,6 +14,7 @@ import {
   CustomBidModal,
   ShippingTaxesModal,
   ShareModalModal,
+  BidCreatedModal,
 } from "../../partials/Modal/Modal";
 import moment from "moment/moment";
 import { useRouter } from "next/router";
@@ -41,6 +42,7 @@ function StreamingBase({
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [disableBid, setDisableBid] = useState(false);
+  const [isBidResponseModal, setIsBidResponseModal] = useState(false)
   /*****For notifications *****/
 
   const [volumeLevel, setVolumeLevel] = useState(100);
@@ -171,6 +173,7 @@ function StreamingBase({
         Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
         amountToBid
       );
+      setIsBidResponseModal(!isBidResponseModal);
     } else {
       openPayment(true);
     }
@@ -497,6 +500,15 @@ function StreamingBase({
         ) : (
           <></>
         )}
+        {
+          isBidResponseModal ? (
+            <>
+              <BidCreatedModal setIsBidResponseModal={setIsBidResponseModal}/>
+            </>
+          ) : (
+            <></>
+          )
+        }
       </div>
     </>
   );

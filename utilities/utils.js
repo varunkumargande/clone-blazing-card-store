@@ -1,4 +1,4 @@
-import { cloudImageUrl } from "../api/url";
+import { cloudImageUrl, cloudFolder } from "../api/url";
 
 export const stringFormatter = (string) =>  {
     
@@ -11,11 +11,11 @@ export const getCloudinaryImageUrl = (
   ) => {
     let transformation_ = Transformation;
     if (isGif) {
-      return `${cloudImageUrl}/blazing/${imageUrl}`;
+      return `${cloudImageUrl}/${cloudFolder}/${imageUrl}`;
     }
     if (imageUrl && imageUrl.toLowerCase().match(/\.(gif)$/)) {
       transformation_ = transformation_.replace(",dpr_auto", "");
       transformation_ = transformation_ + ",fl_lossy";
     }
-    return `${cloudImageUrl}${transformation_}/blazing/${imageUrl}`;
+    return `${cloudImageUrl}${transformation_}/${cloudFolder}/${imageUrl}`;
   };

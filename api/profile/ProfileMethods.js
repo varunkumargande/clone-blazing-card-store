@@ -1,7 +1,11 @@
 import http from '../intercept';
 
-let GetPublicProfile = async (userId, callback) => {
-    http.get(`customer/get-public-profile/${userId}`)
+let GetPublicProfile = async (userId, callback, loggedInUser = false) => {
+    let url = `customer/get-public-profile/${userId}`;
+    if(loggedInUser) {
+        url += "?loggedIn=" + loggedInUser;
+    }
+    http.get(url)
     .then((res) => {
         functionCallbackSetter(res, callback);
     })
@@ -66,7 +70,7 @@ let UserFollowUser = (userId, followerId, callback) => {
         "follower_id" : userId
     })
     .then((res) => {
-        console.log(res);
+        callback(Math.floor((Math.random() * 100) + 1));
     })
     .catch((error) => {
         console.log(error.response);

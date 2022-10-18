@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { agoraGettToken } from "../../../api/stream/agora";
+import { imageUrl } from "../../../api/url";
 import AgoraRTC from "agora-rtc-sdk-ng";
-
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
 const StreamingElement = ({ volume, isMute }) => {
   const options = useSelector((state) => state?.stream?.streamPageData?.option);
-
+  const streamData = useSelector((state) => state?.stream?.streamData);
+  const loading = useSelector((state) => state?.stream?.loading)
   const [volumeLevel, setVolumeLevel] = useState(volume);
   const rtc = useRef({});
   const [remoteUser, setRemoteUser] = useState(null);
@@ -17,8 +20,9 @@ const StreamingElement = ({ volume, isMute }) => {
       remoteUser?.audioTrack?.setVolume(volumeLevel);
     }
   }, [isMute]);
-
+  
   useEffect(() => {
+
     rtc.current.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
     joinChannelAsAudience();
     return async () => {
@@ -99,17 +103,31 @@ const StreamingElement = ({ volume, isMute }) => {
           className="local_stream"
           style={{ width: "100%", height: "100%" }}
         ></div>
-      ) :
-      // Do not remove this code
+      ) : // Do not remove this code
       // <img
       //     onError={({ currentTarget }) => {
       //       currentTarget.onerror = null; // prevents looping
       //       currentTarget.src="/static/images/stream-image.jpg";
       //     }}
       //       src={getImagePath('profile')}
-      //     />  
-      <img src="/static/images/stream-image.jpg" alt="stream" />
-      }
+      //     />
+
+      !!streamData ? (
+        streamData?.preview_image_path && streamData?.preview_image ? (
+          <CloudinaryImage
+            imageUrl={streamData?.preview_image_path+"/"+streamData?.preview_image}
+            keyId={`streamID${streamData?.uuid}`}
+            transformation={ImageTransformation.streamThumnail}
+            alternative="stream Image"
+          />
+        ) : (
+          <>
+          <CloudinaryImage imageUrl="defaultCard.png" />
+          </>
+        )
+      ) : (
+        <CloudinaryImage imageUrl="defaultCard.png" />
+      )}
     </>
   );
 };

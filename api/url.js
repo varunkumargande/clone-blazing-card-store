@@ -7,3 +7,4 @@ export const agora="http://localhost:8080";
 export const socketIO ="https://blazing-card-notification-dev.kellton.net/"
 export const apiBaseUrl='https://blazing-card-backend-dev.kellton.net'
 export const cloudImageUrl = 'https://res.cloudinary.com/dwwbiyabf/image/upload/';
+export const cloudFolder = 'blazing';

@@ -9,10 +9,11 @@ export async function createBid(auctionId, bidderId, bidAmount) {
     })
     const result =await APIServices.create('bidding/create',data)
     if(result&&result.data&&result.data.status===1){
-        modalSuccess('success',result.data.message)
+        return result.data.message;
     }
     else{
         modalWarning('error',result.data.message);
+        return result.data.message;
     }
 }
 

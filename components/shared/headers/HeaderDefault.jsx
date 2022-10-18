@@ -25,6 +25,8 @@ import MessageButton from "../../elements/MessageButton";
 import { stepState } from "../../Constants/becomeSeller";
 import { chatLogin } from "../../../api";
 import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -79,7 +81,15 @@ function HeaderDefault({ auth }) {
     if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
-          <img
+          <CloudinaryImage
+            imageUrl={`${profile.avatarPath}/${profile.avatar}`}
+            keyId={`${profile.avatarPath}/${profile.avatar}`}
+            transformation={ImageTransformation.ProfileImage}
+            alternative="/static/images/profileImg.png"
+          />
+
+          {/* ToDo: Need to remove old image code. Keeping it right now for reference  */}
+          {/* <img
             onError={({ currentTarget }) => {
               currentTarget.onerror = null;
               currentTarget.src = "/static/images/profileImg.png";
@@ -93,7 +103,7 @@ function HeaderDefault({ auth }) {
               "&width=100&height=100"
             }
             alt="Profile"
-          />
+          /> */}
         </>
       );
     } else {
