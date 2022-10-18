@@ -17,6 +17,7 @@ import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
+import { addChatFrend } from "../../../api/chat";
 
 export function ShareModalModal(props) {
   const { setIsShareModalOpen } = props;
@@ -340,11 +341,10 @@ export function AddNewCardModal(props) {
       cardNumber:
         payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
       cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
-      expireDate: ""
+      expireDate: "",
       // expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card.exp_year: "",
     },
     onSubmit: (values) => {
-
       const jsonData = JSON.stringify({
         cardNumber: values.cardNumber,
         expireDate: values.expireDate,
@@ -405,7 +405,9 @@ export function AddNewCardModal(props) {
                 onChange={formik.handleChange}
               />
               <span className="card-icon">
-                {formik?.values?.cardNumber >= 3 ? getCardImagesByName(formik.values.cardNumber) : ''}
+                {formik?.values?.cardNumber >= 3
+                  ? getCardImagesByName(formik.values.cardNumber)
+                  : ""}
               </span>
               <span className="errorMessage">{formik.errors.cardNumber}</span>
             </div>
@@ -716,21 +718,33 @@ export function DeletAccountModal({ setIsOpen }) {
   );
 }
 
-export function ChatUserModal({ setIsOpen }) {
+export function ChatUserModal({ setIsOpen, fetchUserData }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState("");
+  const [isButton, setIsButton] = useState(false);
 
   const handleUsername = async (e) => {
+      setIsButton(true)
     setUserDataLoader(true);
     if (e.target.value != "") {
-      const data = await axios.post(searchUsers, {
-        slang: e.target.value,
-      });
+      const token = sessionStorage.getItem("spurtToken");
+      const chatHeader = {
+        // 'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      };
+      const data = await axios.post(
+        searchUsers,
+        {
+          slang: e.target.value,
+        },
+        {
+          headers: chatHeader,
+        }
+      );
       if (data.status == 200) {
-        //
-        setUserData(data.data.user);
+        setUserData(data?.data?.response);
         setUserDataLoader(false);
       }
     } else {
@@ -742,6 +756,51 @@ export function ChatUserModal({ setIsOpen }) {
   const handleAddUserForChat = (id, name) => {
     setUserId(id);
     setUsername(name);
+  };
+
+  const handleSubmitUser = () => {
+      addChatFrend(userId, fetchUserData, setIsOpen)
+  }
+
+  const showUserList = () => {
+    if (!!userData) {
+      return (
+        <>
+          {userData.map((item, index) => {
+            return (
+              <>
+                <div
+                  className={
+                    !!userId
+                      ? "profile-chat-list flex space-between active-user"
+                      : "profile-chat-list flex space-between"
+                  }
+                  onClick={() => handleAddUserForChat(item._id, item.username)}
+                >
+                  <div className="profile-image-title flex flex-center">
+                    <div className="image br50">
+                      <img
+                        src={
+                          item?.avatarImage == ""
+                            ? "/static/img/no-image.png"
+                            : item?.avatarImage
+                        }
+                        alt=""
+                      />
+                    </div>
+                    <div className="profile-text">
+                      <div className="name">
+                        {item.username} <span className="new"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })}
+        </>
+      );
+    }
   };
 
   return (
@@ -780,48 +839,16 @@ export function ChatUserModal({ setIsOpen }) {
                 </div>
               </>
             ) : (
-              <>
-                {userData.map((item, index) => {
-                  return (
-                    <>
-                      <div
-                        className={
-                          !!userId
-                            ? "profile-chat-list flex space-between active-user"
-                            : "profile-chat-list flex space-between"
-                        }
-                        onClick={() =>
-                          handleAddUserForChat(item._id, item.username)
-                        }
-                      >
-                        <div className="profile-image-title flex flex-center">
-                          <div className="image br50">
-                            <img
-                              src={
-                                item?.avatarImage == ""
-                                  ? "/static/img/no-image.png"
-                                  : item?.avatarImage
-                              }
-                              alt=""
-                            />
-                          </div>
-                          <div className="profile-text">
-                            <div className="name">
-                              {item.username} <span className="new"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  );
-                })}
-              </>
+              <>{showUserList()}</>
             )}
           </div>
           <div className="btn-wrap delete" align={"center"}>
-            <button className="primary-btn" type="submit">
-              Next
-            </button>
+              <button
+                  className="primary-btn"
+                  type="submit"
+                  onClick={() => handleSubmitUser()}>
+                  Next
+              </button>
           </div>
         </div>
       </div>

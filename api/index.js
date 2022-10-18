@@ -10,3 +10,4 @@ export * from './home';
 export * from './product';
 export * from './vendor-detail';
 export * from './wishlist';
+export * from './chat';
