@@ -15,35 +15,60 @@ import { uploadImageToServer } from "../../../utilities/common-helpers";
 import DefaultConstants from "../../../utilities/constants";
 
 
+
 export default function BasicDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [imageData, setImageData] = useState(null)
+  const [percentage, setPercentage] = useState(0)
   const BasicDetails = useSelector(
     (state) => state?.becomeSeller?.basicDetails
   );
-
   const handleSubmit = async (values) => {
-    const uploadImage = await uploadImageToServer(imageData, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH);
-    if (uploadImage) {
+    if (!!imageData) {
       const data = {
         fullName: values.fullName,
-        ssn: values.ssn,
+        uniqueId: values.ssn,
         documents: {
           fileName: values?.upload?.name,
-          image: uploadImage?.fileName,
+          image: values?.upload?.name,
           path: DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH,
         },
       };
       dispatch(addBasicData(data, router));
   }
   };
+  const getBase64 = (file, cb) => {
+    if(!!file){
+      let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      cb(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log("Error: ", error);
+    };
+    }
+  };
+  
 
   const setImage = (file) => {
-    setImageData(file)
+    if(!!file){
+      getBase64(file, (result) => {
+        handleFileUpload(file,result)
+        // setImageData(result)
+      });
+    }
+   
   }
 
-
+  const handleFileUpload = async (image, base64) => {
+    const uploadImage = await uploadImageToServer(image, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH, setPercentage);
+    if(uploadImage.status==200){
+      setImageData(base64)
+    }
+  }
+  
   return (
     <div className="step-container">
       <BackButton name={"Basic Details"}/>
@@ -55,7 +80,7 @@ export default function BasicDetails() {
       <Formik
         initialValues={{
           fullName: BasicDetails?.fullName ?? "",
-          ssn: BasicDetails?.ssn ?? "",
+          ssn: BasicDetails?.uniqueId ?? "",
           upload: "",
         }}
         validationSchema={basicDetailvalidation}
@@ -79,7 +104,7 @@ export default function BasicDetails() {
 
               <TextInput
                 className="input-control wd48"
-                label="SSN *"
+                label="Unique Id *"
                 name="ssn"
                 type="text"
                 placeholder="Enter here"
@@ -95,6 +120,9 @@ export default function BasicDetails() {
                 placeholder="Enter here"
                 formProps={formProps}
                 setImage={setImage}
+                imageData={imageData}
+                setImageData={setImageData}
+                percentage={percentage}
               />
             </div>
             <div className="submit-wrapper flex space-between">
