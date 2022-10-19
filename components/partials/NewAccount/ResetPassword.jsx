@@ -11,6 +11,7 @@ import {
 } from "../../../api/account/resetPass";
 import { handleClientScriptLoad } from "next/script";
 import Router,{ useRouter } from "next/router";
+import Link from "next/link";
 
 export default function SentMail() {
   var router = useRouter();
@@ -132,21 +133,21 @@ export default function SentMail() {
     } else {
       return <>Loading ....</>;
     }
-  };
-//go back to previous page
-const handleBackButton = () => {
-  router.back()
- }  
+  };  
 
   return (
     <div className="login-wrapper">
-      <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
-      
       <h1 className="title mb8">Set New Password</h1>
       <div className="infotext mb32">
         Your new password must be different to previously used passwords.
       </div>
       {handleResetPassword()}
+      <div className="text-center mb16 already">
+       Go back to{" "}
+        <Link href="/account/login">
+          <a>Sign In</a>
+        </Link>
+      </div>
     </div>
   );
 }

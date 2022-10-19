@@ -13,7 +13,7 @@ export default function ChatPannel({
 }) {
 
   const divRef = useRef(null);
-  console.log(msg)
+  
 
   useEffect(() => {
     if (divRef.current != null) {

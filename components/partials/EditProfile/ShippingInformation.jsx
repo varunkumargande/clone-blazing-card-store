@@ -3,7 +3,7 @@ import IconDelete from "../../Icons/IconDelete";
 import Link from "next/link";
 import { addressListApi } from "../../../api";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik } from "formik";
+import { Formik, setNestedObjectValues } from "formik";
 import * as Yup from "yup";
 import { countryListApi, editAddressApi, UserAddAddress } from "../../../api";
 import Router from "next/router";
@@ -54,16 +54,23 @@ export default function ShippingDetails() {
       <h3>Shipping Information</h3>
 
       {addressLoader ? (
-        <><Loader /></>
+        <>
+          <Loader />
+        </>
       ) : (
         <>
           <Formik
             initialValues={initialShippingValues}
             validationSchema={shippingSchema}
             onSubmit={(values) => {
-              setAddressLoader(true)
+              setAddressLoader(true);
               if (addressData.length != 0) {
-                editAddressApi(values, addressData[0].addressId, setAddressLoader, addressList);
+                editAddressApi(
+                  values,
+                  addressData[0].addressId,
+                  setAddressLoader,
+                  addressList
+                );
               } else {
                 UserAddAddress(values, Router, setAddressLoader, addressList);
               }
@@ -77,6 +84,7 @@ export default function ShippingDetails() {
               handleBlur,
               handleSubmit,
               isSubmitting,
+              setValues,
             }) => (
               <>
                 <form onSubmit={handleSubmit}>
@@ -97,9 +105,11 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.company}
                           />
-                          <span className="errorMessage">{errors.company && touched.company
-                                ? errors.company
-                                : null}</span>
+                          <span className="errorMessage">
+                            {errors.company && touched.company
+                              ? errors.company
+                              : null}
+                          </span>
                         </div>
                         <div className="input-control wd50">
                           <label>Address Line 1 *</label>
@@ -110,9 +120,11 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.address1}
                           />
-                          <span className="errorMessage">{errors.address1 && touched.address1
-                                ? errors.address1
-                                : null}</span>
+                          <span className="errorMessage">
+                            {errors.address1 && touched.address1
+                              ? errors.address1
+                              : null}
+                          </span>
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">Address Line 2</label>
@@ -145,9 +157,11 @@ export default function ShippingDetails() {
                               );
                             })}
                           </select>
-                          <span className="errorMessage">{errors.countryId && touched.countryId
-                                ? errors.countryId
-                                : null}</span>
+                          <span className="errorMessage">
+                            {errors.countryId && touched.countryId
+                              ? errors.countryId
+                              : null}
+                          </span>
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">Postal Code *</label>
@@ -159,9 +173,11 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.postcode}
                           />
-                          <span className="errorMessage">{errors.postcode && touched.postcode
-                                ? errors.postcode
-                                : null}</span>
+                          <span className="errorMessage">
+                            {errors.postcode && touched.postcode
+                              ? errors.postcode
+                              : null}
+                          </span>
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">City *</label>
@@ -173,9 +189,9 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.city}
                           />
-                          <span className="errorMessage">{errors.city && touched.city
-                                ? errors.city
-                                : null}</span>
+                          <span className="errorMessage">
+                            {errors.city && touched.city ? errors.city : null}
+                          </span>
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">State *</label>
@@ -187,15 +203,25 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.state}
                           />
-                         <span className="errorMessage">{errors.state && touched.state
-                                ? errors.state
-                                : null}</span>
+                          <span className="errorMessage">
+                            {errors.state && touched.state
+                              ? errors.state
+                              : null}
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="button-wrapper flex mb40">
-                    {/* <button className="border-btn mr16">Cancel</button> */}
+                    <button
+                      className="border-btn mr16"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setValues(initialShippingValues, true);
+                      }}
+                    >
+                      Cancel
+                    </button>
                     <button className="primary-btn" onSubmit={handleSubmit}>
                       Save
                     </button>

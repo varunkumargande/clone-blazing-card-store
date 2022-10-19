@@ -12,6 +12,8 @@ import { uploadImageToServer } from "../../../utilities/common-helpers";
 import DefaultConstants from "../../../utilities/constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
+import DefaultServices from "../../Services/DefaultServices";
+import { regex } from "../../Constants/regex";
 
 export default function ProfileInformation() {
   const maxProfileImageSize = 5; // in MB
@@ -26,69 +28,77 @@ export default function ProfileInformation() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-
     if (sessionStorage.getItem("spurtUser")) {
-      setLoader(true)
+      setLoader(true);
       let jsonObject = {
         firstName: JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName,
         lastName: JSON.parse(sessionStorage.getItem("spurtUser"))?.lastName,
         bio: JSON.parse(sessionStorage.getItem("spurtUser"))?.bio,
         twitterUrl: JSON.parse(sessionStorage.getItem("spurtUser"))?.twitterUrl,
-        facebookUrl: JSON.parse(sessionStorage.getItem("spurtUser"))?.facebookUrl,
-        phoneNumber: JSON.parse(sessionStorage.getItem("spurtUser"))?.mobileNumber,
+        facebookUrl: JSON.parse(sessionStorage.getItem("spurtUser"))
+          ?.facebookUrl,
+        phoneNumber: JSON.parse(sessionStorage.getItem("spurtUser"))
+          ?.mobileNumber,
         emailId: JSON.parse(sessionStorage.getItem("spurtUser"))?.email,
         avatar: JSON.parse(sessionStorage.getItem("spurtUser"))?.avatar,
         avatarPath: JSON.parse(sessionStorage.getItem("spurtUser"))?.avatarPath,
         username: JSON.parse(sessionStorage.getItem("spurtUser"))?.username,
       };
       setProfileData(jsonObject);
-      setLoader(false)
+      setLoader(false);
     }
   }, [loader]);
 
   const changeDP = (e) => {
     setNewDpError("");
     const { files } = e.target;
-    if (files && files[0] && files[0].name.match(/\.(jpg|jpeg|png)$/)) {
+    if (
+      files &&
+      files[0] &&
+      files[0].name.toLowerCase().match(/\.(jpg|jpeg|png)$/)
+    ) {
       const fsize = files[0].size;
       const file = Math.round(fsize / 1024);
       if (file < (1024 * maxProfileImageSize)) {
         // setNewDp(files[0])
         const reader = new FileReader();
         reader.onloadend = () => {
-          uploadImage(files[0], reader.result)
+          uploadImage(files[0], reader.result);
         };
         reader.readAsDataURL(files[0]);
       } else {
         setNewDpError(`Profile image must be of max ${maxProfileImageSize}MB`);
       }
+    } else {
+      setNewDpError("Please upload a valid Profile Image");
     }
   };
 
   const uploadImage = async (file, base64) => {
     setShowImageLoader(true);
-    const uploadImage = await uploadImageToServer(file, DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH);
+    const uploadImage = await uploadImageToServer(
+      file,
+      DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH
+    );
     setShowImageLoader(false);
     if (uploadImage) {
       setNewDp(base64);
       setNewDpName(uploadImage?.fileName);
       setimpuploadsuccess(true);
     }
-  }
+  };
 
   const profileSchema = Yup.object().shape({
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
-    bio: Yup.string().required("Required").nullable(),
+    bio: Yup.string().nullable().max(300),
     twitterUrl: Yup.string()
-      .required("Required")
       .matches(
         /(?:http:\/\/)?(?:www\.)?twitter\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)/,
         "Invalid twitter Link !"
       )
       .nullable(),
     facebookUrl: Yup.string()
-      .required("Required")
       .matches(
         /(?:https?:\/\/)?(?:www\.)?(?:facebook|fb|m\.facebook)\.(?:com|me)\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-\.]+)(?:\/)?/i,
         "Invalid facebook Link !"
@@ -103,10 +113,9 @@ export default function ProfileInformation() {
     );
   };
 
-
   const handleCancelButton = () => {
-    setLoader(true)
-  }
+    setLoader(true);
+  };
 
   const handleImageUpload = () => {
     return (
@@ -115,9 +124,9 @@ export default function ProfileInformation() {
           <div className="profile-image-upload flex flex-center">
             <div className="prifile-image br50">
               {profileData != null ? (
-                showImageLoader ?
+                showImageLoader ? (
                   <Loader />
-                  :
+                ) : (
                   <>
                     {newDp != "" ? (
                       <>
@@ -131,30 +140,45 @@ export default function ProfileInformation() {
                       </>
                     ) : (
                       <>
-                      {profileData?.avatar ? 
-                        <CloudinaryImage
-                          imageUrl={`${profileData?.avatarPath}/${profileData?.avatar}`}
-                          keyId={`${profileData?.avatarPath}/${profileData?.avatar}`}
-                          transformation={ImageTransformation.profilePageImage}
-                          alternative="Profile"
-                        /> :
-                        <img
-                          style={{ borderRadius: "50%" }}
-                          width={"172"}
-                          height={"172"}
-                          src={"/static/images/profileImg.png"}
-                          alt="Profile"
-                        /> }
+                        {profileData?.avatar ? (
+                          <CloudinaryImage
+                            imageUrl={DefaultServices?.GetFullImageURL(
+                              profileData,
+                              "profile"
+                            )}
+                            keyId={DefaultServices?.GetFullImageURL(
+                              profileData,
+                              "profile"
+                            )}
+                            transformation={
+                              ImageTransformation.profilePageImage
+                            }
+                            alternative="Profile"
+                          />
+                        ) : (
+                          <img
+                            style={{ borderRadius: "50%" }}
+                            width={"172"}
+                            height={"172"}
+                            src={"/static/images/profileImg.png"}
+                            alt="Profile"
+                          />
+                        )}
                       </>
                     )}
                   </>
+                )
               ) : (
                 ""
               )}
             </div>
             <div className="profile-text">
               <div className="profile-btn-wrap flex flex-center mb16">
-                <label className={`upload-btn flex justify-center flex-center ${showImageLoader && 'disable-upload-image-btn'}`}>
+                <label
+                  className={`upload-btn flex justify-center flex-center ${
+                    showImageLoader && "disable-upload-image-btn"
+                  }`}
+                >
                   Update Profile Image
                   <input
                     type="file"
@@ -170,6 +194,9 @@ export default function ProfileInformation() {
               </div>
               <div className="dicscription">
                 {newDpError || `Must be JPEG, JPG, PNG and cannot exceed ${maxProfileImageSize}MB`}
+              </div>
+              <div className="input-control wd50">
+                <span className="errorMessage">{newDpError || null}</span>
               </div>
             </div>
           </div>
@@ -209,6 +236,7 @@ export default function ProfileInformation() {
                 errors,
                 touched,
                 handleChange,
+                setFieldValue,
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
@@ -225,8 +253,18 @@ export default function ProfileInformation() {
                               placeholder={"Enter here"}
                               className="grey-bg"
                               name="firstName"
-                              onChange={handleChange}
+                              onChange={(e) =>
+                                setFieldValue(
+                                  e.target.name,
+                                  e.target.value.replace(
+                                    regex.onlyAlphabetsWithSpaces,
+                                    ""
+                                  ),
+                                  true
+                                )
+                              }
                               value={values.firstName}
+                              type="text"
                             />
                             <span className="errorMessage">
                               {errors.firstName && touched.firstName
@@ -240,7 +278,16 @@ export default function ProfileInformation() {
                               name="lastName"
                               placeholder={"Enter here"}
                               className="grey-bg"
-                              onChange={handleChange}
+                              onChange={(e) =>
+                                setFieldValue(
+                                  e.target.name,
+                                  e.target.value.replace(
+                                    regex.onlyAlphabetsWithSpaces,
+                                    ""
+                                  ),
+                                  true
+                                )
+                              }
                               value={values.lastName}
                             />
                             <span className="errorMessage">
@@ -275,6 +322,7 @@ export default function ProfileInformation() {
                               className="grey-bg"
                               onChange={handleChange}
                               value={values.phoneNumber}
+                              type="number"
                             />
 
                             <span className="errorMessage"></span>

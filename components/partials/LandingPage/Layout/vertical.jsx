@@ -21,7 +21,7 @@ function Vertical({
     setSubCateId(e.target.value);
   };
 
-  console.log(category, categoryName);
+  
 
   const handleCardDetail = () => {
     if (data[categoryName] != undefined) {
