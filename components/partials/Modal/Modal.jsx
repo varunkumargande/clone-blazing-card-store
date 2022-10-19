@@ -19,6 +19,8 @@ import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
 import { addChatFrend } from "../../../api/chat";
 import { regex } from "../../Constants/regex";
+import { apiUrl } from "../../../api/url";
+import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
@@ -41,15 +43,21 @@ export function ShareModalModal({ setIsShareModalOpen }) {
         </div>
         <div className="modal-body">
           <div className="flex justify-center social-link">
-            <button>
-              <IconShareWhatsup />
-            </button>
-            <button>
-              <IconShareTwitter />
-            </button>
-            <button>
-              <IconShareFacebook />
-            </button>
+            <a href={`${SocialMediaShareLink.whatsapp}${apiUrl}`} target="_blank">
+              <button>
+                <IconShareWhatsup />
+              </button>
+            </a>
+            <a href={`${SocialMediaShareLink.twitter}${apiUrl}`} target="_blank">
+              <button>
+                <IconShareTwitter />
+              </button>
+            </a>
+            <a href={`${SocialMediaShareLink.facebook}${apiUrl}`} target="_blank">
+              <button>
+                <IconShareFacebook />
+              </button>
+            </a>
           </div>
           <div className="copy flex space-between flex-center nowrap">
             <span className="url">{pageUrl}</span>
