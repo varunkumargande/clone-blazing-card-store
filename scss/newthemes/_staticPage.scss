@@ -138,6 +138,16 @@
     .static-inner-container{
         padding: 20px 15px;
     }
+    .static-container{
+        &.faqs{
+            padding-top:0;
+            h1{
+                margin:0 -15px;
+                padding: 40px 15px 32px;
+                background-color: $white-color;
+            }
+        }
+    }
 }
 @media all and (min-width:1025px){
     .static-container{
