@@ -68,7 +68,7 @@ export default function Chat() {
     if (localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
       socket.current = io(host);
-      socket.current.emit("add-user", user._id);
+      socket.current.emit("add-user", user?.user?._id);
     }
   }, []);
 
@@ -164,7 +164,7 @@ export default function Chat() {
         setArrivalMessage({ fromSelf: false, message: msg });
       });
     }
-  }, []);
+  }, [messages]);
 
   useEffect(() => {
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
