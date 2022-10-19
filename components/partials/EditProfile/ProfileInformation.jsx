@@ -16,6 +16,7 @@ import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 
 export default function ProfileInformation() {
+  const MaxProfileImageSize = 5; // in MB
   const [profileData, setProfileData] = useState(null);
   const [newDpError, setNewDpError] = useState("");
   const [impuploadsuccess, setimpuploadsuccess] = useState(false);
@@ -58,7 +59,7 @@ export default function ProfileInformation() {
     ) {
       const fsize = files[0].size;
       const file = Math.round(fsize / 1024);
-      if (file < 2048) {
+      if (file < (1024 * MaxProfileImageSize)) {
         // setNewDp(files[0])
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -66,7 +67,7 @@ export default function ProfileInformation() {
         };
         reader.readAsDataURL(files[0]);
       } else {
-        setNewDpError("Profile Image cannot exceed 2MB");
+        setNewDpError(`Profile image must be of max ${MaxProfileImageSize}MB`);
       }
     } else {
       setNewDpError("Please upload a valid Profile Image");
@@ -181,6 +182,7 @@ export default function ProfileInformation() {
                   Update Profile Image
                   <input
                     type="file"
+                    accept=".png, .jpg, .jpeg"
                     ref={inputFile}
                     disabled={showImageLoader}
                     onChange={(e) => changeDP(e)}
@@ -191,7 +193,7 @@ export default function ProfileInformation() {
               </button> */}
               </div>
               <div className="dicscription">
-                Must be JPEG, JPG, PNG and cannot exceed 2MB.
+                {newDpError || `Must be JPEG, JPG, PNG and cannot exceed ${MaxProfileImageSize}MB`}
               </div>
               <div className="input-control wd50">
                 <span className="errorMessage">{newDpError || null}</span>
