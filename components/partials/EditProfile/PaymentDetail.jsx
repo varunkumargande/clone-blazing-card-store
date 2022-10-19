@@ -10,6 +10,7 @@ import PaymentCard from "./PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
+import { regex } from "../../Constants/regex"
 
 export default function PaymentDetail() {
   const [cardData, setCardData] = useState(null);
@@ -127,117 +128,147 @@ export default function PaymentDetail() {
                   handleSubmit,
                   isSubmitting,
                   resetForm,
-                }) => (
-                  <>
-                    <form onSubmit={handleSubmit}>
-                      <div className="box">
-                        <div className="inner-box">
-                          <div className="discriptionlg">
-                            Blazing Cards takes marketplace safety seriously.
-                            Sellers must have a valid payment method on file. In
-                            rare occasions, sellers are charged a $100 fee for
-                            severe or repeated infractions of our policies.{" "}
-                          </div>
-                          <div className="flex space-between">
-                            <div className="input-control wd50">
-                              <label>Card Number *</label>
-                              <input
-                                name="cardNumber"
-                                placeholder={"Enter here"}
-                                className="grey-bg"
-                                onChange={handleChange}
-                                value={values.cardNumber}
-                              />
-                              <span className="card-icon">
-                                {values?.cardNumber?.length >= 3
-                                  ? getCardImagesByName(values.cardNumber)
-                                  : ""}
-                              </span>
-                              <span className="errorMessage">
-                                {errors.cardNumber && touched.cardNumber
-                                  ? errors.cardNumber
-                                  : null}
-                              </span>
+                  setFieldValue,
+                }) => {
+                  const CardImage =
+                    values?.cardNumber >= 3
+                      ? getCardImagesByName(values.cardNumber)
+                      : "";
+                  return (
+                    <>
+                      <form onSubmit={handleSubmit}>
+                        <div className="box">
+                          <div className="inner-box">
+                            <div className="discriptionlg">
+                              Blazing Cards takes marketplace safety seriously.
+                              Sellers must have a valid payment method on file.
+                              In rare occasions, sellers are charged a $100 fee
+                              for severe or repeated infractions of our
+                              policies.{" "}
                             </div>
-                            <div className="input-control wd50">
-                              <label htmlFor="usr">Expiry *</label>
-                              <input
-                                name="expireDate"
-                                placeholder={"MM/YY"}
-                                type={"text"}
-                                className="grey-bg"
-                                onChange={handleChange}
-                                value={handleExpDate(values)}
-                                maxLength={5}
-                              />
-                              <span className="errorMessage">
-                                {errors.expireDate && touched.expireDate
-                                  ? errors.expireDate
-                                  : null}
-                                {/* {expValid == false ? "Expiary date is invalide": ""} */}
-                              </span>
+                            <div className="flex space-between">
+                              <div className="input-control wd50">
+                                <label>Card Number *</label>
+                                <input
+                                  name="cardNumber"
+                                  placeholder={"Enter here"}
+                                  className="grey-bg"
+                                  onChange={handleChange}
+                                  value={values.cardNumber}
+                                  type="text"
+                                  onChange={(e) =>
+                                    setFieldValue(
+                                      "cardNumber",
+                                      e.target.value.replace(regex.onlyNumbers, "")
+                                    )
+                                  }
+                                  maxLength={
+                                    CardImage?.type?.name ===
+                                    "IconAmericanExpressCard"
+                                      ? 15
+                                      : 16
+                                  }
+                                />
+                                <span className="card-icon">{CardImage}</span>
+                                <span className="errorMessage">
+                                  {errors.cardNumber && touched.cardNumber
+                                    ? errors.cardNumber
+                                    : null}
+                                </span>
+                              </div>
+                              <div className="input-control wd50">
+                                <label htmlFor="usr">Expiry *</label>
+                                <input
+                                  name="expireDate"
+                                  placeholder={"MM/YY"}
+                                  type={"text"}
+                                  className="grey-bg"
+                                  onChange={handleChange}
+                                  value={handleExpDate(values)}
+                                  maxLength={5}
+                                />
+                                <span className="errorMessage">
+                                  {errors.expireDate && touched.expireDate
+                                    ? errors.expireDate
+                                    : null}
+                                  {/* {expValid == false ? "Expiary date is invalide": ""} */}
+                                </span>
+                              </div>
+                              <div className="input-control wd50">
+                                <label htmlFor="usr">CVV *</label>
+                                <input
+                                  name="cvc"
+                                  placeholder={"Enter here"}
+                                  className="grey-bg"
+                                  onChange={(e) =>
+                                    setFieldValue(
+                                      "cvc",
+                                      e.target.value.replace(regex.onlyNumbers, "")
+                                    )
+                                  }
+                                  value={values.cvc}
+                                  type="password"
+                                  maxLength={
+                                    CardImage?.type?.name ===
+                                    "IconAmericanExpressCard"
+                                      ? 4
+                                      : 3
+                                  }
+                                />
+                                <span className="errorMessage">
+                                  {errors.cvc && touched.cvc
+                                    ? errors.cvc
+                                    : null}
+                                </span>
+                              </div>
+                              <div className="input-control wd50">
+                                <label htmlFor="usr">Country *</label>
+                                <select
+                                  className="grey-bg"
+                                  name="countryId"
+                                  onChange={handleChange}
+                                  value={values.countryId}
+                                >
+                                  <option>Select</option>
+                                  {countryData.map((item, index) => {
+                                    return (
+                                      <>
+                                        <option value={item.countryId}>
+                                          {item.name}
+                                        </option>
+                                      </>
+                                    );
+                                  })}
+                                </select>
+                                <span className="errorMessage">
+                                  {errors.countryId && touched.countryId
+                                    ? errors.countryId
+                                    : null}
+                                </span>
+                              </div>
                             </div>
-                            <div className="input-control wd50">
-                              <label htmlFor="usr">CVV *</label>
-                              <input
-                                name="cvc"
-                                placeholder={"Enter here"}
-                                className="grey-bg"
-                                onChange={handleChange}
-                                value={values.cvc}
-                                type="password"
-                              />
-                              <span className="errorMessage">
-                                {errors.cvc && touched.cvc ? errors.cvc : null}
-                              </span>
+                            <div className="discriptionlg">
+                              By providing your card information, you allow
+                              BLAZING CARDS to charge your card for future
+                              payments in accordance with their terms.
                             </div>
-                            <div className="input-control wd50">
-                              <label htmlFor="usr">Country *</label>
-                              <select
-                                className="grey-bg"
-                                name="countryId"
-                                onChange={handleChange}
-                                value={values.countryId}
-                              >
-                                <option>Select</option>
-                                {countryData.map((item, index) => {
-                                  return (
-                                    <>
-                                      <option value={item.countryId}>
-                                        {item.name}
-                                      </option>
-                                    </>
-                                  );
-                                })}
-                              </select>
-                              <span className="errorMessage">
-                                {errors.countryId && touched.countryId
-                                  ? errors.countryId
-                                  : null}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="discriptionlg">
-                            By providing your card information, you allow
-                            BLAZING CARDS to charge your card for future
-                            payments in accordance with their terms.
                           </div>
                         </div>
-                      </div>
-                      <div className="button-wrapper flex mb40">
-                        <button
-                          className="border-btn mr16"
-                          type="button"
-                          onClick={() => setIsCardData(true)}
-                        >
-                          Cancel
-                        </button>
+                        <div className="button-wrapper flex mb40">
+                          <button
+                            className="border-btn mr16"
+                            type="button"
+                            onClick={() => setIsCardData(true)}
+                          >
+                            Cancel
+                          </button>
 
-                        <button className="primary-btn">Save</button>
-                      </div>
-                    </form>
-                  </>
-                )}
+                          <button className="primary-btn">Save</button>
+                        </div>
+                      </form>
+                    </>
+                  );
+                }}
               </Formik>
             </>
           )}

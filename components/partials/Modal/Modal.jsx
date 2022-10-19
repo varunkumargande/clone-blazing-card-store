@@ -18,6 +18,7 @@ import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
 import { addChatFrend } from "../../../api/chat";
+import { regex } from "../../Constants/regex";
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
@@ -375,6 +376,11 @@ export function AddNewCardModal(props) {
     return dateExp;
   };
 
+  const CardImage =
+    formik?.values?.cardNumber >= 3
+      ? getCardImagesByName(formik?.values?.cardNumber)
+      : "";
+
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal medium">
@@ -403,6 +409,16 @@ export function AddNewCardModal(props) {
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
                 onChange={formik.handleChange}
+                type="text"
+                onChange={(e) =>
+                  formik.setFieldValue(
+                    "cardNumber",
+                    e.target.value.replace(regex.onlyNumbers, "")
+                  )
+                }
+                maxLength={
+                  CardImage?.type?.name === "IconAmericanExpressCard" ? 15 : 16
+                }
               />
               <span className="card-icon">
                 {formik?.values?.cardNumber >= 3
@@ -426,13 +442,22 @@ export function AddNewCardModal(props) {
                 {expValid == false ? "Expiary date is invalide" : ""}
               </div>
               <div className="input-control wd50">
-                <label>CVC</label>
+                <label>CVV</label>
                 <input
                   type="text"
                   name="cvc"
                   placeholder={"Enter here"}
                   value={formik.values.cvc}
-                  onChange={formik.handleChange}
+                  type="password"
+                  onChange={(e) =>
+                    formik.setFieldValue(
+                      "cvc",
+                      e.target.value.replace(regex.onlyNumbers, "")
+                    )
+                  }
+                  maxLength={
+                    CardImage?.type?.name === "IconAmericanExpressCard" ? 4 : 3
+                  }
                 />
                 <span className="errorMessage">{formik.errors.cvc}</span>
               </div>
@@ -726,7 +751,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData }) {
   const [isButton, setIsButton] = useState(false);
 
   const handleUsername = async (e) => {
-      setIsButton(true)
+    setIsButton(true);
     setUserDataLoader(true);
     if (e.target.value != "") {
       const token = sessionStorage.getItem("spurtToken");
@@ -759,8 +784,8 @@ export function ChatUserModal({ setIsOpen, fetchUserData }) {
   };
 
   const handleSubmitUser = () => {
-      addChatFrend(userId, fetchUserData, setIsOpen)
-  }
+    addChatFrend(userId, fetchUserData, setIsOpen);
+  };
 
   const showUserList = () => {
     if (!!userData) {
@@ -843,12 +868,13 @@ export function ChatUserModal({ setIsOpen, fetchUserData }) {
             )}
           </div>
           <div className="btn-wrap delete" align={"center"}>
-              <button
-                  className="primary-btn"
-                  type="submit"
-                  onClick={() => handleSubmitUser()}>
-                  Next
-              </button>
+            <button
+              className="primary-btn"
+              type="submit"
+              onClick={() => handleSubmitUser()}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
@@ -919,9 +945,8 @@ export function SignUPGoogle() {
   );
 }
 
-
 export function BidCreatedModal(props) {
-  const {setIsBidResponseModal} = props
+  const { setIsBidResponseModal } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
@@ -940,9 +965,7 @@ export function BidCreatedModal(props) {
           </button>
         </div>
         <div className="modal-body text-center">
-          <div className="Stream-title text-center mb24">
-            Bid Placed
-          </div>
+          <div className="Stream-title text-center mb24">Bid Placed</div>
           <div className="">You have bid successfully!!</div>
         </div>
       </div>
