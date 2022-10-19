@@ -6,7 +6,7 @@ export default function ProfilePannel({
   setIsOpen,
     userCount
 }) {
-    console.log(contacts)
+    
   return (
     <div className="profile-wrapper">
       {/* <div className=" static-content flex justify-center flex-center column">

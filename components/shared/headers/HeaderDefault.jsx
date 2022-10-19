@@ -47,8 +47,10 @@ function HeaderDefault({ auth }) {
   };
 
   const stage = useSelector((state) => state?.becomeSeller?.currentState) ?? 0;
-  const submittedDetails = useSelector((state) => state?.becomeSeller?.submittedDetails);
-  
+  const submittedDetails = useSelector(
+    (state) => state?.becomeSeller?.submittedDetails
+  );
+
   const handleOnClick = () => {
     setActive(!active);
   };
@@ -71,7 +73,6 @@ function HeaderDefault({ auth }) {
   }, []);
 
   useEffect(() => {
-    
     if (profile) {
       handleProfileImage();
     }
@@ -141,6 +142,8 @@ function HeaderDefault({ auth }) {
     chatLogin();
   };
 
+  console.log();
+
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
@@ -165,17 +168,14 @@ function HeaderDefault({ auth }) {
         </div>
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">
-            {/* <label className="switch toggle-switch darkBlue">
-                    <input type="checkbox" id="togBtn" />
-                    <span className="toogle-slide round">
-                        <span className="on">
-                            Store
-                        </span>
-                        <span className="off">
-                            Seller
-                        </span>
-                    </span>
-                </label> */}
+            
+            <label className="switch toggle-switch darkBlue">
+              <input type="checkbox" id="togBtn" />
+              <span className="toogle-slide round">
+                <span className="on">Store</span>
+                <span className="off">Seller</span>
+              </span>
+            </label>
 
             {/* {!stepState.includes(pageName) ? (
               <>
