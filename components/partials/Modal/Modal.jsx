@@ -19,8 +19,8 @@ import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
 import { addChatFrend } from "../../../api/chat";
 
-export function ShareModalModal(props) {
-  const { setIsShareModalOpen } = props;
+export function ShareModalModal({ setIsShareModalOpen }) {
+  const pageUrl = window.location.href;
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
@@ -51,8 +51,8 @@ export function ShareModalModal(props) {
             </button>
           </div>
           <div className="copy flex space-between flex-center nowrap">
-            <span>https://www.blazingcards.com/live/5...</span>
-            <button className="copy-btn">Copy</button>
+            <span className="url">{pageUrl}</span>
+            <button className="copy-btn" onClick={() => {navigator.clipboard.writeText(pageUrl)}}>Copy</button>
           </div>
         </div>
       </div>
