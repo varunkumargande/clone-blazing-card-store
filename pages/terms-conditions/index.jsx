@@ -1,10 +1,9 @@
 import React,{useState,useEffect} from "react";
-import Header from "../../components/partials/LandingPage/Header";
-import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import Footer from "../../components/partials/LandingPage/Footer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
+import MobileHeader from "../../components/shared/headers/MobileHeader";
 
 export default function landingpage(){
     const [windowWidth, setWindowWidth] = useState(0);
