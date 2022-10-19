@@ -114,7 +114,7 @@ export default function PaymentDetail() {
                 initialValues={initialCardValues}
                 validationSchema={paySchema}
                 onSubmit={(values) => {
-                  console.log(values);
+                  
                   submitCardDetail(values);
                 }}
               >
