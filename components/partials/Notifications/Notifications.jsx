@@ -8,7 +8,7 @@ const Notifications = (props) => {
 
     useEffect(() => {
         if (props.notifications) {
-            console.log(props.notifications);
+            
         }
     }, [props.notifications])
 

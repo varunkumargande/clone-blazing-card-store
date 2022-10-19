@@ -106,7 +106,7 @@ export function addNotification(payload) {
 } 
 
 export function clearState(){
-  console.log("0000000000000")
+  
   return {
     type: actionTypes.CLEAR_STATE
   }

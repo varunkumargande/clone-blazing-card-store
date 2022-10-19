@@ -27,6 +27,7 @@ import { chatLogin } from "../../../api";
 import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
+import useSessionstorage from "../../elements/sessionStorageHook/useSessionstorage";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -39,7 +40,14 @@ function HeaderDefault({ auth }) {
   const [fname, setFname] = useState("");
   const [aimg, setAimg] = useState("");
   const [email, setEmail] = useState("");
+  const [toggle, setToggle] = useState("store");
+
   let { pageName } = router.query;
+
+  // ================= user data ===================
+  const userData = useSessionstorage();
+  // ===============================================
+
   const authFunc = () => {
     if (sessionStorage.getItem("spurtToken") !== null) {
       dispatch(login());
@@ -142,7 +150,34 @@ function HeaderDefault({ auth }) {
     chatLogin();
   };
 
-  console.log();
+  // =================== handle check user login toggle buttun ====================
+  const handleCheckUserLoginForVendor = () => {
+    if (auth?.isLoggedIn && userData?.isVendor) {
+      return (
+        <>
+          <label className="switch toggle-switch darkBlue">
+            <input type="checkbox" id="togBtn" />
+            <span className="toogle-slide round">
+              <span className="on">Seller</span>
+              <span
+                className="off"
+                onClick={() => handleStoreAndVendorToggle("seller")}
+              >
+                Store
+              </span>
+            </span>
+          </label>
+        </>
+      );
+    }
+  };
+  // ==============================================================================
+
+  // ======================= handle check vendor and store ========================
+  const handleStoreAndVendorToggle = () => {
+    window.location.href = "https://blazing-card-vendor-dev.kellton.net";
+  };
+  // ==============================================================================
 
   return (
     <header>
@@ -168,14 +203,7 @@ function HeaderDefault({ auth }) {
         </div>
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">
-            
-            <label className="switch toggle-switch darkBlue">
-              <input type="checkbox" id="togBtn" />
-              <span className="toogle-slide round">
-                <span className="on">Store</span>
-                <span className="off">Seller</span>
-              </span>
-            </label>
+            {handleCheckUserLoginForVendor()}
 
             {/* {!stepState.includes(pageName) ? (
               <>
