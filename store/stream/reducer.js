@@ -35,6 +35,10 @@ function reducer(state = initState, action) {
         ...state,
         ...{ streamNotification: notificationType(action.payload) }
       }
+    case actionTypes.CLEAR_STATE: 
+      return{
+        state
+      }
     default:
       return state;
   }
