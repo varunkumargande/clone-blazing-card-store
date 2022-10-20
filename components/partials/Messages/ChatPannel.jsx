@@ -2,6 +2,8 @@ import { message } from "antd";
 import React, { useRef, useEffect } from "react";
 import IconChat from "../../Icons/IconChat";
 import IconGallery from "../../Icons/IconGallery";
+import moment from 'moment'
+
 export default function ChatPannel({
   messages,
   contactDetail,
@@ -9,7 +11,9 @@ export default function ChatPannel({
   msg,
   handleSendMsg,
 }) {
+
   const divRef = useRef(null);
+  
 
   useEffect(() => {
     if (divRef.current != null) {
@@ -44,7 +48,7 @@ export default function ChatPannel({
               <div className="image">
                 <img
                   src={
-                    contactDetail.avatarImage == ""
+                    contactDetail?.avatarImage == ""
                       ? "/static/img/no-image.png"
                       : contactDetail.avatarImage
                   }
@@ -53,20 +57,20 @@ export default function ChatPannel({
               </div>
               <div className="profile-text">
                 <div className="name">
-                  {contactDetail.username} <span className="new"></span>
+                    {contactDetail?.firstName} {contactDetail?.lastName} <span className="new"></span>
                 </div>
-                <div className="time">Just Now</div>
+                  <div className="time">{contactDetail?.username}</div>
               </div>
             </div>
             <div className="chat-box-wrap">
               <div className="chat-box flex justify-right column">
-                {messages.map((item, index) => {
+                {messages?.map((item, index) => {
                   if (item.fromSelf) {
                     return (
                       <>
                         <div className="chat-wrap right">
-                          <div className="chat">{item.message}</div>
-                          <div className="time">9:23 PM</div>
+                          <div className="chat">{item?.message}</div>
+                            <div className="time">{item?.time}</div>
                         </div>
                       </>
                     );
@@ -74,8 +78,8 @@ export default function ChatPannel({
                     return (
                       <>
                         <div className="chat-wrap left">
-                          <div className="chat">{item.message}</div>
-                          <div className="time">9:23 PM</div>
+                          <div className="chat">{item?.message}</div>
+                            <div className="time">{item?.time}</div>
                         </div>
                       </>
                     );

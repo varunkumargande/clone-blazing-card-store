@@ -23,7 +23,6 @@ function StreamCard({ detail, isLive, showLoginModal, auth }) {
     Router.push(`/streaming?stream=${detail.id}&uuid=${detail.uuid}`);
   };
 
-
   return (
     <div className="card-list flex flex-center">
       <div class="inner-card-list">

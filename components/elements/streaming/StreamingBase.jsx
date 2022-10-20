@@ -447,7 +447,7 @@ function StreamingBase({
           <div className="stream-footer flex flex-center space-between">
             <div className="left">
               <div className="time-left">
-                Time left - <Timer minutes={minutes} seconds={seconds} />
+                {minutes !== 0 || seconds !== 0 && <> Time left - <Timer minutes={minutes} seconds={seconds} /> </>}
               </div>
               <div className="bid-status flex flex-center">
                 {winnerNotification?.bidAmount ? (

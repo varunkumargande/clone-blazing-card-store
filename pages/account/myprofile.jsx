@@ -20,11 +20,9 @@ import { connect } from "react-redux";
 import PublicProfileConstants from "../../components/Constants/publicProfile";
 import Link from "next/link";
 import { imageUrl } from "../../api/url";
-import Followers from '../../components/partials/Profile/Followers';
-import BackButton from "../../components/CommonComponents/BackButton";
+import Followers from "../../components/partials/Profile/Followers";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
-// ===================================================================
 
 function MyProfile(props) {
   const router = useRouter();
@@ -70,9 +68,7 @@ function MyProfile(props) {
   };
 
   useEffect(() => {
-    
     if (router.query.userId) {
-      
       setUserId(router.query.userId);
     }
   }, [router.query]);
@@ -86,7 +82,6 @@ function MyProfile(props) {
 
   useEffect(() => {
     if (userId) {
-      
       ProfileMethods.GetPublicProfile(userId, setProfile);
     }
   }, [userId]);
@@ -317,19 +312,22 @@ function MyProfile(props) {
         </>
       );
     } else {
-     return <img src="/static/images/profileImg.png" alt="profileImg" />;
+      return <img src="/static/images/profileImg.png" alt="profileImg" />;
     }
   };
 
-  
-
   return (
     <div className="home-container profile-container-wrap">
-      {windowWidth <= 1024 ?
+      {windowWidth <= 1024 ? (
         <div className="profile-title flex flex-center">
-          <BackButton name={"Profile"}/>
+          <div className="edit-back">
+            <IconBack />
+          </div>
+          Profile
         </div>
-        : <HeaderDefault />}
+      ) : (
+        <HeaderDefault />
+      )}
       <section className="category-banner">
         <img src="/static/images/cover.png" alt="cover" />
       </section>
@@ -361,14 +359,40 @@ function MyProfile(props) {
                       {/* {profile && profile.facebookUrl && (<li><IconShareFacebook /></li>)}
                                           {profile && profile.twitterUrl && (<li><IconShareTwitter /></li>)} */}
                       <li>
-                        <IconShareFacebook />
+                        <Link href={profile?.facebookUrl || "#"}>
+                          <a
+                            target={profile?.facebookUrl ? "_blank" : "_self"}
+                            rel="noopener noreferrer"
+                          >
+                            <IconShareFacebook />
+                          </a>
+                        </Link>
                       </li>
                       <li>
-                        <IconShareTwitter />
+                        <Link href={profile?.twitterUrl || "#"}>
+                          <a
+                            target={profile?.twitterUrl ? "_blank" : "_self"}
+                            rel="noopener noreferrer"
+                          >
+                            <IconShareTwitter />
+                          </a>
+                        </Link>
                       </li>
                       <li>
-                        {" "}
-                        <IconShareWhatsup />
+                        <Link
+                          href={
+                            profile?.mobileNumber
+                              ? `https://api.whatsapp.com/send?phone=${profile.mobileNumber}`
+                              : "#"
+                          }
+                        >
+                          <a
+                            target={profile?.mobileNumber ? "_blank" : "_self"}
+                            rel="noopener noreferrer"
+                          >
+                            <IconShareWhatsup />
+                          </a>
+                        </Link>
                       </li>
                     </ul>
                   </div>

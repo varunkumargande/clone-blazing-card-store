@@ -34,7 +34,7 @@ export default function SendMail({mail}) {
             <div className="infotext mb32">We sent a password reset link to {mail}</div>
             <div className="sent flex space-between">
                 <div className="mb32 already">
-                    Don’t receive the email? <a onClick={handleSubmit}>Click to resend</a>
+                    Didn’t receive the email? <a onClick={handleSubmit}>Click to resend</a>
                 </div>
                 <div className="already">
                     Go Back to <Link href="/account/login"><a>Sign In</a></Link> 

@@ -13,7 +13,6 @@ import ShippingInformation from "../../../components/partials/EditProfile/Shippi
 import Router from "next/router";
 import EditProfileTab from "../../../components/partials/EditProfile/EditProfileTab";
 import BackButton from "../../../components/CommonComponents/BackButton";
-
 export default function categoryStream() {
   const [activeTab, setActiveTab] = useState("PROFILE");
 
@@ -64,20 +63,26 @@ export default function categoryStream() {
     });
   };
 
+  const handleToGoHome = () => {
+    Router.push("/");
+  };
   return (
     <div className="Edit-profile">
       {windowWidth <= 1024 ? null : <HeaderDefault />}
-      <div className="edit-profile-title">
-        <BackButton name={"Edit Profile"} />
-      </div>
+      
       <div className="edit-inner-container">
         <div className="edit-inner">
-          <section className="breadcrumbs-wrapper no-bg mb32">
-            {/* <ul className="breadcrumbs flex flex-center">
-              <li>Home</li>/<li className="current">Live</li>
-            </ul> */}
-          </section>
-
+          {windowWidth <= 1024 ? "":
+            <section className="breadcrumbs-wrapper mb32">
+                <ul className="breadcrumbs flex flex-center">
+                  <li onClick={() => handleToGoHome()}>Home</li>/
+                  <li className="current">Edit Profile</li>
+                </ul>
+            </section>
+          }
+          <div className="edit-profile-title">
+            <BackButton name={"Edit Profile"} />
+          </div>
 
           <EditProfileTab setActiveTab={setActiveTab} activeTab={activeTab} />
 

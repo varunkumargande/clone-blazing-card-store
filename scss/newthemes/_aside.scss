@@ -48,6 +48,13 @@
                     }
                 }
             }
+            .social-icons{
+                li{
+                    &:after{
+                        content: none;
+                    }
+                }
+            }
         }
 
         // start of aside-proflie

@@ -69,7 +69,7 @@ export default function landingpage(){
     return(
         <div className="home-container">
             {windowWidth <= 1024 ? "" : <HeaderDefault />}
-            <section className="static-container">
+            <section className="static-container faqs">
             {windowWidth <= 1024 ? "" : <section className="breadcrumbs-wrapper no-bg mb26">
               <ul className="breadcrumbs flex flex-center">{createBreadCrumb()}</ul>
             </section>}

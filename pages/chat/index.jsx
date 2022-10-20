@@ -9,6 +9,7 @@ import {
   sendMessageRoute,
   recieveMessageRoute,
   allUsersRoute,
+  friendList,
   host,
 } from "../../chatService";
 import ChatInput from "../../components/chats/components/ChatInput";
@@ -21,6 +22,8 @@ import ProfilePannel from "../../components/partials/Messages/ProfilePannel";
 import ChatPannel from "../../components/partials/Messages/ChatPannel";
 import { ChatUserModal } from "../../components/partials/Modal/Modal";
 import { Loader } from "../../components/reusable/Loader";
+import moment from 'moment'
+
 
 export default function Chat() {
   // const navigate = useNavigate();
@@ -38,6 +41,7 @@ export default function Chat() {
   const [msg, setMsg] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [userCount, setUserCount] = useState(null);
 
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -56,7 +60,7 @@ export default function Chat() {
     if (!localStorage.getItem("chat-app-current-user")) {
       navigate("/login");
     } else {
-      setCurrentUser(JSON.parse(localStorage.getItem("chat-app-current-user")));
+      // setCurrentUser(JSON.parse(localStorage.getItem("chat-app-current-user")));
     }
   }, []);
 
@@ -64,15 +68,27 @@ export default function Chat() {
     if (localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
       socket.current = io(host);
-      socket.current.emit("add-user", user._id);
+      socket.current.emit("add-user", user?.user?._id);
     }
   }, []);
 
   const fetchUserData = async () => {
     if (localStorage.getItem("chat-app-current-user")) {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
-      const data = await axios.get(allUsersRoute + user._id);
-      setContacts(data.data);
+      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user?._id
+      const token = sessionStorage.getItem("spurtToken");
+      let userId = {
+        userId: user,
+      };
+      const chatHeader = {
+        Authorization: `Bearer ${token}`,
+      };
+      const data = await axios.post(friendList, userId, {
+        headers: chatHeader,
+      }).then((res) => {
+        setContacts(res?.data?.response?.data)
+          setUserCount(res?.data?.response?.userCount)
+      }).catch((err) => {
+      })
     }
   };
 
@@ -92,34 +108,53 @@ export default function Chat() {
     const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
     setCurrentSelected(index);
     setCurrentChat(contacts[index]);
-    const response = await axios.post(recieveMessageRoute, {
-      from: data._id,
-      to: contacts[index]._id,
-    });
-    setMessages(response.data);
+    const token = sessionStorage.getItem("spurtToken");
+    const response = await axios.post(
+      recieveMessageRoute,
+      {
+        from: data?.user?._id,
+        to: contacts[index]._id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setMessages(response.data.response);
     Router.push("/chat?userId=" + index);
   };
 
   // // =================================================================
 
   // // =========================== chat part system ==============================
+
   const handleSendMsg = async (msg) => {
     const data = await JSON.parse(
       localStorage.getItem("chat-app-current-user")
     );
     socket.current.emit("send-msg", {
       to: currentChat._id,
-      from: data._id,
+      from: data?.user?._id,
       msg,
     });
-    await axios.post(sendMessageRoute, {
-      from: data._id,
-      to: currentChat._id,
-      message: msg,
-    })
+    const token = sessionStorage.getItem("spurtToken");
+    await axios.post(
+      sendMessageRoute,
+      {
+        from: data?.user?._id,
+        to: currentChat._id,
+        message: msg,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg });
+    msgs.push({ fromSelf: true, message: msg, time: moment().format("HH:mm")});
     setMessages(msgs);
   };
 
@@ -129,7 +164,7 @@ export default function Chat() {
         setArrivalMessage({ fromSelf: false, message: msg });
       });
     }
-  }, []);
+  }, [messages]);
 
   useEffect(() => {
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
@@ -143,29 +178,32 @@ export default function Chat() {
   // ========================= open modal for find the user =============================
   const chatUserFind = () => {
     if (isOpen) {
-      return <ChatUserModal setIsOpen={setIsOpen} />;
+        return <ChatUserModal setIsOpen={setIsOpen} fetchUserData={fetchUserData} />;
     }
   };
   // ====================================================================================
 
-
   // ======================= profile panel view ========================
   const handleProfilePanel = () => {
-    return(
-      <>
-        <ProfilePannel
+    // if (contacts) {
+      return (
+        <>
+          <ProfilePannel
             contacts={contacts}
             changeCurrentChat={changeCurrentChat}
             setIsOpen={setIsOpen}
+              userCount={userCount}
           />
-      </>
-    )
-  }
+        </>
+      );
+    // }
+  };
   // ===================================================================
 
   // =========================== chat panel view ================================
   const handleChatPanel = () => {
-      return(
+    if (!!contacts) {
+      return (
         <>
           <ChatPannel
             handleSendMsg={handleSendMsg}
@@ -175,8 +213,9 @@ export default function Chat() {
             contactDetail={contacts[currentSelected]}
           />
         </>
-      )
+      );
     }
+  };
   // ============================================================================
 
   return (

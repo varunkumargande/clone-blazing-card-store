@@ -4,7 +4,7 @@ import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { addNotification, streamData } from "../../../store/stream/action";
+import { addNotification, clearState, streamData } from "../../../store/stream/action";
 import { io } from "socket.io-client";
 import { socketIO } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
@@ -35,6 +35,10 @@ function Index() {
 
   useEffect(() => {
     dispatch(streamData(uuid));
+
+    return () => {
+      dispatch(clearState())
+    }
   }, []);
 
   useEffect(() => {socketInitializer()}, []);
@@ -80,7 +84,7 @@ function Index() {
     <>
       {streamingDetails?.uuid ? (
         <>
-          {showLoginModal && (<DynamicModal title="Join Blazing Cards" setShowModal={setShowLoginModal} />)}
+          {showLoginModal && (<DynamicModal title="Signup to Join Blazing Cards" setShowModal={setShowLoginModal} />)}
           <div className="streaming-page flex space-between">
             <LeftDiv
               setShowLoginModal={setShowLoginModal}
