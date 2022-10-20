@@ -31,7 +31,7 @@ export default function BasicDetails() {
       const fileName  = `${time}_${values?.upload?.name}`
       const data = {
         fullName: values.fullName,
-        uniqueId: values.ssn,
+        uniqueId: values.uniqueId,
         documents: {
           fileName: values?.upload?.name,
           image: updateFileName,
@@ -84,7 +84,7 @@ export default function BasicDetails() {
       <Formik
         initialValues={{
           fullName: BasicDetails?.fullName ?? "",
-          ssn: BasicDetails?.uniqueId ?? "",
+          uniqueId: BasicDetails?.uniqueId ?? "",
           upload: "",
         }}
         validationSchema={basicDetailvalidation}
@@ -109,7 +109,7 @@ export default function BasicDetails() {
               <TextInput
                 className="input-control wd48"
                 label="Unique Id *"
-                name="ssn"
+                name="uniqueId"
                 type="text"
                 placeholder="Enter here"
               />
