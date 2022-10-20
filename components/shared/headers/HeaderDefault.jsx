@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import Link from "next/link";
 import Logo from "../../Icons/Logo";
 import IconMessage from "../../Icons/IconMessage";
@@ -44,6 +44,7 @@ function HeaderDefault({ auth }) {
 
   let { pageName } = router.query;
 
+  const wrapperRef = useRef(null);
   // ================= user data ===================
   const userData = useSessionstorage();
   // ===============================================
@@ -178,6 +179,19 @@ function HeaderDefault({ auth }) {
     window.location.href = "https://blazing-card-vendor-dev.kellton.net";
   };
   // ==============================================================================
+// ======================= Onclick outside dropdown close ========================
+const handleClickOutside = (event) => {
+  if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      setActive(false)
+  }
+}
+
+useEffect(() => {
+  document.addEventListener('click', handleClickOutside, false)
+  return () => {
+      document.removeEventListener('click', handleClickOutside, false)
+  }
+}, [])
 
   return (
     <header>
@@ -240,8 +254,8 @@ function HeaderDefault({ auth }) {
                 <button className="Notification flex flex-center justify-center">
                   <IconNotification />
                 </button>
-                <button className="profile">
-                  <span onClick={handleOnClick}>
+                <button className="profile" ref={wrapperRef} onClick={handleOnClick}>
+                  <span>
                     <span className="profileImage">{handleProfileImage()}</span>
                     <IconDropdown />
                   </span>
