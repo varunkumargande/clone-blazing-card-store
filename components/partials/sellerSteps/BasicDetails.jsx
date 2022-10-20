@@ -20,18 +20,21 @@ export default function BasicDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [imageData, setImageData] = useState(null)
-  const [percentage, setPercentage] = useState(0)
+  const [updateFileName, setUpdateFileName] = useState(null)
   const BasicDetails = useSelector(
     (state) => state?.becomeSeller?.basicDetails
   );
   const handleSubmit = async (values) => {
     if (!!imageData) {
+      console.log("822882", updateFileName)
+      const time = new Date().getTime();
+      const fileName  = `${time}_${values?.upload?.name}`
       const data = {
         fullName: values.fullName,
         uniqueId: values.ssn,
         documents: {
           fileName: values?.upload?.name,
-          image: values?.upload?.name,
+          image: updateFileName,
           path: DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH,
         },
       };
@@ -56,16 +59,17 @@ export default function BasicDetails() {
     if(!!file){
       getBase64(file, (result) => {
         handleFileUpload(file,result)
-        // setImageData(result)
       });
     }
    
   }
 
   const handleFileUpload = async (image, base64) => {
-    const uploadImage = await uploadImageToServer(image, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH, setPercentage);
+    const uploadImage = await uploadImageToServer(image, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH);
+    console.log("wuwuuw", uploadImage)
     if(uploadImage.status==200){
       setImageData(base64)
+      setUpdateFileName(uploadImage.fileName)
     }
   }
   
@@ -122,7 +126,6 @@ export default function BasicDetails() {
                 setImage={setImage}
                 imageData={imageData}
                 setImageData={setImageData}
-                percentage={percentage}
               />
             </div>
             <div className="submit-wrapper flex space-between">
