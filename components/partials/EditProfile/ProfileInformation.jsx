@@ -14,6 +14,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
+import ErrorMessage from "../../CommonComponents/ErrorMessage"
 
 export default function ProfileInformation() {
   const MaxProfileImageSize = 5; // in MB
@@ -91,7 +92,7 @@ export default function ProfileInformation() {
   const profileSchema = Yup.object().shape({
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
-    bio: Yup.string().nullable().max(300),
+    bio: Yup.string().required("Required").max(300),
     twitterUrl: Yup.string()
       .matches(
         /(?:http:\/\/)?(?:www\.)?twitter\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)/,
@@ -196,8 +197,7 @@ export default function ProfileInformation() {
                 {newDpError || `Must be JPEG, JPG, PNG and cannot exceed ${MaxProfileImageSize}MB`}
               </div>
               <div className="input-control wd50">
-                <span className="errorMessage">{newDpError || null}</span>
-              </div>
+                <ErrorMessage errors={newDpError} />              </div>
             </div>
           </div>
         </div>
@@ -209,6 +209,8 @@ export default function ProfileInformation() {
     );
   };
 
+  console.log(!!profileData?.bio)
+
   const handleProfileForm = () => {
     if (loader == false) {
       if (!!profileData) {
@@ -217,18 +219,19 @@ export default function ProfileInformation() {
             {handleImageUpload()}
             <Formik
               initialValues={{
-                firstName: profileData?.firstName,
-                lastName: profileData?.lastName,
-                bio: profileData?.bio,
-                twitterUrl: profileData?.twitterUrl,
-                facebookUrl: profileData?.facebookUrl,
-                phoneNumber: profileData?.phoneNumber,
-                emailId: profileData?.emailId,
+                firstName: !!profileData?.firstName ? profileData?.firstName : "",
+                lastName: !!profileData?.lastName ? profileData?.lastName : "",
+                bio: !!profileData?.bio ? profileData?.bio : "",
+                twitterUrl: !!profileData?.twitterUrl ? profileData?.twitterUrl : "",
+                facebookUrl: !!profileData?.facebookUrl ? profileData?.facebookUrl : "",
+                phoneNumber: !!profileData?.phoneNumber ? profileData?.phoneNumber : "",
+                emailId: !!profileData?.emailId ? profileData?.emailId : "",
               }}
               validationSchema={profileSchema}
               onSubmit={(values) => {
                 setLoader(true);
-                editProfileApi(values, newDpName, Router, setLoader);
+                console.log(values)
+                // editProfileApi(values, newDpName, Router, setLoader);
               }}
             >
               {({
@@ -266,11 +269,9 @@ export default function ProfileInformation() {
                               value={values.firstName}
                               type="text"
                             />
-                            <span className="errorMessage">
-                              {errors.firstName && touched.firstName
-                                ? errors.firstName
-                                : null}
-                            </span>
+                            
+                            <ErrorMessage errors={errors.firstName} touched={touched.firstName} />  
+                            
                           </div>
                           <div className="input-control wd50">
                             <label>Last Name *</label>
@@ -290,11 +291,8 @@ export default function ProfileInformation() {
                               }
                               value={values.lastName}
                             />
-                            <span className="errorMessage">
-                              {errors.lastName && touched.lastName
-                                ? errors.lastName
-                                : null}
-                            </span>
+                            <ErrorMessage errors={errors.lastName} touched={touched.lastName} />  
+                          
                           </div>
                         </div>
 
@@ -311,8 +309,8 @@ export default function ProfileInformation() {
                               value={profileData?.username}
                               disabled
                             />
-                            <span className="errorMessage"></span>
-                          </div>
+                            {/* <ErrorMessage errors={errors} touched={touched.bio} />                           */}
+                            </div>
                           <div className="input-control wd50">
                             <label htmlFor="usr">Phone Number *</label>
                             <input
@@ -325,8 +323,7 @@ export default function ProfileInformation() {
                               type="number"
                             />
 
-                            <span className="errorMessage"></span>
-                          </div>
+                            <ErrorMessage errors={errors.phoneNumber} touched={touched.bio} />                          </div>
                         </div>
 
                         <div className="input-control">
@@ -342,9 +339,8 @@ export default function ProfileInformation() {
                             onChange={handleChange}
                             value={values.bio}
                           ></textarea>
-                          <span className="errorMessage">
-                            {errors.bio && touched.bio ? errors.bio : null}
-                          </span>
+                          <ErrorMessage errors={errors.bio} touched={touched.bio} /> 
+                          
                         </div>
                       </div>
                     </div>
@@ -362,11 +358,8 @@ export default function ProfileInformation() {
                               onChange={handleChange}
                               value={values.twitterUrl}
                             />
-                            <span className="errorMessage">
-                              {errors.twitterUrl && touched.twitterUrl
-                                ? errors.twitterUrl
-                                : null}
-                            </span>
+                            
+                            <ErrorMessage errors={errors.twitterUrl} touched={touched.twitterUrl} />
                           </div>
                           <div className="input-control">
                             <div className="flex space-between flex-center">
@@ -380,11 +373,7 @@ export default function ProfileInformation() {
                               onChange={handleChange}
                               value={values.facebookUrl}
                             />
-                            <span className="errorMessage">
-                              {errors.facebookUrl && touched.facebookUrl
-                                ? errors.facebookUrl
-                                : null}
-                            </span>
+                            <ErrorMessage errors={errors.facebookUrl} touched={touched.facebookUrl} />
                           </div>
                         </div>
                       </div>

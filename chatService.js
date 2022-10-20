@@ -1,4 +1,4 @@
-export const host = "https://b21f-1-6-151-77.in.ngrok.io";
+export const host = "https://33e3-180-151-230-178.in.ngrok.io";
 //  export const host = "https://blazing-card-chat-dev.kellton.net";
 export const loginRoute = `${host}/api/auth/login`;
 export const registerRoute = `${host}/api/auth/register`;

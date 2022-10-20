@@ -15,17 +15,17 @@ import {
 import ChatInput from "../../components/chats/components/ChatInput";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import MobileHeader from "../../components/shared/headers/MobileHeader";
-import { useDispatch } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import Router from "next/router";
 import { useRouter } from "next/router";
 import ProfilePannel from "../../components/partials/Messages/ProfilePannel";
 import ChatPannel from "../../components/partials/Messages/ChatPannel";
 import { ChatUserModal } from "../../components/partials/Modal/Modal";
 import { Loader } from "../../components/reusable/Loader";
-import moment from 'moment'
+import moment from "moment";
 
 
-export default function Chat() {
+function Chat({ auth }) {
   // const navigate = useNavigate();
   var router = useRouter();
   const socket = useRef();
@@ -57,24 +57,45 @@ export default function Chat() {
   }, []);
 
   useEffect(() => {
-    if (!localStorage.getItem("chat-app-current-user")) {
-      navigate("/login");
-    } else {
-      // setCurrentUser(JSON.parse(localStorage.getItem("chat-app-current-user")));
+    if (!localStorage.getItem("chat-app-current-user") || !auth?.isLoggedIn) {
+      Router.push("/");
     }
   }, []);
 
+  
   useEffect(() => {
-    if (localStorage.getItem("chat-app-current-user")) {
+    if (!!localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
       socket.current = io(host);
       socket.current.emit("add-user", user?.user?._id);
     }
   }, []);
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("msg-recieve", (msg) => {
+        setArrivalMessage({ fromSelf: false, message: msg });
+      });
+    }
+  }, []);
+  useEffect(() => {
+    fetchUserData();
+    chatSocketInitializer()
+  }, []);
 
+  const chatSocketInitializer = async () => {
+    socket.current.on(`fetch-friend`, async (data) => {
+      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user?._id
+      if(data?.friendId == user) {
+        await fetchUserData();
+      }
+    });
+  };
+
+  // ============================== fetch frend list ===================================
   const fetchUserData = async () => {
     if (localStorage.getItem("chat-app-current-user")) {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user?._id
+      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
+        ?._id;
       const token = sessionStorage.getItem("spurtToken");
       let userId = {
         userId: user,
@@ -82,28 +103,26 @@ export default function Chat() {
       const chatHeader = {
         Authorization: `Bearer ${token}`,
       };
-      const data = await axios.post(friendList, userId, {
-        headers: chatHeader,
-      }).then((res) => {
-        setContacts(res?.data?.response?.data)
-          setUserCount(res?.data?.response?.userCount)
-      }).catch((err) => {
-      })
+      const data = await axios
+        .post(friendList, userId, {
+          headers: chatHeader,
+        })
+        .then((res) => {
+          setContacts(res?.data?.response?.data);
+          setUserCount(res?.data?.response?.userCount);
+        })
+        .catch((err) => {});
     }
   };
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  
+  // =====================================================================================
 
   // // ==================== contact's function =========================
-
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
     setCurrentUserName(data.username);
     setCurrentUserImage(data.avatarImage);
   }, []);
-
   const changeCurrentChat = async (index) => {
     const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
     setCurrentSelected(index);
@@ -124,11 +143,9 @@ export default function Chat() {
     setMessages(response.data.response);
     Router.push("/chat?userId=" + index);
   };
-
   // // =================================================================
 
-  // // =========================== chat part system ==============================
-
+  // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
     const data = await JSON.parse(
       localStorage.getItem("chat-app-current-user")
@@ -152,19 +169,10 @@ export default function Chat() {
         },
       }
     );
-
     const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg, time: moment().format("HH:mm")});
+    msgs.push({ fromSelf: true, message: msg, time: moment().format("HH:mm") });
     setMessages(msgs);
   };
-
-  useEffect(() => {
-    if (socket.current) {
-      socket.current.on("msg-recieve", (msg) => {
-        setArrivalMessage({ fromSelf: false, message: msg });
-      });
-    }
-  }, [messages]);
 
   useEffect(() => {
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
@@ -178,7 +186,9 @@ export default function Chat() {
   // ========================= open modal for find the user =============================
   const chatUserFind = () => {
     if (isOpen) {
-        return <ChatUserModal setIsOpen={setIsOpen} fetchUserData={fetchUserData} />;
+      return (
+        <ChatUserModal setIsOpen={setIsOpen} fetchUserData={fetchUserData} socket={socket} />
+      );
     }
   };
   // ====================================================================================
@@ -186,16 +196,16 @@ export default function Chat() {
   // ======================= profile panel view ========================
   const handleProfilePanel = () => {
     // if (contacts) {
-      return (
-        <>
-          <ProfilePannel
-            contacts={contacts}
-            changeCurrentChat={changeCurrentChat}
-            setIsOpen={setIsOpen}
-              userCount={userCount}
-          />
-        </>
-      );
+    return (
+      <>
+        <ProfilePannel
+          contacts={contacts}
+          changeCurrentChat={changeCurrentChat}
+          setIsOpen={setIsOpen}
+          userCount={userCount}
+        />
+      </>
+    );
     // }
   };
   // ===================================================================
@@ -232,3 +242,9 @@ export default function Chat() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(Chat);

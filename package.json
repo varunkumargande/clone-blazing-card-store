@@ -9,6 +9,7 @@
         "build": "next build && next export",
         "build:staging": "next build",
         "build:production": "next build",
+        "local": "env-cmd -f environments/.env.local node server.js",
         "start": "next start"
     },
     "dependencies": {
@@ -24,6 +25,7 @@
         "cross-domain-storage": "^2.0.7",
         "crypto-js": "^4.1.1",
         "dotenv": "^8.2.0",
+        "dotenv-safe": "^8.2.0",
         "es6-promise": "^4.2.8",
         "express": "^4.17.3",
         "formik": "^2.2.9",
