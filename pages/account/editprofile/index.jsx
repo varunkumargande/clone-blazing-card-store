@@ -43,6 +43,7 @@ export default function categoryStream() {
   const streamDetail = useSelector(
     (state) => state?.stream?.streamdetails?.stream
   );
+  
   useEffect(() => {
     resizeWindow();
     window.addEventListener("resize", resizeWindow);

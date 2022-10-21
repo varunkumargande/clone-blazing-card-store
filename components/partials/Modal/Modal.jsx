@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
@@ -21,6 +21,8 @@ import { addChatFrend } from "../../../api/chat";
 import { regex } from "../../Constants/regex";
 import { apiUrl } from "../../../api/url";
 import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
+import { io } from "socket.io-client";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
@@ -271,8 +273,7 @@ export function PaymentInfoModal(props) {
                   className="address"
                   onClick={handleShippmentMethod}
                 />
-                <span className="errorMessage"></span>
-              </div>
+                <ErrorMessage errors={errors} />              </div>
               <div className="input-control with-bg">
                 <label>Payment Details</label>
                 <input
@@ -282,8 +283,7 @@ export function PaymentInfoModal(props) {
                   className="payment"
                   onClick={handlePaymentMethod}
                 />
-                <span className="errorMessage"></span>
-              </div>
+                <ErrorMessage errors={errors} />              </div>
             </div>
           </>
         )}
@@ -428,7 +428,6 @@ export function AddNewCardModal(props) {
                 name="cardNumber"
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
-                type="text"
                 onChange={(e) => {
                   resetFormData();
                   formik.setFieldValue(
@@ -446,8 +445,8 @@ export function AddNewCardModal(props) {
                   ? getCardImagesByName(formik.values.cardNumber)
                   : ""}
               </span>
-              <span className="errorMessage">{formik.errors.cardNumber}</span>
-            </div>
+              <ErrorMessage errors={formik.errors.cardNumber} />            
+              </div>
             <div className="flex space-between">
               <div className="input-control wd50">
                 <label>Expiration</label>
@@ -462,13 +461,12 @@ export function AddNewCardModal(props) {
                   value={handleExpDate(formik.values)}
                   maxLength={5}
                 />
-                <span className="errorMessage">{formik.errors.expireDate}</span>
+                <ErrorMessage errors={formik.errors.expireDate} />                
                 {expValid == false ? "Expiary date is invalide" : ""}
               </div>
               <div className="input-control wd50">
                 <label>CVV</label>
                 <input
-                  type="text"
                   name="cvc"
                   placeholder={"Enter here"}
                   value={formik.values.cvc}
@@ -485,8 +483,7 @@ export function AddNewCardModal(props) {
                     CardImage?.type?.name === "IconAmericanExpressCard" ? 4 : 3
                   }
                 />
-                <span className="errorMessage">{formik.errors.cvc}</span>
-              </div>
+                <ErrorMessage errors={formik.errors.cvc} />              </div>
             </div>
             <div className="infotext">
               By providing your card information, you allow Blazing Cards to
@@ -576,8 +573,7 @@ export function AddAddressModal(props) {
                     value={formik.values.company}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={formik.errors.company} />                </div>
                 {/* <div className="input-control">
                   <label>Phone Number *</label>
                   <input
@@ -586,8 +582,7 @@ export function AddAddressModal(props) {
                     value={formik.values.phoneNumber}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={errors} />                </div>
                 <div className="input-control">
                   <label>Email Address *</label>
                   <input
@@ -596,8 +591,7 @@ export function AddAddressModal(props) {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div> */}
+                  <ErrorMessage errors={errors} />                </div> */}
                 <div className="input-control">
                   <label>Address Line 1 *</label>
                   <input
@@ -606,8 +600,7 @@ export function AddAddressModal(props) {
                     value={formik.values.address1}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={formik.errors.address1} />                </div>
                 <div className="input-control">
                   <label>Address Line 2 *</label>
                   <input
@@ -616,8 +609,7 @@ export function AddAddressModal(props) {
                     value={formik.values.address2}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={formik.errors.address2} />                </div>
                 <div className="input-control">
                   <label>Post Code *</label>
                   <input
@@ -626,12 +618,10 @@ export function AddAddressModal(props) {
                     value={formik.values.postcode}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={formik.errors.postcode} />                </div>
                 <div className="input-control" hidden>
                   <input name="addressId" value={formik.values.addressId} />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={errors} />                </div>
 
                 <div className="input-control">
                   <label>City *</label>
@@ -641,8 +631,7 @@ export function AddAddressModal(props) {
                     value={formik.values.city}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={formik.errors.city} />                </div>
 
                 <div className="input-control">
                   <label>State *</label>
@@ -652,8 +641,7 @@ export function AddAddressModal(props) {
                     value={formik.values.state}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={formik.errors.state} />                </div>
 
                 <div className="input-control">
                   <label>Country *</label>
@@ -671,7 +659,7 @@ export function AddAddressModal(props) {
                       );
                     })}
                   </select>
-                  <p className="errorMessage">{formik.errors.countryId}</p>
+                  <ErrorMessage errors={formik.errors.countryId} />
                 </div>
               </div>
               <div className="modal-footer">
@@ -738,8 +726,7 @@ export function DeletAccountModal({ setIsOpen }) {
                 placeholder={"Enter here"}
                 value={formik.values.emailId}
               />
-              <span className="errorMessage">{formik.errors.emailId}</span>
-            </div>
+              <ErrorMessage errors={formik.errors.emailId} />            </div>
             <div className="input-control">
               <label>Password *</label>
               <input
@@ -749,8 +736,7 @@ export function DeletAccountModal({ setIsOpen }) {
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
-              <span className="errorMessage">{formik.errors.password}</span>
-            </div>
+              <ErrorMessage errors={formik.errors.password} />            </div>
             <div className="flex btn-wrap delete">
               <button
                 className="border-btn mr16"
@@ -769,7 +755,8 @@ export function DeletAccountModal({ setIsOpen }) {
   );
 }
 
-export function ChatUserModal({ setIsOpen, fetchUserData }) {
+export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
+
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -777,6 +764,8 @@ export function ChatUserModal({ setIsOpen, fetchUserData }) {
   const [isButton, setIsButton] = useState(false);
 
   const handleUsername = async (e) => {
+  
+
     setIsButton(true);
     setUserDataLoader(true);
     if (e.target.value != "") {
@@ -810,7 +799,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData }) {
   };
 
   const handleSubmitUser = () => {
-    addChatFrend(userId, fetchUserData, setIsOpen);
+    addChatFrend(userId, fetchUserData, setIsOpen, socket);
   };
 
   const showUserList = () => {

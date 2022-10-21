@@ -113,6 +113,9 @@ export default function Myorders() {
         {windowWidth <= 1024 &&
           <h1><BackButton name={"My Orders"} /></h1>
         }
+        {windowWidth >= 1025 &&
+          <h1>My Orders</h1>
+        }
           <div className="search-wrapper flex flex-center">
             <div className="Search">
               <input
