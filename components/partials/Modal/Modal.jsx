@@ -382,6 +382,7 @@ export function AddNewCardModal(props) {
       formik.setValues({
         expireDate: '',
         cardNumber: '',
+        cvc: '',
       });
     }
   }
