@@ -334,7 +334,7 @@ export function AddNewCardModal(props) {
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
-  const [initialValueFlag, setInitialValueFlag] = useState(payDetail != false ? true : false);
+  const [initialValueFlag, setInitialValueFlag] = useState(Array.isArray(payDetail) && payDetail[0]?.card?.last4 && payDetail[0]?.card?.last4 !== "" ? true : false);
 
   const shipSchema = Yup.object().shape({
     // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
