@@ -230,8 +230,8 @@ export default function ProfileInformation() {
               validationSchema={profileSchema}
               onSubmit={(values) => {
                 setLoader(true);
-                console.log(values)
-                // editProfileApi(values, newDpName, Router, setLoader);
+                // console.log(values)
+                editProfileApi(values, newDpName, Router, setLoader);
               }}
             >
               {({
