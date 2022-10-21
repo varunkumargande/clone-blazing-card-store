@@ -26,7 +26,6 @@ export default function BasicDetails() {
   );
   const handleSubmit = async (values) => {
     if (!!imageData) {
-      console.log("822882", updateFileName)
       const time = new Date().getTime();
       const fileName  = `${time}_${values?.upload?.name}`
       const data = {
@@ -66,7 +65,6 @@ export default function BasicDetails() {
 
   const handleFileUpload = async (image, base64) => {
     const uploadImage = await uploadImageToServer(image, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH);
-    console.log("wuwuuw", uploadImage)
     if(uploadImage.status==200){
       setImageData(base64)
       setUpdateFileName(uploadImage.fileName)
