@@ -1,7 +1,5 @@
 import React from "react";
 import * as cryptoJs from "crypto-js";
-import { socketIO, imageUrl } from "../../api/url";
-import { io } from "socket.io-client";
 import { DefaultImagePath } from "../Constants/defaultImage";
 
 
