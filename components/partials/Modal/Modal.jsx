@@ -335,7 +335,6 @@ export function AddNewCardModal(props) {
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
   const [initialValueFlag, setInitialValueFlag] = useState(payDetail != false ? true : false);
-  console.log('initialValueFlag', initialValueFlag);
 
   const shipSchema = Yup.object().shape({
     // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
@@ -428,7 +427,6 @@ export function AddNewCardModal(props) {
                 name="cardNumber"
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
-                onChange={formik.handleChange}
                 type="text"
                 onChange={(e) => {
                   resetFormData();
