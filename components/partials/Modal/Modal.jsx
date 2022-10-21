@@ -295,7 +295,8 @@ export function PaymentInfoModal(props) {
             </button>
             {isBuyNowPaymentModal ? (
               <button
-                className="primary-btn"
+                disabled={paymentLoader}
+                className={`primary-btn ${paymentLoader && 'disable-btn'}`}
                 onClick={() => {
                   handleSubmitBuyProduct();
                 }}

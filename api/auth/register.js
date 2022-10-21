@@ -24,34 +24,12 @@ export async function UserRegister(
     phoneNumber: number,
     userName: usernameInput,
   });
-
-  const chatData = {
-    email: email,
-    password: password,
-    username: usernameInput,
-  }
-
-
   const result = await APIServices.create("customer/register", data);
   if (result.status == 200) {
     if (result && result.data && result.data.status) {
-      sessionStorage.setItem("userPass", password)
-      const { data } = await axios.post(registerRoute, chatData);
-      if (data.status === true) {
-        localStorage.setItem(
-            chatConstant["localStorageKey"],
-          JSON.stringify(data.user)
-        );
-      }
-
       Router.push("/account/login");
-      modalSuccess("success", result.data.message);
     } else {
-      setSingupError(result.data.data.data.message[0])
-      modalWarning("error", result.data.data.data.message[0]);
+      setSingupError(result.data.message);
     }
-  }else {
-    setSingupError(result.data.message)
-    modalWarning("error", result.data.message);
   }
 }
