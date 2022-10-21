@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { addNotification, clearState, streamData } from "../../../store/stream/action";
 import { io } from "socket.io-client";
-import { socketIO } from "../../../api/url";
+import { notificationBaseUrl } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
 
 function Index() {
@@ -44,31 +44,34 @@ function Index() {
   useEffect(() => {socketInitializer()}, []);
 
   const socketInitializer = () => {
-    const socketObject = io(socketIO);
-    socketObject.on(`${uuid}-bid`, (bid) => {
+    const bidNotification = new EventSource(`${notificationBaseUrl}${uuid}-bid`);
+    const auctionNotification = new EventSource(`${notificationBaseUrl}${uuid}-auction`);
+    const winNotification = new EventSource(`${notificationBaseUrl}${uuid}-win`);
+
+    bidNotification.onmessage = (bid) => {
       dispatch(
         addNotification({
           type: "bid",
-          value: bid,
+          value: JSON.parse(bid.data),
         })
       );
-    });
-    socketObject.on(`${uuid}-auction`, (auction) => {
+    };
+    auctionNotification.onmessage = (auction) => {
       dispatch(
         addNotification({
           type: "auction",
-          value: auction,
+          value: JSON.parse(auction.data),
         })
       );
-    });
-    socketObject.on(`${uuid}-win`, (winner) => {
+    };
+    winNotification.onmessage =  (winner) => {
       dispatch(
         addNotification({
           type: "win",
-          value: winner,
+          value: JSON.parse(winner.data),
         })
       );
-    });
+    };
   };
 
   useEffect(() => {
