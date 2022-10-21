@@ -352,7 +352,7 @@ export function AddNewCardModal(props) {
       cardNumber:
         payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
       cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
-      expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card.exp_year: "",
+      expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card?.exp_year.toString().slice(-2): "",
     },
     onSubmit: (values) => {
       const jsonData = JSON.stringify({
