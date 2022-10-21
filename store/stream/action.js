@@ -13,7 +13,7 @@ export const actionTypes = {
   GET_USER: 'GET_USER_TYPE',
   GET_RTM_TOKEN: 'GET_RTM_TOKEN',
   GET_RTC_TOKEN: 'GET_RTC_TOKEN',
-
+  CLEAR_STATE: 'CLEAR_STATE'
 };
 
 
@@ -105,5 +105,9 @@ export function addNotification(payload) {
   };
 } 
 
-
-
+export function clearState(){
+  
+  return {
+    type: actionTypes.CLEAR_STATE
+  }
+}

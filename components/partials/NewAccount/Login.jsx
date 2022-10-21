@@ -76,7 +76,7 @@ function Login(props) {
       <div className="back mb32" onClick={handleBackButton}>
         <IconBack />
       </div>
-      <h1 className="title mb32">Sign in to Blazing Cards</h1>
+      <h1 className="title mb32">Sign In to Blazing Cards</h1>
       <div className="GoogleWrap mb42">
         <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
           <GoogleLogin

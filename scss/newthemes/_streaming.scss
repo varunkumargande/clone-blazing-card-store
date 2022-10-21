@@ -275,7 +275,7 @@
                         max-width: 100%;
                     }
                     .slider {
-                        -webkit-appearance: none;
+                        appearance: none;
                         width: 100%;
                         height: 4px;
                         background: $white-color;
@@ -361,7 +361,7 @@
                 line-height: 10px;
                 color: $primary-color;
                 background-color: $white-color;
-                margin-left: 2px;
+                margin-left: 5px;
             }
         }
     }
@@ -603,10 +603,12 @@
                     border-color: $border2-color;
                 }
                 .list{
-                    .border-btn{
-                        &.selected{
-                            background-color: $blue-color;
-                            color:$white-color;
+                    .right{ 
+                        .border-btn{
+                            &:hover,&.active,&.selected{
+                                background-color: $blue-color;
+                                color:$white-color;
+                            }
                         }
                     }
                 }
@@ -649,8 +651,31 @@
         }
     }
 }   
+
+
 @media all and (min-width:1025px){
     .streaming-page{
         min-height: calc(100vh - 80px);
+    }
+    .leftdata-wrapper{
+        @include pos(re);
+        &:before{
+            content: '';
+            background-color: rgba($primary-color,.2);
+            @include pos(ab,0,null,null,0,0);
+            width: 100%;
+            height: 104px;
+        }
+    }
+}
+@media all and (min-width:1025px) and (max-width:1350px){
+    .streaming-left { 
+        .tab-wrapper {
+            .tab-link{
+                &:nth-child(-n + 3){
+                    margin-right: 22px;
+                }   
+            }
+        }
     }
 }

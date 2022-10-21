@@ -1,8 +1,8 @@
 import React from "react";
-import IconMasterCard from "../../Icons/IconMasterCard";
 import IconTrack from "../../Icons/IconTrack";
 import IconDownload from "../../Icons/IconDownload";
 import { useSelector } from "react-redux";
+import { getCardImagesByName } from "../../helper/cardImageHelper";
 export default function OrderDetails() {
   const orderDetail = useSelector((state) => state?.order?.orderDetail);
   const { cardDetails, productData, deliveryStatus, shippingDetails } = orderDetail ?? "";
@@ -69,7 +69,7 @@ export default function OrderDetails() {
                   <h5>Credit Card</h5>
                   <div className="bodyText flex flex-center">
                     <span className="mastr">
-                      <IconMasterCard />
+                    {getCardImagesByName('', cardDetails?.card?.brand)}
                     </span>{" "}
                     {cardDetails?.card?.brand} ending with{" "}
                     {cardDetails?.card?.last4}

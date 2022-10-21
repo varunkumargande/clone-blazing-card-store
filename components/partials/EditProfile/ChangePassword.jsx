@@ -51,6 +51,7 @@ export default function ChangePassword() {
               handleBlur,
               handleSubmit,
               isSubmitting,
+              setValues,
             }) => (
               <>
                 <form onSubmit={handleSubmit}>
@@ -64,6 +65,7 @@ export default function ChangePassword() {
                           className="grey-bg"
                           onChange={handleChange}
                           type="password"
+                          value={values.currentPassword}
                         />
                         <span className="errorMessage">
                           {errors.currentPassword}
@@ -78,6 +80,7 @@ export default function ChangePassword() {
                           className="grey-bg"
                           onChange={handleChange}
                           type="password"
+                          value={values.newPassword}
                         />
                         <span className="errorMessage">
                           {errors.newPassword}
@@ -101,7 +104,15 @@ export default function ChangePassword() {
                     </div>
                   </div>
                   <div className="button-wrapper flex mb40">
-                    {/* <button className="border-btn mr16">Cancel</button> */}
+                    <button
+                      className="border-btn mr16"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setValues(initialChangePassValues, true);
+                      }}
+                    >
+                      Cancel
+                    </button>
                     <button
                       className="primary-btn"
                       type="submit"

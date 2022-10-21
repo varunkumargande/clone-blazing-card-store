@@ -85,6 +85,11 @@
             }
             span{
                 display: flex;
+                background:url('/static/images/liked.png') no-repeat center center;
+                background-size: 100%;
+            }
+            img{
+                opacity: 0;
             }
             &:hover,&.Liked{
                 img{

@@ -170,7 +170,7 @@
 @mixin overflow{
     overflow: auto;
     scrollbar-width: thin;
-    padding: 5px 0 8px;
+    padding: 5px 0 14px;
     &::-webkit-scrollbar-track{
          background-color: rgba(#e6e6e6,.5);
     }

@@ -37,7 +37,7 @@ export default function DynamicModal(props) {
     };
     return (
         <div className="modalOverlay flex justify-center flex-center">
-            <div className="modal">
+            <div className="modal signup">
                 <div className="modal-header flex Space-between flex-center nobg">
                     <h5 className="modal-title"></h5>
                     <button
@@ -53,7 +53,7 @@ export default function DynamicModal(props) {
                     </button>
                 </div>
                 <div className="modal-body text-center">
-                    <div className="Stream-title text-center mb24">
+                    <div className="Stream-title text-center mb16">
                         {title}
                     </div>
                     <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
@@ -74,7 +74,7 @@ export default function DynamicModal(props) {
                             }}
                         />
                     </GoogleOAuthProvider>
-                    <div class="or mb32 flex flex-center justify-center">
+                    <div class="or mb16 flex flex-center justify-center">
                         <span>Or</span>
                     </div>
                     <div className="signin-signup">

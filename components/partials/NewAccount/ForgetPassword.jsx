@@ -39,10 +39,11 @@ export default function ForgetPassword() {
                 <>
                     <div className="back mb32" onClick={handleBackButton}><IconBack /></div>
                     <h1 className="title mb8">Forgot Password</h1>
-                    <div className="infotext wd328 mb32">Enter your registered email id below. We will sent the link to reset your password</div>
+                    <div className="infotext wd328 mb32">Enter your registered email id below. We will send the link to
+reset your password.</div>
                     <div className="input-control mb32">
                         <label>Email Address*</label>
-                        <input type="email" value={mail} name="email" placeholder="Email address" onChange={e => handleSetEmail(e)} />
+                        <input type="email" value={mail} name="email" placeholder="Enter here" onChange={e => handleSetEmail(e)} />
                         <div className="errorText">{mail == "" ? <span>{mailError}</span> : ""}</div>
                     </div>
                     <div className="submitWrap mb32 mt32">

@@ -73,7 +73,7 @@ let UserFollowUser = (userId, followerId, callback) => {
         callback(Math.floor((Math.random() * 100) + 1));
     })
     .catch((error) => {
-        console.log(error.response);
+        
     })
 }
 

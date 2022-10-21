@@ -13,7 +13,7 @@ export default function ChatPannel({
 }) {
 
   const divRef = useRef(null);
-  console.log(msg)
+  
 
   useEffect(() => {
     if (divRef.current != null) {
@@ -64,7 +64,7 @@ export default function ChatPannel({
             </div>
             <div className="chat-box-wrap">
               <div className="chat-box flex justify-right column">
-                {messages.map((item, index) => {
+                {messages?.map((item, index) => {
                   if (item.fromSelf) {
                     return (
                       <>
