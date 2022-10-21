@@ -273,7 +273,7 @@ export function PaymentInfoModal(props) {
                   className="address"
                   onClick={handleShippmentMethod}
                 />
-                <ErrorMessage errors={errors} />              </div>
+              </div>
               <div className="input-control with-bg">
                 <label>Payment Details</label>
                 <input
@@ -283,7 +283,7 @@ export function PaymentInfoModal(props) {
                   className="payment"
                   onClick={handlePaymentMethod}
                 />
-                <ErrorMessage errors={errors} />              </div>
+              </div>
             </div>
           </>
         )}
