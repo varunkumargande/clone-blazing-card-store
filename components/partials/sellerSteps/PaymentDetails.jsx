@@ -33,6 +33,10 @@ export default function PaymentDetails() {
     dispatch(addPaymentData(data, router));
   };
 
+  const getFormatedCardNumber = (cardNumber) => {
+    const format = ('XXXXXXXXXXXX'+cardNumber)
+    return format
+  }
   return (
     <div className="step-container">
       <BackButton name={"Payment Details"}/>
@@ -43,9 +47,9 @@ export default function PaymentDetails() {
       </div>
       <Formik
         initialValues={{
-          cardNumber:  "",
-          cvv: "",
-          expiry: "",
+          cardNumber: paymentDetails?.cardNumber ? getFormatedCardNumber(paymentDetails?.cardNumber) : "",
+          cvv: paymentDetails?.cardNumber ? "XXX" : "",
+          expiry: paymentDetails?.expireDate ?? "",
           country: paymentDetails?.country ?? "",
           paymentMethod: paymentDetails?.paymentMethod ?? "",
         }}
