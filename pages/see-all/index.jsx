@@ -107,7 +107,6 @@ function categoryStream({ auth }) {
       return (
         <SeeAllSubCategories
           categories={categories}
-          activeCategory={activeCategory}
           setActiveSubCategory={setActiveSubCategory}
           activeSubCategory={activeSubCategory}
           setActiveSubCategoryId={setActiveSubCategoryId}
