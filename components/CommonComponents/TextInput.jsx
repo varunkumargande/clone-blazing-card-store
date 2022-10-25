@@ -27,7 +27,7 @@ export const TextInput = ({ label, ...props }) => {
         <input className="text-input" maxLength={stringLength} minLength={3} {...field} {...props}  onInput={() => handleChangeText()}/>
         {meta.touched && meta.error ? (
           <div className="error">{meta.error}</div>
-        ) : null}
+        ) : null} 
       </div>
     </>
   );
