@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import IconBack from "../Icons/IconBack";
 
+// Error Message is common component for all forms error messages
 const ErrorMessage = ({ errors, touched }) => {
   return (
     <>
@@ -12,3 +13,4 @@ const ErrorMessage = ({ errors, touched }) => {
   );
 };
 export default ErrorMessage;
+// ===============================================================

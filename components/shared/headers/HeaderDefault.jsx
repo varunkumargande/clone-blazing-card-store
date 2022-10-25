@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Logo from "../../Icons/Logo";
 import IconMessage from "../../Icons/IconMessage";
@@ -28,6 +28,7 @@ import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import useSessionstorage from "../../elements/sessionStorageHook/useSessionstorage";
+import { vendorAuth } from "../../../store/vendorAuth/action";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -153,7 +154,7 @@ function HeaderDefault({ auth }) {
 
   // =================== handle check user login toggle buttun ====================
   const handleCheckUserLoginForVendor = () => {
-    if (auth?.isLoggedIn && userData?.isVendor) {
+    if (profile?.isVendor && auth?.isLoggedIn) {
       return (
         <>
           <label className="switch toggle-switch darkBlue">
@@ -170,28 +171,58 @@ function HeaderDefault({ auth }) {
           </label>
         </>
       );
+    } else {
+      if (auth?.isLoggedIn) {
+        return (
+          <>
+            {!stepState.includes(pageName) ? (
+              <Link href="/become-seller/guidelines">
+                <a className="border-btn flex flex-center justify-center become">
+                  Become a Seller
+                </a>
+              </Link>
+            ) : null}
+          </>
+        );
+      } else {
+        return (
+          <>
+            {!stepState.includes(pageName) ? (
+              <Link href="/account/login">
+                <a className="flex flex-center justify-center become Link">
+                  Become a Seller
+                </a>
+              </Link>
+            ) : null}
+          </>
+        );
+      }
     }
   };
   // ==============================================================================
 
+  // user information
+
+  // ==============================================================================
+
   // ======================= handle check vendor and store ========================
   const handleStoreAndVendorToggle = () => {
-    window.location.href = "https://blazing-card-vendor-dev.kellton.net";
+    dispatch(vendorAuth())
   };
   // ==============================================================================
-// ======================= Onclick outside dropdown close ========================
-const handleClickOutside = (event) => {
-  if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-      setActive(false)
-  }
-}
+  // ======================= Onclick outside dropdown close ========================
+  const handleClickOutside = (event) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      setActive(false);
+    }
+  };
 
-useEffect(() => {
-  document.addEventListener('click', handleClickOutside, false)
-  return () => {
-      document.removeEventListener('click', handleClickOutside, false)
-  }
-}, [])
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, false);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, false);
+    };
+  }, []);
 
   return (
     <header>
@@ -218,33 +249,10 @@ useEffect(() => {
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">
             {handleCheckUserLoginForVendor()}
-
-            {/* {!stepState.includes(pageName) ? (
-              <>
-                <Link
-                  href={
-                    auth.isLoggedIn
-                      ? "/account/login"
-                      : `/become-seller/${stepState[stage]}`
-                  }
-                >
-                  <a className="border-btn flex flex-center justify-center become">
-                    Become a Seller
-                  </a>
-                </Link>
-              </>
-            ) : null} */}
-
             {auth.isLoggedIn ? (
               <>
                 {/* <MessageButton name={"Message"} /> */}
-                {!stepState.includes(pageName) ? (
-                  <Link href="/become-seller/guidelines">
-                    <a className="border-btn flex flex-center justify-center become">
-                      Become a Seller
-                    </a>
-                  </Link>
-                ) : null}
+
                 <button
                   className="message flex flex-center justify-center"
                   onClick={() => handeGoToChat()}
@@ -254,7 +262,11 @@ useEffect(() => {
                 <button className="Notification flex flex-center justify-center">
                   <IconNotification />
                 </button>
-                <button className="profile" ref={wrapperRef} onClick={handleOnClick}>
+                <button
+                  className="profile"
+                  ref={wrapperRef}
+                  onClick={handleOnClick}
+                >
                   <span>
                     <span className="profileImage">{handleProfileImage()}</span>
                     <IconDropdown />
@@ -297,13 +309,7 @@ useEffect(() => {
             ) : (
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
-                {!stepState.includes(pageName) ? (
-                  <Link href="/account/login">
-                    <a className="flex flex-center justify-center become Link">
-                      Become a Seller
-                    </a>
-                  </Link>
-                ) : null}
+
                 <Link href="account/login">
                   <a className="primary-btn flex flex-center justify-center ml24">
                     Sign In

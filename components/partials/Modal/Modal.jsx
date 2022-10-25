@@ -17,7 +17,7 @@ import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
-import { addChatFrend } from "../../../api/chat";
+import { addChatFrend, searchUser } from "../../../api/chat";
 import { regex } from "../../Constants/regex";
 import { apiUrl } from "../../../api/url";
 import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
@@ -45,17 +45,26 @@ export function ShareModalModal({ setIsShareModalOpen }) {
         </div>
         <div className="modal-body">
           <div className="flex justify-center social-link">
-            <a href={`${SocialMediaShareLink.whatsapp}${apiUrl}`} target="_blank">
+            <a
+              href={`${SocialMediaShareLink.whatsapp}${apiUrl}`}
+              target="_blank"
+            >
               <button>
                 <IconShareWhatsup />
               </button>
             </a>
-            <a href={`${SocialMediaShareLink.twitter}${apiUrl}`} target="_blank">
+            <a
+              href={`${SocialMediaShareLink.twitter}${apiUrl}`}
+              target="_blank"
+            >
               <button>
                 <IconShareTwitter />
               </button>
             </a>
-            <a href={`${SocialMediaShareLink.facebook}${apiUrl}`} target="_blank">
+            <a
+              href={`${SocialMediaShareLink.facebook}${apiUrl}`}
+              target="_blank"
+            >
               <button>
                 <IconShareFacebook />
               </button>
@@ -63,7 +72,14 @@ export function ShareModalModal({ setIsShareModalOpen }) {
           </div>
           <div className="copy flex space-between flex-center nowrap">
             <span className="url">{pageUrl}</span>
-            <button className="copy-btn" onClick={() => {navigator.clipboard.writeText(pageUrl)}}>Copy</button>
+            <button
+              className="copy-btn"
+              onClick={() => {
+                navigator.clipboard.writeText(pageUrl);
+              }}
+            >
+              Copy
+            </button>
           </div>
         </div>
       </div>
@@ -428,13 +444,12 @@ export function AddNewCardModal(props) {
                 name="cardNumber"
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
-                onChange={(e) => {
-                  resetFormData();
+                onChange={(e) =>
                   formik.setFieldValue(
                     "cardNumber",
                     e.target.value.replace(regex.onlyNumbers, "")
                   )
-                }
+                
                 }
                 maxLength={
                   CardImage?.type?.name === "IconAmericanExpressCard" ? 15 : 16
@@ -445,8 +460,8 @@ export function AddNewCardModal(props) {
                   ? getCardImagesByName(formik.values.cardNumber)
                   : ""}
               </span>
-              <ErrorMessage errors={formik.errors.cardNumber} />            
-              </div>
+              <ErrorMessage errors={formik.errors.cardNumber} />
+            </div>
             <div className="flex space-between">
               <div className="input-control wd50">
                 <label>Expiration</label>
@@ -461,7 +476,7 @@ export function AddNewCardModal(props) {
                   value={handleExpDate(formik.values)}
                   maxLength={5}
                 />
-                <ErrorMessage errors={formik.errors.expireDate} />                
+                <ErrorMessage errors={formik.errors.expireDate} />
                 {expValid == false ? "Expiary date is invalide" : ""}
               </div>
               <div className="input-control wd50">
@@ -483,7 +498,8 @@ export function AddNewCardModal(props) {
                     CardImage?.type?.name === "IconAmericanExpressCard" ? 4 : 3
                   }
                 />
-                <ErrorMessage errors={formik.errors.cvc} />              </div>
+                <ErrorMessage errors={formik.errors.cvc} />{" "}
+              </div>
             </div>
             <div className="infotext">
               By providing your card information, you allow Blazing Cards to
@@ -573,7 +589,8 @@ export function AddAddressModal(props) {
                     value={formik.values.company}
                     onChange={formik.handleChange}
                   />
-                  <ErrorMessage errors={formik.errors.company} />                </div>
+                  <ErrorMessage errors={formik.errors.company} />{" "}
+                </div>
                 {/* <div className="input-control">
                   <label>Phone Number *</label>
                   <input
@@ -600,7 +617,8 @@ export function AddAddressModal(props) {
                     value={formik.values.address1}
                     onChange={formik.handleChange}
                   />
-                  <ErrorMessage errors={formik.errors.address1} />                </div>
+                  <ErrorMessage errors={formik.errors.address1} />{" "}
+                </div>
                 <div className="input-control">
                   <label>Address Line 2 *</label>
                   <input
@@ -609,7 +627,8 @@ export function AddAddressModal(props) {
                     value={formik.values.address2}
                     onChange={formik.handleChange}
                   />
-                  <ErrorMessage errors={formik.errors.address2} />                </div>
+                  <ErrorMessage errors={formik.errors.address2} />{" "}
+                </div>
                 <div className="input-control">
                   <label>Post Code *</label>
                   <input
@@ -618,10 +637,12 @@ export function AddAddressModal(props) {
                     value={formik.values.postcode}
                     onChange={formik.handleChange}
                   />
-                  <ErrorMessage errors={formik.errors.postcode} />                </div>
+                  <ErrorMessage errors={formik.errors.postcode} />{" "}
+                </div>
                 <div className="input-control" hidden>
                   <input name="addressId" value={formik.values.addressId} />
-                  <ErrorMessage errors={errors} />                </div>
+                  <ErrorMessage errors={errors} />{" "}
+                </div>
 
                 <div className="input-control">
                   <label>City *</label>
@@ -631,7 +652,8 @@ export function AddAddressModal(props) {
                     value={formik.values.city}
                     onChange={formik.handleChange}
                   />
-                  <ErrorMessage errors={formik.errors.city} />                </div>
+                  <ErrorMessage errors={formik.errors.city} />{" "}
+                </div>
 
                 <div className="input-control">
                   <label>State *</label>
@@ -641,7 +663,8 @@ export function AddAddressModal(props) {
                     value={formik.values.state}
                     onChange={formik.handleChange}
                   />
-                  <ErrorMessage errors={formik.errors.state} />                </div>
+                  <ErrorMessage errors={formik.errors.state} />{" "}
+                </div>
 
                 <div className="input-control">
                   <label>Country *</label>
@@ -726,7 +749,8 @@ export function DeletAccountModal({ setIsOpen }) {
                 placeholder={"Enter here"}
                 value={formik.values.emailId}
               />
-              <ErrorMessage errors={formik.errors.emailId} />            </div>
+              <ErrorMessage errors={formik.errors.emailId} />{" "}
+            </div>
             <div className="input-control">
               <label>Password *</label>
               <input
@@ -736,7 +760,8 @@ export function DeletAccountModal({ setIsOpen }) {
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
-              <ErrorMessage errors={formik.errors.password} />            </div>
+              <ErrorMessage errors={formik.errors.password} />{" "}
+            </div>
             <div className="flex btn-wrap delete">
               <button
                 className="border-btn mr16"
@@ -756,51 +781,35 @@ export function DeletAccountModal({ setIsOpen }) {
 }
 
 export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
-
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState("");
   const [isButton, setIsButton] = useState(false);
 
+  // handle username and search frend
   const handleUsername = async (e) => {
   
 
     setIsButton(true);
-    setUserDataLoader(true);
     if (e.target.value != "") {
-      const token = sessionStorage.getItem("spurtToken");
-      const chatHeader = {
-        // 'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      };
-      const data = await axios.post(
-        searchUsers,
-        {
-          slang: e.target.value,
-        },
-        {
-          headers: chatHeader,
-        }
-      );
-      if (data.status == 200) {
-        setUserData(data?.data?.response);
-        setUserDataLoader(false);
-      }
-    } else {
-      setUserData([]);
-      setUserDataLoader(false);
+      searchUser(setUserData, setUserDataLoader, e.target.value);
     }
   };
+  // ====================================================================
 
+  // handle add user id and username for save information
   const handleAddUserForChat = (id, name) => {
     setUserId(id);
     setUsername(name);
   };
+  // ==============================================================
 
+  // handle for submit for add frend
   const handleSubmitUser = () => {
     addChatFrend(userId, fetchUserData, setIsOpen, socket);
   };
+  // =============================================================
 
   const showUserList = () => {
     if (!!userData) {

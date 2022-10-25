@@ -1,5 +1,6 @@
 import React from "react";
 import { useField } from "formik";
+import ErrorMessage from "./ErrorMessage";
 
 export const TextInput = ({ label, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -12,9 +13,10 @@ export const TextInput = ({ label, ...props }) => {
       <div className={props.className}>
         <label htmlFor={props.id || props.name}>{label}</label>
         <input className="text-input" maxLength={stringLength} minLength={3} {...field} {...props}  />
-        {meta.touched && meta.error ? (
+        <ErrorMessage errors={meta.error} touched={meta.touched} />
+        {/* {meta.touched && meta.error ? (
           <div className="error">{meta.error}</div>
-        ) : null}
+        ) : null} */}
       </div>
     </>
   );

@@ -60,7 +60,7 @@ export default function ProfileInformation() {
     ) {
       const fsize = files[0].size;
       const file = Math.round(fsize / 1024);
-      if (file < (1024 * MaxProfileImageSize)) {
+      if (file < 1024 * MaxProfileImageSize) {
         // setNewDp(files[0])
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -194,7 +194,8 @@ export default function ProfileInformation() {
               </button> */}
               </div>
               <div className="dicscription">
-                {newDpError || `Must be JPEG, JPG, PNG and cannot exceed ${MaxProfileImageSize}MB`}
+                {newDpError ||
+                  `Must be JPEG, JPG, PNG and cannot exceed ${MaxProfileImageSize}MB`}
               </div>
               <div className="input-control wd50">
                 <ErrorMessage errors={newDpError} />              </div>
