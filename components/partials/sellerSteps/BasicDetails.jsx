@@ -25,12 +25,6 @@ export default function BasicDetails() {
   );
   const [updateFileName, setUpdateFileName] = useState(BasicDetails?.documents?.image || null)
 
-
-  useEffect(() => {
-    if(!!BasicDetails?.documents?.image){
-      setUpdateFileName(BasicDetails?.documents?.image)
-    }
-  },[])
   const handleSubmit = async (values) => {
     if (!!values?.fullName && !!values?.uniqueId && !!values?.upload) {
       const time = new Date().getTime();
