@@ -8,4 +8,5 @@ export const ImageTransformation = {
     ProfileImage: "w_124,h_124,c_fill,r_100,q_auto,fl_any_format,dpr_auto",
     streamPageProfile: "w_32,h_32,c_fill,q_auto,r_100,fl_any_format,dpr_auto",
     streamChatProfile: "w_50,h_50,c_fill,q_auto,r_100,fl_any_format,dpr_auto",
+    sellerDocument: "w_206,h_130,c_fill,q_auto,fl_any_format,dpr_auto"
 };

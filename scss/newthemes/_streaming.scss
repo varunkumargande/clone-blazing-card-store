@@ -668,12 +668,12 @@
         }
     }
 }
-@media all and (min-width:1025px) and (max-width:1350){
+@media all and (min-width:1025px) and (max-width:1350px){
     .streaming-left { 
         .tab-wrapper {
             .tab-link{
                 &:nth-child(-n + 3){
-                    margin-right: 25px;
+                    margin-right: 22px;
                 }   
             }
         }

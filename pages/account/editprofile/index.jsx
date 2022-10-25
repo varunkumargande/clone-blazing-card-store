@@ -43,6 +43,7 @@ export default function categoryStream() {
   const streamDetail = useSelector(
     (state) => state?.stream?.streamdetails?.stream
   );
+  
   useEffect(() => {
     resizeWindow();
     window.addEventListener("resize", resizeWindow);
@@ -66,6 +67,9 @@ export default function categoryStream() {
   const handleToGoHome = () => {
     Router.push("/");
   };
+  const handleToGoProfile = () => {
+    Router.push("/account/myprofile");
+  };
   return (
     <div className="Edit-profile">
       {windowWidth <= 1024 ? null : <HeaderDefault />}
@@ -76,6 +80,7 @@ export default function categoryStream() {
             <section className="breadcrumbs-wrapper mb32">
                 <ul className="breadcrumbs flex flex-center">
                   <li onClick={() => handleToGoHome()}>Home</li>/
+                  <li onClick={() => handleToGoProfile()}>Profile</li>/
                   <li className="current">Edit Profile</li>
                 </ul>
             </section>
