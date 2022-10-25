@@ -166,14 +166,17 @@ function StreamingBase({
    */
   const handleConfirmBid = async () => {
     if (!!cardDetail && !!addressList) {
-      setOpen(false);
+      if(amountToBid > bidAmount){
+        setOpen(false);
       increaseBidAmount();
       createBid(
         Number(auctionId),
         Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
-        amountToBid
+        Number(amountToBid)
       );
       setIsBidResponseModal(!isBidResponseModal);
+      }
+      
     } else {
       openPayment(true);
     }
@@ -262,7 +265,7 @@ function StreamingBase({
    * Method to increase bid amount by 1
    */
   const increaseBidAmount = () => {
-    setAmountToBid(amountToBid + 1);
+    setAmountToBid(Number(amountToBid) + 1);
   };
 
   /**
@@ -480,6 +483,7 @@ function StreamingBase({
               amountToBid={amountToBid}
               handleConfirmBid={handleConfirmBid}
               checkBidAmount={checkBidAmount}
+              setAmountToBid={setAmountToBid}
             />
           </>
         ) : (
