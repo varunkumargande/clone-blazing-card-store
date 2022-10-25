@@ -273,7 +273,7 @@ export function PaymentInfoModal(props) {
                   className="address"
                   onClick={handleShippmentMethod}
                 />
-                <ErrorMessage errors={errors} />              </div>
+              </div>
               <div className="input-control with-bg">
                 <label>Payment Details</label>
                 <input
@@ -283,7 +283,7 @@ export function PaymentInfoModal(props) {
                   className="payment"
                   onClick={handlePaymentMethod}
                 />
-                <ErrorMessage errors={errors} />              </div>
+              </div>
             </div>
           </>
         )}
@@ -334,6 +334,7 @@ export function AddNewCardModal(props) {
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
+  const [initialValueFlag, setInitialValueFlag] = useState(Array.isArray(payDetail) && payDetail[0]?.card?.last4 && payDetail[0]?.card?.last4 !== "" ? true : false);
 
   const shipSchema = Yup.object().shape({
     // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
@@ -351,8 +352,7 @@ export function AddNewCardModal(props) {
       cardNumber:
         payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
       cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
-      expireDate: "",
-      // expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card.exp_year: "",
+      expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card?.exp_year.toString().slice(-2): "",
     },
     onSubmit: (values) => {
       const jsonData = JSON.stringify({
@@ -375,6 +375,17 @@ export function AddNewCardModal(props) {
     },
     validationSchema: () => shipSchema,
   });
+
+  const resetFormData = () => {
+    if (initialValueFlag) {
+      setInitialValueFlag(false);
+      formik.setValues({
+        expireDate: '',
+        cardNumber: '',
+        cvc: '',
+      });
+    }
+  }
 
   const handleExpDate = (values) => {
     const dateExp = values.expireDate
@@ -417,12 +428,13 @@ export function AddNewCardModal(props) {
                 name="cardNumber"
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
-                // onChange={formik.handleChange}
-                onChange={(e) =>
+                onChange={(e) => {
+                  resetFormData();
                   formik.setFieldValue(
                     "cardNumber",
                     e.target.value.replace(regex.onlyNumbers, "")
                   )
+                }
                 }
                 maxLength={
                   CardImage?.type?.name === "IconAmericanExpressCard" ? 15 : 16
@@ -442,7 +454,10 @@ export function AddNewCardModal(props) {
                   type="text"
                   name="expireDate"
                   placeholder={"MM/YY"}
-                  onChange={formik.handleChange}
+                  onChange={(event) => {
+                    resetFormData();
+                    formik.handleChange(event)
+                  }}
                   value={handleExpDate(formik.values)}
                   maxLength={5}
                 />
@@ -456,11 +471,13 @@ export function AddNewCardModal(props) {
                   placeholder={"Enter here"}
                   value={formik.values.cvc}
                   type="password"
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    resetFormData();
                     formik.setFieldValue(
                       "cvc",
                       e.target.value.replace(regex.onlyNumbers, "")
                     )
+                  }
                   }
                   maxLength={
                     CardImage?.type?.name === "IconAmericanExpressCard" ? 4 : 3
