@@ -110,6 +110,8 @@ export default function BasicDetails() {
                 name="uniqueId"
                 type="text"
                 placeholder="Enter here"
+                maxLength={9}
+                minLength={9}
               />
             </div>
             <div className="flex space-between">

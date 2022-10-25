@@ -8,7 +8,7 @@ export const TextInput = ({ label, ...props }) => {
   // message if the field is invalid and it has been touched (i.e. visited)
   const [field, meta, helpers] = useField(props);
   const stringLength = props?.maxLength ?? 80;
-
+  const stringMinLength = props?.minLength ?? 3
    //method will remove cardnumber and expiry if cvv is cleaned
   const handleChangeText=()=>{
     if(props?.name=='cvv' && !!props?.formProps?.initialValues?.expiry &&
@@ -24,7 +24,7 @@ export const TextInput = ({ label, ...props }) => {
     <>
       <div className={props.className}>
         <label htmlFor={props.id || props.name}>{label}</label>
-        <input className="text-input" maxLength={stringLength} minLength={3} {...field} {...props}  onInput={() => handleChangeText()}/>
+        <input className="text-input" maxLength={stringLength} minLength={stringMinLength} {...field} {...props}  onInput={() => handleChangeText()}/>
         {meta.touched && meta.error ? (
           <div className="error">{meta.error}</div>
         ) : null}
