@@ -7,6 +7,7 @@ export const CardExpiry = ({ label, ...props }) => {
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
   const [field, meta, helpers] = useField(props);
+   //method will remove cvv and card number if expiry is cleaned
   const handleChangeText = () => {
     if (
       !!props?.formProps?.initialValues?.cardNumber &&

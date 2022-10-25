@@ -40,7 +40,6 @@ export default function FileUpload({ label, ...props }) {
       setFileName(documents?.fileName);
     }
   },[]);
-  console.log("document", props.formProps, documents)
   return (
     <>
       <div className={props.className}>

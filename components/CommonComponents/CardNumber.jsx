@@ -17,6 +17,7 @@ export const CardNumber = ({ label, ...props }) => {
       .replace(/(\w{4})/g, "$1 ")
       .trim()
   }
+  //method will remove cvv and expiry if card number is cleaned
   const handleChangeText = () => {
     if (
       !!props?.formProps?.initialValues?.expiry &&

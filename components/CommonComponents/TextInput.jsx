@@ -9,6 +9,7 @@ export const TextInput = ({ label, ...props }) => {
   const [field, meta, helpers] = useField(props);
   const stringLength = props?.maxLength ?? 80;
 
+   //method will remove cardnumber and expiry if cvv is cleaned
   const handleChangeText=()=>{
     if(props?.name=='cvv' && !!props?.formProps?.initialValues?.expiry &&
     !!props?.formProps?.initialValues?.cardNumber){
