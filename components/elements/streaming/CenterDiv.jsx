@@ -69,15 +69,17 @@ function CenterDiv({
     getStreamingShippmentDetail(setAddressList, setAddressLoader);
   };
 
-  const handleSubmitBuyProduct = () => {
+  const handleSubmitBuyProduct = async () => {
     if (cardDetail.length != 0 && addressList.length != 0) {
-      buyProduct(
+      setPaymentLoader(true);
+      await buyProduct(
         cardDetail[cardDetail.length - 1],
         addressList[addressList.length - 1],
         productDetail,
         openPayment
         // streamingDetails
       );
+      setPaymentLoader(false);
     } else {
       modalWarning(
         "error",
