@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function SeeAllSubCategories({
   categories,
-  activeCategory,
   setActiveSubCategory,
   activeSubCategory,
   setActiveSubCategoryId
 }) {
+  const { query } = useRouter();
+  const [queryCategory, setQueryCategory] = useState(null);
+  useEffect(() => {
+    if (Object.keys(query).length != 0 && query?.category != "") {
+      setQueryCategory(query?.category);
+    }
+  }, [query]);
+
   const handleSubCategorySelect = (name, id) => {
     setActiveSubCategory(name)
     setActiveSubCategoryId(id)
@@ -17,7 +24,7 @@ export default function SeeAllSubCategories({
     if (!!categories) {
       return categories.map((element) => {
         
-        if (element.name === activeCategory) {
+        if (element.name === queryCategory) {
           
           return element?.children.map((item) => {
             return (
