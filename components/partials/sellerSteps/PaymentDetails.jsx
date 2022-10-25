@@ -6,7 +6,7 @@ import { paymentDetailsvalidation } from "../../../utilities/validations/payment
 import { CardNumber } from "../../CommonComponents/CardNumber";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { addPaymentData } from "../../../store/becomeSeller/action";
+import { addPaymentData, setClearState } from "../../../store/becomeSeller/action";
 import { useSelector } from "react-redux";
 import IconBack from "../../Icons/IconBack";
 import { CardExpiry } from "../../CommonComponents/CardExpiry";
@@ -19,6 +19,7 @@ export default function PaymentDetails() {
   const paymentDetails = useSelector(
     (state) => state?.becomeSeller?.paymentDetails
   );
+  const clearState = useSelector((state) => state?.becomeSeller?.clearState)
   const [countryData, setCountryData] = useState(null);
 
   useEffect(() => {
@@ -32,10 +33,16 @@ export default function PaymentDetails() {
       cvv: values.cvv,
       country: values.country,
       countryId: values.country,
+      lastFourDigits: values.cardNumber.slice(-4)
     };
+    dispatch(setClearState())
     dispatch(addPaymentData(data, router));
   };
 
+  const getFormatedCardNumber = (cardNumber) => {
+    const format = ('XXXXXXXXXXXX'+cardNumber)
+    return format
+  }
   return (
     <div className="step-container">
       <BackButton name={"Payment Details"} />
@@ -46,9 +53,9 @@ export default function PaymentDetails() {
       </div>
       <Formik
         initialValues={{
-          cardNumber: "",
-          cvv: "",
-          expiry: "",
+          cardNumber: paymentDetails?.cardNumber ? getFormatedCardNumber(paymentDetails?.lastFourDigits) : "",
+          cvv: paymentDetails?.cardNumber ? "XXX" : "",
+          expiry: paymentDetails?.expireDate ?? "",
           country: paymentDetails?.country ?? "",
           paymentMethod: paymentDetails?.paymentMethod ?? "",
         }}
@@ -77,6 +84,8 @@ export default function PaymentDetails() {
                 type="text"
                 placeholder="Enter here"
                 formProps={formProps}
+                clearState={clearState}
+                dispatch={dispatch}              
               />
             </div>
             <div className="flex space-between">
@@ -87,6 +96,8 @@ export default function PaymentDetails() {
                 type="text"
                 placeholder="Enter here (MM/YY)"
                 formProps={formProps}
+                clearState={clearState}
+                dispatch={dispatch}
               />
               <TextInput
                 className="input-control wd48"
@@ -95,6 +106,9 @@ export default function PaymentDetails() {
                 type="text"
                 placeholder="Enter here"
                 maxLength={3}
+                formProps={formProps}
+                clearState={clearState}
+                dispatch={dispatch}
               />
             </div>
             <div className="flex space-between">

@@ -5,7 +5,9 @@ export const actionTypes = {
   ADD_BASIC_DETAILS: "ADD_BASIC_DETAILS",
   ADD_PAYMENT_DETAILS: "ADD_PAYMENT_DETAILS",
   ADD_SHIPPING_DETAILS: "ADD_SHIPPING_DETAILS",
-  GET_SUBMIITED_DETAILS: "GET_SUBMIITED_DETAILS"
+  GET_SUBMIITED_DETAILS: "GET_SUBMIITED_DETAILS",
+  CLEAR_STATE: "CLEAR_STATE",
+  SET_CLEAR_STATE: "SET_CLEAR_STATE"
 };
 
 
@@ -100,5 +102,14 @@ export function addPreviousData(payload) {
 };
 }
 
+export function clearState(){
+  return {
+    type: actionTypes.CLEAR_STATE
+  }
+}
 
-
+export function setClearState(){
+  return {
+    type: actionTypes.SET_CLEAR_STATE
+  }
+}
