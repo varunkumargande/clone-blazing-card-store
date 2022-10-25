@@ -83,11 +83,12 @@ export default function BasicDetails() {
         initialValues={{
           fullName: BasicDetails?.fullName ?? "",
           uniqueId: BasicDetails?.uniqueId ?? "",
-          upload: "",
+          upload: new File([""], BasicDetails?.documents?.fileName,{
+            type : "image/jpeg"
+          } ) ?? "",
         }}
         validationSchema={basicDetailvalidation}
         onSubmit={(values) => {
-
           if (values) {
             handleSubmit(values);
           }

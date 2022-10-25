@@ -39,7 +39,7 @@ export default function FileUpload({ label, ...props }) {
     if (!!documents?.image && !!documents?.path && !!documents?.fileName) {
       setFileName(documents?.fileName);
     }
-  });
+  },[]);
   return (
     <>
       <div className={props.className}>

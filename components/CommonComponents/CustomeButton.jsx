@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import IconBack from "../Icons/IconBack";
 
+// Custome Button is common component for all pages.
 const CustomeButton = ({ name, type }) => {
   const router = useRouter();
   return (
@@ -12,5 +13,5 @@ const CustomeButton = ({ name, type }) => {
     </>
   );
 };
-
 export default CustomeButton;
+// =================================================

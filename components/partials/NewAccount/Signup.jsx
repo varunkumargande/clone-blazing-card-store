@@ -23,6 +23,11 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 
+// ======== import form components ==========
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { TextInput } from "../../CommonComponents/TextInput";
+// ==========================================
+
 function Signup(auth) {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -84,32 +89,49 @@ function Signup(auth) {
 
   const registerSchema = Yup.object().shape({
     firstname: Yup.string()
-      .matches(/^[A-Za-z ]*$/, "Please enter valid name")
+      .matches(
+        registerConstant.form.firstNameField.regex,
+        registerConstant.form.firstNameField.regexMessage
+      )
       .max(40)
-      .required("Required"),
+      .required(registerConstant.form.required),
+
     lastname: Yup.string()
-      .matches(/^[A-Za-z ]*$/, "Please enter valid name")
+      .matches(
+        registerConstant.form.lastNameField.regex,
+        registerConstant.form.lastNameField.regexMessage
+      )
       .max(40)
+      .required(registerConstant.form.lastNameField.required),
+
+    email: Yup.string()
+      .email(registerConstant.form.emailField.valid)
       .required("Required"),
-    email: Yup.string().email("Invalid email format").required("Required"),
+
     number: Yup.string()
-      .matches(phoneRegExp, "Phone number is not valid")
-      .required("Required")
+      .matches(
+        registerConstant.form.contactField.regex,
+        registerConstant.form.contactField.regexMessage
+      )
+      .required(registerConstant.form.contactField.required)
       .min(10)
       .max(12),
+
     password: Yup.string()
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+        registerConstant.form.passwordField.regex,
+        registerConstant.form.passwordField.regexMessage
       )
-      .required("Required"),
+      .required(registerConstant.form.passwordField.required),
+
     cpass: Yup.string()
-      .required("Required")
+      .required(registerConstant.form.conPasswordField.required)
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
+
     username: Yup.string()
-      .matches(/^[a-zA-Z0-9]*$/, "Please enter valid username")
+      .matches(registerConstant.form.usernameField.regex, registerConstant.form.usernameField.regexMessage)
       .max(8)
-      .required("Required"),
+      .required(registerConstant.form.usernameField.required),
   });
 
   const responseGoogle = (response) => {
@@ -218,6 +240,7 @@ function Signup(auth) {
             <form className="signup flex space-between" onSubmit={handleSubmit}>
               <div className="input-control wd50">
                 <label>First Name*</label>
+
                 <input
                   type="text"
                   name="firstname"
@@ -228,6 +251,7 @@ function Signup(auth) {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
+
                 <div className="errorText">
                   {touched.firstname && errors.firstname
                     ? errors.firstname
@@ -377,7 +401,9 @@ function Signup(auth) {
                 </label>
               </div>
               <div align={"center"}>
-                <h5 className="errorMessage" style={{color:"red"}}>{singupError}</h5>
+                <h5 className="errorMessage" style={{ color: "red" }}>
+                  {singupError}
+                </h5>
               </div>
 
               <div className="submitWrap mb32">

@@ -21,9 +21,9 @@ export async function UserLogin(
     type: loginType,
   });
   const result = await APIServices.create("customer/login", data);
-  const errrorMessage = result.data.message;
 
-  if (result && result.data && result.data.status === 1) {
+  if (result && result?.data && result?.data?.status === 1) {
+    const errrorMessage = result?.data?.message;
     sessionStorage.setItem("spurtToken", result.data.data.token);
     sessionStorage.setItem("userPass", password);
     getProfileApi();
