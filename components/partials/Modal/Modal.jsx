@@ -645,7 +645,6 @@ export function AddAddressModal(props) {
                 </div>
                 <div className="input-control" hidden>
                   <input name="addressId" value={formik.values.addressId} />
-                  <ErrorMessage errors={errors} />{" "}
                 </div>
 
                 <div className="input-control">
