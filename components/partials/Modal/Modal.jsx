@@ -134,6 +134,7 @@ export function CustomBidModal(props) {
     handleConfirmBid,
     increaseBidAmount,
     checkBidAmount,
+    setAmountToBid
   } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -175,7 +176,10 @@ export function CustomBidModal(props) {
             <input
               type="number"
               className="text-center"
-              placeholder={amountToBid}
+              // placeholder={amountToBid}
+              value={amountToBid}
+              onChange={(e) => setAmountToBid(e.target.value) }
+              
             />
             <button
               className="increase flex flex-center justify-center"
@@ -190,8 +194,8 @@ export function CustomBidModal(props) {
             <button className="disable-btn" onClick={() => setOpen(false)}>
               Cancel
             </button>
-            <button className="primary-btn" onClick={handleConfirmBid}>
-              Confrrm
+            <button className={bidAmount <= amountToBid ? "primary-btn" : "primary-btn disable"}onClick={handleConfirmBid}>
+              Confirm
             </button>
           </div>
         </div>

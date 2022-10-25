@@ -16,6 +16,7 @@ export const initState = {
   submittedDetails: null,
   stepContainer: stepState,
   currentState: 0,
+  clearState: false
 };
 
 const getStepState = (lastStep) => {
@@ -125,6 +126,16 @@ function reducer(state = initState, action) {
           ...{ stepContainer : getStepState(action.payload?.steps)},
           ...{currentState: action.payload?.steps},
 
+        }
+      case actionTypes.CLEAR_STATE: 
+        return{
+          ...state,
+          ...{clearState: true}
+        }
+      case actionTypes.SET_CLEAR_STATE:
+        return{
+          ...state,
+          ...{clearState: false}
         }
     default:
       return state;
