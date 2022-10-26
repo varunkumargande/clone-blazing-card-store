@@ -28,11 +28,15 @@ import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import useSessionstorage from "../../elements/sessionStorageHook/useSessionstorage";
+import Notifications from "../../partials/Notifications/Notifications";
+import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { vendorAuth } from "../../../store/vendorAuth/action";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
   const [active, setActive] = useState(false);
+  const [notificationDropdownActive, setNotificationDropdownActive] =
+    useState(false);
   const [profile, setProfile] = useState(false);
   let category = useSelector((s) => s.product);
   const dispatch = useDispatch();
@@ -45,7 +49,11 @@ function HeaderDefault({ auth }) {
 
   let { pageName } = router.query;
 
+  const { notifications, notificationsUnreadCount } =
+    useNotifications();
+
   const wrapperRef = useRef(null);
+  const notificationWrapperRef = useRef(null);
   // ================= user data ===================
   const userData = useSessionstorage();
   // ===============================================
@@ -215,6 +223,12 @@ function HeaderDefault({ auth }) {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       setActive(false);
     }
+    if (
+      notificationWrapperRef.current &&
+      !notificationWrapperRef.current.contains(event.target)
+    ) {
+      setNotificationDropdownActive(false);
+    }
   };
 
   useEffect(() => {
@@ -259,8 +273,40 @@ function HeaderDefault({ auth }) {
                 >
                   <IconMessage />
                 </button>
-                <button className="Notification flex flex-center justify-center">
+                <button
+                  ref={notificationWrapperRef}
+                  className={`profile Notification flex flex-center justify-center ${
+                    notificationsUnreadCount && "active"
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setNotificationDropdownActive((previous) => !previous);
+                  }}
+                >
                   <IconNotification />
+                  <ul
+                    className={
+                      notificationDropdownActive
+                        ? "dropDown active"
+                        : "dropDown"
+                    }
+                  >
+                    <div className="notification-wrapper title-wrap ">
+                      <div className="head-title flex space-between flex-center">
+                        <h1>Notification</h1>
+                      </div>
+                      <Notifications
+                        notifications={notifications.slice(0, 3)}
+                      />
+                      {notifications.length > 3 && (
+                        <li className="seeAll">
+                          <Link href="/notifications">
+                            <a>{`See All (${notificationsUnreadCount} Unread)`}</a>
+                          </Link>
+                        </li>
+                      )}
+                    </div>
+                  </ul>
                 </button>
                 <button
                   className="profile"

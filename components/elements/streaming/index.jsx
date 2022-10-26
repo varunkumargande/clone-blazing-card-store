@@ -8,6 +8,7 @@ import { addNotification, clearState, streamData } from "../../../store/stream/a
 import { io } from "socket.io-client";
 import { notificationBaseUrl } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
+import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -23,6 +24,9 @@ function Index() {
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  // const [userCount, setUserCount] = useState(null);
+  const [channel, setChannel] = useState(null);
+
   const stream = useSelector((state) => {
     return state?.stream;
   });
@@ -31,6 +35,7 @@ function Index() {
   );
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
+  const {count} = useLiveUserCount(streamPageData, setChannel);
   const [isLeftDivOpen, setLeftDivOpen] = useState();
 
   useEffect(() => {
@@ -40,7 +45,6 @@ function Index() {
       dispatch(clearState())
     }
   }, []);
-
   useEffect(() => {socketInitializer()}, []);
 
   const socketInitializer = () => {
@@ -119,10 +123,12 @@ function Index() {
               setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
               isBuyNowPaymentModal={isBuyNowPaymentModal}
               setShowLoginModal={setShowLoginModal}
+              userCount={count}
             />
             <RightDiv
               streamingDetails={streamingDetails}
               streamData={streamPageData}
+              channel={channel}
             />
           </div>
         </>

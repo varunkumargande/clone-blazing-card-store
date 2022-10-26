@@ -31,5 +31,7 @@ export async function UserRegister(
     } else {
       setSingupError(result.data.message);
     }
+  } else {
+    setSingupError(result.data.message);
   }
 }

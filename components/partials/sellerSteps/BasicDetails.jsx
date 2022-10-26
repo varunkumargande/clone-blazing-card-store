@@ -20,12 +20,13 @@ export default function BasicDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [imageData, setImageData] = useState(null)
-  const [updateFileName, setUpdateFileName] = useState(null)
   const BasicDetails = useSelector(
     (state) => state?.becomeSeller?.basicDetails
   );
+  const [updateFileName, setUpdateFileName] = useState(BasicDetails?.documents?.image || null)
+
   const handleSubmit = async (values) => {
-    if (!!imageData) {
+    if (!!values?.fullName && !!values?.uniqueId && !!values?.upload) {
       const time = new Date().getTime();
       const fileName  = `${time}_${values?.upload?.name}`
       const data = {
@@ -48,7 +49,6 @@ export default function BasicDetails() {
       cb(reader.result);
     };
     reader.onerror = function (error) {
-      console.log("Error: ", error);
     };
     }
   };
@@ -70,7 +70,6 @@ export default function BasicDetails() {
       setUpdateFileName(uploadImage.fileName)
     }
   }
-  
   return (
     <div className="step-container">
       <BackButton name={"Basic Details"}/>
@@ -83,9 +82,9 @@ export default function BasicDetails() {
         initialValues={{
           fullName: BasicDetails?.fullName ?? "",
           uniqueId: BasicDetails?.uniqueId ?? "",
-          upload: new File([""], BasicDetails?.documents?.fileName,{
+          upload: BasicDetails?.documents?.fileName ? new File([""], BasicDetails?.documents?.fileName,{
             type : "image/jpeg"
-          } ) ?? "",
+          } ) : "",
         }}
         validationSchema={basicDetailvalidation}
         onSubmit={(values) => {
@@ -111,6 +110,8 @@ export default function BasicDetails() {
                 name="uniqueId"
                 type="text"
                 placeholder="Enter here"
+                maxLength={9}
+                minLength={9}
               />
             </div>
             <div className="flex space-between">
