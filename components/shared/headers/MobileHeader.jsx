@@ -22,6 +22,8 @@ import { logOut } from '../../../store/auth/action';
 import { useSelector, useDispatch } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
+import { useNotifications } from "../../../contexts/Notifications/Notifications";
+
 function MobileHeader({ auth }) {
     const [active, setActive] = useState(false);
     const [mobActive, mobSetActive] = useState(false);
@@ -34,6 +36,8 @@ function MobileHeader({ auth }) {
             dispatch(login())
         }
     }
+
+    const {notificationsUnreadCount} = useNotifications()
 
     useEffect(() => {
         categoryListApi(dispatch);
@@ -197,8 +201,8 @@ function MobileHeader({ auth }) {
                                 <ul>
                                     <li><Link href="/account/myprofile"><a><IconProfile /><span>My Profile</span></a></Link></li>
                                     <li><Link href="/my-orders"><a><IconMyOrders /><span>{t('OrderHistory')}</span></a></Link></li>
-                                    <li><Link href="/"><a className="message"><IconMessageMobile/><span>Message</span></a></Link></li>
-                                    <li><Link href="/"><a className="notification"><IconNotificationMobile/><span>Notification</span></a></Link></li>
+                                    <li><Link href="/chat"><a className="message"><IconMessageMobile/><span>Message</span></a></Link></li>
+                                    <li><Link href="/notifications"><a className={`notification ${ notificationsUnreadCount && "active"}`}><IconNotificationMobile/><span>Notification</span></a></Link></li>
                                 </ul>
                             </div>
                             <div className="LogOut"><Link href="#"><a className="primary-btn flex flex-center justify-center active" onClick={e => handleLogout(e)}><IconLogoutMobile />Logout</a></Link></div>

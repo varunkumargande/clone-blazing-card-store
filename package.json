@@ -27,6 +27,7 @@
         "dotenv": "^8.2.0",
         "dotenv-safe": "^8.2.0",
         "es6-promise": "^4.2.8",
+        "event-source-polyfill": "^1.0.31",
         "express": "^4.17.3",
         "formik": "^2.2.9",
         "fs": "0.0.1-security",

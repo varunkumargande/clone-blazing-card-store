@@ -13,12 +13,19 @@ function RightDiv({ streamData, channel }) {
   let userDetails = sessionStorage.getItem("spurtUser");
   userDetails = JSON.parse(userDetails);
 
+  const profileUrl = `${userDetails.avatarPath}/${userDetails.avatar}`;
+
   useEffect(() => {
     if (channel) {
       sendAndUpdateMessage("JOINED 👋");
       channel.on("ChannelMessage", (message, peerId) => {
         if (message.messageType === "TEXT") {
-          const messageObject = { message: message.text, userId: peerId };
+          const messageJson = JSON.parse(message.text);
+          const messageObject = {
+            message: messageJson.text,
+            profileUrl: messageJson.profileUrl,
+            userId: peerId,
+          };
           setMessages((messages) => [...messages, messageObject]);
         }
       });
@@ -39,13 +46,17 @@ function RightDiv({ streamData, channel }) {
   const sendAndUpdateMessage = async (initialMessage = null) => {
     const options = streamData?.option;
     const message = initialMessage ?? inputValue;
-    const messageObject = { 
-      message, 
-      userId: options.audience 
+    const messageObject = {
+      message,
+      userId: options.audience,
+      profileUrl: profileUrl,
     };
 
     setMessages((messages) => [...messages, messageObject]);
-    await channel.sendMessage({ text: message, type: "text" });
+    await channel.sendMessage({
+      text: JSON.stringify({ text: message, profileUrl: profileUrl }),
+      type: "text",
+    });
     setInputValue("");
     // channel.on("MemberJoined", (memberId) => {});
   };
@@ -66,14 +77,13 @@ function RightDiv({ streamData, channel }) {
     return (
       <>
         <div className="chat-inner-wrap flex column justify-right">
-          {messages?.map(({ message, userId }) => {
+          {messages?.map(({ message, userId, profileUrl }) => {
             return (
               <>
                 <div className="flex flex-center chat">
                   <div className="chat-img br50">
-
                     <CloudinaryImage
-                      imageUrl={streamData?.streamPageDteails?.avatarImage}
+                      imageUrl={profileUrl}
                       keyId={`chatBox${userId}`}
                       transformation={ImageTransformation.streamChatProfile}
                       alternative="profile"
