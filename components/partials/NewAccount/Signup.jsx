@@ -93,7 +93,7 @@ function Signup(auth) {
         registerConstant.form.firstNameField.regex,
         registerConstant.form.firstNameField.regexMessage
       )
-      .max(40)
+      .max(20)
       .required(registerConstant.form.required),
 
     lastname: Yup.string()
@@ -101,7 +101,7 @@ function Signup(auth) {
         registerConstant.form.lastNameField.regex,
         registerConstant.form.lastNameField.regexMessage
       )
-      .max(40)
+      .max(20)
       .required(registerConstant.form.lastNameField.required),
 
     email: Yup.string()
@@ -247,7 +247,7 @@ function Signup(auth) {
                   placeholder={"First Name"}
                   ref={FullNameInputRef}
                   value={values.firstname}
-                  maxlength="30"
+                  maxlength="20"
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
@@ -263,6 +263,7 @@ function Signup(auth) {
                 <input
                   type="text"
                   name="lastname"
+                  maxlength="20"
                   placeholder={"Last Name"}
                   value={values.lastname}
                   onChange={handleChange}
@@ -279,6 +280,7 @@ function Signup(auth) {
                   name="email"
                   placeholder={"Email Address"}
                   value={values.email}
+                  maxlength="25"
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
@@ -311,7 +313,7 @@ function Signup(auth) {
                   placeholder={"Contact Number"}
                   value={values.number}
                   onChange={handleChange}
-                  maxlength="15"
+                  maxlength="12"
                   onBlur={handleBlur}
                 />
                 <div className="errorText">
