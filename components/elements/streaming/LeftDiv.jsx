@@ -21,7 +21,7 @@ function LeftDiv({
   auctionNotification,
   handleLeftDiv,
   isLeftDivOpen,
-  setIsBuyNowPaymentModal
+  setIsBuyNowPaymentModal,
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -29,7 +29,7 @@ function LeftDiv({
     SOLD: "sold",
     PURCHASED: "purchased",
   };
-  
+
   const TOGGLES = ["Auction", "Buy Now", "Sold", "Purchased"];
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
   const router = useRouter();
@@ -46,7 +46,9 @@ function LeftDiv({
     setToggleState(index);
   };
   const dispatch = useDispatch();
-  const [followed, setFollowed] = useState(streamingDetails.isFollow ? streamingDetails.isFollow : false);
+  const [followed, setFollowed] = useState(
+    streamingDetails.isFollow ? streamingDetails.isFollow : false
+  );
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
   //to handle width of the screen and call methods accordingly
   const [windowWidth, setWindowWidth] = useState(0);
@@ -69,14 +71,17 @@ function LeftDiv({
 
   //clicking somewhere except on product list panel will close the product list panel(mobile screen)
   useEffect(() => {
-    if(windowWidth <= 1024){
-    function handler(event) {
-      if (!leftDivRef?.current?.contains(event.target) && !event.target.classList.contains("shops")) {
-        handleLeftDiv(false);
+    if (windowWidth <= 1024) {
+      function handler(event) {
+        if (
+          !leftDivRef?.current?.contains(event.target) &&
+          !event.target.classList.contains("shops")
+        ) {
+          handleLeftDiv(false);
+        }
       }
-    }
-    window.addEventListener("click", handler);
-    return () => window.removeEventListener("click", handler);
+      window.addEventListener("click", handler);
+      return () => window.removeEventListener("click", handler);
     }
   }, [leftDivRef.current]);
 
@@ -103,11 +108,7 @@ function LeftDiv({
       dispatch(streamProducts(url));
     } catch (error) {
       if (error.response) {
-        
-        
-        
       } else {
-        
       }
     }
   };
@@ -262,12 +263,13 @@ function LeftDiv({
 
   const handleFollowUnfollow = async (_, isFromModal = false) => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
-      if(followed && !isFromModal) {
+      if (followed && !isFromModal) {
         setShowUnFollowModal(true);
       } else {
         const data = {
           following_id: stream?.streamPageData?.streamPageDteails?.sellerId,
-          follower_id: stream?.streamPageData?.streamPageDteails?.loggedInUserId,
+          follower_id:
+            stream?.streamPageData?.streamPageDteails?.loggedInUserId,
         };
         const response = await userFollowUnfollow(data);
         if (response.status) {
@@ -298,42 +300,75 @@ function LeftDiv({
     return "/static/images/profileImg.png";
   };
   const handleProfileClick = () => {
-    router.push("/profile?userId=" + stream?.streamData?.vendorDetails?.vendor_id)
-  }
+    router.push(
+      "/profile?userId=" + stream?.streamData?.vendorDetails?.vendor_id
+    );
+  };
 
   const UnfollowModal = () => {
+    const vendorDetails = stream?.streamData?.vendorDetails;
+    const vendorName = vendorDetails?.username;
     return (
       <div className="modalOverlay flex justify-center flex-center">
         <div className="modal">
           <div className="modal-body text-center">
             <div className="profile-icon">
-              <img src="/static/images/profile-large.svg" alt="" />
+              {stream?.streamData?.vendorDetails ? (
+                <CloudinaryImage
+                  imageUrl={DefaultServices?.GetFullImageURL(
+                    stream?.streamData?.vendorDetails,
+                    "vendor"
+                  )}
+                  keyId={DefaultServices?.GetFullImageURL(
+                    stream?.streamData?.vendorDetails,
+                    "vendor"
+                  )}
+                  transformation={ImageTransformation.streamPageProfile}
+                  alternative={"Card"}
+                />
+              ) : (
+                <img src="/static/images/profile-large.svg" alt="" />
+              )}
             </div>
-            <div className="profile-id">Want to follow @felix.bronco?</div>
+            <div className="profile-id">Want to unfollow @{vendorName}?</div>
             <div className="btn-wrap follow-btn-wrap flex justify-center">
-              <button className="border-btn" onClick={() => setShowUnFollowModal(false)}>Cancel</button>
-              <button className="primary-btn" onClick={(_) => handleFollowUnfollow(_, true)} >Unfollow</button>
+              <button
+                className="border-btn"
+                onClick={() => setShowUnFollowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="primary-btn"
+                onClick={(_) => handleFollowUnfollow(_, true)}
+              >
+                Unfollow
+              </button>
             </div>
           </div>
         </div>
       </div>
     );
-  }
+  };
 
   return (
     <div className="streaming-left">
-      {showUnFollowModal && (UnfollowModal())}
+      {showUnFollowModal && UnfollowModal()}
       <div className="flex profile-wrapper">
         <div className="image">
           {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
           <CloudinaryImage
-              imageUrl={
-                DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor")
-              }
-              keyId={DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor")}
-              transformation={ImageTransformation.streamPageProfile}
-              alternative={"Card"}
-            />
+            imageUrl={DefaultServices?.GetFullImageURL(
+              stream?.streamData?.vendorDetails,
+              "vendor"
+            )}
+            keyId={DefaultServices?.GetFullImageURL(
+              stream?.streamData?.vendorDetails,
+              "vendor"
+            )}
+            transformation={ImageTransformation.streamPageProfile}
+            alternative={"Card"}
+          />
           {/* <img
             onError={({ currentTarget }) => {
               currentTarget.onerror = null; // prevents looping
@@ -345,16 +380,30 @@ function LeftDiv({
         </div>
         <div className="profile-wrap" onClick={handleProfileClick}>
           <div className="name">{vendorName}</div>
-          <div className="followrs-count">{stream.streamData.vendorDetails.follower_count ? stream.streamData.vendorDetails.follower_count : "0"} Followers</div>
+          <div className="followrs-count">
+            {stream.streamData.vendorDetails.follower_count
+              ? stream.streamData.vendorDetails.follower_count
+              : "0"}{" "}
+            Followers
+          </div>
         </div>
         <div className="btn-wrap">
-        {followed ? <button onClick={handleFollowUnfollow} className="following primary-btn">Following</button> : <button onClick={handleFollowUnfollow} className="primary-btn">Follow</button>}
-          
+          {followed ? (
+            <button
+              onClick={handleFollowUnfollow}
+              className="following primary-btn"
+            >
+              Following
+            </button>
+          ) : (
+            <button onClick={handleFollowUnfollow} className="primary-btn">
+              Follow
+            </button>
+          )}
         </div>
       </div>
-      {
-        isLeftDivOpen ? (
-          <div className="leftdata-wrapper" ref={leftDivRef}>
+      {isLeftDivOpen ? (
+        <div className="leftdata-wrapper" ref={leftDivRef}>
           <h3 className="title">{streamTitle}</h3>
           <div className="tab-wrapper flex">{getToggles()}</div>
           <div className="search">
@@ -365,10 +414,9 @@ function LeftDiv({
             <ul className="product-list">{getProductList()}</ul>
           </div>
         </div>
-        ) : (
-          <></>
-        )
-       }
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
