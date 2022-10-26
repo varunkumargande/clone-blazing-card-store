@@ -22,6 +22,7 @@ export function NotificationsProvider(props) {
 
   const { data } = useEventSocket(
     typeof window !== "undefined" &&
+      JSON.parse(sessionStorage.getItem("spurtUser")) &&
       `https://blazing-card-backend-dev.kellton.net/events/start?channel=notify-${String(
         JSON.parse(sessionStorage.getItem("spurtUser")).id
       )}`
