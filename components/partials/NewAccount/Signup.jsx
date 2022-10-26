@@ -280,7 +280,6 @@ function Signup(auth) {
                   name="email"
                   placeholder={"Email Address"}
                   value={values.email}
-                  maxlength="25"
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
