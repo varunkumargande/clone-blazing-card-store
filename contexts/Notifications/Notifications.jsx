@@ -19,6 +19,7 @@ export function NotificationsProvider(props) {
   const [lastSetDataIds, setLastSetDataIds] = useState([]);
   const [viewMore, setViewMore] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { data } = useEventSocket(
     typeof window !== "undefined" &&
@@ -31,6 +32,15 @@ export function NotificationsProvider(props) {
   const handleNotifications = (newData) => {
     setNotifications(newData);
   };
+
+  useEffect(() => {
+    if (
+      isLoggedIn !== !!sessionStorage.getItem("spurtUser") &&
+      typeof window !== "undefined"
+    ) {
+      setIsLoggedIn(!!sessionStorage.getItem("spurtUser"));
+    }
+  }, [typeof window]);
 
   useEffect(() => {
     if (data) {
@@ -69,15 +79,17 @@ export function NotificationsProvider(props) {
   };
 
   useEffect(() => {
-    NotificationMethods.GET_ALL_NOTIFICATION(
-      limit,
-      offset,
-      handleNotificationsData
-    );
-    NotificationMethods.NOTIFICATION_UNREAD_COUNT((data) =>
-      setNotificationsUnreadCount(data.count)
-    );
-  }, [offset]);
+    if (isLoggedIn) {
+      NotificationMethods.GET_ALL_NOTIFICATION(
+        limit,
+        offset,
+        handleNotificationsData
+      );
+      NotificationMethods.NOTIFICATION_UNREAD_COUNT((data) =>
+        setNotificationsUnreadCount(data.count)
+      );
+    }
+  }, [offset, isLoggedIn]);
 
   const contextValue = useMemo(
     () => ({
