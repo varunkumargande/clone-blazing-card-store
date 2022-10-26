@@ -23,7 +23,7 @@ import { imageUrl } from "../../api/url";
 import Followers from "../../components/partials/Profile/Followers";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
-
+import BackButton from "../../components/CommonComponents/BackButton";
 function MyProfile(props) {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
@@ -319,12 +319,9 @@ function MyProfile(props) {
   return (
     <div className="home-container profile-container-wrap">
       {windowWidth <= 1024 ? (
-        <div className="profile-title flex flex-center">
-          <div className="edit-back">
-            <IconBack />
-          </div>
-          Profile
-        </div>
+                <div className="profile-title flex flex-center">
+                  <BackButton name={"Profile"} />
+                </div>
       ) : (
         <HeaderDefault />
       )}
