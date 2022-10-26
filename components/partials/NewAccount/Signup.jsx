@@ -280,8 +280,6 @@ function Signup(auth) {
                   name="email"
                   placeholder={"Email Address"}
                   value={values.email}
-                  // ToDo: Need to discuss if max length is needed in email.
-                  // maxlength="25"
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
