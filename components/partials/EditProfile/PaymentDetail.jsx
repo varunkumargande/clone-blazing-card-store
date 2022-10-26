@@ -62,6 +62,7 @@ export default function PaymentDetail() {
     cvc: "",
     cardNumber: "",
     countryId: "",
+    termCheckbox: false
   };
 
   const paySchema = Yup.object().shape({
@@ -72,6 +73,7 @@ export default function PaymentDetail() {
       .min(16, "Card Number is invalid")
       .max(16, "Card Number is invalid"),
     countryId: Yup.string().required("Required"),
+    termCheckbox: Yup.bool().oneOf([true])
   });
 
   const submitCardDetail = async (values) => {
@@ -114,6 +116,7 @@ export default function PaymentDetail() {
               <Formik
                 initialValues={initialCardValues}
                 validationSchema={paySchema}
+                validateOnMount={true}
                 onSubmit={(values) => {
                   submitCardDetail(values);
                 }}
@@ -127,6 +130,7 @@ export default function PaymentDetail() {
                   handleSubmit,
                   isSubmitting,
                   resetForm,
+                  isValid,
                   setFieldValue,
                 }) => {
                   const CardImage =
@@ -161,6 +165,7 @@ export default function PaymentDetail() {
                                       e.target.value.replace(regex.onlyNumbers, "")
                                     )
                                   }
+                                  onBlur={handleBlur}
                                   maxLength={
                                     CardImage?.type?.name ===
                                     "IconAmericanExpressCard"
@@ -183,6 +188,7 @@ export default function PaymentDetail() {
                                   type={"text"}
                                   className="grey-bg"
                                   onChange={handleChange}
+                                  onBlur={handleBlur}
                                   value={handleExpDate(values)}
                                   maxLength={5}
                                 />
@@ -205,6 +211,7 @@ export default function PaymentDetail() {
                                       e.target.value.replace(regex.onlyNumbers, "")
                                     )
                                   }
+                                  onBlur={handleBlur}
                                   value={values.cvc}
                                   type="password"
                                   maxLength={
@@ -226,6 +233,7 @@ export default function PaymentDetail() {
                                   className="grey-bg"
                                   name="countryId"
                                   onChange={handleChange}
+                                  onBlur={handleBlur}
                                   value={values.countryId}
                                 >
                                   <option>Select</option>
@@ -246,10 +254,23 @@ export default function PaymentDetail() {
                                 </span>
                               </div>
                             </div>
+                            <div className="checkbox-wrap">
+                              <input
+                                name="termCheckbox"
+                                type="checkbox"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.termCheckbox}
+                                onClick={()=> {
+                                  console.log("values.termCheckbox", values.termCheckbox);
+                                }}
+                              />
+                            <span class="payment-checkbox"></span>
                             <div className="discriptionlg">
                               By providing your card information, you allow
                               BLAZING CARDS to charge your card for future
                               payments in accordance with their terms.
+                            </div>
                             </div>
                           </div>
                         </div>
@@ -262,7 +283,11 @@ export default function PaymentDetail() {
                             Cancel
                           </button>
 
-                          <button className="primary-btn">Save</button>
+                          <button
+                            className={`primary-btn ${!isValid && "disable"}`}
+                            disabled={!isValid}>
+                            Add Card
+                          </button>
                         </div>
                       </form>
                     </>
