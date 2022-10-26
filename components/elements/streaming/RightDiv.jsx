@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import IconChat from "../../Icons/IconChat";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import useJoinRTM from "../../CustomHooks/JoinRtm";
-import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
+
+// import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
+// import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 
 function RightDiv({ streamData, channel }) {
   // const [channel, setChannel] = useState(null);
@@ -36,6 +37,8 @@ function RightDiv({ streamData, channel }) {
     }
   }, [channel]);
 
+  // do not remove
+
   // const {count} = useLiveUserCount(streamData, setChannel);
 
   // useEffect(() => {
@@ -48,7 +51,7 @@ function RightDiv({ streamData, channel }) {
     const message = initialMessage ?? inputValue;
     const messageObject = {
       message,
-      userId: options.audience,
+      userId: options.audience + options.audienceId,
       profileUrl: profileUrl,
     };
 
@@ -58,7 +61,6 @@ function RightDiv({ streamData, channel }) {
       type: "text",
     });
     setInputValue("");
-    // channel.on("MemberJoined", (memberId) => {});
   };
 
   const inputChange = (e) => {
