@@ -23,7 +23,8 @@ function CenterDiv({
   handleLeftDiv,
   setIsBuyNowPaymentModal,
   isBuyNowPaymentModal,
-  setShowLoginModal
+  setShowLoginModal,
+  userCount
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
@@ -111,6 +112,7 @@ function CenterDiv({
         setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
         isBuyNowPaymentModal={isBuyNowPaymentModal}
         setShowLoginModal={setShowLoginModal}
+        userCount={userCount}
       />
 
       {isPayment ? (

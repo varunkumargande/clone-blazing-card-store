@@ -27,7 +27,8 @@ function StreamingBase({
   openPayment,
   handleLeftDiv,
   setIsBuyNowPaymentModal,
-  setShowLoginModal
+  setShowLoginModal,
+  userCount
 }) {
   const stream = useSelector((state) => state.stream);
   const streamNotification = useSelector(
@@ -376,7 +377,7 @@ function StreamingBase({
               </>
             )}
             <div className="tme-wrap flex flex-center justify-center live">
-              <span>1.2K</span> <button className="live"></button>
+              <span>{userCount}</span> <button className="live"></button>
             </div>
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>

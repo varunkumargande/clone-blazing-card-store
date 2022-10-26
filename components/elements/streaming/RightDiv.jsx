@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import AgoraRTM from "agora-rtm-sdk";
-import { getToken } from "../../../api/stream/getToken";
 import IconChat from "../../Icons/IconChat";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 
-function RightDiv({ streamData }) {
-  const [channel, setChannel] = useState(null);
+// import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
+// import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
+
+function RightDiv({ streamData, channel }) {
+  // const [channel, setChannel] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -14,10 +15,6 @@ function RightDiv({ streamData }) {
   userDetails = JSON.parse(userDetails);
 
   const profileUrl = `${userDetails.avatarPath}/${userDetails.avatar}`;
-
-  useEffect(() => {
-    joinChannel();
-  }, []);
 
   useEffect(() => {
     if (channel) {
@@ -33,33 +30,28 @@ function RightDiv({ streamData }) {
           setMessages((messages) => [...messages, messageObject]);
         }
       });
+      return () => {
+        channel.logout(null);
+        channel.leave(null);
+      }
     }
   }, [channel]);
 
-  const joinChannel = async () => {
-    const options = streamData?.option;
-    const client = AgoraRTM.createInstance(options.appId);
-    const token = await getToken(
-      options.rtm,
-      options.messageChannel,
-      options.audience,
-      options.accountType,
-      options.userType
-    );
+  // do not remove
 
-    await client.login({ uid: options.audience, token });
-    const channel = client.createChannel(options.messageChannel);
-    await channel.join();
-    setChannel(channel);
-    return channel;
-  };
+  // const {count} = useLiveUserCount(streamData, setChannel);
 
+  // useEffect(() => {
+  //   setUserCount(count)
+  // }, [count])
+  
+  
   const sendAndUpdateMessage = async (initialMessage = null) => {
     const options = streamData?.option;
     const message = initialMessage ?? inputValue;
     const messageObject = {
       message,
-      userId: options.audience,
+      userId: options.audience + options.audienceId,
       profileUrl: profileUrl,
     };
 
@@ -69,7 +61,6 @@ function RightDiv({ streamData }) {
       type: "text",
     });
     setInputValue("");
-    // channel.on("MemberJoined", (memberId) => {});
   };
 
   const inputChange = (e) => {
@@ -108,7 +99,7 @@ function RightDiv({ streamData }) {
                     /> */}
                   </div>
                   <div className="chat-text-wrap">
-                    <div className="name">{userId}</div>
+                    <div className="name">{userId.replace(/\d+/g, '')}</div>
                     <div className="chat">{message}</div>
                   </div>
                 </div>
