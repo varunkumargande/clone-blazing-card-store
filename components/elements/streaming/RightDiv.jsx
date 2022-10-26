@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
-import AgoraRTM from "agora-rtm-sdk";
-import { getToken } from "../../../api/stream/getToken";
 import IconChat from "../../Icons/IconChat";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import useJoinRTM from "../../CustomHooks/JoinRtm";
+import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 
-function RightDiv({ streamData }) {
-  const [channel, setChannel] = useState(null);
+function RightDiv({ streamData, channel }) {
+  // const [channel, setChannel] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
 
   let userDetails = sessionStorage.getItem("spurtUser");
   userDetails = JSON.parse(userDetails);
-
-  useEffect(() => {
-    joinChannel();
-  }, []);
 
   useEffect(() => {
     if (channel) {
@@ -26,27 +22,20 @@ function RightDiv({ streamData }) {
           setMessages((messages) => [...messages, messageObject]);
         }
       });
+      return () => {
+        channel.logout(null);
+        channel.leave(null);
+      }
     }
   }, [channel]);
 
-  const joinChannel = async () => {
-    const options = streamData?.option;
-    const client = AgoraRTM.createInstance(options.appId);
-    const token = await getToken(
-      options.rtm,
-      options.messageChannel,
-      options.audience,
-      options.accountType,
-      options.userType
-    );
+  // const {count} = useLiveUserCount(streamData, setChannel);
 
-    await client.login({ uid: options.audience, token });
-    const channel = client.createChannel(options.messageChannel);
-    await channel.join();
-    setChannel(channel);
-    return channel;
-  };
-
+  // useEffect(() => {
+  //   setUserCount(count)
+  // }, [count])
+  
+  
   const sendAndUpdateMessage = async (initialMessage = null) => {
     const options = streamData?.option;
     const message = initialMessage ?? inputValue;
@@ -98,7 +87,7 @@ function RightDiv({ streamData }) {
                     /> */}
                   </div>
                   <div className="chat-text-wrap">
-                    <div className="name">{userId}</div>
+                    <div className="name">{userId.replace(/\d+/g, '')}</div>
                     <div className="chat">{message}</div>
                   </div>
                 </div>
