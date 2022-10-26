@@ -686,6 +686,11 @@ label{
       justify-content: center;
     }
   }
+  .edit-back,.back{
+    .icon{
+      fill:$primary-color;
+    }
+  }
 }
 @media all and (min-width:1025px){
   .wd50{
