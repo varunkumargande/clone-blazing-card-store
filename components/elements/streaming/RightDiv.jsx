@@ -11,10 +11,7 @@ function RightDiv({ streamData, channel }) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
 
-  let userDetails = sessionStorage.getItem("spurtUser");
-  userDetails = JSON.parse(userDetails);
-
-  const profileUrl = `${userDetails.avatarPath}/${userDetails.avatar}`;
+  const profileUrl = streamData?.streamPageDteails?.avatarImage;
 
   useEffect(() => {
     if (channel) {
