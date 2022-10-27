@@ -6,8 +6,7 @@ import SeeAllList from "../components/partials/LandingPage/Layout/seeAllList";
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
 import Footer from "../components/partials/LandingPage/Footer";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { categoryApi } from "../api/category/category";
 import Electronic from "../components/partials/LandingPage/Electronic";
 import LikedList from "../components/partials/LandingPage/Layout/LikedList";
@@ -16,8 +15,9 @@ import Vertical from "../components/partials/LandingPage/Layout/vertical";
 import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
 import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
+import { subcatstreamDetailApi } from "../api/stream/subStreamDetail";
 
-function landingPage({ auth }) {
+function landingPage({ auth, category }) {
   const [windowWidth, setWindowWidth] = useState(0);
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
@@ -29,6 +29,10 @@ function landingPage({ auth }) {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    subcatstreamDetailApi(dispatch);
+  }, []);
+
+  useEffect(() => {
     resizeWindow();
     window.addEventListener("resize", resizeWindow);
     return () => window.removeEventListener("resize", resizeWindow);
@@ -36,7 +40,7 @@ function landingPage({ auth }) {
 
   // ========================= category for home page ==============================
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(null);
-  const [activeCategoryName, setActiveCategoryName] = useState("All");
+  const [activeCategoryName, setActiveCategoryName] = useState(null);
   const [activeCategory, setActiveCategory] = useState([]);
   const [subCateId, setSubCateId] = useState("select");
   const [subCateName, setSubCateName] = useState("Explore");
@@ -62,9 +66,9 @@ function landingPage({ auth }) {
     categoryApi(dispatch);
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getBecomeSellerInfo());
-  }, [])
+  }, []);
 
   const getAllCategoriesCard = () => {
     if (categories) {
@@ -106,111 +110,53 @@ function landingPage({ auth }) {
   return (
     <div className="home-container">
       {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
-      {showModal && (<DynamicModal title="Signup to Join Blazing Cards" setShowModal={setShowModal}  />)}
-      {isLiveScheduleSeeAll ? (
+      {showModal && (
+        <DynamicModal
+          title="Signup to Join Blazing Cards"
+          setShowModal={setShowModal}
+        />
+      )}
+      {!!categories && (
         <>
-          {categories != undefined ? (
-            <>
-              <LiveScheduleCategory
-              seeAllHeading={seeAllHeading}
-                setSubCateId={setSubCateId}
-                subCateId={subCateId}
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-                category={categories}
-                liveScheduleCategoryName={liveScheduleCategoryName}
-                setLiveScheduleCategoryName={setLiveScheduleCategoryName}
-                subCateName={subCateName}
-              />
-            </>
-          ) : (
-            ""
-          )}
-        </>
-      ) : (
-        <>
-          {categories != undefined ? (
-            <>
-              <Category
-                setIsLikedShow={setIsLikedShow}
-                isSeeAllCate={isSeeAllCate}
-                isSeeAll={isSeeAll}
-                seeAllHeading={seeAllHeading}
-                subCateId={subCateId}
-                setSubCateId={setSubCateId}
-                setActiveCategoryName={setActiveCategoryName}
-                activeCategoryName={activeCategoryName}
-                activeCategoryIndex={activeCategoryIndex}
-                setActiveCategoryIndex={setActiveCategoryIndex}
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-                isLikedShow={isLikedShow}
-                setSubCateName={setSubCateName}
-              />
-            </>
-          ) : (
-            ""
-          )}
+          <Category seeAllHeading={seeAllHeading} />
         </>
       )}
+      
       <div className="card-wrapper">
-        {isSeeAll ? (
-          <>
-            <SeeAllList
-              setSubCateId={setSubCateId}
-              liveScheduleCategoryName={liveScheduleCategoryName}
-              setIsSeeAll={setIsSeeAll}
-              data={categories}
-              subCateId={subCateId}
-              seeAllHeading={seeAllHeading}
-              activeCategory={activeCategory}
-              showLoginModal={setShowModal}
-              setSubCateName={setSubCateName}
-              activeCategoryName={activeCategoryName}
-              
-            />
-          </>
+        {category.categoryName == "likes" ? (
+          <>{getAllLikedCard()}</>
         ) : (
           <>
-            {isLikedShow ? (
-              <>{getAllLikedCard()}</>
+            {category.categoryName === null ? (
+              <>
+                <LiveShow
+                  setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
+                  setSeeAllHeading={setSeeAllHeading}
+                  setIsSeeAll={setIsSeeAll}
+                  showLoginModal={setShowModal}
+                />
+                <ScheduledShow
+                  liveScheduleCategoryName={liveScheduleCategoryName}
+                  activeCategoryName={activeCategoryName}
+                  setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
+                  setSeeAllHeading={setSeeAllHeading}
+                  setIsSeeAll={setIsSeeAll}
+                  showLoginModal={setShowModal}
+                />
+                {getAllCategoriesCard()}
+              </>
             ) : (
               <>
-                {activeCategoryIndex == null ? (
+                {categories ? (
                   <>
-                    <LiveShow
-                      setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
-                      setSeeAllHeading={setSeeAllHeading}
-                      setIsSeeAll={setIsSeeAll}
-                      showLoginModal={setShowModal}
+                    <Vertical
+                      subCateId={subCateId}
+                      setSubCateId={setSubCateId}
+                      data={categories}
                     />
-                    <ScheduledShow
-                      liveScheduleCategoryName={liveScheduleCategoryName}
-                      activeCategoryName={activeCategoryName}
-                      setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
-                      setSeeAllHeading={setSeeAllHeading}
-                      setIsSeeAll={setIsSeeAll}
-                      showLoginModal={setShowModal}
-                    />
-                    {getAllCategoriesCard()}
                   </>
                 ) : (
-                  <>
-                    {categories ? (
-                      <>
-                        <Vertical
-                          setIsSeeAllCate={setIsSeeAllCate}
-                          subCateId={subCateId}
-                          setSubCateId={setSubCateId}
-                          categoryName={activeCategoryName}
-                          data={categories}
-                          activeCategory={activeCategory}
-                        />
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </>
+                  ""
                 )}
               </>
             )}

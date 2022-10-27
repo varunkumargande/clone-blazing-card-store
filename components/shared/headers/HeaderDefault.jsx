@@ -215,7 +215,7 @@ function HeaderDefault({ auth }) {
 
   // ======================= handle check vendor and store ========================
   const handleStoreAndVendorToggle = () => {
-    dispatch(vendorAuth())
+    dispatch(vendorAuth());
   };
   // ==============================================================================
   // ======================= Onclick outside dropdown close ========================
