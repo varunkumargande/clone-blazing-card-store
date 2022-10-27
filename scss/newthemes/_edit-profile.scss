@@ -4,6 +4,9 @@
     width:100%;
     padding: 0 15px 30px;
     margin: 0 auto;
+    .checkbox-wrap .checkmark {
+        margin-top: 3px;
+    }
     .breadcrumbs{
         li{
             color:$secondry-color;
@@ -427,20 +430,6 @@
                 max-width: calc(50% - 12px);
             }
         }
-    }
-}
-.payment-checkbox  {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 18px;
-    width: 18px;
-    border-radius: 2px;
-    border:2px solid $border-color;
-    &:after {
-      content: "";
-      position: absolute;
-      display: none;
     }
 }
 
