@@ -50,6 +50,7 @@ function LeftDiv({
     streamingDetails.isFollow ? streamingDetails.isFollow : false
   );
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
+  const [noOfFollower, setNoOfFollower] = useState(stream?.streamData?.vendorDetails?.follower_count ?? 0)
   //to handle width of the screen and call methods accordingly
   const [windowWidth, setWindowWidth] = useState(0);
   let resizeWindow = () => {
@@ -273,6 +274,7 @@ function LeftDiv({
         };
         const response = await userFollowUnfollow(data);
         if (response.status) {
+          setNoOfFollower(response?.data?.followerCount)
           setFollowed(!followed);
           setShowUnFollowModal(false);
         }
@@ -350,7 +352,6 @@ function LeftDiv({
       </div>
     );
   };
-
   return (
     <div className="streaming-left">
       {showUnFollowModal && UnfollowModal()}
@@ -381,9 +382,7 @@ function LeftDiv({
         <div className="profile-wrap" onClick={handleProfileClick}>
           <div className="name">{vendorName}</div>
           <div className="followrs-count">
-            {stream.streamData.vendorDetails.follower_count
-              ? stream.streamData.vendorDetails.follower_count
-              : "0"}{" "}
+            {noOfFollower}{" "}
             Followers
           </div>
         </div>

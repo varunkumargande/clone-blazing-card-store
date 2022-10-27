@@ -92,7 +92,7 @@ export default function ProfileInformation() {
   const profileSchema = Yup.object().shape({
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
-    bio: Yup.string().required("Required").max(300),
+    bio: Yup.string().max(300),
     twitterUrl: Yup.string()
       .matches(
         /(?:http:\/\/)?(?:www\.)?twitter\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)/,

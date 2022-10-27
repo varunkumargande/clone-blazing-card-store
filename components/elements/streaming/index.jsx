@@ -4,7 +4,11 @@ import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { addNotification, clearState, streamData } from "../../../store/stream/action";
+import {
+  addNotification,
+  clearState,
+  streamData,
+} from "../../../store/stream/action";
 import { io } from "socket.io-client";
 import { notificationBaseUrl } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
@@ -35,22 +39,30 @@ function Index() {
   );
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
-  const {count} = useLiveUserCount(streamPageData, setChannel);
+  const { count, client } = useLiveUserCount(streamPageData, setChannel);
   const [isLeftDivOpen, setLeftDivOpen] = useState();
 
   useEffect(() => {
     dispatch(streamData(uuid));
 
     return () => {
-      dispatch(clearState())
-    }
+      dispatch(clearState());
+    };
   }, []);
-  useEffect(() => {socketInitializer()}, []);
+  useEffect(() => {
+    socketInitializer();
+  }, []);
 
   const socketInitializer = () => {
-    const bidNotification = new EventSource(`${notificationBaseUrl}${uuid}-bid`);
-    const auctionNotification = new EventSource(`${notificationBaseUrl}${uuid}-auction`);
-    const winNotification = new EventSource(`${notificationBaseUrl}${uuid}-win`);
+    const bidNotification = new EventSource(
+      `${notificationBaseUrl}${uuid}-bid`
+    );
+    const auctionNotification = new EventSource(
+      `${notificationBaseUrl}${uuid}-auction`
+    );
+    const winNotification = new EventSource(
+      `${notificationBaseUrl}${uuid}-win`
+    );
 
     bidNotification.onmessage = (bid) => {
       dispatch(
@@ -68,7 +80,7 @@ function Index() {
         })
       );
     };
-    winNotification.onmessage =  (winner) => {
+    winNotification.onmessage = (winner) => {
       dispatch(
         addNotification({
           type: "win",
@@ -91,7 +103,12 @@ function Index() {
     <>
       {streamingDetails?.uuid ? (
         <>
-          {showLoginModal && (<DynamicModal title="Signup to Join Blazing Cards" setShowModal={setShowLoginModal} />)}
+          {showLoginModal && (
+            <DynamicModal
+              title="Signup to Join Blazing Cards"
+              setShowModal={setShowLoginModal}
+            />
+          )}
           <div className="streaming-page flex space-between">
             <LeftDiv
               setShowLoginModal={setShowLoginModal}
@@ -129,6 +146,7 @@ function Index() {
               streamingDetails={streamingDetails}
               streamData={streamPageData}
               channel={channel}
+              client={client}
             />
           </div>
         </>

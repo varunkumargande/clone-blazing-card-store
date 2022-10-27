@@ -4,6 +4,9 @@
     width:100%;
     padding: 0 15px 30px;
     margin: 0 auto;
+    .checkbox-wrap .checkmark {
+        margin-top: 3px;
+    }
     .breadcrumbs{
         li{
             color:$secondry-color;
@@ -147,11 +150,12 @@
         }
     }
     .button-wrapper{
+        max-width: 250px;
         .border-btn{
-            max-width: 97px;
+            width: 97px;
         }
         .primary-btn{
-            max-width: 82px;
+            width: 117px;
             &.disable{
                 opacity: .44;
             }

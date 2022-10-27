@@ -62,6 +62,7 @@ export default function PaymentDetail() {
     cvc: "",
     cardNumber: "",
     countryId: "",
+    termCheckbox: false
   };
 
   const paySchema = Yup.object().shape({
@@ -72,6 +73,7 @@ export default function PaymentDetail() {
       .min(16, "Card Number is invalid")
       .max(16, "Card Number is invalid"),
     countryId: Yup.string().required("Required"),
+    termCheckbox: Yup.bool().oneOf([true])
   });
 
   const submitCardDetail = async (values) => {
@@ -246,10 +248,21 @@ export default function PaymentDetail() {
                                 </span>
                               </div>
                             </div>
-                            <div className="discriptionlg">
-                              By providing your card information, you allow
-                              BLAZING CARDS to charge your card for future
-                              payments in accordance with their terms.
+                            <div className="checkbox-wrap mb32">
+                              <label className="checkbox">
+                              <input
+                                name="termCheckbox"
+                                type="checkbox"
+                                onChange={handleChange}
+                                value={values.termCheckbox}
+                              />
+                                <span class="checkmark"></span>
+                                <div className="discriptionlg">
+                                  By providing your card information, you allow
+                                  BLAZING CARDS to charge your card for future
+                                  payments in accordance with their terms.
+                                </div>
+                              </label>
                             </div>
                           </div>
                         </div>
@@ -262,7 +275,11 @@ export default function PaymentDetail() {
                             Cancel
                           </button>
 
-                          <button className="primary-btn">Save</button>
+                          <button
+                            className={`primary-btn ${!values.termCheckbox && "disable"}`}
+                            disabled={!values.termCheckbox}>
+                            Add Card
+                          </button>
                         </div>
                       </form>
                     </>
