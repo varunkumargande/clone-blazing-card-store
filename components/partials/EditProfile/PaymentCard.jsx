@@ -13,7 +13,6 @@ export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
 
     return(
         <div className="profile-detail">
-            <h3>Payment Details</h3>
             <div className="box">
                 <div className="inner-box">
                     <div className="discriptionlg sb">Your Payment Card</div>

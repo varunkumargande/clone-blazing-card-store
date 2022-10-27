@@ -147,11 +147,12 @@
         }
     }
     .button-wrapper{
+        max-width: 250px;
         .border-btn{
-            max-width: 97px;
+            width: 97px;
         }
         .primary-btn{
-            max-width: 82px;
+            width: 117px;
             &.disable{
                 opacity: .44;
             }
@@ -426,6 +427,20 @@
                 max-width: calc(50% - 12px);
             }
         }
+    }
+}
+.payment-checkbox  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    border-radius: 2px;
+    border:2px solid $border-color;
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
     }
 }
 
