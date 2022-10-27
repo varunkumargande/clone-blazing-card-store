@@ -5,8 +5,10 @@ import { getToken } from "../../api/stream/getToken";
 
 export default function useJoinRTM(streamData, callBack) {
   useEffect(() => {
-    joinChannel()
-  }, [streamData])
+    joinChannel();
+  }, [streamData]);
+
+  const [client, setClient] = useState(null);
 
   const joinChannel = async () => {
     const options = streamData?.option;
@@ -19,11 +21,12 @@ export default function useJoinRTM(streamData, callBack) {
         options.accountType,
         options.userType
       );
+      setClient(client);
       await client.login({ uid: options.audience + options.audienceId, token });
       const channel = client.createChannel(options.messageChannel);
       await channel.join();
-      callBack(channel)
+      callBack(channel);
     }
-  }
-  return null;
+  };
+  return { client };
 }
