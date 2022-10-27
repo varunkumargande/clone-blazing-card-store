@@ -121,66 +121,52 @@ function Login(props) {
           );
         }}
       >
-        {(
-          {
-            errors,
-            touched,
-          },
-          formProps
-        ) => (
+        {({ errors, touched }, formProps) => (
           <>
             <Form className="login flex space-between">
-              <div className="input-control">
-                <TextInput
-                  className="input-control wd100"
-                  label={loginConstant.form.emailField.emailLabel}
-                  name={loginConstant.form.emailField.emailName}
-                  type="text"
-                  placeholder={loginConstant.form.emailField.emailPlaceholder}
-                />
-                <ErrorMessage errors={errors.email} touched={errors.touched} />
-              </div>
-              <div className="input-control pass">
-                <TextInput
-                  className="input-control wd100"
-                  label={loginConstant.form.passwordField.passwordLabel}
-                  name={loginConstant.form.passwordField.passwordName}
-                  type={conpassShow ? "text" : "password"}
-                  placeholder={
-                    loginConstant.form.passwordField.passwordPlaceholder
-                  }
-                />
-                <ErrorMessage
-                  errors={errors.password}
-                  touched={touched.password}
-                />
-                {conpassShow ? (
+              <TextInput
+                className="input-control wd100"
+                label={loginConstant.form.emailField.emailLabel}
+                name={loginConstant.form.emailField.emailName}
+                type="text"
+                placeholder={loginConstant.form.emailField.emailPlaceholder}
+              />
+              <TextInput
+                className="input-control wd100"
+                label={loginConstant.form.passwordField.passwordLabel}
+                name={loginConstant.form.passwordField.passwordName}
+                type={conpassShow ? "text" : "password"}
+                placeholder={
+                  loginConstant.form.passwordField.passwordPlaceholder
+                }
+              />
+              {conpassShow ? (
+                <button
+                  className="show-hide"
+                  onClick={(e) => setConPassShow(!conpassShow)}
+                >
+                  <IconEye />
+                </button>
+              ) : (
+                <>
+                  {" "}
                   <button
                     className="show-hide"
                     onClick={(e) => setConPassShow(!conpassShow)}
                   >
                     <IconEye />
-                  </button>
-                ) : (
-                  <>
-                    {" "}
-                    <button
-                      className="show-hide"
-                      onClick={(e) => setConPassShow(!conpassShow)}
-                    >
-                      <IconEye />
-                    </button>{" "}
-                  </>
-                )}
-                <div className="flex justify-right mb16 forget mb32">
-                  <Link href="/account/forgot-password">
-                    <a>{loginConstant.form.forgetPassword}</a>
-                  </Link>
-                </div>
-                <div align={"center"}>
-                  <h5 className="errorMessage">{loginError}</h5>
-                </div>
+                  </button>{" "}
+                </>
+              )}
+              <div className="flex justify-right mb16 forget mb32">
+                <Link href="/account/forgot-password">
+                  <a>{loginConstant.form.forgetPassword}</a>
+                </Link>
               </div>
+              <div align={"center"}>
+                <h5 className="errorMessage">{loginError}</h5>
+              </div>
+
               <div className="submitWrap mb32">
                 <button type="submit" className="primary-btn">
                   {loginConstant.form.button.name}

@@ -13,5 +13,4 @@ export async function subcatstreamDetailApi(dispatch,category_id) {
   const result = await APIServices.getAll(`stream/stream-homePage`);
   if (result?.data?.status === 1)
     dispatch(getStreamDetails(result?.data?.data));
-    
 }

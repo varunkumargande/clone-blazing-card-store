@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useDispatch, connect } from "react-redux";
+import Router from "next/router";
+import { saveSubCategoryName} from "../../../store/category/action";
 
-export default function SeeAllSubCategories({
+function SeeAllSubCategories({
   categories,
-  setActiveSubCategory,
-  activeSubCategory,
-  setActiveSubCategoryId
+  category
 }) {
+  const dispatch = useDispatch();
   const { query } = useRouter();
   const [queryCategory, setQueryCategory] = useState(null);
+
   useEffect(() => {
     if (Object.keys(query).length != 0 && query?.category != "") {
       setQueryCategory(query?.category);
@@ -16,22 +19,27 @@ export default function SeeAllSubCategories({
   }, [query]);
 
   const handleSubCategorySelect = (name, id) => {
-    setActiveSubCategory(name)
-    setActiveSubCategoryId(id)
+    dispatch(saveSubCategoryName(name))
+    Router.push({
+      pathname: "/see-all",
+      query: {
+        page: query.page,
+        category: category?.categoryName,
+        subCategory: name
+      },
+    });
   };
 
   const getAllSubCategoriesCard = () => {
     if (!!categories) {
       return categories.map((element) => {
-        
         if (element.name === queryCategory) {
-          
           return element?.children.map((item) => {
             return (
               <>
                 <div className="category-list">
                   <button className=
-                  {activeSubCategory === item.name ? "title active" : "title"}
+                  {category?.subCategoryName === item.name ? "title active" : "title"}
                   onClick={() => handleSubCategorySelect(item.name, item.categoryId)}
                   >{item.name}</button>
                 </div>
@@ -50,7 +58,7 @@ export default function SeeAllSubCategories({
           <div className="Category-list-wrap inner-container flex">
             <div className="category-list">
               <button 
-              className={activeSubCategory === "all" ? "title active" : "title"}
+              className={category?.subCategoryName === "all" ? "title active" : "title"}
               onClick={() => handleSubCategorySelect("all")}
               >All</button>
             </div>
@@ -61,3 +69,10 @@ export default function SeeAllSubCategories({
     </>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(SeeAllSubCategories);
