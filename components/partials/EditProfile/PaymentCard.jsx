@@ -1,6 +1,7 @@
 import React from "react";
 import IconMasterCardWhite from "../../Icons/IconMasterCardWhite";
 import Link from "next/link";
+import { getCardImagesByName } from "../../helper/cardImageHelper";
 
 export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
 
@@ -32,23 +33,14 @@ export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
                                             <div className="value">{cardData?.card?.exp_month} / {cardData?.card?.exp_year}</div>
                                         </div>
                                         <div className="card-name">
-                                            {cardData?.card?.brand == "visa" ? (
-                                                <>
-                                                    Visa
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <IconMasterCardWhite />
-                                                </>
-                                            )}
-                                            
+                                            {getCardImagesByName('', cardData?.card?.brand)}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="payemnt-edits flex justify-right flex-center">
                                 {/* <button className="remove">Remove</button> */}
-                                <button className="edit ml20" onClick={handleCardFeature}>Edit Details</button>
+                                <button className="edit ml20" onClick={handleCardFeature}>Remove and Add a new card</button>
                             </div>
                         </div>
                         {/* <div className="add-card flex justify-center flex-center column">
