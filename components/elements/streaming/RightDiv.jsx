@@ -6,8 +6,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 // import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
 // import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 
-function RightDiv({ streamData, channel }) {
-  // const [channel, setChannel] = useState(null);
+function RightDiv({ streamData, channel, client }) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -28,8 +27,8 @@ function RightDiv({ streamData, channel }) {
         }
       });
       return () => {
-        channel?.logout(null);
-        channel.leave(null);
+        client.logout();
+        channel.leave();
       };
     }
   }, [channel]);

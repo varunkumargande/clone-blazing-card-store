@@ -2,12 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import useJoinRTM from "./JoinRtm";
 
-export default function useLiveUserCount (streamData, callback){
+export default function useLiveUserCount(streamData, callback) {
   const [count, setUserCount] = useState(0);
   const [channel, setChannel] = useState(null);
 
-  useJoinRTM(streamData, setChannel);
-  
+  const { client } = useJoinRTM(streamData, setChannel);
+
   useEffect(() => {
     const id = setInterval(() => {
       getUserCount();
@@ -15,16 +15,19 @@ export default function useLiveUserCount (streamData, callback){
     return () => {
       clearInterval(id);
     };
-  })
+  });
 
   const getUserCount = () => {
-    callback(channel)
-    channel.getMembers().then( async (members)=> {
-      setUserCount(members?.length);
-    }).catch( e => {
-      console.log(e);
-    })
-  }
+    callback(channel);
+    channel
+      .getMembers()
+      .then(async (members) => {
+        setUserCount(members?.length);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
-  return {count, channel};
+  return { count, channel, client };
 }
