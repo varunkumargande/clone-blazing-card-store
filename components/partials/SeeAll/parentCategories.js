@@ -2,37 +2,39 @@ import { useState, useEffect } from "react";
 import Router from "next/router";
 import { stringFormatter } from "../../../utilities/utils";
 import { useRouter } from "next/router";
+import { useDispatch, connect } from "react-redux";
+import { saveCategoryName, saveSubCategoryName } from "../../../store/category/action";
 
-export default function SeeAllParentCategories({
+function SeeAllParentCategories({
   categories,
-  setActiveCategory,
-  activeCategoryId,
-  setActiveSubCategory
+  category,
 }) {
+  const dispatch = useDispatch();
   const { query } = useRouter();
-  const [queryState, setQueryState] = useState(null);
 
   const handleSelectCategory = (name, id) => {
-    setActiveCategory(name);
-    setActiveSubCategory("all")
+    dispatch(saveCategoryName(name))
+    dispatch(saveSubCategoryName("all"))
     Router.push({
       pathname: "/see-all",
       query: {
         page: query.page,
         category: name,
+        subCategory: "all"
       },
     });
   };
 
   useEffect(() => {
     if (Object.keys(query).length != 0 && query?.category != "") {
-      setQueryState(query?.category);
+      dispatch(saveCategoryName(query?.category))
     } else {
       Router.push({
         pathname: "/see-all",
         query: {
           page: query.page,
           category: categories[0]?.name,
+          subCategory: category?.subCategoryName
         },
       });
     }
@@ -43,7 +45,7 @@ export default function SeeAllParentCategories({
       return categories.map((element) => {
         return (
           <li
-            className={queryState === element?.name ? "active" : ""}
+            className={category?.categoryName === element?.name ? "active" : ""}
             onClick={() =>
               handleSelectCategory(element?.name, element?.categoryId)
             }
@@ -63,3 +65,9 @@ export default function SeeAllParentCategories({
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(SeeAllParentCategories);

@@ -1,39 +1,28 @@
 import React, { useState } from "react";
-import Link from "next/link";
-import IconBack from "../../../Icons/IconBack";
-import IconEye from "../../../Icons/IconEye";
-import IconLike from "../../../Icons/IconLike";
 import StreamCard from "../../../elements/StreamCard";
 import { stringFormatter } from "../../../../utilities/utils";
 import { connect } from "react-redux";
 import Router from "next/router";
+import { useSelector } from "react-redux";
 
 function Vertical({
-  setIsSeeAllCate,
   categoryName,
   data,
-  activeCategory,
   subCateId,
-  setSubCateId,
   category,
 }) {
-  const handleSubCateId = (e) => {
-    setSubCateId(e.target.value);
-  };
-
-  
 
   const handleCardDetail = () => {
-    if (data[categoryName] != undefined) {
-      return data[categoryName].map((detail, index) => {
+    if (data[category?.categoryName]) {
+      return data[category?.categoryName].map((detail, index) => {
         if (subCateId == "select" || subCateId == null) {
-          return <StreamCard detail={detail} isLive={true} />;
+          return <StreamCard detail={detail} />;
         } else {
           if (parseInt(subCateId) === detail.category_id) {
-            return <StreamCard detail={detail} isLive={true} />;
+            return <StreamCard detail={detail} />;
           }
           if (parseInt(subCateId) === detail.subCategory_id) {
-            return <StreamCard detail={detail} isLive={true} />;
+            return <StreamCard detail={detail} />;
           }
         }
       });
@@ -56,7 +45,7 @@ function Vertical({
         <div className="title-wrap flex space-between flex-center">
           <div className="flex flex-center">
             <h3 className="title">
-              {!!categoryName ? stringFormatter(categoryName) : ""}
+              {!!category?.categoryName ? stringFormatter(category?.categoryName) : ""}
             </h3>
           </div>
           <div className="seeAll">
@@ -66,22 +55,6 @@ function Vertical({
             >
               View All
             </a>
-            {/* <div className="dropdownlist">
-                            <select className="dropDownBtn flex flex-center space-between" onChange={(e) => handleSubCateId(e)}>
-                                <option value={"select"}>
-                                    Sub_Category
-                                </option>
-                                {activeCategory.children.map((item, index) => {
-                                    return (
-                                        <>
-                                            <option value={item.categoryId}>
-                                                {item.name}
-                                            </option>
-                                        </>
-                                    )
-                                })}
-                            </select>
-                        </div> */}
           </div>
         </div>
         <div className="overflow-none">

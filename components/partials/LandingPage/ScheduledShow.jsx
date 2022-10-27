@@ -14,9 +14,9 @@ import Router from "next/router";
 
 export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, setIsLiveScheduleSeeAll, activeCategoryName,showLoginModal }) {
     const dispatch = useDispatch();
-    useEffect(() => {
-        subcatstreamDetailApi(dispatch, catId)
-    }, [])
+    // useEffect(() => {
+    //     subcatstreamDetailApi(dispatch, catId)
+    // }, [])
     const streamDetail = useSelector((state) => state?.stream?.streamdetails?.stream)
 
     const handleSeeAll = (name) => {

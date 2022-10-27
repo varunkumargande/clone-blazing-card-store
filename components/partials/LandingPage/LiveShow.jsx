@@ -18,9 +18,9 @@ export default function LiveShow({ name, catId, setIsSeeAll, setSeeAllHeading, s
   }    
    
     const dispatch = useDispatch();
-    useEffect(()=>{
-        subcatstreamDetailApi(dispatch,catId)
-    },[])
+    // useEffect(()=>{
+    //     subcatstreamDetailApi(dispatch,catId)
+    // },[])
     const streamDetail= useSelector((state)=>state?.stream?.streamdetails?.stream)
 
   const getStreamCards = () => {
