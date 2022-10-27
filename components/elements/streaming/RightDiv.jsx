@@ -28,9 +28,9 @@ function RightDiv({ streamData, channel }) {
         }
       });
       return () => {
-        channel.logout(null);
+        channel?.logout(null);
         channel.leave(null);
-      }
+      };
     }
   }, [channel]);
 
@@ -41,23 +41,24 @@ function RightDiv({ streamData, channel }) {
   // useEffect(() => {
   //   setUserCount(count)
   // }, [count])
-  
-  
-  const sendAndUpdateMessage = async (initialMessage = null) => {
-    const options = streamData?.option;
-    const message = initialMessage ?? inputValue;
-    const messageObject = {
-      message,
-      userId: options.audience + options.audienceId,
-      profileUrl: profileUrl,
-    };
 
-    setMessages((messages) => [...messages, messageObject]);
-    await channel.sendMessage({
-      text: JSON.stringify({ text: message, profileUrl: profileUrl }),
-      type: "text",
-    });
-    setInputValue("");
+  const sendAndUpdateMessage = async (initialMessage = null) => {
+    if (initialMessage || inputValue) {
+      const options = streamData?.option;
+      const message = initialMessage ?? inputValue;
+      const messageObject = {
+        message,
+        userId: options.audience + options.audienceId,
+        profileUrl: profileUrl,
+      };
+
+      setMessages((messages) => [...messages, messageObject]);
+      await channel.sendMessage({
+        text: JSON.stringify({ text: message, profileUrl: profileUrl }),
+        type: "text",
+      });
+      setInputValue("");
+    }
   };
 
   const inputChange = (e) => {
@@ -96,7 +97,7 @@ function RightDiv({ streamData, channel }) {
                     /> */}
                   </div>
                   <div className="chat-text-wrap">
-                    <div className="name">{userId.replace(/\d+/g, '')}</div>
+                    <div className="name">{userId.replace(/\d+/g, "")}</div>
                     <div className="chat">{message}</div>
                   </div>
                 </div>
