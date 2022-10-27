@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 
-function StreamCard({ detail, isLive, showLoginModal, auth }) {
+function StreamCard({ detail, showLoginModal, auth }) {
   const handleRouting = (id) => {
     Router.push("/profile?userId=" + id);
   };

@@ -20,28 +20,30 @@ export default function Electronic({
 
 
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    subcatstreamDetailApi(dispatch);
-  }, []);
 
   const handleSeeAll = (name) => {
     setIsSeeAll(true);
     setIsSeeAllCate(false);
     setSeeAllHeading(name);
+    Router.push({
+      pathname: "/see-all",
+      query: {
+        page:"all Categories",
+        category: name,
+        subCategory: "all"
+      },
+    });
   };
-
 
   const getStreamCards = () => {
     if (categoryData)
       return categoryData[1]?.map((detail) => {
         return (
-          <StreamCard showLoginModal={showLoginModal} detail={detail} isLive={true} />
+          <StreamCard showLoginModal={showLoginModal} detail={detail} />
         );
       });
   };
   
-
   return (
     <section className="Live-wrapper card-inner">
       <div className="inner-container">
@@ -50,13 +52,12 @@ export default function Electronic({
             <h3 className="title">{stringFormatter(categoryData[0])}</h3>
           </div>
           <div className="seeAll">
-            {/* <Link href={`/categoryStream?catname=${categoryData[0]}`}> */}
-            <a
+            <div
               className="flex flex-center"
               onClick={() => handleSeeAll(categoryData[0])}
             >
               View All
-            </a>
+            </div>
             {/* </Link> */}
           </div>
         </div>
