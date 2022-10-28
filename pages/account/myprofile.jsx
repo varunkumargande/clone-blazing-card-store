@@ -48,7 +48,7 @@ function MyProfile(props) {
   };
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
+    const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
     setUserId(userData.id);
     setProfile(userData);
   }, []);
@@ -319,9 +319,9 @@ function MyProfile(props) {
   return (
     <div className="home-container profile-container-wrap">
       {windowWidth <= 1024 ? (
-                <div className="profile-title flex flex-center">
-                  <BackButton name={"Profile"} />
-                </div>
+        <div className="profile-title flex flex-center">
+          <BackButton name={"Profile"} />
+        </div>
       ) : (
         <HeaderDefault />
       )}

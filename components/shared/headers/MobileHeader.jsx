@@ -32,7 +32,7 @@ function MobileHeader({ auth }) {
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const authFunc = () => {
-    if (sessionStorage.getItem("spurtToken") !== null) {
+    if (sessionStorage.getItem("blazingToken") !== null) {
       dispatch(login());
     }
   };
@@ -45,7 +45,7 @@ function MobileHeader({ auth }) {
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("spurtUser");
+      let profileData = sessionStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);
@@ -82,7 +82,7 @@ function MobileHeader({ auth }) {
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("spurtUser");
+      let profileData = sessionStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);

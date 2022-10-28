@@ -1,50 +1,41 @@
-import toast from './toast'
+import toast from "./toast";
 import Axios from "axios";
-import {apiUrl} from './url'
-
+import { apiUrl } from "./url";
 
 const http = Axios.create({
-    
-    baseURL: apiUrl,
-    headers: {
-      "Content-type": "application/json",
-    },
-  });
+  baseURL: apiUrl,
+  headers: {
+    "Content-type": "application/json",
+  },
+});
 
-  export const modalSuccess = (type, message) => {
-    return;
- 
-    toast({ type: type, message:message});
-  
-  }
-  
-  export const modalWarning = (type, message) => {
-    return;
-    toast({ type: type, message:message });
-  
-  };
-  
+export const modalSuccess = (type, message) => {
+  return;
 
+  toast({ type: type, message: message });
+};
 
- 
+export const modalWarning = (type, message) => {
+  return;
+  toast({ type: type, message: message });
+};
+
 http.interceptors.request.use((config) => {
-    // const token = sessionStorageService.getAccessToken();
-    var token = sessionStorage.getItem('spurtToken')
-    if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
-    }
-    return config;
-  });
-  
+  // const token = sessionStorageService.getAccessToken();
+  var token = sessionStorage.getItem("blazingToken");
+  if (token) {
+    config.headers["Authorization"] = "Bearer " + token;
+  }
+  return config;
+});
 
-  http.interceptors.response.use((response) => {
+http.interceptors.response.use(
+  (response) => {
     return response;
-  }, 
+  },
 
   (error) => {
-  
     switch (error.response) {
-     
       // case 400:
 
       //  handleBadRequest(error.response.data.message);
@@ -69,8 +60,7 @@ http.interceptors.request.use((config) => {
       case 500:
         handleServerError(error.response.statusText);
         break;
-    
-     
+
       default:
         break;
     }
@@ -78,25 +68,23 @@ http.interceptors.request.use((config) => {
     return error.response;
     // return error.response;
   }
-
-
-)
+);
 
 function handleBadRequest(error) {
   modalWarning({ type: "error", message: error });
 }
 
 function handleUnauthorized(error) {
-//   Router.push("/account/login")
-// sessionStorage.removeItem('spurtToken')
-  //  removes.removeItem("spurtToken")
+  //   Router.push("/account/login")
+  // sessionStorage.removeItem('blazingToken')
+  //  removes.removeItem("blazingToken")
   // sessionStorage.removeItem('userProfile')
   // sessionStorage.removeItem('companyProfile')
   // toast({type:"error",message:error})
 }
 
 function handleForbidden() {
-  toast({type:"error",message:error})
+  toast({ type: "error", message: error });
 }
 
 function handleNotFound(error) {
@@ -104,17 +92,11 @@ function handleNotFound(error) {
 }
 
 function handleUnProcessableEntry(error) {
-  toast({type:"error",message:error})
+  toast({ type: "error", message: error });
 }
 
 function handleServerError(error) {
-
-  toast({type:"error",message:error})
+  toast({ type: "error", message: error });
 }
 
-
-
 export default http;
-
-
-

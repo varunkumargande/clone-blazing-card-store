@@ -30,14 +30,14 @@ function HeaderRight({ auth }) {
   };
 
   useEffect(() => {
-    TokenAuth = sessionStorage.getItem("spurtToken");
+    TokenAuth = sessionStorage.getItem("blazingToken");
     cartLocal = JSON.parse(sessionStorage.getItem("cartItem"));
     authFunc();
   }, []);
 
   useEffect(() => {
     dispatch(addItemToWishlist(0));
-    sessionStorage.getItem("spurtToken") &&
+    sessionStorage.getItem("blazingToken") &&
       wishListApi(setWishListApi, dispatch, setDummy);
   }, [reloadCart]);
 

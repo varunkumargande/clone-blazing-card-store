@@ -27,9 +27,9 @@ import {
   getQuantymin,
   getsliderimageclicks,
 } from "../../../../../store/product/action";
-import SpurtQuotationPop from "../../../../partials/Quotation/QuoteModal";
+import BlazingQuotationPop from "../../../../partials/Quotation/QuoteModal";
 import ProductReviewRatingviews from "../description/ProductReviewRating";
-import SpurtVarientComponent from "../../../../partials/product/VarientComponent";
+import BlazingVarientComponent from "../../../../partials/product/VarientComponent";
 // import { commonproductcountApi } from "../../../../../addOns/CommonVendorProduct/commonproductcountApi";
 
 function InformationDefault({
@@ -49,10 +49,8 @@ function InformationDefault({
   //  let product=useSelector((s) => s.setting).currency;
   const varproduct = useSelector((s) => s.product.singleProduct);
 
-
   const availableProductStatus = useSelector((s) => s.product.hidefunavailable);
   const quantity = useSelector((s) => s.product.qut);
-  
 
   const [colorTheme, setColorTheme] = useState();
   const dispatch = useDispatch();
@@ -107,7 +105,6 @@ function InformationDefault({
     dispatch(getQuantymin(1));
     varproduct.processImage = product.productImage;
     if (product.minQuantityAllowedCart !== null && product.hasStock !== 0) {
-      
       if (
         varproduct.productvarientList &&
         varproduct.productvarientList.length !== 0
@@ -134,7 +131,7 @@ function InformationDefault({
   // useEffect(() => {
   //   if(varproduct.productvarientList &&
   //     varproduct.productvarientList.length !== 0){
-  //       
+  //
   //       setQuantity(qutmin)
   //       // product.skuName=varproduct.skuName
   //     }
@@ -421,9 +418,9 @@ function InformationDefault({
 
     // product.skuName=varproduct.skuName
     // product.skuName=varproduct.skuName
-    // 
-    // 
-    // 
+    //
+    //
+    //
     cartAdd(product, quantity, availValue);
 
     dispatch(addItem(1));
@@ -512,7 +509,7 @@ function InformationDefault({
       if (product.hasTirePrice === 1) {
         product.productTirePrices.map((tieres, index) => {
           if (tieres.quantity <= quantity + 1) {
-            // 
+            //
             setopentlet(tieres);
             product.price = priceHelpFunc(
               JSON.parse(tieres.price),
@@ -550,7 +547,7 @@ function InformationDefault({
         //  })
         product.productTirePrices.map((tieres, index) => {
           if (tieres.quantity <= quantity + 1) {
-            // 
+            //
             setopentlet(tieres);
             product.price = priceHelpFunc(
               JSON.parse(tieres.price),
@@ -770,7 +767,6 @@ function InformationDefault({
                     <>
                       {varproduct.productvarientList.map((produt) => (
                         <>
-                         
                           {varproduct.variantName == produt.varientName ? (
                             <>
                               <h3>
@@ -1034,8 +1030,7 @@ function InformationDefault({
       </div>
       {availableProductStatus === false ? (
         <>
-        <ProductReviewRatingviews  product={product} starcout={starcoutid} />
-          
+          <ProductReviewRatingviews product={product} starcout={starcoutid} />
         </>
       ) : (
         ""
@@ -1089,8 +1084,6 @@ function InformationDefault({
         ""
       )}
 
-    
-
       {product.pincodeBasedDelivery === 1 && (
         <div className="custom-shipping-input-container">
           <p>{t("products.CheckLocation")}</p>
@@ -1116,8 +1109,7 @@ function InformationDefault({
         </div>
       )}
       <>
-      <SpurtVarientComponent />
-       
+        <BlazingVarientComponent />
       </>
       {availableProductStatus === false ? (
         <>
@@ -1242,8 +1234,7 @@ function InformationDefault({
                 )}
             </div>
           )}
-          <SpurtQuotationPop product={product} />
-        
+          <BlazingQuotationPop product={product} />
         </>
       ) : (
         " "

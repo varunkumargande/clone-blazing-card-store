@@ -3,9 +3,12 @@ import IconMasterCardWhite from "../../Icons/IconMasterCardWhite";
 import Link from "next/link";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
 
-export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
-
-    const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
+export default function PaymentCard({
+  cardData,
+  setIsCardData,
+  setIsCardEdit,
+}) {
+  const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
 
     const handleCardFeature = () => {
         setIsCardEdit(true)
@@ -49,9 +52,9 @@ export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
                             <span className="flex justify-center flex-center">+</span>
                             <div className="another-card">Add another card</div>
                         </div> */}
-                    </div>
-                </div>
-            </div>
+                    </div>       
         </div>
-    );
+      </div>
+    </div>
+  );
 }

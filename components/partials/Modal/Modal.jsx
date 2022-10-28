@@ -383,7 +383,7 @@ export function AddNewCardModal(props) {
     fetchCardDetail,
   } = props;
 
-  const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
+  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
   const [initialValueFlag, setInitialValueFlag] = useState(

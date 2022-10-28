@@ -23,9 +23,9 @@ export function NotificationsProvider(props) {
 
   const { data } = useEventSocket(
     typeof window !== "undefined" &&
-      JSON.parse(sessionStorage.getItem("spurtUser")) &&
+      JSON.parse(sessionStorage.getItem("blazingUser")) &&
       `https://blazing-card-backend-dev.kellton.net/events/start?channel=notify-${String(
-        JSON.parse(sessionStorage.getItem("spurtUser")).id
+        JSON.parse(sessionStorage.getItem("blazingUser")).id
       )}`
   );
 
@@ -35,10 +35,10 @@ export function NotificationsProvider(props) {
 
   useEffect(() => {
     if (
-      isLoggedIn !== !!sessionStorage.getItem("spurtUser") &&
+      isLoggedIn !== !!sessionStorage.getItem("blazingUser") &&
       typeof window !== "undefined"
     ) {
-      setIsLoggedIn(!!sessionStorage.getItem("spurtUser"));
+      setIsLoggedIn(!!sessionStorage.getItem("blazingUser"));
     }
   }, [typeof window]);
 

@@ -131,7 +131,7 @@ function LayoutShop({
             priceFrom: priceMin,
             variantValue: "",
             defaultCallValue: orderBy,
-  
+
             offset: Math.ceil((value - 1) * 18),
             index: 0,
             categorySlug: categoryInitial,
@@ -147,17 +147,13 @@ function LayoutShop({
             variantValue: "",
             defaultCallValue: orderBy,
             offset: Math.ceil((value - 1) * 18),
-            
+
             index: 0,
             categorySlug: categoryInitial,
           },
         }
-        
       );
-
-
-
-    }else{
+    } else {
       Router.push(
         {
           pathname: `/shop/[sid]`,
@@ -190,9 +186,8 @@ function LayoutShop({
           },
         }
       );
-
     }
-    
+
     window.scroll({ top: 0 });
   };
 
@@ -674,7 +669,7 @@ function LayoutShop({
       ) : (
         <center>
           <img
-            src="/static/img/spurt-original-loader.gif"
+            src="/static/img/Loader/loader_blue.gif"
             width="100"
             height="100"
           />

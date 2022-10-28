@@ -5,30 +5,29 @@ import { modalSuccess, modalWarning } from "../intercept";
 import Router from "next/router";
 
 export async function chatLogin() {
+  const token = sessionStorage.getItem("blazingToken");
+  const chatHeader = {
+    // 'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+  const { data } = await axios.post(loginRoute, "", {
+    headers: chatHeader,
+  });
+  if (data.success === true) {
+    localStorage.setItem(
+      chatConstant["localStorageKey"],
+      JSON.stringify(data.response)
+    );
+    Router.push("/chat");
+    modalSuccess("success", "success");
+  } else {
+    alert(data?.msg);
+    modalWarning("error", "error");
+  }
+}
 
-      const token = sessionStorage.getItem("spurtToken")
-      const chatHeader = {
-        // 'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-      const { data } = await axios.post(loginRoute,"", {
-        headers: chatHeader
-      });
-      if (data.success === true) {
-        localStorage.setItem(
-          chatConstant["localStorageKey"],
-          JSON.stringify(data.response)
-        );
-        Router.push("/chat")
-        modalSuccess('success', "success")
-      } else {
-        alert(data?.msg)
-        modalWarning("error", "error")
-      }
-    }
-    
 //  const chatData = {
-//    username: JSON.parse(sessionStorage.getItem("spurtUser")).username,
+//    username: JSON.parse(sessionStorage.getItem("blazingUser")).username,
 //    password: sessionStorage.getItem("userPass"),
 //  };
 //  const { data } = await axios.post(loginRoute, chatData);

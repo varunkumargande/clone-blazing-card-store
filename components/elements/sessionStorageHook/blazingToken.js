@@ -4,7 +4,7 @@ const blazingToken = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    setData(JSON.parse(sessionStorage.getItem("spurtToken")))
+    setData(JSON.parse(sessionStorage.getItem("blazingToken")));
   }, []);
 
   return data;
