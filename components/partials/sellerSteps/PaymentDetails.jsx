@@ -104,7 +104,7 @@ export default function PaymentDetails() {
                 className="input-control wd48"
                 label="CVV *"
                 name="cvv"
-                type="text"
+                type="password"
                 placeholder="Enter here"
                 maxLength={3}
                 formProps={formProps}
