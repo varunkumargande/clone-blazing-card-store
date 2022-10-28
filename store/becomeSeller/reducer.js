@@ -40,7 +40,7 @@ const getStepState = (lastStep) => {
       case 3:
         return {
           guidelines : 'completed',
-          basicDetails: "compelted",
+          basicDetails: "completed",
           paymentDetails: "completed",
           shippingDetails: "process",
           submitted: ""

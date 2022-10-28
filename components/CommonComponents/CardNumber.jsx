@@ -35,9 +35,9 @@ export const CardNumber = ({ label, ...props }) => {
       <div className={props.className}>
         <label htmlFor={props.id || props.name}>{label}</label>
         <input className="text-input" maxLength={19} {...field} {...props} value={getCardValue()} onInput={() => handleChangeText()} />
-        {meta.touched && meta.error ? (
-          <div className="error">{meta.error}</div>
-        ) : null}
+        {meta.touched && meta.error && (
+          <div className="errorMessage">{meta.error}</div>
+        )}
       </div>
     </>
   );
