@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
-import { modalSuccess, modalWarning } from "../../../api/intercept";
+import { modalWarning } from "../../../api/intercept";
 import {
   PaymentInfoModal,
   AddNewCardModal,
   AddAddressModal,
+  OrderSuccessful,
 } from "../../partials/Modal/Modal";
 import { countryListApi } from "../../../api";
 import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
 import { UserAddAddress } from "../../../api";
-import { editShipAddressApi } from "../../../api";
 import { editAddressApi } from "../../../api";
 import { getStreamingCardDetail } from "../../../api/stream/cardApi";
 
@@ -24,19 +24,21 @@ function CenterDiv({
   setIsBuyNowPaymentModal,
   isBuyNowPaymentModal,
   setShowLoginModal,
-  userCount
+  userCount,
 }) {
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
   const [addressLoader, setAddressLoader] = useState(false);
   const [paymentLoader, setPaymentLoader] = useState(false);
+  const [paymentSuccessful, setPaymentSuccessful] = React.useState(false);
   const [shipIndex, setShipIndex] = React.useState(null);
   const [shipData, setShipData] = React.useState([]);
 
   const [cardIndex, setCardIndex] = useState(null);
   const [cardDetail, setCardDetail] = useState([]);
-  
+  const [orderId, setOrderId] = useState("");
+
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
     setOpenOptions(true);
@@ -54,15 +56,15 @@ function CenterDiv({
   const [countryData, setCountryData] = useState([]);
 
   useEffect(() => {
-    setAddressLoader(true)
-    setPaymentLoader(true)
+    setAddressLoader(true);
+    setPaymentLoader(true);
     countryListApi(setCountryData);
     getStreamingShippmentDetail(setAddressList, setAddressLoader);
     getStreamingCardDetail(setCardDetail, setPaymentLoader);
   }, []);
 
   const fetchCardDetail = () => {
-    setPaymentLoader(true)
+    setPaymentLoader(true);
     getStreamingCardDetail(setCardDetail, setPaymentLoader);
   };
 
@@ -73,14 +75,16 @@ function CenterDiv({
   const handleSubmitBuyProduct = async () => {
     if (cardDetail.length != 0 && addressList.length != 0) {
       setPaymentLoader(true);
-      await buyProduct(
+      const orderIdValue = await buyProduct(
         cardDetail[cardDetail.length - 1],
         addressList[addressList.length - 1],
         productDetail,
         openPayment
         // streamingDetails
       );
+      setOrderId(orderIdValue);
       setPaymentLoader(false);
+      setPaymentSuccessful(true);
     } else {
       modalWarning(
         "error",
@@ -92,16 +96,16 @@ function CenterDiv({
   const submitShipDetail = (data) => {
     setShipData(data);
     if (data.addressId) {
-      setAddressLoader(true)
+      setAddressLoader(true);
       editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi);
       setShippmentFormOpen(false);
     } else {
-      setAddressLoader(true)
+      setAddressLoader(true);
       UserAddAddress(data, setAddressLoader, fetchShiipmentApi);
       setShippmentFormOpen(false);
     }
   };
-  
+
   return (
     <div className="streaming-live disable">
       <StreamingBase
@@ -114,30 +118,32 @@ function CenterDiv({
         setShowLoginModal={setShowLoginModal}
         userCount={userCount}
       />
-
-      {isPayment ? (
-        <>
-          <PaymentInfoModal
-            productDetail={productDetail}
-            fetchShiipmentApi={fetchShiipmentApi}
-            openPayment={openPayment}
-            handlePaymentMethod={handlePaymentMethod}
-            handleShippmentMethod={handleShippmentMethod}
-            handleSubmitBuyProduct={handleSubmitBuyProduct}
-            addressList={addressList}
-            cardDetail={cardDetail}
-            addressLoader={addressLoader}
-            paymentLoader={paymentLoader}
-            isBuyNowPaymentModal={isBuyNowPaymentModal}
-          />
-        </>
-      ) : (
-        <></>
+      {paymentSuccessful && (
+        <OrderSuccessful
+          message={`Order Place Successfully!`}
+          subMessage={`Order ID - ${orderId}`}
+          setPaymentSuccessful={setPaymentSuccessful}
+        />
+      )}
+      {isPayment && (
+        <PaymentInfoModal
+          productDetail={productDetail}
+          fetchShiipmentApi={fetchShiipmentApi}
+          openPayment={openPayment}
+          handlePaymentMethod={handlePaymentMethod}
+          handleShippmentMethod={handleShippmentMethod}
+          handleSubmitBuyProduct={handleSubmitBuyProduct}
+          addressList={addressList}
+          cardDetail={cardDetail}
+          addressLoader={addressLoader}
+          paymentLoader={paymentLoader}
+          isBuyNowPaymentModal={isBuyNowPaymentModal}
+        />
       )}
       {paymentForm == true ? (
         <>
           <AddNewCardModal
-          fetchCardDetail={fetchCardDetail}
+            fetchCardDetail={fetchCardDetail}
             productDetail={productDetail}
             countryData={countryData}
             fetchShiipmentApi={fetchShiipmentApi}

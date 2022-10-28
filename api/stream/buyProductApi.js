@@ -68,7 +68,9 @@ async function buyProduct(
         modalWarning("error", result.data.message);
         openPayment(false);
       }
+      return result.data?.data?.orderId;
     }
+    return;
   }
 }
 

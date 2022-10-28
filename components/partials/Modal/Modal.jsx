@@ -972,6 +972,43 @@ export function UnfollowModal() {
   );
 }
 
+export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-body text-center">
+          <div className="flex justify-content-end flex-center">
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={() => setPaymentSuccessful(false)}
+            >
+              <span aria-hidden="true">
+                <IconClose />
+              </span>
+            </button>
+          </div>
+          <div className="profile-icon">
+            <img src="/static/images/order-successfull.svg" alt="" />
+          </div>
+          <h5 className="modal-title profile-id">{message}</h5>
+          <div className="profile-id text-black-50">{subMessage}</div>
+          <div className="btn-wrap follow-btn-wrap flex justify-center">
+            <button
+              onClick={() => setPaymentSuccessful(false)}
+              className="primary-btn w-75 my-4"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function SignUPGoogle({ onDismiss, customMsg }) {
   return (
     <div className="modalOverlay flex justify-center flex-center">
