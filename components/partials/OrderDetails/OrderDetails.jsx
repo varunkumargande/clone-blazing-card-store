@@ -6,6 +6,7 @@ import { getCardImagesByName } from "../../helper/cardImageHelper";
 export default function OrderDetails() {
   const orderDetail = useSelector((state) => state?.order?.orderDetail);
   const { cardDetails, productData, deliveryStatus, shippingDetails } = orderDetail ?? "";
+  const [_type, CardImage] = getCardImagesByName('', cardDetails?.card?.brand)
   return (
     <>
       {orderDetail ? (
@@ -69,7 +70,7 @@ export default function OrderDetails() {
                   <h5>Credit Card</h5>
                   <div className="bodyText flex flex-center">
                     <span className="mastr">
-                    {getCardImagesByName('', cardDetails?.card?.brand)}
+                    {CardImage}
                     </span>{" "}
                     {cardDetails?.card?.brand} ending with{" "}
                     {cardDetails?.card?.last4}

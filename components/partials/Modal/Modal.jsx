@@ -135,7 +135,7 @@ export function CustomBidModal(props) {
     handleConfirmBid,
     increaseBidAmount,
     checkBidAmount,
-    setAmountToBid
+    setAmountToBid,
   } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -179,8 +179,7 @@ export function CustomBidModal(props) {
               className="text-center"
               // placeholder={amountToBid}
               value={amountToBid}
-              onChange={(e) => setAmountToBid(e.target.value) }
-              
+              onChange={(e) => setAmountToBid(e.target.value)}
             />
             <button
               className="increase flex flex-center justify-center"
@@ -195,7 +194,12 @@ export function CustomBidModal(props) {
             <button className="disable-btn" onClick={() => setOpen(false)}>
               Cancel
             </button>
-            <button className={bidAmount <= amountToBid ? "primary-btn" : "primary-btn disable"}onClick={handleConfirmBid}>
+            <button
+              className={
+                bidAmount <= amountToBid ? "primary-btn" : "primary-btn disable"
+              }
+              onClick={handleConfirmBid}
+            >
               Confirm
             </button>
           </div>
@@ -317,7 +321,7 @@ export function PaymentInfoModal(props) {
             {isBuyNowPaymentModal ? (
               <button
                 disabled={paymentLoader}
-                className={`primary-btn ${paymentLoader && 'disable-btn'}`}
+                className={`primary-btn ${paymentLoader && "disable-btn"}`}
                 onClick={() => {
                   handleSubmitBuyProduct();
                 }}
@@ -355,7 +359,13 @@ export function AddNewCardModal(props) {
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
-  const [initialValueFlag, setInitialValueFlag] = useState(Array.isArray(payDetail) && payDetail[0]?.card?.last4 && payDetail[0]?.card?.last4 !== "" ? true : false);
+  const [initialValueFlag, setInitialValueFlag] = useState(
+    Array.isArray(payDetail) &&
+      payDetail[0]?.card?.last4 &&
+      payDetail[0]?.card?.last4 !== ""
+      ? true
+      : false
+  );
 
   const shipSchema = Yup.object().shape({
     // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
@@ -373,7 +383,12 @@ export function AddNewCardModal(props) {
       cardNumber:
         payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
       cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
-      expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card?.exp_year.toString().slice(-2): "",
+      expireDate:
+        (payDetail != false) != 0
+          ? payDetail[0]?.card.exp_month +
+            "/" +
+            payDetail[0]?.card?.exp_year.toString().slice(-2)
+          : "",
     },
     onSubmit: (values) => {
       const jsonData = JSON.stringify({
@@ -401,12 +416,12 @@ export function AddNewCardModal(props) {
     if (initialValueFlag) {
       setInitialValueFlag(false);
       formik.setValues({
-        expireDate: '',
-        cardNumber: '',
-        cvc: '',
+        expireDate: "",
+        cardNumber: "",
+        cvc: "",
       });
     }
-  }
+  };
 
   const handleExpDate = (values) => {
     const dateExp = values.expireDate
@@ -417,7 +432,7 @@ export function AddNewCardModal(props) {
     return dateExp;
   };
 
-  const CardImage =
+  const [type, CardImage] =
     formik?.values?.cardNumber >= 3
       ? getCardImagesByName(formik?.values?.cardNumber)
       : "";
@@ -454,16 +469,11 @@ export function AddNewCardModal(props) {
                     "cardNumber",
                     e.target.value.replace(regex.onlyNumbers, "")
                   )
-                
                 }
-                maxLength={
-                  CardImage?.type?.name === "IconAmericanExpressCard" ? 15 : 16
-                }
+                maxLength={type === "amex" ? 15 : 16}
               />
               <span className="card-icon">
-                {formik?.values?.cardNumber >= 3
-                  ? getCardImagesByName(formik.values.cardNumber)
-                  : ""}
+                {formik?.values?.cardNumber >= 3 ? CardImage : ""}
               </span>
               <ErrorMessage errors={formik.errors.cardNumber} />
             </div>
@@ -476,7 +486,7 @@ export function AddNewCardModal(props) {
                   placeholder={"MM/YY"}
                   onChange={(event) => {
                     resetFormData();
-                    formik.handleChange(event)
+                    formik.handleChange(event);
                   }}
                   value={handleExpDate(formik.values)}
                   maxLength={5}
@@ -496,12 +506,9 @@ export function AddNewCardModal(props) {
                     formik.setFieldValue(
                       "cvc",
                       e.target.value.replace(regex.onlyNumbers, "")
-                    )
-                  }
-                  }
-                  maxLength={
-                    CardImage?.type?.name === "IconAmericanExpressCard" ? 4 : 3
-                  }
+                    );
+                  }}
+                  maxLength={type === "amex" ? 4 : 3}
                 />
                 <ErrorMessage errors={formik.errors.cvc} />{" "}
               </div>
@@ -778,7 +785,13 @@ export function DeletAccountModal({ setIsOpen, userName }) {
               >
                 Cancel
               </button>
-              <button className={`primary-btn ${!formik.isValid && 'disable-opacity'}`} disabled={!formik.isValid} type="submit">
+              <button
+                className={`primary-btn ${
+                  !formik.isValid && "disable-opacity"
+                }`}
+                disabled={!formik.isValid}
+                type="submit"
+              >
                 Delete Account
               </button>
             </div>
@@ -798,8 +811,6 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
   // handle username and search frend
   const handleUsername = async (e) => {
-  
-
     setIsButton(true);
     if (e.target.value != "") {
       searchUser(setUserData, setUserDataLoader, e.target.value);
