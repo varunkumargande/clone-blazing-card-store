@@ -128,7 +128,7 @@ export default function PaymentDetail() {
                   handleSubmit,
                   setFieldValue,
                 }) => {
-                  const CardImage =
+                  const [type, CardImage] =
                     values?.cardNumber >= 3
                       ? getCardImagesByName(values.cardNumber)
                       : "";
@@ -163,20 +163,8 @@ export default function PaymentDetail() {
                                       )
                                     )
                                   }
-                                  maxLength={
-                                    CardImage?.type?.name ===
-                                    "IconAmericanExpressCard"
-                                      ? 15
-                                      : 16
-                                  }
+                                  maxLength={type === "amex" ? 15 : 16}
                                 />
-                                {console.log(
-                                  CardImage,
-                                  CardImage?.type?.name,
-                                  CardImage?.type?.name ===
-                                    "IconAmericanExpressCard",
-                                  "IconAmericanExpressCard"
-                                )}
                                 <span className="card-icon">{CardImage}</span>
                                 <span className="errorMessage">
                                   {errors.cardNumber && touched.cardNumber
@@ -219,12 +207,7 @@ export default function PaymentDetail() {
                                   }
                                   value={values.cvc}
                                   type="password"
-                                  maxLength={
-                                    CardImage?.type?.name ===
-                                    "IconAmericanExpressCard"
-                                      ? 4
-                                      : 3
-                                  }
+                                  maxLength={type === "amex" ? 4 : 3}
                                 />
                                 <span className="errorMessage">
                                   {errors.cvc && touched.cvc
