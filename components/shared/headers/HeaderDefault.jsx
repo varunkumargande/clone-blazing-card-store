@@ -49,8 +49,7 @@ function HeaderDefault({ auth }) {
 
   let { pageName } = router.query;
 
-  const { notifications, notificationsUnreadCount } =
-    useNotifications();
+  const { notifications, notificationsUnreadCount } = useNotifications();
 
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
@@ -59,7 +58,7 @@ function HeaderDefault({ auth }) {
   // ===============================================
 
   const authFunc = () => {
-    if (sessionStorage.getItem("spurtToken") !== null) {
+    if (sessionStorage.getItem("blazingToken") !== null) {
       dispatch(login());
     }
   };
@@ -81,7 +80,7 @@ function HeaderDefault({ auth }) {
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("spurtUser");
+      let profileData = sessionStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);

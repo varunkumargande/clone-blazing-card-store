@@ -13,7 +13,14 @@ import {
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 
-function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginModal, auth }) {
+function LiveStreamStatus({
+  isLive,
+  uuid,
+  detail,
+  likeDislikeStream,
+  showLoginModal,
+  auth,
+}) {
   const [likedStream, setLikedStream] = useState([]);
   const dispatch = useDispatch();
 
@@ -25,7 +32,7 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginMo
 
   const handleLikeUnlike = async (uuid) => {
     let arr = [];
-    const userDetails = JSON.parse(sessionStorage.getItem("spurtUser"));
+    const userDetails = JSON.parse(sessionStorage.getItem("blazingUser"));
     if (uuid && !!userDetails) {
       const data = {
         stream_id: uuid,
@@ -41,7 +48,7 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginMo
         }
       }
     } else {
-      if(showLoginModal) {
+      if (showLoginModal) {
         showLoginModal(true);
       }
     }
@@ -74,7 +81,9 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginMo
             id={uuid + "-btn"}
             onClick={() => handleLikeUnlike(uuid)}
           >
-            <span><IconLike /></span>
+            <span>
+              <IconLike />
+            </span>
           </button>
         </>
       );
@@ -83,15 +92,16 @@ function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginMo
         <>
           <button
             className={"like flex flex-center justify-center"}
-            onClick = {() => showLoginModal(true)}
+            onClick={() => showLoginModal(true)}
           >
-            <span><IconLike /></span>
+            <span>
+              <IconLike />
+            </span>
           </button>
         </>
       );
     }
   };
-
 
   return (
     <>

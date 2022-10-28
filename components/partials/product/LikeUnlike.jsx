@@ -1,4 +1,4 @@
-import  Router  from 'next/router';
+import Router from "next/router";
 import React, { useState, useEffect } from "react";
 
 import { abuseListApi } from "../../../api/product/abuseReason";
@@ -24,17 +24,16 @@ function LikeQues({
 
   const abuseFunc = (e, answerId) => {
     e.preventDefault();
-    let AuthCheck=sessionStorage.getItem("spurtToken")
-        
-    if(AuthCheck){
+    let AuthCheck = sessionStorage.getItem("blazingToken");
+
+    if (AuthCheck) {
       setAnsId(answerId);
       e.preventDefault();
       setShowReportModal(true);
       abuseListApi(setAbuseReason);
-    }else{
-        Router.push('/account/login')
+    } else {
+      Router.push("/account/login");
     }
-   
   };
 
   useEffect(() => {
@@ -58,11 +57,11 @@ function LikeQues({
     );
   }, []);
 
-  const likeHandler = (e,type) => {
+  const likeHandler = (e, type) => {
     e.preventDefault();
-    let AuthCheck=sessionStorage.getItem("spurtToken")
-        
-    if(AuthCheck){
+    let AuthCheck = sessionStorage.getItem("blazingToken");
+
+    if (AuthCheck) {
       if (type === "likeClick") {
         if (userLike === 0) {
           if (initialuserLike === 0) {
@@ -132,11 +131,9 @@ function LikeQues({
             : setLikeCount((i) => (i === 0 ? i : i - 1));
         }
       }
-     
-    }else{
-        Router.push('/account/login')
+    } else {
+      Router.push("/account/login");
     }
-    
   };
 
   return (
@@ -158,7 +155,7 @@ function LikeQues({
             class="fa fa-thumbs-up fa-2x"
             aria-hidden="true"
             style={{ color: "#d1d1d1", cursor: "pointer" }}
-            onClick={(e) => likeHandler(e,"likeClick")}
+            onClick={(e) => likeHandler(e, "likeClick")}
           ></i>
 
           <p>{likeCount}</p>
@@ -184,7 +181,7 @@ function LikeQues({
             class="fa fa-thumbs-down fa-2x"
             aria-hidden="true"
             style={{ color: "#d1d1d1", cursor: "pointer" }}
-            onClick={(e) => likeHandler(e,"unlikeClick")}
+            onClick={(e) => likeHandler(e, "unlikeClick")}
           ></i>
 
           <p>{disLikeCount}</p>

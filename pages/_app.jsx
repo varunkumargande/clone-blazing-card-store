@@ -40,11 +40,11 @@ function MyApp({ Component, pageProps }) {
     getPageApi(dispatch);
     LanguageSwitcherAPi(dispatch);
 
-    sessionStorage.getItem("colorThemeSpurt") &&
-      dispatch(colorThemeCurrent(sessionStorage.getItem("colorThemeSpurt")));
-    sessionStorage.getItem("colorThemeSpurtView") &&
+    sessionStorage.getItem("colorThemeBlazing") &&
+      dispatch(colorThemeCurrent(sessionStorage.getItem("colorThemeBlazing")));
+    sessionStorage.getItem("colorThemeBlazingView") &&
       dispatch(
-        viewcolorThemeCurrent(sessionStorage.getItem("colorThemeSpurtView"))
+        viewcolorThemeCurrent(sessionStorage.getItem("colorThemeBlazingView"))
       );
   }, []);
 
@@ -52,29 +52,29 @@ function MyApp({ Component, pageProps }) {
     Component.getLayout || ((page) => <DefaultLayout children={page} />);
   return (
     <NotificationsProvider>
-    {getLayout(
-    <Provider store={configureStore}>
-      <Component {...pageProps} />
+      {getLayout(
+        <Provider store={configureStore}>
+          <Component {...pageProps} />
 
-      <ToastContainer
-        // limit={1}
-        transition={Zoom}
-        theme="colored"
-        autoClose={1000}
-        hideProgressBar={true}
-        newestOnTop={true}
-        draggable={false}
-        pauseOnVisibilityChange
-        closeOnClick
-        pauseOnHover
-        // hideDuration={100}
-        // position='fixed'
-        // containerId="second"
-      />
-    </Provider>
-  )}
-  </NotificationsProvider>
-  )
+          <ToastContainer
+            // limit={1}
+            transition={Zoom}
+            theme="colored"
+            autoClose={1000}
+            hideProgressBar={true}
+            newestOnTop={true}
+            draggable={false}
+            pauseOnVisibilityChange
+            closeOnClick
+            pauseOnHover
+            // hideDuration={100}
+            // position='fixed'
+            // containerId="second"
+          />
+        </Provider>
+      )}
+    </NotificationsProvider>
+  );
 }
 
 const makestore = () => configureStore;

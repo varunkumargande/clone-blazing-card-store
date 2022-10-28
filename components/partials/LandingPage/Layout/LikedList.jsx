@@ -17,7 +17,7 @@ export default function LikedList({
   setIsSeeAll,
   setSeeAllHeading,
   setIsLikedShow,
-  isLikedShow
+  isLikedShow,
 }) {
   const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ export default function LikedList({
   const [likedShows, setLikedShows] = useState([]);
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
+    const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
     ProfileMethods.GetLikedStreams(userData?.id, setLikedShows);
     setUserId(userData.id);
     setProfile(userData);

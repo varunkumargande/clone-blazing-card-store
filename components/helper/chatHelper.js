@@ -9,7 +9,7 @@ export const chatHelper = async () => {
     Router.push("/chat");
   } else {
     const userJson = {
-      username: JSON.parse(sessionStorage.getItem("spurtUser")).username,
+      username: JSON.parse(sessionStorage.getItem("blazingUser")).username,
       password: sessionStorage.getItem("userPass"),
     };
 
