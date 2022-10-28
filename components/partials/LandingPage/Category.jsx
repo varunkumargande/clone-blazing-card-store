@@ -7,24 +7,28 @@ import Router from "next/router";
 import IconBack from "../../Icons/IconBack";
 import { stringFormatter } from "../../../utilities/utils";
 import { useRouter } from "next/router";
-import { saveCategoryName } from "../../../store/category/action";
+import { saveCategoryName, saveCategoryId } from "../../../store/category/action";
 import { useDispatch } from "react-redux";
 import { categoryConstant } from "../../Constants/category";
 
-function Category({ seeAllHeading, auth, category }) {
+function Category({ seeAllHeading, auth, category}) {
+
   const dispatch = useDispatch();
   const { query } = useRouter();
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
+      dispatch(saveCategoryId(query?.cid));
     }
   }, [query]);
 
   const handleActiveCategory = (index, name, id) => {
     dispatch(saveCategoryName(name));
+    dispatch(saveCategoryId(id));
     Router.push({
       pathname: "/",
       query: {
+        cid: id,
         category: name,
       },
     });
@@ -32,6 +36,7 @@ function Category({ seeAllHeading, auth, category }) {
 
   const handleAllCategory = () => {
     dispatch(saveCategoryName(null));
+    dispatch(saveCategoryId(null));
     Router.push({
       pathname: "/",
     });
@@ -39,6 +44,7 @@ function Category({ seeAllHeading, auth, category }) {
 
   const handleLikedShow = () => {
     dispatch(saveCategoryName("likes"));
+    // dispatch(saveCategoryId(null));
   };
 
   const getCategoryList = () => {
@@ -94,7 +100,7 @@ function Category({ seeAllHeading, auth, category }) {
   const handleGoToSeeAll = () => {
     Router.push({
       pathname: categoryConstant.url.path,
-      query: {
+      query: {  
         page: categoryConstant.url.page,
         category: "",
         subCategory: "all",
