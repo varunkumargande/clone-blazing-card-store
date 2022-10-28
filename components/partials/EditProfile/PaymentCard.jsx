@@ -12,6 +12,8 @@ export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
         setIsCardData(false)
     }
 
+    const [_type, CardImage] = getCardImagesByName('', cardData?.card?.brand)
+
     return(
         <div className="profile-detail">
             <div className="box">
@@ -33,7 +35,7 @@ export default function PaymentCard({cardData, setIsCardData, setIsCardEdit}){
                                             <div className="value">{cardData?.card?.exp_month} / {cardData?.card?.exp_year}</div>
                                         </div>
                                         <div className="card-name">
-                                            {getCardImagesByName('', cardData?.card?.brand)}
+                                            {CardImage}
                                         </div>
                                     </div>
                                 </div>

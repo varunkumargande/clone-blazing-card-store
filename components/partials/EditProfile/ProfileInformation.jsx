@@ -434,7 +434,7 @@ export default function ProfileInformation() {
 
       {isOpen ? (
         <>
-          <DeletAccountModal setIsOpen={setIsOpen} />
+          <DeletAccountModal setIsOpen={setIsOpen} userName={profileData?.username} />
         </>
       ) : (
         ""

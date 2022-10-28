@@ -23,6 +23,34 @@ import { apiUrl } from "../../../api/url";
 import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
 import { io } from "socket.io-client";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { useDispatch } from "react-redux";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
+import Router from "next/router";
+
+const responseGoogle = (response) => {
+  GoogleLoginApi(
+    response.given_name,
+    response.family_name,
+    response.email,
+    "",
+    "",
+    response.email.split("@")[0],
+    "gmail",
+    "",
+    "",
+    "",
+    "",
+    response.picture,
+    Router,
+    response
+  );
+};
+
+const responseGoogleFailure = (response) => {
+  console.error("Failure response", response);
+};
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
@@ -134,7 +162,7 @@ export function CustomBidModal(props) {
     handleConfirmBid,
     increaseBidAmount,
     checkBidAmount,
-    setAmountToBid
+    setAmountToBid,
   } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -178,8 +206,7 @@ export function CustomBidModal(props) {
               className="text-center"
               // placeholder={amountToBid}
               value={amountToBid}
-              onChange={(e) => setAmountToBid(e.target.value) }
-              
+              onChange={(e) => setAmountToBid(e.target.value)}
             />
             <button
               className="increase flex flex-center justify-center"
@@ -194,7 +221,12 @@ export function CustomBidModal(props) {
             <button className="disable-btn" onClick={() => setOpen(false)}>
               Cancel
             </button>
-            <button className={bidAmount <= amountToBid ? "primary-btn" : "primary-btn disable"}onClick={handleConfirmBid}>
+            <button
+              className={
+                bidAmount <= amountToBid ? "primary-btn" : "primary-btn disable"
+              }
+              onClick={handleConfirmBid}
+            >
               Confirm
             </button>
           </div>
@@ -316,7 +348,7 @@ export function PaymentInfoModal(props) {
             {isBuyNowPaymentModal ? (
               <button
                 disabled={paymentLoader}
-                className={`primary-btn ${paymentLoader && 'disable-btn'}`}
+                className={`primary-btn ${paymentLoader && "disable-btn"}`}
                 onClick={() => {
                   handleSubmitBuyProduct();
                 }}
@@ -354,7 +386,13 @@ export function AddNewCardModal(props) {
   const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
-  const [initialValueFlag, setInitialValueFlag] = useState(Array.isArray(payDetail) && payDetail[0]?.card?.last4 && payDetail[0]?.card?.last4 !== "" ? true : false);
+  const [initialValueFlag, setInitialValueFlag] = useState(
+    Array.isArray(payDetail) &&
+      payDetail[0]?.card?.last4 &&
+      payDetail[0]?.card?.last4 !== ""
+      ? true
+      : false
+  );
 
   const shipSchema = Yup.object().shape({
     // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
@@ -372,7 +410,12 @@ export function AddNewCardModal(props) {
       cardNumber:
         payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
       cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
-      expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card?.exp_year.toString().slice(-2): "",
+      expireDate:
+        (payDetail != false) != 0
+          ? payDetail[0]?.card.exp_month +
+            "/" +
+            payDetail[0]?.card?.exp_year.toString().slice(-2)
+          : "",
     },
     onSubmit: (values) => {
       const jsonData = JSON.stringify({
@@ -400,12 +443,12 @@ export function AddNewCardModal(props) {
     if (initialValueFlag) {
       setInitialValueFlag(false);
       formik.setValues({
-        expireDate: '',
-        cardNumber: '',
-        cvc: '',
+        expireDate: "",
+        cardNumber: "",
+        cvc: "",
       });
     }
-  }
+  };
 
   const handleExpDate = (values) => {
     const dateExp = values.expireDate
@@ -416,10 +459,10 @@ export function AddNewCardModal(props) {
     return dateExp;
   };
 
-  const CardImage =
+  const [type, CardImage] =
     formik?.values?.cardNumber >= 3
       ? getCardImagesByName(formik?.values?.cardNumber)
-      : "";
+      : ["", ""];
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -453,16 +496,11 @@ export function AddNewCardModal(props) {
                     "cardNumber",
                     e.target.value.replace(regex.onlyNumbers, "")
                   )
-                
                 }
-                maxLength={
-                  CardImage?.type?.name === "IconAmericanExpressCard" ? 15 : 16
-                }
+                maxLength={type === "amex" ? 15 : 16}
               />
               <span className="card-icon">
-                {formik?.values?.cardNumber >= 3
-                  ? getCardImagesByName(formik.values.cardNumber)
-                  : ""}
+                {formik?.values?.cardNumber >= 3 ? CardImage : ""}
               </span>
               <ErrorMessage errors={formik.errors.cardNumber} />
             </div>
@@ -475,7 +513,7 @@ export function AddNewCardModal(props) {
                   placeholder={"MM/YY"}
                   onChange={(event) => {
                     resetFormData();
-                    formik.handleChange(event)
+                    formik.handleChange(event);
                   }}
                   value={handleExpDate(formik.values)}
                   maxLength={5}
@@ -495,12 +533,9 @@ export function AddNewCardModal(props) {
                     formik.setFieldValue(
                       "cvc",
                       e.target.value.replace(regex.onlyNumbers, "")
-                    )
-                  }
-                  }
-                  maxLength={
-                    CardImage?.type?.name === "IconAmericanExpressCard" ? 4 : 3
-                  }
+                    );
+                  }}
+                  maxLength={type === "amex" ? 4 : 3}
                 />
                 <ErrorMessage errors={formik.errors.cvc} />{" "}
               </div>
@@ -705,19 +740,22 @@ export function AddAddressModal(props) {
   );
 }
 
-export function DeletAccountModal({ setIsOpen }) {
+export function DeletAccountModal({ setIsOpen, userName }) {
+  const dispatch = useDispatch();
+
   const deleteSchema = Yup.object().shape({
-    emailId: Yup.string().email("Invalid email format").required("Required"),
+    userName: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      emailId: "",
+      userName: userName,
       password: "",
     },
+    validateOnMount: true,
     onSubmit: (values) => {
-      deleteAccountApi(values);
+      deleteAccountApi(values, dispatch);
     },
     validationSchema: () => deleteSchema,
   });
@@ -744,15 +782,17 @@ export function DeletAccountModal({ setIsOpen }) {
           <div className="modal-body">
             <div className="infotextlg">Are you sure you want to leave?</div>
             <div className="input-control">
-              <label>User Name</label>
+              <label className="disable-opacity">Username</label>
               <input
-                type="email"
-                name="emailId"
+                type="text"
+                name="userName"
+                className="disable-opacity"
                 onChange={formik.handleChange}
                 placeholder={"Enter here"}
-                value={formik.values.emailId}
+                value={formik.values.userName}
+                disabled
               />
-              <ErrorMessage errors={formik.errors.emailId} />{" "}
+              <ErrorMessage errors={formik.errors.userName} />{" "}
             </div>
             <div className="input-control">
               <label>Password *</label>
@@ -772,7 +812,13 @@ export function DeletAccountModal({ setIsOpen }) {
               >
                 Cancel
               </button>
-              <button className="primary-btn" type="submit">
+              <button
+                className={`primary-btn ${
+                  !formik.isValid && "disable-opacity"
+                }`}
+                disabled={!formik.isValid}
+                type="submit"
+              >
                 Delete Account
               </button>
             </div>
@@ -792,8 +838,6 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
   // handle username and search frend
   const handleUsername = async (e) => {
-  
-
     setIsButton(true);
     if (e.target.value != "") {
       searchUser(setUserData, setUserDataLoader, e.target.value);
@@ -928,7 +972,7 @@ export function UnfollowModal() {
   );
 }
 
-export function SignUPGoogle() {
+export function SignUPGoogle({ onDismiss, customMsg }) {
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal signup">
@@ -939,6 +983,9 @@ export function SignUPGoogle() {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
+            onClick={(e) => {
+              onDismiss(e);
+            }}
           >
             <span aria-hidden="true">
               <IconClose />
@@ -947,12 +994,25 @@ export function SignUPGoogle() {
         </div>
         <div className="modal-body text-center">
           <div className="Stream-title text-center mb16">
-            Signup to join the stream
+            {customMsg || "Signup to join the stream"}
           </div>
-          <button className="google-btn mb16">
-            <IconGoogle />
-            Continue with Google
-          </button>
+          <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+            <GoogleLogin
+              render={(renderProps) => (
+                <button className="google-btn" onClick={renderProps.onClick}>
+                  <IconGoogle />
+                  Continue with Google
+                </button>
+              )}
+              onSuccess={(credentialResponse) => {
+                let data = jwt_decode(credentialResponse.credential);
+                responseGoogle(data);
+              }}
+              onError={(response) => {
+                responseGoogleFailure(response);
+              }}
+            />
+          </GoogleOAuthProvider>
           <div class="or mb26 flex flex-center justify-center">
             <span>Or</span>
           </div>

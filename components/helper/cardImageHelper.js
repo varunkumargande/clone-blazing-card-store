@@ -24,25 +24,25 @@ export const getCardImagesByName = (cardNumber = "", cardBrand = "") => {
   const getImage = (key) => {
     switch (key) {
       case "visa":
-        return <IconVisaCard />;
+        return [key, <IconVisaCard />];
       case "mastercard":
-        return <IconMasterCard />;
+        return [key, <IconMasterCard />];
       case "amex":
-        return <IconAmericanExpressCard />;
+        return [key, <IconAmericanExpressCard />];
       case "dankort":
-        return <IconDankortCard />;
+        return [key, <IconDankortCard />];
       case "diners":
-        return <IconDCICard />;
+        return [key, <IconDCICard />];
       case "discover":
-        return <IconDiscoverCard />;
+        return [key, <IconDiscoverCard />];
       case "jcb":
-        return <IconJCBCard />;
+        return [key, <IconJCBCard />];
       case "maestro":
-        return <IconMaestroCard />;
+        return [key, <IconMaestroCard />];
       case "unionpay":
-        return <IconUnionPayCard />;
+        return [key, <IconUnionPayCard />];
       default:
-        return "";
+        return [key, ""];
     }
   };
   if (cardRegex[`${cardBrand}`]) {
