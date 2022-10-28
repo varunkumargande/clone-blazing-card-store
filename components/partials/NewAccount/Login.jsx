@@ -172,19 +172,15 @@ function Login(props) {
                   </>
                 )}
                 <ErrorMessage errors={errors.password} touched={touched.password} />
+                <div className="flex justify-right mb16 forget mb32">
+                  <Link href="/account/forgot-password">
+                    <a>{loginConstant.form.forgetPassword}</a>
+                  </Link>
+                </div>
               </div>
-
-              <div className="flex justify-right mb16 forget mb32">
-                <Link href="/account/forgot-password">
-                  <a>{loginConstant.form.forgetPassword}</a>
-                </Link>
+              <div className="errorMessage text-center mb16">
+                {loginError}
               </div>
-
-
-              <div>
-                <h5 className="errorMessage">{loginError}</h5>
-              </div>
-
               <div className="submitWrap mb32">
                 <button type="submit" className="primary-btn">
                   {loginConstant.form.button.name}
@@ -193,7 +189,7 @@ function Login(props) {
               <div className="text-center mb16 already">
                 Don’t have an account yet?
                 <Link href="/account/register">
-                  <a>{loginConstant.form.link.signup}</a>
+                  <a> {loginConstant.form.link.signup}</a>
                 </Link>
               </div>
             </Form>
