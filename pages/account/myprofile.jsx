@@ -14,7 +14,7 @@ import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
 import IconBack from "../../components/Icons/IconBack";
 import StreamCard from "../../components/elements/StreamCard";
 import ProfileMethods from "../../api/profile/ProfileMethods";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import PublicProfileConstants from "../../components/Constants/publicProfile";
 import Link from "next/link";
 import { imageUrl } from "../../api/url";
@@ -38,6 +38,7 @@ function MyProfile(props) {
     tabs && tabs.length > 0 ? tabs[0].key : ""
   );
   const wrapperRef = useRef(null);
+  const dislikedStreams = useSelector((state) => state?.likeDislikeStream?.dislikedData);
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -50,6 +51,14 @@ function MyProfile(props) {
     setUserId(userData.id);
     setProfile(userData);
   }, []);
+
+  useEffect(() => {
+    let currentLikedShows = likedShows;
+    dislikedStreams.map(streamID => {
+      currentLikedShows = currentLikedShows.filter(show => show.uuid !== streamID);
+    });
+    setLikedShows(currentLikedShows);
+  }, [dislikedStreams])
 
   const getAllBuyerDetails = () => {
     ProfileMethods.GetLikedStreams(userId, setLikedShows);
@@ -155,11 +164,9 @@ function MyProfile(props) {
     if (likedShows) {
       if (likedShows.length > 0) {
         return (
-          <>
-            {likedShows.map((show, index) => (
-              <StreamCard detail={show} />
-            ))}
-          </>
+          likedShows.map((show) => (
+            <StreamCard detail={show} />
+          ))
         );
       } else {
         return (

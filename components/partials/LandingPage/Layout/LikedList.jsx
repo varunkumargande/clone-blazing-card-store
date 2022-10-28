@@ -25,6 +25,7 @@ export default function LikedList({
     (state) => state?.stream?.streamdetails?.stream
   );
 
+  const dislikedStreams = useSelector((state) => state?.likeDislikeStream?.dislikedData);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [likedShows, setLikedShows] = useState([]);
@@ -44,7 +45,7 @@ export default function LikedList({
 
   const getStreamCards = () => {
     return likedShows?.map((detail) => {
-      if (detail?.islike) {
+      if (detail?.islike && !dislikedStreams.find(streamId => streamId === detail?.uuid)) {
         return <StreamCard isLive={false} detail={detail} />;
       }
     });
