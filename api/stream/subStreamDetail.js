@@ -39,9 +39,15 @@ export async function catStreamDetailApi(setCategories) {
 }
 
 export async function catSubStreamDetailApi(setCategories, id) {
+
+  const jsonObject = {
+    type: categoryConstant.SUB_CATEGORY_DATA.type,
+    categoryId: id
+  }
+
   const result = await APIServices.create(
     `stream/stream-homePage`,
-    categoryConstant.SUB_CATEGORY_DATA
+    jsonObject
   );
   if (result?.status === 200) setCategories(result?.data?.data);
 }
