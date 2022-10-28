@@ -7,9 +7,9 @@ export default function MySelect({ label, ...props }) {
     <div className={props.className}>
       <label htmlFor={props.id || props.name}>{label}</label>
       <select {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
+      {meta.touched && meta.error && (
+        <div className="errorMessage">{meta.error}</div>
+      )}
     </div>
   );
 };

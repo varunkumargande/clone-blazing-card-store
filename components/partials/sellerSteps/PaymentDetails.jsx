@@ -76,6 +76,7 @@ export default function PaymentDetails() {
               >
                 <option>Select here</option>
                 <option value="credit card">Credit Card</option>
+                <option value="debit card">Debit Card</option>
               </MySelect>
               <CardNumber
                 className="input-control wd48"

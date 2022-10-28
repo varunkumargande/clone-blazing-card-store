@@ -33,6 +33,7 @@ export default function FileUpload({ label, ...props }) {
       documents.image = null;
       setFileName(null);
     }
+    props?.formProps?.setFieldValue("upload", "");
   };
 
   useEffect(() => {
@@ -45,9 +46,10 @@ export default function FileUpload({ label, ...props }) {
       <div className={props.className}>
         <div className="flex space-between flex-center">
           <label htmlFor={props.id || props.name}>{label}</label>{" "}
-          {/* <span className="max-limit">
-            Please upload identification document
-          </span> */}
+          
+          {meta.touched && meta.error && (
+                  <span className="max-limit">{meta.error}</span>
+                )}
         </div>
         <div className="uplad-wrapper flex justify-center flex-center">
           {/* Processing */}
@@ -124,13 +126,11 @@ export default function FileUpload({ label, ...props }) {
                   value={undefined}
                   onChange={(event) => handleFileSubmission(event)}
                 />
-                {meta.touched && meta.error ? (
-                  <div className="error">{meta.error}</div>
-                ) : null}
                 <IconUpload />
                 <span className="drag">Drag & Drop your files here</span>
                 <span className="primary-btn">Upload</span>
               </label>
+              
             </>
           )}
           {/* {

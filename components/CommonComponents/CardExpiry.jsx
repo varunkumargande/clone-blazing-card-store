@@ -32,9 +32,9 @@ export const CardExpiry = ({ label, ...props }) => {
           {...props}
           onInput={() => handleChangeText()}
         />
-        {meta.touched && meta.error ? (
-          <div className="error">{meta.error}</div>
-        ) : null}
+        {meta.touched && meta.error && (
+          <div className="errorMessage">{meta.error}</div>
+        )}
       </div>
     </>
   );
