@@ -163,13 +163,12 @@ function Login(props) {
                   </button>
                 ) : (
                   <>
-                    {" "}
                     <button
                       className="show-hide"
                       onClick={(e) => setPassShow(!passShow)}
                     >
                       <IconEye />
-                    </button>{" "}
+                    </button>
                   </>
                 )}
                 <ErrorMessage errors={errors.password} touched={touched.password} />
@@ -192,7 +191,7 @@ function Login(props) {
                 </button>
               </div>
               <div className="text-center mb16 already">
-                Don’t have an account yet?{" "}
+                Don’t have an account yet?
                 <Link href="/account/register">
                   <a>{loginConstant.form.link.signup}</a>
                 </Link>
