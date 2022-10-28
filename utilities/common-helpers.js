@@ -51,3 +51,19 @@ export const uploadImageToServer = async (file, path) => {
         return false
     }
 }
+
+/**
+ * @method: dateFormatSeperator
+ * @description: this function help in adding '/' between month and year when user 
+ *               types the number in date field(Ex: 12/25)
+ */
+export const dateFormatSeperator = (date) => {
+    if (!!date) {
+        return date
+            .replace(/^(\d\d)(\d)$/g, "$1/$2")
+            .replace(/^(\d\d\/\d\d)(\d+)$/g, "$1/$2")
+            .replace(/[^\d\/]/g, "")
+            .trim();
+    }
+    return date;
+};

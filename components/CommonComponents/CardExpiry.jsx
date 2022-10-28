@@ -1,6 +1,7 @@
 import React from "react";
 import { useField } from "formik";
 import { clearState } from "../../store/becomeSeller/action";
+import { dateFormatSeperator } from "../../utilities/common-helpers";
 
 export const CardExpiry = ({ label, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -30,6 +31,7 @@ export const CardExpiry = ({ label, ...props }) => {
           className="text-input"
           {...field}
           {...props}
+          value={dateFormatSeperator(props?.formProps?.values?.expiry)}
           onInput={() => handleChangeText()}
         />
         {meta.touched && meta.error ? (
