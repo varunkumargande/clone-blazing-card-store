@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import IconLike from "../../components/Icons/IconLike";
 import Footer from "../../components/partials/LandingPage/Footer";
-import { useSelector, useDispatch } from "react-redux";
-import { subcatstreamDetailApi } from "../../api/stream/subStreamDetail";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import Router, { useRouter } from "next/router";
 // import all sub component from components/partials/account/myprofile
@@ -108,11 +106,6 @@ function MyProfile(props) {
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
   };
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    subcatstreamDetailApi(dispatch);
-  }, []);
 
   useEffect(() => {
     resizeWindow();
