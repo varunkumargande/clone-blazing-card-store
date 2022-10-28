@@ -23,6 +23,7 @@ import { apiUrl } from "../../../api/url";
 import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
 import { io } from "socket.io-client";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { useDispatch } from "react-redux";
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
@@ -706,6 +707,8 @@ export function AddAddressModal(props) {
 }
 
 export function DeletAccountModal({ setIsOpen, userName }) {
+  const dispatch = useDispatch();
+
   const deleteSchema = Yup.object().shape({
     userName: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
@@ -718,7 +721,7 @@ export function DeletAccountModal({ setIsOpen, userName }) {
     },
     validateOnMount: true,
     onSubmit: (values) => {
-      deleteAccountApi(values);
+      deleteAccountApi(values, dispatch);
     },
     validationSchema: () => deleteSchema,
   });

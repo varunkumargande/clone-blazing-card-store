@@ -4,7 +4,7 @@ import { modalSuccess, modalWarning } from "../intercept";
 import { logOut } from "../../store/auth/action";
 import Router from "next/router";
 
-export async function deleteAccountApi(values) {
+export async function deleteAccountApi(values, dispatch) {
   const data = JSON.stringify({
     userId: values.userName,
     password: values.password,
@@ -16,6 +16,7 @@ export async function deleteAccountApi(values) {
     modalSuccess("success", "Your Account has been deleted!");
     localStorage.clear();
     sessionStorage.clear();
+    dispatch(logOut());
     Router.push("/");
   } else {
     modalSuccess("success", "UnAuthorized user");
