@@ -10,6 +10,7 @@ export const actionTypes = {
   ADD_NOTIFICATION: 'ADD_NOTIFICATION',
 
   GET_STREAM_DETAILS: 'GET_STREAM_DETAILS',
+  GET_LIVE_DETAILS: 'GET_LIVE_DETAILS',
   GET_USER: 'GET_USER_TYPE',
   GET_RTM_TOKEN: 'GET_RTM_TOKEN',
   GET_RTC_TOKEN: 'GET_RTC_TOKEN',
@@ -46,6 +47,13 @@ export const addStreamProducts = (payload) => {
 export function getStreamDetails(payload) {
   return {
     type: actionTypes.GET_STREAM_DETAILS,
+    payload:payload,
+};
+}
+
+export function getLiveDetails(payload) {
+  return {
+    type: actionTypes.GET_LIVE_DETAILS,
     payload:payload,
 };
 }

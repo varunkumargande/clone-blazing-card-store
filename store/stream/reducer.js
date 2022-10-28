@@ -25,6 +25,11 @@ function reducer(state = initState, action) {
         ...state,
         ...{ streamdetails: action.payload }
       }
+    case actionTypes.GET_LIVE_DETAILS:
+      return {
+        ...state,
+        ...{ liveDetails: action.payload }
+      }
     case actionTypes.ADD_STREAM_PRODUCTS:
       return {
         ...state,

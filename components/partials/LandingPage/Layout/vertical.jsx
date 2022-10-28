@@ -1,70 +1,29 @@
-import React, { useState } from "react";
-import StreamCard from "../../../elements/StreamCard";
-import { stringFormatter } from "../../../../utilities/utils";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import Router from "next/router";
-import { useSelector } from "react-redux";
+import { catSubStreamDetailApi } from "../../../../api/stream/subStreamDetail";
+import CategoryStream from "../Electronic";
 
-function Vertical({
-  categoryName,
-  data,
-  subCateId,
-  category,
-}) {
+function Vertical({ category, showLoginModal }) {
+  const [categories, setCategories] = useState(null);
+  useEffect(() => {
+    catSubStreamDetailApi(setCategories, category?.categoryId);
+  }, [category?.categoryName]);
 
   const handleCardDetail = () => {
-    if (data[category?.categoryName]) {
-      return data[category?.categoryName].map((detail, index) => {
-        if (subCateId == "select" || subCateId == null) {
-          return <StreamCard detail={detail} />;
-        } else {
-          if (parseInt(subCateId) === detail.category_id) {
-            return <StreamCard detail={detail} />;
-          }
-          if (parseInt(subCateId) === detail.subCategory_id) {
-            return <StreamCard detail={detail} />;
-          }
-        }
+    if (categories) {
+      const categoriesData = Object.entries(categories);
+      return categoriesData.map((element) => {
+        return (
+          <CategoryStream
+            showLoginModal={showLoginModal}
+            categoryData={element}
+          />
+        );
       });
     }
   };
 
-  const handleGoToSeeAll = (category) => {
-    Router.push({
-      pathname: "/see-all",
-      query: {
-        page: "all categories",
-        category: category,
-      },
-    });
-  };
-
-  return (
-    <section className="Pokomon-wrapper card-inner">
-      <div className="inner-container">
-        <div className="title-wrap flex space-between flex-center">
-          <div className="flex flex-center">
-            <h3 className="title">
-              {!!category?.categoryName ? stringFormatter(category?.categoryName) : ""}
-            </h3>
-          </div>
-          <div className="seeAll">
-            <a
-              className="flex flex-center"
-              onClick={() => handleGoToSeeAll(categoryName)}
-            >
-              View All
-            </a>
-          </div>
-        </div>
-        <div className="overflow-none">
-          <div className="card-wrap flex inner-container">
-            {handleCardDetail()}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  return <div className="home-container">{handleCardDetail()}</div>;
 }
 
 const mapStateToProps = (state) => {
