@@ -134,7 +134,7 @@ h1{
   position: relative;
   width: 100%;
   .input-control{
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
   }
   &.wd420{
     max-width: 420px;
