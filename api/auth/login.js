@@ -23,7 +23,6 @@ export async function UserLogin(
   const result = await APIServices.create("customer/login", data);
 
   if (result && result?.data && result?.data?.status === 1) {
-    const errrorMessage = result?.data?.message;
     sessionStorage.setItem("spurtToken", result.data.data.token);
     sessionStorage.setItem("userPass", password);
     getProfileApi();
@@ -36,9 +35,8 @@ export async function UserLogin(
       result.data.message === "Invalid EmailId" ||
         result.data.message === "Invalid password"
         ? "Password/Email is not correct"
-        : errrorMessage
+        : result?.data?.message
     );
-    modalWarning("error", errrorMessage);
     setMail("");
     setPassword("");
   }
