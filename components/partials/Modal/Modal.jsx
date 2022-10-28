@@ -705,17 +705,18 @@ export function AddAddressModal(props) {
   );
 }
 
-export function DeletAccountModal({ setIsOpen }) {
+export function DeletAccountModal({ setIsOpen, userName }) {
   const deleteSchema = Yup.object().shape({
-    emailId: Yup.string().email("Invalid email format").required("Required"),
+    userName: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      emailId: "",
+      userName: userName,
       password: "",
     },
+    validateOnMount: true,
     onSubmit: (values) => {
       deleteAccountApi(values);
     },
@@ -744,15 +745,17 @@ export function DeletAccountModal({ setIsOpen }) {
           <div className="modal-body">
             <div className="infotextlg">Are you sure you want to leave?</div>
             <div className="input-control">
-              <label>User Name</label>
+              <label className="disable-opacity">Username</label>
               <input
-                type="email"
-                name="emailId"
+                type="text"
+                name="userName"
+                className="disable-opacity"
                 onChange={formik.handleChange}
                 placeholder={"Enter here"}
-                value={formik.values.emailId}
+                value={formik.values.userName}
+                disabled
               />
-              <ErrorMessage errors={formik.errors.emailId} />{" "}
+              <ErrorMessage errors={formik.errors.userName} />{" "}
             </div>
             <div className="input-control">
               <label>Password *</label>
@@ -772,7 +775,7 @@ export function DeletAccountModal({ setIsOpen }) {
               >
                 Cancel
               </button>
-              <button className="primary-btn" type="submit">
+              <button className={`primary-btn ${!formik.isValid && 'disable-opacity'}`} disabled={!formik.isValid} type="submit">
                 Delete Account
               </button>
             </div>

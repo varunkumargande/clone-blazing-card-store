@@ -6,18 +6,18 @@ import Router from "next/router";
 
 export async function deleteAccountApi(values) {
   const data = JSON.stringify({
-    emailId: values.emailId,
+    userId: values.userName,
     password: values.password,
     type: "normal",
   });
 
   const result = await APIServices.create("customer/delete", data);
-  if (result && result.data && result.data.data) {
-    modalSuccess("success", "Accout has deleted !");
+  if (result && result?.data && result?.data?.status === 1) {
+    modalSuccess("success", "Your Account has been deleted!");
     localStorage.clear();
-    Router.push("/account/login")
+    sessionStorage.clear();
+    Router.push("/");
   } else {
     modalSuccess("success", "UnAuthorized user");
-    Router.push("/account/login")
   }
 }
