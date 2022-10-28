@@ -24,6 +24,33 @@ import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
 import { io } from "socket.io-client";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
+import Router from "next/router";
+
+const responseGoogle = (response) => {
+  GoogleLoginApi(
+    response.given_name,
+    response.family_name,
+    response.email,
+    "",
+    "",
+    response.email.split("@")[0],
+    "gmail",
+    "",
+    "",
+    "",
+    "",
+    response.picture,
+    Router,
+    response
+  );
+};
+
+const responseGoogleFailure = (response) => {
+  console.error("Failure response", response);
+};
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
@@ -969,10 +996,23 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
           <div className="Stream-title text-center mb16">
             {customMsg || "Signup to join the stream"}
           </div>
-          <button className="google-btn mb16">
-            <IconGoogle />
-            Continue with Google
-          </button>
+          <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+            <GoogleLogin
+              render={(renderProps) => (
+                <button className="google-btn" onClick={renderProps.onClick}>
+                  <IconGoogle />
+                  Continue with Google
+                </button>
+              )}
+              onSuccess={(credentialResponse) => {
+                let data = jwt_decode(credentialResponse.credential);
+                responseGoogle(data);
+              }}
+              onError={(response) => {
+                responseGoogleFailure(response);
+              }}
+            />
+          </GoogleOAuthProvider>
           <div class="or mb26 flex flex-center justify-center">
             <span>Or</span>
           </div>
