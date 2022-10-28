@@ -131,7 +131,7 @@ export default function PaymentDetail() {
                   const [type, CardImage] =
                     values?.cardNumber >= 3
                       ? getCardImagesByName(values.cardNumber)
-                      : "";
+                      : ["", ""];
                   return (
                     <>
                       <form onSubmit={handleSubmit}>

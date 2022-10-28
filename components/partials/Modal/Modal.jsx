@@ -435,7 +435,7 @@ export function AddNewCardModal(props) {
   const [type, CardImage] =
     formik?.values?.cardNumber >= 3
       ? getCardImagesByName(formik?.values?.cardNumber)
-      : "";
+      : ["", ""];
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
