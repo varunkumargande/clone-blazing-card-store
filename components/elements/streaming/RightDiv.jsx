@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import IconChat from "../../Icons/IconChat";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { connect } from "react-redux";
+import { SignUPGoogle } from "../../partials/Modal/Modal";
 
 // import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
 // import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 
-function RightDiv({ streamData, channel, client }) {
+function RightDiv({ streamData, channel, client, auth }) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const profileUrl = streamData?.streamPageDteails?.avatarImage;
 
@@ -42,7 +45,10 @@ function RightDiv({ streamData, channel, client }) {
   // }, [count])
 
   const sendAndUpdateMessage = async (initialMessage = null) => {
-    if (initialMessage || inputValue) {
+    if (!auth.isLoggedIn && initialMessage !== "JOINED 👋") {
+      setShowLoginModal(true);
+      setInputValue("");
+    } else if (initialMessage || inputValue) {
       const options = streamData?.option;
       const message = initialMessage ?? inputValue;
       const messageObject = {
@@ -111,6 +117,17 @@ function RightDiv({ streamData, channel, client }) {
   return (
     <>
       <div className="streaming-right">
+        {showLoginModal && (
+          <SignUPGoogle
+            customMsg={
+              "In order to chat in the stream, you need to sign up or log in."
+            }
+            onDismiss={(e) => {
+              e.preventDefault();
+              setShowLoginModal(false);
+            }}
+          />
+        )}
         <div className="chat-wrap">{getMessages()}</div>
         <div className="input-chat">
           <input
@@ -147,4 +164,8 @@ function RightDiv({ streamData, channel, client }) {
   );
 }
 
-export default RightDiv;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(RightDiv);

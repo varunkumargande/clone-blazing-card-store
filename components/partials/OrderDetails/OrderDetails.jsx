@@ -6,7 +6,7 @@ import { getCardImagesByName } from "../../helper/cardImageHelper";
 export default function OrderDetails() {
   const orderDetail = useSelector((state) => state?.order?.orderDetail);
   const { cardDetails, productData, deliveryStatus, shippingDetails } = orderDetail ?? "";
-  const [_type, CardImage] = getCardImagesByName('', cardDetails?.card?.brand)
+  const [_type, CardImage] = orderDetail ? getCardImagesByName('', cardDetails?.card?.brand) : "";
   return (
     <>
       {orderDetail ? (

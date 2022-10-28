@@ -12,7 +12,6 @@ import {
 } from "../../../store/likedStream/action";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
-import { SignUPGoogle } from "../../partials/Modal/Modal";
 
 function LiveStreamStatus({ isLive, uuid, detail, likeDislikeStream, showLoginModal, auth }) {
   const [likedStream, setLikedStream] = useState([]);
