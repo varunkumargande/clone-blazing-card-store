@@ -9,7 +9,6 @@ import Router from "next/router";
 import { apiUrl, imageUrl } from "../../../api/url";
 import { useEffect } from "react";
 import DefaultServices from "../../Services/DefaultServices";
-import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { connect } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";

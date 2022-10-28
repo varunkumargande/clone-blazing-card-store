@@ -945,7 +945,7 @@ export function UnfollowModal() {
   );
 }
 
-export function SignUPGoogle() {
+export function SignUPGoogle({ onDismiss, customMsg }) {
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal signup">
@@ -956,6 +956,9 @@ export function SignUPGoogle() {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
+            onClick={(e) => {
+              onDismiss(e);
+            }}
           >
             <span aria-hidden="true">
               <IconClose />
@@ -964,7 +967,7 @@ export function SignUPGoogle() {
         </div>
         <div className="modal-body text-center">
           <div className="Stream-title text-center mb16">
-            Signup to join the stream
+            {customMsg || "Signup to join the stream"}
           </div>
           <button className="google-btn mb16">
             <IconGoogle />
