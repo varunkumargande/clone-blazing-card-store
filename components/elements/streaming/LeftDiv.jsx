@@ -49,6 +49,8 @@ function LeftDiv({
   const [followed, setFollowed] = useState(
     streamingDetails.isFollow ? streamingDetails.isFollow : false
   );
+  const [flterKeyword, setFilterKeyword] = useState(null)
+  const [filteredProducts, setFilteredProducts] = useState(null)
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
   const [noOfFollower, setNoOfFollower] = useState(stream?.streamData?.vendorDetails?.follower_count ?? 0)
   //to handle width of the screen and call methods accordingly
@@ -69,7 +71,7 @@ function LeftDiv({
   }, [windowWidth]);
 
   const leftDivRef = useRef();
-
+  const filterKeyword = useRef()
   //clicking somewhere except on product list panel will close the product list panel(mobile screen)
   useEffect(() => {
     if (windowWidth <= 1024) {
@@ -126,6 +128,8 @@ function LeftDiv({
   const setToggle = (element) => {
     dispatch(addStreamProducts({}));
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
+    filterKeyword.current.value=null
+    setFilteredProducts(null)
   };
 
   /**
@@ -135,7 +139,6 @@ function LeftDiv({
   const getToggles = () => {
     return TOGGLES.map((element) => {
       return (
-        <>
           <div
             key={`tabs-${element}`}
             className={
@@ -149,7 +152,6 @@ function LeftDiv({
             {" "}
             {element}
           </div>
-        </>
       );
     });
   };
@@ -179,14 +181,16 @@ function LeftDiv({
     }
     return "";
   };
+  const handleProductCount = (filteredProducts?.length ?? stream?.streamProducts?.products?.length) ?? 0
 
   /**
    * Method will render all product listing
    * @returns JSX
    */
   const getProductList = () => {
-    if (!stream?.streamProducts?.products) return null;
-    return stream?.streamProducts?.products?.map((product) => {
+    const productList = filteredProducts ?? stream?.streamProducts?.products;
+    if (!productList) return null;
+    return productList?.map((product) => {
       const productDetails = {
         productName: product?.name.toUpperCase() ?? "",
         productId: product?.product_id ?? "",
@@ -196,7 +200,7 @@ function LeftDiv({
         description: product?.description ?? "",
       };
       return (
-        <>
+        <React.Fragment key={productDetails?.productId}>
           {toggleState == "auction" ? (
             <li className={getLiveAuctionClass(productDetails.productId)}>
               <strong>{productDetails.productName}</strong>
@@ -252,15 +256,11 @@ function LeftDiv({
               </div>
             </div>
           )}
-        </>
+        </React.Fragment>
       );
     });
   };
-
-  const productCount =
-    stream?.streamProducts?.products?.length > 0
-      ? stream?.streamProducts?.products?.length
-      : 0;
+    
 
   const handleFollowUnfollow = async (_, isFromModal = false) => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -352,6 +352,17 @@ function LeftDiv({
       </div>
     );
   };
+  const handleSearchProduct=(e)=>{
+    const products = stream?.streamProducts?.products
+    if(products?.length > 0){
+      const filtered = products.filter((element) => {
+        return element.name.toLowerCase().includes(e.target.value.toLowerCase())})
+       setFilteredProducts(filtered)
+    } else{
+      setFilteredProducts([])
+    }
+  }
+
   return (
     <div className="streaming-left">
       {showUnFollowModal && UnfollowModal()}
@@ -406,10 +417,10 @@ function LeftDiv({
           <h3 className="title">{streamTitle}</h3>
           <div className="tab-wrapper flex">{getToggles()}</div>
           <div className="search">
-            <input type="text" placeholder="Search products..." />
+            <input type="text" placeholder="Search products..." value={flterKeyword} ref={filterKeyword} onChange={(e) => handleSearchProduct(e)}/>
           </div>
           <div className={`${toggleState}-list leftdata-list`}>
-            <div className="product-count">{productCount} Products</div>
+            <div className="product-count">{handleProductCount} Products</div>
             <ul className="product-list">{getProductList()}</ul>
           </div>
         </div>
