@@ -401,11 +401,9 @@ function Signup(auth) {
                   </Link>
                 </label>
               </div>
-              <div align={"center"}>
-                <h5 className="errorMessage" style={{ color: "red" }}>
+                <div className="errorMessage text-center mb16">
                   {singupError}
-                </h5>
-              </div>
+                </div>
 
               <div className="submitWrap mb32">
                 <button

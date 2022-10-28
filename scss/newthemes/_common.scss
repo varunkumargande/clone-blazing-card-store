@@ -121,10 +121,21 @@ h1{
   margin-left: 20px;
 }
 // common input
+.errorText,.errorMessage{
+  font-size: 12px;
+  line-height: 14px;
+  color: $danger-color;
+  margin-top: 6px;
+  width: 100%;
+  display: block;
+}
 .input-control{
   margin-bottom: 16px;
   position: relative;
   width: 100%;
+  .input-control{
+    margin-bottom: 0;
+  }
   &.wd420{
     max-width: 420px;
   }
@@ -166,14 +177,7 @@ h1{
         border-color: $danger-color;
       }
   }
-  .errorText,.errorMessage{
-      font-size: 12px;
-      line-height: 14px;
-      color: $danger-color;
-      margin-top: 6px;
-      width: 100%;
-      display: block
-  }
+  
   .card-icon{
     @include pos(ab,32px,10px,null,null);
   }
@@ -372,6 +376,7 @@ h1{
   font-weight: 500;
   color:$blue-color;
   margin-top:6px;
+  width: 100%;
 }
 // common label
 label{
@@ -433,6 +438,7 @@ label{
     height: 18px;
     width: 18px;
     border-radius: 2px;
+    margin-top: 2px;
     border:2px solid $border-color;
     &:after {
       content: "";
