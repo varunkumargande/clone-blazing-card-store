@@ -10,7 +10,7 @@ import PaymentCard from "./PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
-import { regex } from "../../Constants/regex"
+import { regex } from "../../Constants/regex";
 
 export default function PaymentDetail() {
   const [cardData, setCardData] = useState(null);
@@ -62,7 +62,7 @@ export default function PaymentDetail() {
     cvc: "",
     cardNumber: "",
     countryId: "",
-    termCheckbox: false
+    termCheckbox: false,
   };
 
   const paySchema = Yup.object().shape({
@@ -73,7 +73,7 @@ export default function PaymentDetail() {
       .min(16, "Card Number is invalid")
       .max(16, "Card Number is invalid"),
     countryId: Yup.string().required("Required"),
-    termCheckbox: Yup.bool().oneOf([true])
+    termCheckbox: Yup.bool().oneOf([true]),
   });
 
   const submitCardDetail = async (values) => {
@@ -125,16 +125,13 @@ export default function PaymentDetail() {
                   errors,
                   touched,
                   handleChange,
-                  handleBlur,
                   handleSubmit,
-                  isSubmitting,
-                  resetForm,
                   setFieldValue,
                 }) => {
-                  const CardImage =
+                  const [type, CardImage] =
                     values?.cardNumber >= 3
                       ? getCardImagesByName(values.cardNumber)
-                      : "";
+                      : ["", ""];
                   return (
                     <>
                       <form onSubmit={handleSubmit}>
@@ -160,15 +157,13 @@ export default function PaymentDetail() {
                                   onChange={(e) =>
                                     setFieldValue(
                                       "cardNumber",
-                                      e.target.value.replace(regex.onlyNumbers, "")
+                                      e.target.value.replace(
+                                        regex.onlyNumbers,
+                                        ""
+                                      )
                                     )
                                   }
-                                  maxLength={
-                                    CardImage?.type?.name ===
-                                    "IconAmericanExpressCard"
-                                      ? 15
-                                      : 16
-                                  }
+                                  maxLength={type === "amex" ? 15 : 16}
                                 />
                                 <span className="card-icon">{CardImage}</span>
                                 <span className="errorMessage">
@@ -204,17 +199,15 @@ export default function PaymentDetail() {
                                   onChange={(e) =>
                                     setFieldValue(
                                       "cvc",
-                                      e.target.value.replace(regex.onlyNumbers, "")
+                                      e.target.value.replace(
+                                        regex.onlyNumbers,
+                                        ""
+                                      )
                                     )
                                   }
                                   value={values.cvc}
                                   type="password"
-                                  maxLength={
-                                    CardImage?.type?.name ===
-                                    "IconAmericanExpressCard"
-                                      ? 4
-                                      : 3
-                                  }
+                                  maxLength={type === "amex" ? 4 : 3}
                                 />
                                 <span className="errorMessage">
                                   {errors.cvc && touched.cvc
@@ -250,12 +243,12 @@ export default function PaymentDetail() {
                             </div>
                             <div className="checkbox-wrap mb32">
                               <label className="checkbox">
-                              <input
-                                name="termCheckbox"
-                                type="checkbox"
-                                onChange={handleChange}
-                                value={values.termCheckbox}
-                              />
+                                <input
+                                  name="termCheckbox"
+                                  type="checkbox"
+                                  onChange={handleChange}
+                                  value={values.termCheckbox}
+                                />
                                 <span class="checkmark"></span>
                                 <div className="discriptionlg">
                                   By providing your card information, you allow
@@ -276,8 +269,11 @@ export default function PaymentDetail() {
                           </button>
 
                           <button
-                            className={`primary-btn ${!values.termCheckbox && "disable"}`}
-                            disabled={!values.termCheckbox}>
+                            className={`primary-btn ${
+                              !values.termCheckbox && "disable"
+                            }`}
+                            disabled={!values.termCheckbox}
+                          >
                             Add Card
                           </button>
                         </div>
