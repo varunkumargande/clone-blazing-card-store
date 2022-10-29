@@ -1,13 +1,9 @@
-export function colorThemeShow(){
+export function colorThemeShow() {
+  let currentTheme = sessionStorage.getItem("colorThemeBlazing");
 
-    let currentTheme=sessionStorage.getItem("colorThemeSpurt")
-    
-
-    if(currentTheme){
-        return currentTheme;
-    }
-    else{
-        return "normal";
-    }
-
+  if (currentTheme) {
+    return currentTheme;
+  } else {
+    return "normal";
+  }
 }

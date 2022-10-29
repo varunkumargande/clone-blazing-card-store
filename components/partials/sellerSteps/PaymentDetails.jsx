@@ -76,6 +76,7 @@ export default function PaymentDetails() {
               >
                 <option>Select here</option>
                 <option value="credit card">Credit Card</option>
+                <option value="debit card">Debit Card</option>
               </MySelect>
               <CardNumber
                 className="input-control wd48"
@@ -103,7 +104,7 @@ export default function PaymentDetails() {
                 className="input-control wd48"
                 label="CVV *"
                 name="cvv"
-                type="text"
+                type="password"
                 placeholder="Enter here"
                 maxLength={3}
                 formProps={formProps}

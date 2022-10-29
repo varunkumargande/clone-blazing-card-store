@@ -1,8 +1,13 @@
-import { modalWarning, modalSuccess } from "../intercept";
 import APIServices from "../../services";
 import DefaultConstants from "../../utilities/constants";
-
-export async function editProfileApi(values, newDpName, Router, setLoader) {
+import { show } from "../../store/toast/action";
+export async function editProfileApi(
+  values,
+  newDpName,
+  Router,
+  setLoader,
+  dispatch
+) {
   const data = JSON.stringify({
     firstName: values.firstName,
     lastName: values.lastName,
@@ -12,18 +17,18 @@ export async function editProfileApi(values, newDpName, Router, setLoader) {
     bio: values.bio,
     twitterUrl: values.twitterUrl,
     facebookUrl: values.facebookUrl,
-    path: DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH
+    path: DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH,
   });
 
   const result = await APIServices.create("customer/edit-profile", data);
   if (result && result.data && result.data.status === 1) {
-    modalSuccess("success", result.data.message);
-    sessionStorage.setItem("spurtUser", JSON.stringify(result.data.data));
-    setLoader(false)
+    sessionStorage.setItem("blazingUser", JSON.stringify(result.data.data));
+    dispatch(show({ message: result.data.message, type: "success" }));
+    setLoader(false);
     Router.push("/account/myprofile");
   } else {
-    modalWarning("error", result.data.message);
-    setLoader(false)
+    dispatch(show({ message: result.data.message, type: "error" }));
+    setLoader(false);
   }
   return result.data;
 }

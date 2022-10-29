@@ -5,7 +5,7 @@ import { apiConstant } from "../../components/Constants/apis";
  * vendor login feature from store
  */
 export async function vendorAuthApi() {
-  const token = sessionStorage.getItem("spurtToken");
+  const token = sessionStorage.getItem("blazingToken");
   const chatHeader = {
     Authorization: `Bearer ${token}`,
   };

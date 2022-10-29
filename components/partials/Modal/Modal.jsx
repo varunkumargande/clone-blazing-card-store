@@ -383,7 +383,7 @@ export function AddNewCardModal(props) {
     fetchCardDetail,
   } = props;
 
-  const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
+  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
   const [initialValueFlag, setInitialValueFlag] = useState(
@@ -965,6 +965,43 @@ export function UnfollowModal() {
           <div className="btn-wrap follow-btn-wrap flex justify-center">
             <button className="border-btn">Cancel</button>
             <button className="primary-btn">Unfollow</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-body text-center">
+          <div className="flex justify-content-end flex-center">
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={() => setPaymentSuccessful(false)}
+            >
+              <span aria-hidden="true">
+                <IconClose />
+              </span>
+            </button>
+          </div>
+          <div className="profile-icon">
+            <img src="/static/images/order-successfull.svg" alt="" />
+          </div>
+          <h5 className="modal-title profile-id">{message}</h5>
+          <div className="profile-id text-black-50">{subMessage}</div>
+          <div className="btn-wrap follow-btn-wrap flex justify-center">
+            <button
+              onClick={() => setPaymentSuccessful(false)}
+              className="primary-btn w-75 my-4"
+            >
+              Ok
+            </button>
           </div>
         </div>
       </div>

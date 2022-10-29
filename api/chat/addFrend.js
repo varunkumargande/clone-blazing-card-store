@@ -6,9 +6,9 @@ import { modalSuccess, modalWarning } from "../intercept";
 import Router from "next/router";
 
 export async function addChatFrend(friendId, fetchUserData, setIsOpen, socket) {
-
   socket.current.emit("add-friend", {
-    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?.user?._id,
+    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
+      ?._id,
     friendId: friendId,
   });
 
@@ -18,7 +18,7 @@ export async function addChatFrend(friendId, fetchUserData, setIsOpen, socket) {
     friendId: friendId,
   };
 
-  const token = sessionStorage.getItem("spurtToken");
+  const token = sessionStorage.getItem("blazingToken");
   const chatHeader = {
     Authorization: `Bearer ${token}`,
   };

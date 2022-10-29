@@ -17,10 +17,10 @@ export default function useLiveUserCount(streamData, callback) {
     };
   });
 
-  const getUserCount = () => {
+  const getUserCount = async () => {
     callback(channel);
-    channel
-      .getMembers()
+    await channel
+      ?.getMembers()
       .then(async (members) => {
         setUserCount(members?.length);
       })

@@ -121,7 +121,7 @@ function Login(props) {
           );
         }}
       >
-        {({ errors, touched }, formProps) => (
+        {({ errors, touched, values, handleChange, handleBlur }, formProps) => (
           <>
             <Form className="login flex space-between">
               <TextInput
@@ -131,7 +131,8 @@ function Login(props) {
                 type="text"
                 placeholder={loginConstant.form.emailField.emailPlaceholder}
               />
-              <TextInput
+
+              {/* <TextInput
                 className="input-control wd100"
                 label={loginConstant.form.passwordField.passwordLabel}
                 name={loginConstant.form.passwordField.passwordName}
@@ -139,43 +140,56 @@ function Login(props) {
                 placeholder={
                   loginConstant.form.passwordField.passwordPlaceholder
                 }
-              />
-              {conpassShow ? (
-                <button
-                  className="show-hide"
-                  onClick={(e) => setConPassShow(!conpassShow)}
-                >
-                  <IconEye />
-                </button>
-              ) : (
-                <>
-                  {" "}
+              /> */}
+
+              <div className="input-control wd100 pass">
+                <label>Password*</label>
+                <input
+                  name={loginConstant.form.passwordField.passwordName}
+                  placeholder={
+                    loginConstant.form.passwordField.passwordPlaceholder
+                  }
+                  type={passShow ? "text" : "password"}
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {passShow ? (
                   <button
                     className="show-hide"
-                    onClick={(e) => setConPassShow(!conpassShow)}
+                    onClick={(e) => setPassShow(!passShow)}
                   >
                     <IconEye />
-                  </button>{" "}
-                </>
-              )}
-              <div className="flex justify-right mb16 forget mb32">
-                <Link href="/account/forgot-password">
-                  <a>{loginConstant.form.forgetPassword}</a>
-                </Link>
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      className="show-hide"
+                      onClick={(e) => setPassShow(!passShow)}
+                    >
+                      <IconEye />
+                    </button>
+                  </>
+                )}
+                <ErrorMessage errors={errors.password} touched={touched.password} />
+                <div className="flex justify-right mb16 forget mb32">
+                  <Link href="/account/forgot-password">
+                    <a>{loginConstant.form.forgetPassword}</a>
+                  </Link>
+                </div>
               </div>
-              <div align={"center"}>
-                <h5 className="errorMessage">{loginError}</h5>
+              <div className="errorMessage text-center mb16">
+                {loginError}
               </div>
-
               <div className="submitWrap mb32">
                 <button type="submit" className="primary-btn">
                   {loginConstant.form.button.name}
                 </button>
               </div>
               <div className="text-center mb16 already">
-                Don’t have an account yet?{" "}
+                Don’t have an account yet?
                 <Link href="/account/register">
-                  <a>{loginConstant.form.link.signup}</a>
+                  <a> {loginConstant.form.link.signup}</a>
                 </Link>
               </div>
             </Form>

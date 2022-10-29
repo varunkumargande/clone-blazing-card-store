@@ -1,6 +1,11 @@
-import { modalSuccess } from "../intercept";
 import APIServices from "../../services";
-export async function UserAddAddress(values, setAddressLoader, addressList) {
+import { show } from "../../store/toast/action";
+export async function UserAddAddress(
+  values,
+  dispatch,
+  setAddressLoader,
+  addressList
+) {
   const data = JSON.stringify({
     address1: values.address1,
     address2: values.address2,
@@ -12,9 +17,11 @@ export async function UserAddAddress(values, setAddressLoader, addressList) {
     company: values.company,
   });
   const result = await APIServices.create("CustomerAddress/add-address", data);
-  if (result.status == 200) {
+  if (result?.status === 200) {
+    dispatch(show({ message: result.data.message, type: "success" }));
     addressList();
-    modalSuccess("success", "Address Added")
+  } else {
+    dispatch(show({ message: "Error updating information", type: "error" }));
+    setAddressLoader(false);
   }
-  setAddressLoader(false)
 }

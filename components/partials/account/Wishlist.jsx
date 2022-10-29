@@ -16,14 +16,12 @@ import Head from "next/head";
 import { useTranslation } from "../../../i18n";
 import CompareRatingReviews from "../../elements/detail/modules/description/CompareRatingReview";
 
-
 function Wishlist(props) {
   const [wishlistData, setWishListApi] = useState([]);
   const [delstatus, setDelStatus] = useState(0);
   const [initialLoad, setInitialLoad] = useState(true);
   const { t } = useTranslation("common");
   const dispatch = useDispatch();
-
 
   const wishApiCall = () => {
     dispatch(wishListLoading(true));
@@ -34,8 +32,6 @@ function Wishlist(props) {
     setDelStatus(0);
     wishApiCall();
   }, [delstatus]);
-
-
 
   const handleRemoveWishListItem = (e, productId) => {
     e.preventDefault();
@@ -53,16 +49,19 @@ function Wishlist(props) {
         <title>Wishlist</title>
       </Head>
 
-    
       {initialLoad ? (
         <div className="ps-page--product">
-        <div className="ps-container">
+          <div className="ps-container">
             <div style={{ paddingTop: "100px", paddingBottom: "200px" }}>
-                <center><img src="/static/img/spurt-original-loader.gif" style={{ height: "100px", width: "100px" }} /></center>
+              <center>
+                <img
+                  src="/static/img/Loader/loader_blue.gif"
+                  style={{ height: "100px", width: "100px" }}
+                />
+              </center>
             </div>
+          </div>
         </div>
-
-    </div>
       ) : (
         <>
           {wishlistData && wishlistData.length === 0 ? (
@@ -104,9 +103,8 @@ function Wishlist(props) {
                             </Link>
                           </div>
                         </h3>
-                        <CompareRatingReviews product={product}  />
-                      
-                       
+                        <CompareRatingReviews product={product} />
+
                         <h2>
                           <div>
                             ${" "}

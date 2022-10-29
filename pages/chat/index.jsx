@@ -24,7 +24,6 @@ import { ChatUserModal } from "../../components/partials/Modal/Modal";
 import { Loader } from "../../components/reusable/Loader";
 import moment from "moment";
 
-
 function Chat({ auth }) {
   // const navigate = useNavigate();
   var router = useRouter();
@@ -62,7 +61,6 @@ function Chat({ auth }) {
     }
   }, []);
 
-  
   useEffect(() => {
     if (!!localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
@@ -79,13 +77,14 @@ function Chat({ auth }) {
   }, []);
   useEffect(() => {
     fetchUserData();
-    chatSocketInitializer()
+    chatSocketInitializer();
   }, []);
 
   const chatSocketInitializer = async () => {
     socket.current.on(`fetch-friend`, async (data) => {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user?._id
-      if(data?.friendId == user) {
+      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
+        ?._id;
+      if (data?.friendId == user) {
         await fetchUserData();
       }
     });
@@ -96,7 +95,7 @@ function Chat({ auth }) {
     if (localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
         ?._id;
-      const token = sessionStorage.getItem("spurtToken");
+      const token = sessionStorage.getItem("blazingToken");
       let userId = {
         userId: user,
       };
@@ -114,7 +113,7 @@ function Chat({ auth }) {
         .catch((err) => {});
     }
   };
-  
+
   // =====================================================================================
 
   // // ==================== contact's function =========================
@@ -127,7 +126,7 @@ function Chat({ auth }) {
     const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
     setCurrentSelected(index);
     setCurrentChat(contacts[index]);
-    const token = sessionStorage.getItem("spurtToken");
+    const token = sessionStorage.getItem("blazingToken");
     const response = await axios.post(
       recieveMessageRoute,
       {
@@ -155,7 +154,7 @@ function Chat({ auth }) {
       from: data?.user?._id,
       msg,
     });
-    const token = sessionStorage.getItem("spurtToken");
+    const token = sessionStorage.getItem("blazingToken");
     await axios.post(
       sendMessageRoute,
       {
@@ -187,7 +186,11 @@ function Chat({ auth }) {
   const chatUserFind = () => {
     if (isOpen) {
       return (
-        <ChatUserModal setIsOpen={setIsOpen} fetchUserData={fetchUserData} socket={socket} />
+        <ChatUserModal
+          setIsOpen={setIsOpen}
+          fetchUserData={fetchUserData}
+          socket={socket}
+        />
       );
     }
   };

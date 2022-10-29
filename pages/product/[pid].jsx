@@ -17,7 +17,6 @@ import { getProductDetApi } from "../../api";
 import { productRatingApi } from "../../api";
 import { useState } from "react";
 
-
 // import { questionsApi } from '../../api/product/question';
 import ThemeChanger from "../../components/elements/color/themeControl";
 import useNetwork from "../../components/reusable/NetworkCheck";
@@ -27,7 +26,7 @@ import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import Link from "next/link";
 import { apiUrl } from "../../api/url";
 import { useTranslation } from "../../i18n";
-import SpurtRelatedProduct from '../../components/partials/RelatedProduct/RelatedProduct'
+import BlazingRelatedProduct from "../../components/partials/RelatedProduct/RelatedProduct";
 
 const ProductDefaultPage = ({ query }) => {
   const [ratingInfo, setRatingInfo] = useState();
@@ -60,8 +59,8 @@ const ProductDefaultPage = ({ query }) => {
   let serveUdweu = apiUrl;
 
   useEffect(() => {
-    dispatch(getsliderimageclicks([]))
-    
+    dispatch(getsliderimageclicks([]));
+
     if (network === false) {
       Router.push("/network-error");
     }
@@ -72,7 +71,7 @@ const ProductDefaultPage = ({ query }) => {
 
   useEffect(() => {
     dispatch(getProductByLoading(true));
-    dispatch(getvarientproducthidefun(false))
+    dispatch(getvarientproducthidefun(false));
     // const { query } = this.props;
     if (pid === undefined) {
       Router.push("/page/page-404");
@@ -101,12 +100,12 @@ const ProductDefaultPage = ({ query }) => {
       productRatingApi(pid, setRatingInfo, dispatch);
       // homeBannerApi(setBanner);
     }
-   
+
     Router.events.on("routeChangeStart", (url) => {
       const nextPid = url.split("/").pop();
       if (nextPid !== "" && isNaN(parseInt(nextPid)) === false) {
         dispatch(getProductByLoading(true));
-        dispatch(getvarientproducthidefun(false))
+        dispatch(getvarientproducthidefun(false));
         getProductDetApi(
           nextPid,
           dispatch,
@@ -193,7 +192,6 @@ const ProductDefaultPage = ({ query }) => {
   }, [breadCategory]);
 
   useEffect(() => {
-   
     if (showModal) {
       document.body.classList.add("scroll-block-home");
     } else {
@@ -294,10 +292,8 @@ const ProductDefaultPage = ({ query }) => {
                   </div>
                 </div>
               ) : ( */}
-              {/* <SpurtRelatedProduct /> */}
-              <SpurtRelatedProduct slugName={pid}/>
-               
-              
+              {/* <BlazingRelatedProduct /> */}
+              <BlazingRelatedProduct slugName={pid} />
             </div>
           </div>
         ) : (
@@ -306,7 +302,7 @@ const ProductDefaultPage = ({ query }) => {
               <div style={{ paddingTop: "100px", paddingBottom: "200px" }}>
                 <center>
                   <img
-                    src="/static/img/spurt-original-loader.gif"
+                    src="/static/img/Loader/loader_blue.gif"
                     style={{ height: "100px", width: "100px" }}
                   />
                 </center>

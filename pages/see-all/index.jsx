@@ -4,7 +4,11 @@ import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { subcatstreamDetailApi } from "../../api/stream/subStreamDetail";
+import {
+  subcatstreamDetailApi,
+  catStreamDetailApi,
+  catSubStreamDetailApi,
+} from "../../api/stream/subStreamDetail";
 import { connect } from "react-redux";
 import { categoryApi } from "../../api/category/category";
 import SeeAllParentCategories from "../../components/partials/SeeAll/parentCategories";
@@ -13,20 +17,16 @@ import StreamCard from "../../components/elements/StreamCard";
 import Router from "next/router";
 import { useRouter } from "next/router";
 import { stringFormatter } from "../../utilities/utils";
-import {
-  saveCategoryName,
-  saveSubCategoryName,
-} from "../../store/category/action";
+import { saveCategoryName } from "../../store/category/action";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
   const [active, setActive] = useState(false);
+  const [subCatId, setSubCatId] = useState("all");
+  const [catIndex, setCatIndex] = useState(null);
 
   const wrapperRef = useRef(null);
-  const handleOnClick = () => {
-    setActive(!active);
-  };
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       setActive(false);
@@ -47,56 +47,61 @@ function categoryStream({ auth, category }) {
     window.addEventListener("resize", resizeWindow);
     return () => window.removeEventListener("resize", resizeWindow);
   }, []);
-
-  const categories = useSelector((state) => state?.category?.categories);
-  const streamDetail = useSelector(
-    (state) => state?.stream?.streamdetails?.category
-  );
-
-  useEffect(() => {
-    subcatstreamDetailApi(dispatch);
-  }, []);
   useEffect(() => {
     categoryApi(dispatch);
+    setCatIndex(0);
   }, []);
-
   useEffect(() => {
-    if (Object.keys(query).length != 0 && query?.category != "") {
+    if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
     } else {
-      if (!!categories) {
-        dispatch(saveCategoryName(categories[0]?.name));
+      if (!!category?.categories) {
+        dispatch(saveCategoryName(category?.categories[0]?.name));
       }
     }
-  }, [categories]);
+  }, [query]);
 
-  const getStreamCards = () => {
-    if (category?.categoryName != null) {
-      return streamDetail?.[category?.categoryName]?.map((detail) => {
-        if (detail?.subCategory_name == category?.subCategoryName) {
-          return <StreamCard isLive={false} detail={detail} />;
-        }
-        if (category?.subCategoryName == "all") {
-          return <StreamCard isLive={false} detail={detail} />;
-        }
-      });
+  useEffect(() => {
+    console.log(query?.page);
+    switch (query?.page) {
+      case "scheduled":
+        getStreamCards(query?.page);
+        break;
+      case "all category":
+        getStreamCards(query?.page);
+        break;
     }
+  }, [query?.page]);
+
+  const getStreamCards = (pageType) => {
+    // console.log(pageType)
+    // if (category?.categoryName != null) {
+    //   return streamDetail?.[category?.categoryName]?.map((detail) => {
+    //     if (detail?.subCategory_name == category?.subCategoryName) {
+    //       return <StreamCard isLive={false} detail={detail} />;
+    //     }
+    //     if (category?.subCategoryName == "all") {
+    //       return <StreamCard isLive={false} detail={detail} />;
+    //     }
+    //   });
+    // }
   };
 
   const handleShowParentCategories = () => {
-    if (!!categories) {
-      return <SeeAllParentCategories categories={categories} />;
+    if (!!category?.categories) {
+      return <SeeAllParentCategories setCatIndex={setCatIndex} />;
     }
   };
 
   const handleShowSubCategories = () => {
-    if (!!categories) {
-      return <SeeAllSubCategories categories={categories} />;
+    if (!!category?.categories) {
+      return (
+        <SeeAllSubCategories catIndex={catIndex} setSubCatId={setSubCatId} />
+      );
     }
   };
 
   const handleToGoHome = () => {
-    Router.push("/");
     dispatch(saveCategoryName(null));
     Router.push({
       pathname: "/",

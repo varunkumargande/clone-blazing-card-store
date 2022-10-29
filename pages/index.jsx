@@ -8,14 +8,18 @@ import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
 import Footer from "../components/partials/LandingPage/Footer";
 import { useSelector, useDispatch } from "react-redux";
 import { categoryApi } from "../api/category/category";
-import Electronic from "../components/partials/LandingPage/Electronic";
+import CategoryStream from "../components/partials/LandingPage/Electronic";
 import LikedList from "../components/partials/LandingPage/Layout/LikedList";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import Vertical from "../components/partials/LandingPage/Layout/vertical";
 import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
 import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
-import { subcatstreamDetailApi } from "../api/stream/subStreamDetail";
+import {
+  streamDetailApi,
+  catStreamDetailApi,
+  liveDetailApi,
+} from "../api/stream/subStreamDetail";
 
 function landingPage({ auth, category }) {
   const [windowWidth, setWindowWidth] = useState(0);
@@ -23,13 +27,12 @@ function landingPage({ auth, category }) {
     setWindowWidth(window.innerWidth);
   };
 
-  const categories = useSelector(
-    (state) => state?.stream?.streamdetails?.category
-  );
-
   const dispatch = useDispatch();
+
   useEffect(() => {
-    subcatstreamDetailApi(dispatch);
+    streamDetailApi(dispatch);
+    liveDetailApi(dispatch);
+    catStreamDetailApi(setCategories);
   }, []);
 
   useEffect(() => {
@@ -39,18 +42,16 @@ function landingPage({ auth, category }) {
   }, []);
 
   // ========================= category for home page ==============================
-  const [activeCategoryIndex, setActiveCategoryIndex] = useState(null);
-  const [activeCategoryName, setActiveCategoryName] = useState(null);
-  const [activeCategory, setActiveCategory] = useState([]);
+  // const [activeCategoryName, setActiveCategoryName] = useState(null);
+
   const [subCateId, setSubCateId] = useState("select");
-  const [subCateName, setSubCateName] = useState("Explore");
+  const [categories, setCategories] = useState(null);
   const [isLikedShow, setIsLikedShow] = useState(false);
   // ===============================================================================
 
   // ========================= category for live and schedule page ==============================
   const [liveScheduleCategoryName, setLiveScheduleCategoryName] =
     useState(null);
-  const [liveScheduleCategory, setLiveScheduleCategory] = useState();
   const [isLiveScheduleSeeAll, setIsLiveScheduleSeeAll] = useState(false);
   // ============================================================================================
 
@@ -58,7 +59,7 @@ function landingPage({ auth, category }) {
   const [isSeeAllCate, setIsSeeAllCate] = useState(true);
 
   const [seeAllHeading, setSeeAllHeading] = useState(null);
-  const [seeAllData, setSeeAllData] = useState(null);
+  const [catStreamData, setCateStreamData] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -75,7 +76,7 @@ function landingPage({ auth, category }) {
       const categoriesData = Object.entries(categories);
       return categoriesData.map((element) => {
         return (
-          <Electronic
+          <CategoryStream
             isSeeAll={isSeeAll}
             setIsSeeAllCate={setIsSeeAllCate}
             setSeeAllHeading={setSeeAllHeading}
@@ -118,10 +119,13 @@ function landingPage({ auth, category }) {
       )}
       {!!categories && (
         <>
-          <Category seeAllHeading={seeAllHeading} />
+          <Category
+            seeAllHeading={seeAllHeading}
+            setCateStreamData={setCateStreamData}
+          />
         </>
       )}
-      
+
       <div className="card-wrapper">
         {category.categoryName == "likes" ? (
           <>{getAllLikedCard()}</>
@@ -137,7 +141,7 @@ function landingPage({ auth, category }) {
                 />
                 <ScheduledShow
                   liveScheduleCategoryName={liveScheduleCategoryName}
-                  activeCategoryName={activeCategoryName}
+                  // activeCategoryName={activeCategoryName}
                   setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
                   setSeeAllHeading={setSeeAllHeading}
                   setIsSeeAll={setIsSeeAll}
@@ -147,16 +151,14 @@ function landingPage({ auth, category }) {
               </>
             ) : (
               <>
-                {categories ? (
-                  <>
-                    <Vertical
-                      subCateId={subCateId}
-                      setSubCateId={setSubCateId}
-                      data={categories}
-                    />
-                  </>
-                ) : (
-                  ""
+                {categories && (
+                  <Vertical
+                    subCateId={subCateId}
+                    setSubCateId={setSubCateId}
+                    data={categories}
+                    catStreamData={catStreamData}
+                    showLoginModal={setShowModal}
+                  />
                 )}
               </>
             )}

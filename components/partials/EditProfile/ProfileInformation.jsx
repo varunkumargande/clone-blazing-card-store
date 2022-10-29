@@ -15,8 +15,9 @@ import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-
+import { useDispatch } from "react-redux";
 export default function ProfileInformation() {
+  const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB
   const [profileData, setProfileData] = useState(null);
   const [newDpError, setNewDpError] = useState("");
@@ -29,21 +30,23 @@ export default function ProfileInformation() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem("spurtUser")) {
+    if (sessionStorage.getItem("blazingUser")) {
       setLoader(true);
       let jsonObject = {
-        firstName: JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName,
-        lastName: JSON.parse(sessionStorage.getItem("spurtUser"))?.lastName,
-        bio: JSON.parse(sessionStorage.getItem("spurtUser"))?.bio,
-        twitterUrl: JSON.parse(sessionStorage.getItem("spurtUser"))?.twitterUrl,
-        facebookUrl: JSON.parse(sessionStorage.getItem("spurtUser"))
+        firstName: JSON.parse(sessionStorage.getItem("blazingUser"))?.firstName,
+        lastName: JSON.parse(sessionStorage.getItem("blazingUser"))?.lastName,
+        bio: JSON.parse(sessionStorage.getItem("blazingUser"))?.bio,
+        twitterUrl: JSON.parse(sessionStorage.getItem("blazingUser"))
+          ?.twitterUrl,
+        facebookUrl: JSON.parse(sessionStorage.getItem("blazingUser"))
           ?.facebookUrl,
-        phoneNumber: JSON.parse(sessionStorage.getItem("spurtUser"))
+        phoneNumber: JSON.parse(sessionStorage.getItem("blazingUser"))
           ?.mobileNumber,
-        emailId: JSON.parse(sessionStorage.getItem("spurtUser"))?.email,
-        avatar: JSON.parse(sessionStorage.getItem("spurtUser"))?.avatar,
-        avatarPath: JSON.parse(sessionStorage.getItem("spurtUser"))?.avatarPath,
-        username: JSON.parse(sessionStorage.getItem("spurtUser"))?.username,
+        emailId: JSON.parse(sessionStorage.getItem("blazingUser"))?.email,
+        avatar: JSON.parse(sessionStorage.getItem("blazingUser"))?.avatar,
+        avatarPath: JSON.parse(sessionStorage.getItem("blazingUser"))
+          ?.avatarPath,
+        username: JSON.parse(sessionStorage.getItem("blazingUser"))?.username,
       };
       setProfileData(jsonObject);
       setLoader(false);
@@ -238,7 +241,7 @@ export default function ProfileInformation() {
               validationSchema={profileSchema}
               onSubmit={(values) => {
                 setLoader(true);
-                editProfileApi(values, newDpName, Router, setLoader);
+                editProfileApi(values, newDpName, Router, setLoader, dispatch);
               }}
             >
               {({

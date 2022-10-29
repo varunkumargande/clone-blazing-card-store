@@ -1,4 +1,3 @@
-
 import ReportPopup from "../../shared/modal/ReportAbuse";
 import PostQuestionPopup from "../../shared/modal/QuestionPop";
 import { useState } from "react";
@@ -73,9 +72,9 @@ const ViewAllQuestion = () => {
               {price}
             </h2>
           </div>
-        
+
           <div className="cus-qa-right">
-          {/* <div className="ps-questions"> */}
+            {/* <div className="ps-questions"> */}
             <ReportPopup
               showModal={showReportModal}
               setShowModal={setShowReportModal}
@@ -150,7 +149,7 @@ const ViewAllQuestion = () => {
                                     </span>
                                   </h5>
                                 )}
-                             
+
                               {info.answerList && (
                                 <LikeQues
                                   answerId={
@@ -193,7 +192,7 @@ const ViewAllQuestion = () => {
               <div className="ps-block__content">
                 <center>
                   <img
-                    src="/static/img/spurt-original-loader.gif"
+                    src="/static/img/Loader/loader_blue.gif"
                     style={{ width: "80px", height: "80px" }}
                   />
                 </center>
@@ -201,14 +200,14 @@ const ViewAllQuestion = () => {
             )}
           </div>
         </div>
-        // </div>
       ) : (
+        // </div>
         <div className="ps-page--product">
           <div className="ps-container">
             <div style={{ paddingTop: "100px", paddingBottom: "200px" }}>
               <center>
                 <img
-                  src="/static/img/spurt-original-loader.gif"
+                  src="/static/img/Loader/loader_blue.gif"
                   style={{ height: "100px", width: "100px" }}
                 />
               </center>

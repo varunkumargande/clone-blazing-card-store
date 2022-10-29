@@ -32,7 +32,7 @@ function MobileHeader({ auth }) {
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const authFunc = () => {
-    if (sessionStorage.getItem("spurtToken") !== null) {
+    if (sessionStorage.getItem("blazingToken") !== null) {
       dispatch(login());
     }
   };
@@ -45,7 +45,7 @@ function MobileHeader({ auth }) {
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("spurtUser");
+      let profileData = sessionStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);
@@ -82,7 +82,7 @@ function MobileHeader({ auth }) {
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("spurtUser");
+      let profileData = sessionStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);
@@ -164,8 +164,9 @@ function MobileHeader({ auth }) {
         return (
           <>
             <div className="text-center become-seller border-btn">
+            Want to sell? 
               <Link href="/become-seller/guidelines">
-                <a className="border-btn flex flex-center justify-center become">
+                <a className="flex flex-center justify-center become">
                   Become a Seller
                 </a>
               </Link>
@@ -175,7 +176,8 @@ function MobileHeader({ auth }) {
       } else {
         return (
           <>
-            <div className="text-center become-seller border-btn">
+            <div className="text-center become-seller flex flex-center justify-center">
+            Want to sell?
               <Link href="/account/login">
                 <a className="flex flex-center justify-center become Link">
                   Become a Seller
@@ -270,10 +272,11 @@ function MobileHeader({ auth }) {
                             <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
                         </div> */}
           </div>
-          {handleCheckUserLoginForVendor()}
+          
           {auth.isLoggedIn ? (
             <>
               <div className="mob-navigation mb32">
+              {handleCheckUserLoginForVendor()}
                 <ul>
                   <li>
                     <Link href="/account/myprofile">
@@ -325,12 +328,12 @@ function MobileHeader({ auth }) {
             <>
               <div className="flex flex-wrap btn-wrapper column">
                 <Link href="/account/login">
-                  <a className="primary-btn flex flex-center justify-center">
+                  <a className="border-btn flex flex-center justify-center">
                     Sign In
                   </a>
                 </Link>
                 <Link href="/account/register">
-                  <a className="border-btn flex flex-center justify-center">
+                  <a className="primary-btn flex flex-center justify-center">
                     Sign up
                   </a>
                 </Link>
@@ -338,6 +341,7 @@ function MobileHeader({ auth }) {
               <div className="or flex flex-center justify-center">
                 <span>Or</span>
               </div>
+              {handleCheckUserLoginForVendor()}
             </>
           )}
         </div>

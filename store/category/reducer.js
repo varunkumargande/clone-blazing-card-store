@@ -3,7 +3,8 @@ import { actionTypes } from "./action";
 export const initialState = {
   categories: [],
   categoryName: null,
-  subCategoryName: "all"
+  categoryId:null,
+  subCategoryName: "all"  
 };
 
 function reducer(state = initialState, action) {
@@ -19,6 +20,12 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         ...{ categoryName: action.payload },
+    };
+
+    case actionTypes.SAVE_CATEGORY_ID:
+      return {
+        ...state,
+        ...{ categoryId: action.payload },
     };
 
     case actionTypes.SAVE_SUB_CATEGORY:

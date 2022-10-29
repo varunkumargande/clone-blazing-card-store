@@ -7,7 +7,6 @@ import Router from "next/router";
 import Link from "next/link";
 import { imageUrl } from "../../../../api/url";
 
-
 function ProfileCard(props) {
   const handleGoToEditProfile = () => {
     Router.push("/account/editprofile");
@@ -16,8 +15,8 @@ function ProfileCard(props) {
   const [userDetail, setUserDetail] = useState();
 
   useEffect(() => {
-    if (sessionStorage.getItem("spurtUser")) {
-      setUserDetail(JSON.parse(sessionStorage.getItem("spurtUser")));
+    if (sessionStorage.getItem("blazingUser")) {
+      setUserDetail(JSON.parse(sessionStorage.getItem("blazingUser")));
     }
   }, []);
 
@@ -28,7 +27,8 @@ function ProfileCard(props) {
           <img
             src={
               userDetail && userDetail.avatar != null
-                ? imageUrl+`?path=${userDetail.avatarPath}&name=${userDetail.avatar}&width=300&height=300`
+                ? imageUrl +
+                  `?path=${userDetail.avatarPath}&name=${userDetail.avatar}&width=300&height=300`
                 : "/static/img/no-image.png"
             }
             alt="ProfileImg"
@@ -85,7 +85,6 @@ function ProfileCard(props) {
       );
     }
   };
-
 
   return (
     <>

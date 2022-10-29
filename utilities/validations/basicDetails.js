@@ -5,7 +5,7 @@ export const basicDetailvalidation = yup.object().shape({
   uniqueId: yup.number().typeError("Invalid Details Entered").required("Please Enter your UniqueId"),
   upload: yup
     .mixed()
-    .required("A file is required")
+    .required("Please upload identification document")
     // .test(
     //   "fileSize",
     //   "File is too large",

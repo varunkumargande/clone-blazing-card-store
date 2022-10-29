@@ -1,6 +1,12 @@
-import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from "../../services";
-export async function editAddressApi(values, addressId, setAddressLoader, addressList) {
+import { show } from "../../store/toast/action";
+export async function editAddressApi(
+  values,
+  addressId,
+  setAddressLoader,
+  addressList,
+  dispatch
+) {
   const data = JSON.stringify({
     address1: values.address1,
     address2: values.address2,
@@ -17,14 +23,12 @@ export async function editAddressApi(values, addressId, setAddressLoader, addres
     addressId,
     data
   );
-  if (result.data) {
-  }
   if (result.data.status === 1) {
-    modalSuccess("success", result.data.message);
-    addressList()
+    addressList();
+    dispatch(show({ message: result.data.message, type: "success" }));
   } else {
-    modalWarning("error", result.data.message);
-    setAddressLoader(false)
+    dispatch(show({ message: "Error updating information", type: "error" }));
+    setAddressLoader(false);
   }
   return result.data;
 }
