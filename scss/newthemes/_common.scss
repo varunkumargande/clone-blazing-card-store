@@ -649,11 +649,12 @@ label{
 }
 // Toast Message
 .ToastMessageWrapper {
-  width: 100%;
-  max-width: 330px;
+  // width: 100%;
+  // max-width: 330px;
+  width: 30%;
   min-height: 52px;
   padding: 10px 18px;
-  @include pos(fixed,10px,0,null,0);
+  @include pos(fixed,10px,0,null,0,99);
   margin: 0 auto;
   border-radius: 8px;
   &.success{

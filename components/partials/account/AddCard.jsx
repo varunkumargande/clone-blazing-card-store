@@ -93,8 +93,7 @@ function AddCard() {
                                 </h4>
                                 <div className="adr-card-content">
                                   <h4>
-                                    {" "}
-                                    {data.card.brand} : XXXX XXXX XXXX{" "}
+                                    {data.card.brand} : XXXX XXXX XXXX
                                     {data.card.last4}
                                     <div className="adr-card-more-btn">
                                       <MoreOutlined
