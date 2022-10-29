@@ -11,8 +11,9 @@ import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
 import { regex } from "../../Constants/regex";
-
+import { useDispatch } from "react-redux";
 export default function PaymentDetail() {
+  const dispatch = useDispatch();
   const [cardData, setCardData] = useState(null);
   const [delStatus, setDelStatus] = useState(0);
   const [cardLoader, setCardLoader] = useState(true);
@@ -85,7 +86,7 @@ export default function PaymentDetail() {
       countryId: values.countryId,
     });
 
-    handleCardApi(jsonData, isCardEdit, cardListApi, setCardLoader);
+    handleCardApi(jsonData, isCardEdit, cardListApi, setCardLoader, dispatch);
   };
 
   const handleExpDate = (values) => {

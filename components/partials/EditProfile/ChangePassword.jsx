@@ -4,8 +4,9 @@ import Link from "next/link";
 import { changePasswordApi } from "../../../api";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+import { useDispatch } from "react-redux";
 export default function ChangePassword() {
+  const dispatch = useDispatch();
   const [passLoader, setPassLoader] = useState(false);
 
   const initialChangePassValues = {
@@ -40,7 +41,7 @@ export default function ChangePassword() {
             validationSchema={changePassSchema}
             onSubmit={(values) => {
               setPassLoader(true);
-              changePasswordApi(values, setPassLoader);
+              changePasswordApi(values, setPassLoader, dispatch);
             }}
           >
             {({

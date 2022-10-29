@@ -1,9 +1,7 @@
 import { cartListApi } from "../cart/cartList";
 import getProfileApi from "../home/getInfo";
 import APIServices from "../../services";
-import { modalSuccess, modalWarning } from "../intercept";
-import { getProfile } from "../../store/profile/action";
-
+import { show } from "../../store/toast/action";
 export async function UserLogin(
   email,
   password,
@@ -26,10 +24,9 @@ export async function UserLogin(
     sessionStorage.setItem("blazingToken", result.data.data.token);
     sessionStorage.setItem("userPass", password);
     getProfileApi();
-    modalSuccess("success", result.data.message);
+    dispatch(show({ message: result.data.message, type: "success" }));
     Router.push("/");
     cartListApi(dispatch);
-    // dispatch(getProfile(result.data))
   } else {
     setLoginError(
       result.data.message === "Invalid EmailId" ||
@@ -37,6 +34,7 @@ export async function UserLogin(
         ? "Password/Email is not correct"
         : result?.data?.message
     );
+    dispatch(show({ message: result.data.message, type: "error" }));
     setMail("");
     setPassword("");
   }

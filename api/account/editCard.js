@@ -1,28 +1,37 @@
-import { modalWarning, modalSuccess } from "../intercept";
 import APIServices from "../../services";
-
-export async function handleCardApi(data, isEdit, cardListApi, setCardLoader) {
+import { show } from "../../store/toast/action";
+export async function handleCardApi(
+  data,
+  isEdit,
+  cardListApi,
+  setCardLoader,
+  dispatch
+) {
   if (isEdit) {
     const result = await APIServices.create(
       "customer-card-details/updateCard",
       data
-    );
-    if (result && result.data && result.data.status === 1) {
+    )
+    if (result?.status === 200) { 
       cardListApi();
       setCardLoader(false);
+      dispatch(show({ message: result.data.message, type: "success" }));
+    } else {
+      setCardLoader(false);
+      dispatch(show({ message: result.data.message, type: "error" }));
     }
-  } else {
+  } else { 
     const result = await APIServices.create(
       "customer-card-details/addCardInProfile",
       data
     );
-    if (result.data.status == 1) {
+    if (result?.data?.status === 1) {
+      setCardLoader(false);
+      dispatch(show({ message: "Card added successfully", type: "success" }));
       cardListApi();
-      setCardLoader(false);
-      modalSuccess("success", "Card Addedd !");
     } else {
-      modalWarning("error", result.data.message);
       setCardLoader(false);
+      dispatch(show({ message: result.data.message, type: "error" }));
     }
   }
 }

@@ -31,7 +31,8 @@ import useSessionstorage from "../../elements/sessionStorageHook/useSessionstora
 import Notifications from "../../partials/Notifications/Notifications";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { vendorAuth } from "../../../store/vendorAuth/action";
-
+import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
+import { show } from "../../../store/toast/action";
 function HeaderDefault({ auth }) {
   const router = useRouter();
   const [active, setActive] = useState(false);
@@ -67,6 +68,7 @@ function HeaderDefault({ auth }) {
   const submittedDetails = useSelector(
     (state) => state?.becomeSeller?.submittedDetails
   );
+  const toast = useSelector((state) => state?.toast?.toast);
 
   const handleOnClick = () => {
     setActive(!active);
@@ -142,9 +144,14 @@ function HeaderDefault({ auth }) {
     e.preventDefault();
     sessionStorage.clear();
     dispatch(logOut());
+    dispatch(
+      show({
+        message: "Successfully logged out",
+        type: "success",
+      })
+    );
     Router.push("/");
     window.location.href = "/";
-    modalSuccess("success", "successfully logged out");
   };
 
   const handleChangePageToHome = () => {
@@ -371,6 +378,7 @@ function HeaderDefault({ auth }) {
           </div>
         </div>
       </div>
+      {!!toast.message && <TostMessage data={toast}></TostMessage>}
     </header>
   );
 }

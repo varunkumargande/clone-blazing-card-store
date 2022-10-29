@@ -29,6 +29,7 @@ import { TextInput } from "../../CommonComponents/TextInput";
 // ==========================================
 
 function Signup(auth) {
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mail, setMail] = useState("");
@@ -129,7 +130,10 @@ function Signup(auth) {
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
 
     username: Yup.string()
-      .matches(registerConstant.form.usernameField.regex, registerConstant.form.usernameField.regexMessage)
+      .matches(
+        registerConstant.form.usernameField.regex,
+        registerConstant.form.usernameField.regexMessage
+      )
       .max(8)
       .required(registerConstant.form.usernameField.required),
   });
@@ -221,7 +225,8 @@ function Signup(auth) {
               values.username,
               // usernameInput.current.value,
               Router,
-              setSingupError
+              setSingupError,
+              dispatch
             );
           }
         }}

@@ -15,8 +15,9 @@ import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-
+import { useDispatch } from "react-redux";
 export default function ProfileInformation() {
+  const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB
   const [profileData, setProfileData] = useState(null);
   const [newDpError, setNewDpError] = useState("");
@@ -240,7 +241,7 @@ export default function ProfileInformation() {
               validationSchema={profileSchema}
               onSubmit={(values) => {
                 setLoader(true);
-                editProfileApi(values, newDpName, Router, setLoader);
+                editProfileApi(values, newDpName, Router, setLoader, dispatch);
               }}
             >
               {({

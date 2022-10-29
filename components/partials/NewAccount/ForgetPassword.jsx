@@ -7,9 +7,9 @@ import { useState, useEffect } from 'react';
 import SendMail from "./SentMail";
 import { forgotApi } from '../../../api/auth/forgotPassword'
 import { forgotPasswordConstant } from "../../Constants/forgot-password";
-
+import { useDispatch } from "react-redux";
 export default function ForgetPassword() {
-
+    const dispatch = useDispatch();
     const [mail, setMail] = useState("")
     const [mailError, setMailError] = useState("")
     const [forgotSuccess, setForgotSuccess] = useState(false)
@@ -25,7 +25,7 @@ export default function ForgetPassword() {
         if(mail == "") {
             setMailError(forgotPasswordConstant["requiredEmail"])
         }else {
-            forgotApi(mail, setForgotSuccess, setForError)
+            forgotApi(mail, setForgotSuccess, setForError, dispatch)
         }
     }
 
