@@ -14,6 +14,7 @@ import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
 import { UserAddAddress } from "../../../api";
 import { editAddressApi } from "../../../api";
 import { getStreamingCardDetail } from "../../../api/stream/cardApi";
+import { useRouter } from "next/router";
 
 function CenterDiv({
   productDetail,
@@ -38,6 +39,9 @@ function CenterDiv({
   const [cardIndex, setCardIndex] = useState(null);
   const [cardDetail, setCardDetail] = useState([]);
   const [orderId, setOrderId] = useState("");
+
+  const router = useRouter();
+  const streamUuid = router.query["uuid"];
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -79,8 +83,8 @@ function CenterDiv({
         cardDetail[cardDetail.length - 1],
         addressList[addressList.length - 1],
         productDetail,
-        openPayment
-        // streamingDetails
+        openPayment,
+        streamUuid
       );
       setOrderId(orderIdValue);
       setPaymentLoader(false);
