@@ -12,6 +12,7 @@ import {
 } from "../../../store/likedStream/action";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
+import { getStreamScheduleDate } from "../../../utilities/utils";
 
 function LiveStreamStatus({
   isLive,
@@ -115,7 +116,7 @@ function LiveStreamStatus({
       ) : (
         <>
           <div className="tme-wrap flex flex-center justify-center">
-            <span>Today {detail.scheduletime}</span>
+            <span>{getStreamScheduleDate(detail.scheduleDate, detail.scheduletime)}</span>
           </div>
           {handleLikeButton()}
         </>
