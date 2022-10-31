@@ -2,12 +2,14 @@ import React from "react";
 import { useSelector } from "react-redux";
 import StreamCard from "../../elements/StreamCard";
 import Router from "next/router";
+import ShowViewAll  from "../../reusable/viewAll";
 
 export default function LiveShow({
   setIsSeeAll,
   setSeeAllHeading,
   setIsLiveScheduleSeeAll,
   showLoginModal,
+  streamSchDetail
 }) {
   const streamDetail = useSelector((state) => state?.stream?.streamdetails);
   const handleSeeAll = (name) => {
@@ -43,11 +45,12 @@ export default function LiveShow({
       <div className="inner-container">
         <div className="title-wrap flex space-between flex-center">
           <div className="flex flex-center">
-            <h3 className="title">Schedule Shows</h3>
+            <h3 className="title">Scheduled Shows</h3>
           </div>
-          <div className="seeAll" onClick={() => handleGoToSeeAll()}>
-            <a className="flex flex-center">View All</a>
-          </div>
+          <ShowViewAll
+            data={streamSchDetail}
+            handleGoToSeeAll={handleGoToSeeAll}
+          />
         </div>
       </div>
       <div className="overflow-wrap">

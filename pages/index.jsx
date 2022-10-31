@@ -146,6 +146,7 @@ function landingPage({ auth, category }) {
                     setSeeAllHeading={setSeeAllHeading}
                     setIsSeeAll={setIsSeeAll}
                     showLoginModal={setShowModal}
+                    streamLiveDetail={streamLiveDetail}
                   />
                 ): ""}
                 {streamSchDetail ? (
@@ -156,6 +157,7 @@ function landingPage({ auth, category }) {
                     setSeeAllHeading={setSeeAllHeading}
                     setIsSeeAll={setIsSeeAll}
                     showLoginModal={setShowModal}
+                    streamSchDetail={streamSchDetail}
                   />
                 ):""}
 
