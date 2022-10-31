@@ -9,6 +9,7 @@ import {
 } from "../../../store/category/action";
 import { regex } from "../../Constants/regex";
 import { categoryConstant } from "../../Constants/category";
+import ShowViewAll from "../../reusable/viewAll";
 
 function CategoryStream({ categoryData, showLoginModal, category }) {
   const dispatch = useDispatch();
@@ -57,22 +58,15 @@ function CategoryStream({ categoryData, showLoginModal, category }) {
           <div className="flex flex-center">
             <h3 className="title">{stringFormatter(categoryData[0])}</h3>
           </div>
-          <div className="seeAll">
-            <a
-              className="flex flex-center"
-              onClick={() => handleSeeAll(categoryData[0])}
-            >
-              View All
-            </a>
-          </div>
+          <ShowViewAll
+            data={categoryData[categoryConstant.categoryData]}
+            handleGoToSeeAll={() => handleSeeAll(categoryData[0])}
+          />
         </div>
       </div>
       <div className="overflow-wrap">
         <div className="flex inner-container">
-          <div className="card-wrap flex">
-            {/*  */}
-            {getStreamCards()}
-          </div>
+          <div className="card-wrap flex">{getStreamCards()}</div>
         </div>
       </div>
     </section>
