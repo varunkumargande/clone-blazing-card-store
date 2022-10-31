@@ -8,6 +8,7 @@ import {
   saveCategoryName,
 } from "../../../store/category/action";
 import { regex } from "../../Constants/regex";
+import { categoryConstant } from "../../Constants/category";
 
 function CategoryStream({ categoryData, showLoginModal, category }) {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ function CategoryStream({ categoryData, showLoginModal, category }) {
 
   const getStreamCards = () => {
     if (categoryData)
-      return categoryData[1]?.map((detail) => {
+      return categoryData[categoryConstant.categoryData].map((detail) => {
         return <StreamCard showLoginModal={showLoginModal} detail={detail} />;
       });
   };
