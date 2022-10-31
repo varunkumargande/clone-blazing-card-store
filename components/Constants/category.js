@@ -2,9 +2,10 @@ export const categoryConstant = {
     "homeTag": "Explore",
     "headingTag": "Categories",
     "viewTag":"View All",
+    "categoryData":1,
     "url": {
         "path":"/see-all",
-        "page": "all category"
+        "page": "allCategory"
     },
     "LIVE_DATA":{
         "type": 1,

@@ -2,25 +2,41 @@ import React from "react";
 import { stringFormatter } from "../../../utilities/utils";
 import Router from "next/router";
 import StreamCard from "../../elements/StreamCard";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import {
+  saveSubCategoryName,
+  saveCategoryName,
+} from "../../../store/category/action";
+import { regex } from "../../Constants/regex";
+import { categoryConstant } from "../../Constants/category";
+import ShowViewAll from "../../reusable/viewAll";
 
 function CategoryStream({ categoryData, showLoginModal, category }) {
+  const dispatch = useDispatch();
 
   const handleSeeAll = (name) => {
     if (!!category?.categoryName) {
+      /**
+       * regex is using for change formate of category name to category slug
+       */
+      let outString = name
+        .replace(regex.nameToSlug, "")
+        .replace(/ /g, "-")
+        .toLowerCase();
+      dispatch(saveSubCategoryName(outString));
       Router.push({
         pathname: "/see-all",
         query: {
-          page: "all Categories",
+          page: "allCategory",
           category: category?.categoryName,
-          subCategory: name,
+          subCategory: outString,
         },
       });
     } else {
       Router.push({
         pathname: "/see-all",
         query: {
-          page: "all Categories",
+          page: "allCategory",
           category: name,
           subCategory: "all",
         },
@@ -30,7 +46,7 @@ function CategoryStream({ categoryData, showLoginModal, category }) {
 
   const getStreamCards = () => {
     if (categoryData)
-      return categoryData[1]?.map((detail) => {
+      return categoryData[categoryConstant.categoryData].map((detail) => {
         return <StreamCard showLoginModal={showLoginModal} detail={detail} />;
       });
   };
@@ -42,22 +58,15 @@ function CategoryStream({ categoryData, showLoginModal, category }) {
           <div className="flex flex-center">
             <h3 className="title">{stringFormatter(categoryData[0])}</h3>
           </div>
-          <div className="seeAll">
-            <a
-              className="flex flex-center"
-              onClick={() => handleSeeAll(categoryData[0])}
-            >
-              View All
-            </a>
-          </div>
+          <ShowViewAll
+            data={categoryData[categoryConstant.categoryData]}
+            handleGoToSeeAll={() => handleSeeAll(categoryData[0])}
+          />
         </div>
       </div>
       <div className="overflow-wrap">
         <div className="flex inner-container">
-          <div className="card-wrap flex">
-            {/*  */}
-            {getStreamCards()}
-          </div>
+          <div className="card-wrap flex">{getStreamCards()}</div>
         </div>
       </div>
     </section>

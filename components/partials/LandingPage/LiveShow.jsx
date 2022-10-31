@@ -1,21 +1,22 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import StreamCard from "../../elements/StreamCard";
+import Router from "next/router";
+import ShowViewAll from "../../reusable/viewAll";
 
 export default function LiveShow({
   setIsSeeAll,
   setSeeAllHeading,
   setIsLiveScheduleSeeAll,
   showLoginModal,
+  streamLiveDetail,
 }) {
   const handleSeeAll = (name) => {
     setIsSeeAll(true);
     setIsLiveScheduleSeeAll(true);
     setSeeAllHeading(name);
   };
-
   const streamDetail = useSelector((state) => state?.stream?.liveDetails);
-
   const getStreamCards = () => {
     return streamDetail?.map((detail, index) => {
       return (
@@ -30,6 +31,16 @@ export default function LiveShow({
     });
   };
 
+  const handleGoToSeeAll = () => {
+    Router.push({
+      pathname: "/see-all",
+      query: {
+        page: "live",
+        category: "",
+      },
+    });
+  };
+
   return (
     <>
       {streamDetail?.live?.length == 0 ? (
@@ -41,14 +52,10 @@ export default function LiveShow({
               <div className="flex flex-center">
                 <h3 className="title">Live Shows</h3>
               </div>
-              <div className="seeAll">
-                <a
-                  className="flex flex-center"
-                  onClick={() => handleSeeAll("Live")}
-                >
-                  View All
-                </a>
-              </div>
+              <ShowViewAll
+                data={streamLiveDetail}
+                handleGoToSeeAll={handleGoToSeeAll}
+              />
             </div>
           </div>
           <div className="overflow-wrap">
