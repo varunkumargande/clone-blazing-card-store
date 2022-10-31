@@ -25,7 +25,7 @@ export default function useLiveUserCount(streamData, callback) {
         setUserCount(members?.length);
       })
       .catch((e) => {
-        console.log(e);
+        
       });
   };
 

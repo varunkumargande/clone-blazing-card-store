@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import StreamCard from "../../elements/StreamCard";
+import Router from "next/router";
 
 export default function LiveShow({
   setIsSeeAll,
@@ -13,9 +14,7 @@ export default function LiveShow({
     setIsLiveScheduleSeeAll(true);
     setSeeAllHeading(name);
   };
-
   const streamDetail = useSelector((state) => state?.stream?.liveDetails);
-
   const getStreamCards = () => {
     return streamDetail?.map((detail, index) => {
       return (
@@ -27,6 +26,17 @@ export default function LiveShow({
           />
         </React.Fragment>
       );
+    });
+  };
+
+
+  const handleGoToSeeAll = () => {
+    Router.push({
+      pathname: "/see-all",
+      query: {
+        page: "live",
+        category: "",
+      },
     });
   };
 
@@ -44,7 +54,7 @@ export default function LiveShow({
               <div className="seeAll">
                 <a
                   className="flex flex-center"
-                  onClick={() => handleSeeAll("Live")}
+                  onClick={handleGoToSeeAll}
                 >
                   View All
                 </a>

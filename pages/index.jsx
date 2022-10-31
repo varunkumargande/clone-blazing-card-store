@@ -71,6 +71,13 @@ function landingPage({ auth, category }) {
     dispatch(getBecomeSellerInfo());
   }, []);
 
+  const streamLiveDetail = useSelector(
+    (state) => state?.stream?.liveDetails
+  )?.length;
+  const streamSchDetail = useSelector(
+    (state) => state?.stream?.streamdetails
+  )?.length;
+
   const getAllCategoriesCard = () => {
     if (categories) {
       const categoriesData = Object.entries(categories);
@@ -133,20 +140,25 @@ function landingPage({ auth, category }) {
           <>
             {category.categoryName === null ? (
               <>
-                <LiveShow
-                  setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
-                  setSeeAllHeading={setSeeAllHeading}
-                  setIsSeeAll={setIsSeeAll}
-                  showLoginModal={setShowModal}
-                />
-                <ScheduledShow
-                  liveScheduleCategoryName={liveScheduleCategoryName}
-                  // activeCategoryName={activeCategoryName}
-                  setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
-                  setSeeAllHeading={setSeeAllHeading}
-                  setIsSeeAll={setIsSeeAll}
-                  showLoginModal={setShowModal}
-                />
+                {streamLiveDetail ? (
+                  <LiveShow
+                    setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
+                    setSeeAllHeading={setSeeAllHeading}
+                    setIsSeeAll={setIsSeeAll}
+                    showLoginModal={setShowModal}
+                  />
+                ): ""}
+                {streamSchDetail ? (
+                  <ScheduledShow
+                    liveScheduleCategoryName={liveScheduleCategoryName}
+                    // activeCategoryName={activeCategoryName}
+                    setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
+                    setSeeAllHeading={setSeeAllHeading}
+                    setIsSeeAll={setIsSeeAll}
+                    showLoginModal={setShowModal}
+                  />
+                ):""}
+
                 {getAllCategoriesCard()}
               </>
             ) : (

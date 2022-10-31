@@ -7,8 +7,9 @@ import {
   saveCategoryName,
   saveSubCategoryName,
 } from "../../../store/category/action";
+import { getStreamCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 
-function SeeAllParentCategories({ category, setCatIndex }) {
+function SeeAllParentCategories({ category, setCatIndex, setStreamData }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
 
@@ -24,21 +25,24 @@ function SeeAllParentCategories({ category, setCatIndex }) {
         subCategory: "all",
       },
     });
+    // getStreamCategoryBasedApi(name, setStreamData)
   };
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
+      dispatch(saveSubCategoryName(query?.subCategory));
     } else {
       Router.push({
         pathname: "/see-all",
         query: {
-          page: query.page,
-          category: category?.categories[0]?.name,
+          page: query?.page,
+          category: category?.categories[0]?.categorySlug,
           subCategory: category?.subCategoryName,
         },
       });
-    }
+      getStreamCategoryBasedApi(category?.categories[0]?.categorySlug, category?.subCategoryName, query?.page, setStreamData)
+    } 
   }, [query]);
 
   const getAllCategoriesCard = () => {
@@ -46,9 +50,9 @@ function SeeAllParentCategories({ category, setCatIndex }) {
       return category?.categories.map((element, index) => {
         return (
           <li
-            key={index}
-            className={category?.categoryName === element?.name ? "active" : ""}
-            onClick={() => handleSelectCategory(element?.name, index)}
+            key={element?.categorySlug}
+            className={category?.categoryName === element?.categorySlug ? "active" : ""}
+            onClick={() => handleSelectCategory(element?.categorySlug, index)}
           >
             {stringFormatter(element?.name)}
           </li>

@@ -1,6 +1,7 @@
 export const regex = {
   onlyNumbers: /[^0-9]/gi,
   onlyAlphabetsWithSpaces: /[^a-z ]/gi,
+  nameToSlug: / [`~!@#,$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi
 };
 
 export const cardRegex = {

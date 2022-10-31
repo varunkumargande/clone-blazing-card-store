@@ -2,16 +2,28 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, connect } from "react-redux";
 import Router from "next/router";
-import { saveSubCategoryName } from "../../../store/category/action";
+import {
+  saveSubCategoryName,
+  saveCategoryName,
+} from "../../../store/category/action";
+import { getStreamSubCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 
-function SeeAllSubCategories({ catIndex, category }) {
+function SeeAllSubCategories({ catIndex, category, setStreamData }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
   const [queryCategory, setQueryCategory] = useState(null);
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
-      setQueryCategory(query?.category);
+      setQueryCategory(query);
+      dispatch(saveCategoryName(query?.category));
+      dispatch(saveSubCategoryName(query?.subCategory));
+      getStreamSubCategoryBasedApi(
+        query?.page,
+        query?.category,
+        query?.subCategory,
+        setStreamData
+      );
     }
   }, [query]);
 
@@ -20,7 +32,7 @@ function SeeAllSubCategories({ catIndex, category }) {
     Router.push({
       pathname: "/see-all",
       query: {
-        page: query.page,
+        page: queryCategory?.page,
         category: category?.categoryName,
         subCategory: name,
       },
@@ -29,26 +41,24 @@ function SeeAllSubCategories({ catIndex, category }) {
 
   const getAllSubCategoriesCard = () => {
     if (!!category?.categories) {
-      console.log(category?.categories[catIndex]?.children);
-      return category?.categories[catIndex]?.children?.map((item) => {
-        // if (element.name === queryCategory) {
+      var index = category?.categories.map(function(e) { return e?.categorySlug; }).indexOf(category?.categoryName);
+      return category?.categories[index]?.children?.map((item) => {
         return (
           <div className="category-list">
             <button
               className={
-                category?.subCategoryName === item.name
+                category?.subCategoryName === item.categorySlug
                   ? "title active"
                   : "title"
               }
               onClick={() =>
-                handleSubCategorySelect(item.name, item.categoryId)
+                handleSubCategorySelect(item.categorySlug, item.categoryId)
               }
             >
               {item.name}
             </button>
           </div>
         );
-        // }
       });
     }
   };
