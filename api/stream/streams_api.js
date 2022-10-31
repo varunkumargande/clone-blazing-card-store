@@ -1,4 +1,5 @@
 import APIServices from "../../services"
+import { apiUrl } from "../url";
 
  export const getProducts = async (url) => {
     try {
@@ -58,7 +59,7 @@ import APIServices from "../../services"
  export const getAddress = async () => {
     try {
       const response = await axios.get(
-        "https://blazing-card-backend-dev.kellton.net/api/address/get-address",
+        `${apiUrl}/address/get-address`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -76,7 +77,7 @@ import APIServices from "../../services"
 
   export const buyProduct = async (body) => {
     try {
-      const url = "https://blazing-card-backend-dev.kellton.net/api/orders/customer-pay";
+      const url = `${apiUrl}/orders/customer-pay`;
       const response = await APIServices.create(url, body);
       // const response = await axios.get(
       //   "https://blazing-card-backend-dev.kellton.net/api/address/get-address",
