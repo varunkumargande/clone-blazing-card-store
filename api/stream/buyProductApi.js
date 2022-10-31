@@ -64,11 +64,11 @@ async function buyProduct(
       if (result.status == 200) {
         modalSuccess("success", result.data.message);
         openPayment(false);
+        return result.data?.data?.orderId;
       } else {
         modalWarning("error", result.data.message);
         openPayment(false);
       }
-      return result.data?.data?.orderId;
     }
     return;
   }
