@@ -6,7 +6,7 @@ async function buyProduct(
   shipData,
   productDetail,
   openPayment,
-  streamingDetails
+  streamUuid
 ) {
   const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
   if (userData) {
@@ -56,7 +56,7 @@ async function buyProduct(
       password: "",
       paymentMethodId: paymentData.id,
       customerStripeRefId: paymentData.customer,
-      streamUUID: streamingDetails?.uuid ?? "",
+      streamUUID: streamUuid || "",
     };
 
     const result = await APIServices.create("orders/customer-pay", jsonData);
