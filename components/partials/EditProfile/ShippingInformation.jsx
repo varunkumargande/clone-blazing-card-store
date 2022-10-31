@@ -94,7 +94,6 @@ export default function ShippingDetails() {
               isSubmitting,
               setValues,
             }) => (
-              <>
                 <form onSubmit={handleSubmit}>
                   <div className="box">
                     <div className="inner-box">
@@ -112,6 +111,7 @@ export default function ShippingDetails() {
                             className="grey-bg"
                             onChange={handleChange}
                             value={values.company}
+                            maxLength={50}
                           />
                           <ErrorMessage
                             errors={errors.company}
@@ -231,8 +231,7 @@ export default function ShippingDetails() {
                     </button>
                   </div>
                 </form>
-              </>
-            )}
+              )}
           </Formik>
         </>
       )}

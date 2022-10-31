@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import NotificationMethods from "../../api/notification/NotificationMethods";
+import { notificationBaseUrl } from "../../api/url";
 import useEventSocket from "../../hooks/useEventSocket";
 
 export const NotificationsContext = createContext();
@@ -24,7 +25,7 @@ export function NotificationsProvider(props) {
   const { data } = useEventSocket(
     typeof window !== "undefined" &&
       JSON.parse(sessionStorage.getItem("blazingUser")) &&
-      `https://blazing-card-backend-dev.kellton.net/events/start?channel=notify-${String(
+      `${notificationBaseUrl}notify-${String(
         JSON.parse(sessionStorage.getItem("blazingUser")).id
       )}`
   );
