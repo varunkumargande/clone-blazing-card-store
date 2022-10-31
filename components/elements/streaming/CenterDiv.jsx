@@ -120,7 +120,7 @@ function CenterDiv({
       />
       {paymentSuccessful && (
         <OrderSuccessful
-          message={`Order Place Successfully!`}
+          message={`Order Placed Successfully!`}
           subMessage={`Order ID - ${orderId}`}
           setPaymentSuccessful={setPaymentSuccessful}
         />
@@ -140,43 +140,35 @@ function CenterDiv({
           isBuyNowPaymentModal={isBuyNowPaymentModal}
         />
       )}
-      {paymentForm == true ? (
-        <>
-          <AddNewCardModal
-            fetchCardDetail={fetchCardDetail}
-            productDetail={productDetail}
-            countryData={countryData}
-            fetchShiipmentApi={fetchShiipmentApi}
-            setCardDetail={setCardDetail}
-            payDetail={cardDetail}
-            cardIndex={setCardIndex}
-            payIndex={cardIndex}
-            close={setPaymentFormOpen}
-            setPaymentLoader={setPaymentLoader}
-          />
-        </>
-      ) : (
-        <></>
+      {paymentForm && (
+        <AddNewCardModal
+          fetchCardDetail={fetchCardDetail}
+          productDetail={productDetail}
+          countryData={countryData}
+          fetchShiipmentApi={fetchShiipmentApi}
+          setCardDetail={setCardDetail}
+          payDetail={cardDetail}
+          cardIndex={setCardIndex}
+          payIndex={cardIndex}
+          close={setPaymentFormOpen}
+          setPaymentLoader={setPaymentLoader}
+        />
       )}
-      {shippmentForm ? (
-        <>
-          <AddAddressModal
-            productDetail={productDetail}
-            fetchShiipmentApi={fetchShiipmentApi}
-            addressList={addressList}
-            countryData={countryData}
-            setShipIndex={setShipIndex}
-            shipIndex={shipIndex}
-            setShipData={setShipData}
-            shipData={shipData}
-            close={setShippmentFormOpen}
-            setShip={submitShipDetail}
-            addressLoader={addressLoader}
-            setAddressList={setAddressList}
-          />
-        </>
-      ) : (
-        <></>
+      {shippmentForm && (
+        <AddAddressModal
+          productDetail={productDetail}
+          fetchShiipmentApi={fetchShiipmentApi}
+          addressList={addressList}
+          countryData={countryData}
+          setShipIndex={setShipIndex}
+          shipIndex={shipIndex}
+          setShipData={setShipData}
+          shipData={shipData}
+          close={setShippmentFormOpen}
+          setShip={submitShipDetail}
+          addressLoader={addressLoader}
+          setAddressList={setAddressList}
+        />
       )}
     </div>
   );

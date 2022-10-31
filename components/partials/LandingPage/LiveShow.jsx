@@ -16,19 +16,15 @@ export default function LiveShow({
   };
   const streamDetail = useSelector((state) => state?.stream?.liveDetails);
   const getStreamCards = () => {
-    return streamDetail?.map((detail, index) => {
-      return (
-        <React.Fragment key={index}>
-          <StreamCard
-            showLoginModal={showLoginModal}
-            detail={detail}
-            isLive={true}
-          />
-        </React.Fragment>
-      );
-    });
+    return streamDetail?.map((detail) => (
+      <StreamCard
+        key={detail?.id}
+        showLoginModal={showLoginModal}
+        detail={detail}
+        isLive={true}
+      />
+    ));
   };
-
 
   const handleGoToSeeAll = () => {
     Router.push({
@@ -52,10 +48,7 @@ export default function LiveShow({
                 <h3 className="title">Live Shows</h3>
               </div>
               <div className="seeAll">
-                <a
-                  className="flex flex-center"
-                  onClick={handleGoToSeeAll}
-                >
+                <a className="flex flex-center" onClick={handleGoToSeeAll}>
                   View All
                 </a>
               </div>

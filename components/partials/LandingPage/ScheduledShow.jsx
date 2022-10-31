@@ -17,15 +17,14 @@ export default function LiveShow({
   };
 
   const getStreamCards = () => {
-    return streamDetail?.map((detail) => {
-      return (
-        <StreamCard
-          isLive={false}
-          detail={detail}
-          showLoginModal={showLoginModal}
-        />
-      );
-    });
+    return streamDetail?.map((detail) => (
+      <StreamCard
+        key={detail?.id}
+        isLive={false}
+        detail={detail}
+        showLoginModal={showLoginModal}
+      />
+    ));
   };
 
   const handleGoToSeeAll = () => {
@@ -52,9 +51,7 @@ export default function LiveShow({
       </div>
       <div className="overflow-wrap">
         <div className="flex inner-container">
-          <div className="card-wrap flex">
-            {getStreamCards()}
-          </div>
+          <div className="card-wrap flex">{getStreamCards()}</div>
         </div>
       </div>
     </section>

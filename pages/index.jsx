@@ -81,20 +81,19 @@ function landingPage({ auth, category }) {
   const getAllCategoriesCard = () => {
     if (categories) {
       const categoriesData = Object.entries(categories);
-      return categoriesData.map((element) => {
-        return (
-          <CategoryStream
-            isSeeAll={isSeeAll}
-            setIsSeeAllCate={setIsSeeAllCate}
-            setSeeAllHeading={setSeeAllHeading}
-            setIsSeeAll={setIsSeeAll}
-            categoryData={element}
-            isLikedShow={isLikedShow}
-            setIsLikedShow={setIsLikedShow}
-            showLoginModal={setShowModal}
-          />
-        );
-      });
+      return categoriesData.map((element) => (
+        <CategoryStream
+          key={element?.[0]}
+          isSeeAll={isSeeAll}
+          setIsSeeAllCate={setIsSeeAllCate}
+          setSeeAllHeading={setSeeAllHeading}
+          setIsSeeAll={setIsSeeAll}
+          categoryData={element}
+          isLikedShow={isLikedShow}
+          setIsLikedShow={setIsLikedShow}
+          showLoginModal={setShowModal}
+        />
+      ));
     }
   };
 
@@ -147,7 +146,9 @@ function landingPage({ auth, category }) {
                     setIsSeeAll={setIsSeeAll}
                     showLoginModal={setShowModal}
                   />
-                ): ""}
+                ) : (
+                  ""
+                )}
                 {streamSchDetail ? (
                   <ScheduledShow
                     liveScheduleCategoryName={liveScheduleCategoryName}
@@ -157,8 +158,9 @@ function landingPage({ auth, category }) {
                     setIsSeeAll={setIsSeeAll}
                     showLoginModal={setShowModal}
                   />
-                ):""}
-
+                ) : (
+                  ""
+                )}
                 {getAllCategoriesCard()}
               </>
             ) : (

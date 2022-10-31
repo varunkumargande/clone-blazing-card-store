@@ -79,7 +79,7 @@ function Category({ seeAllHeading, auth, category }) {
             </button>
           </div>
           {category?.categories?.map((res, index) => (
-            <div className="category-list" keys={index}>
+            <div className="category-list" key={res.categoryId || `${index}-category`}>
               <button
                 className={
                   category.categoryName === res?.categorySlug

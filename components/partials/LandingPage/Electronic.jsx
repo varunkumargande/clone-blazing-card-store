@@ -45,7 +45,7 @@ function CategoryStream({ categoryData, showLoginModal, category }) {
   const getStreamCards = () => {
     if (categoryData)
       return categoryData[1]?.map((detail) => {
-        return <StreamCard showLoginModal={showLoginModal} detail={detail} />;
+        return <StreamCard key={detail?.id} showLoginModal={showLoginModal} detail={detail} />;
       });
   };
 

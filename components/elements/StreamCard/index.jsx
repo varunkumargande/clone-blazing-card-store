@@ -1,13 +1,7 @@
 import React from "react";
-import Link from "next/link";
-import IconBack from "../../Icons/IconBack";
-import IconEye from "../../Icons/IconEye";
-import IconLike from "../../Icons/IconLike";
 import LiveStreamStatus from "../LiveStreamStatus";
 import { stringFormatter } from "../../../utilities/utils";
 import Router from "next/router";
-import { apiUrl, imageUrl } from "../../../api/url";
-import { useEffect } from "react";
 import DefaultServices from "../../Services/DefaultServices";
 import { connect } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
@@ -24,9 +18,9 @@ function StreamCard({ detail, showLoginModal, auth }) {
 
   return (
     <div className="card-list flex flex-center">
-      <div class="inner-card-list">
+      <div className="inner-card-list">
         <div className="image">
-          <div class="innerImage" onClick={() => handleStreamingLink(detail)}>
+          <div className="innerImage" onClick={() => handleStreamingLink(detail)}>
             <CloudinaryImage
               imageUrl={
                 DefaultServices?.GetFullImageURL(detail, "profile")
@@ -54,7 +48,6 @@ function StreamCard({ detail, showLoginModal, auth }) {
             showLoginModal={showLoginModal}
           />
         </div>
-        {/* </Link> */}
         <div className="text">
           <h3
             className="title flex flex-center"
