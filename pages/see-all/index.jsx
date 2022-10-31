@@ -17,7 +17,10 @@ import StreamCard from "../../components/elements/StreamCard";
 import Router from "next/router";
 import { useRouter } from "next/router";
 import { stringFormatter } from "../../utilities/utils";
-import { saveCategoryName } from "../../store/category/action";
+import {
+  saveCategoryName,
+  saveSubCategoryName,
+} from "../../store/category/action";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -25,6 +28,8 @@ function categoryStream({ auth, category }) {
   const [active, setActive] = useState(false);
   const [subCatId, setSubCatId] = useState("all");
   const [catIndex, setCatIndex] = useState(null);
+  const [streamData, setStreamData] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const wrapperRef = useRef(null);
   const handleClickOutside = (event) => {
@@ -51,52 +56,44 @@ function categoryStream({ auth, category }) {
     categoryApi(dispatch);
     setCatIndex(0);
   }, []);
+
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
     } else {
       if (!!category?.categories) {
-        dispatch(saveCategoryName(category?.categories[0]?.name));
+        dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
       }
     }
   }, [query]);
 
-  useEffect(() => {
-    console.log(query?.page);
-    switch (query?.page) {
-      case "scheduled":
-        getStreamCards(query?.page);
-        break;
-      case "all category":
-        getStreamCards(query?.page);
-        break;
-    }
-  }, [query?.page]);
-
   const getStreamCards = (pageType) => {
-    // console.log(pageType)
-    // if (category?.categoryName != null) {
-    //   return streamDetail?.[category?.categoryName]?.map((detail) => {
-    //     if (detail?.subCategory_name == category?.subCategoryName) {
-    //       return <StreamCard isLive={false} detail={detail} />;
-    //     }
-    //     if (category?.subCategoryName == "all") {
-    //       return <StreamCard isLive={false} detail={detail} />;
-    //     }
-    //   });
-    // }
+    if (!!streamData) {
+      return streamData.map((item) => {
+        return <StreamCard detail={item} showLoginModal={setShowModal} />;
+      });
+    }
   };
 
   const handleShowParentCategories = () => {
     if (!!category?.categories) {
-      return <SeeAllParentCategories setCatIndex={setCatIndex} />;
+      return (
+        <SeeAllParentCategories
+          setCatIndex={setCatIndex}
+          setStreamData={setStreamData}
+        />
+      );
     }
   };
 
   const handleShowSubCategories = () => {
     if (!!category?.categories) {
       return (
-        <SeeAllSubCategories catIndex={catIndex} setSubCatId={setSubCatId} />
+        <SeeAllSubCategories
+          catIndex={catIndex}
+          setSubCatId={setSubCatId}
+          setStreamData={setStreamData}
+        />
       );
     }
   };

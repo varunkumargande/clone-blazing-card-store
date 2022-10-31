@@ -7,12 +7,14 @@ import Router from "next/router";
 import IconBack from "../../Icons/IconBack";
 import { stringFormatter } from "../../../utilities/utils";
 import { useRouter } from "next/router";
-import { saveCategoryName, saveCategoryId } from "../../../store/category/action";
+import {
+  saveCategoryName,
+  saveCategoryId,
+} from "../../../store/category/action";
 import { useDispatch } from "react-redux";
 import { categoryConstant } from "../../Constants/category";
 
-function Category({ seeAllHeading, auth, category}) {
-
+function Category({ seeAllHeading, auth, category }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
   useEffect(() => {
@@ -55,7 +57,9 @@ function Category({ seeAllHeading, auth, category}) {
             <>
               <div className="category-like like">
                 <button
-                  className={`flex justify-center flex-center Like ${category.categoryName === "likes" && `Liked`}`}
+                  className={`flex justify-center flex-center Like ${
+                    category.categoryName === "likes" && `Liked`
+                  }`}
                   onClick={() => handleLikedShow()}
                 >
                   <span>
@@ -74,23 +78,25 @@ function Category({ seeAllHeading, auth, category}) {
               {categoryConstant.homeTag}
             </button>
           </div>
-          {category["categories"]?.map((res, index) => (
-            
-              <div className="category-list" keys={index}>
-                <button
-                  className={
-                    category.categoryName === res?.name
-                      ? "title active"
-                      : "title"
-                  }
-                  onClick={() =>
-                    handleActiveCategory(index, res?.name, res?.categoryId)
-                  }
-                >
-                  {stringFormatter(res?.name)}
-                </button>
-              </div>
-            
+          {category?.categories?.map((res, index) => (
+            <div className="category-list" keys={index}>
+              <button
+                className={
+                  category.categoryName === res?.categorySlug
+                    ? "title active"
+                    : "title"
+                }
+                onClick={() =>
+                  handleActiveCategory(
+                    index,
+                    res?.categorySlug,
+                    res?.categoryId
+                  )
+                }
+              >
+                {stringFormatter(res?.name)}
+              </button>
+            </div>
           ))}
         </>
       );
@@ -100,7 +106,7 @@ function Category({ seeAllHeading, auth, category}) {
   const handleGoToSeeAll = () => {
     Router.push({
       pathname: categoryConstant.url.path,
-      query: {  
+      query: {
         page: categoryConstant.url.page,
         category: "",
         subCategory: "all",
