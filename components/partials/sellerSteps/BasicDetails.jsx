@@ -102,6 +102,7 @@ export default function BasicDetails() {
                 name="fullName"
                 type="text"
                 placeholder="Enter here"
+                maxLength="25"
               />
 
               <TextInput
