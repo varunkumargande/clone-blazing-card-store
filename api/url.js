@@ -8,4 +8,4 @@ export const agora="http://localhost:8080";
 export const notificationBaseUrl ="https://blazing-card-backend-qa.kellton.net/events/start?channel="
 export const apiBaseUrl='https://blazing-card-backend-qa.kellton.net'
 export const cloudImageUrl = 'https://res.cloudinary.com/dwwbiyabf/image/upload/';
-export const cloudFolder = 'blazing';
+export const cloudFolder = 'blazingqa';
