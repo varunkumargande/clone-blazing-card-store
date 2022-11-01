@@ -3,6 +3,6 @@ export const apiConstant = {
     VENDOR_AUTH_TYPE: "vendl",
     VENDOR_AUTH_API: "store-vendor/commonLogin",
     VENDOR_LOGIN_URL:
-      "https://blazing-card-vendor-dev.kellton.net/#/dashboard",
+      `${process.env.NEXT_PUBLIC_VENDOR_LOGIN_URL}#/dashboard`,
   },
 };
