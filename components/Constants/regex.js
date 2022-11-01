@@ -1,5 +1,6 @@
 export const regex = {
   onlyNumbers: /[^0-9]/gi,
+  isNumbers:  /^[\d]+$/,
   onlyAlphabetsBothCases: /^[A-Za-z ]+$/,
   onlyAlphabetsWithSpaces: /[^a-z ]/gi,
   nameToSlug: / [`~!@#,$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi
