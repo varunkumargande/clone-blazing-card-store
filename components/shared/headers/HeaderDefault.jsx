@@ -46,7 +46,7 @@ function HeaderDefault({ auth }) {
   const [fname, setFname] = useState("");
   const [aimg, setAimg] = useState("");
   const [email, setEmail] = useState("");
-  const [toggle, setToggle] = useState("store");
+  const [toggle, setToggle] = useState(false);
 
   let { pageName } = router.query;
 
@@ -96,6 +96,12 @@ function HeaderDefault({ auth }) {
       handleProfileImage();
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (toggle) {
+      handleStoreAndVendorToggle("seller");
+    }
+  }, [toggle]);
 
   const handleProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
@@ -172,14 +178,15 @@ function HeaderDefault({ auth }) {
       return (
         <>
           <label className="switch toggle-switch darkBlue">
-            <input type="checkbox" id="togBtn" />
+            <input
+              type="checkbox"
+              onChange={(e) => {
+                setToggle((prev) => !prev);
+              }}
+              id="togBtn"
+            />
             <span className="toogle-slide round">
-              <span
-                className="on"
-                onClick={() => handleStoreAndVendorToggle("seller")}
-              >
-                Seller
-              </span>
+              <span className="on">Seller</span>
               <span className="off">Store</span>
             </span>
           </label>
