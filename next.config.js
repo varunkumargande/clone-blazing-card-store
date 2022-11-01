@@ -14,7 +14,7 @@ module.exports =withPlugins([[withImages()]]),{
     rewrites: async () => nextI18NextRewrites(localeSubpaths),
 
     webpack: (config, {dev}) => {
-        const env = process.env.ENV? process.env.ENV : "development";
+        const env = process.env.NEXT_PUBLIC_ENV ? process.env.NEXT_PUBLIC_ENV : "development";
         
         config.plugins.push(
             new webpack.EnvironmentPlugin(process.env)
