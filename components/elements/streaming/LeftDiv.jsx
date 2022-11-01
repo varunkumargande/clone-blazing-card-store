@@ -12,6 +12,7 @@ import { imageUrl } from "../../../api/url";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
+import { SignUPGoogle } from "../../partials/Modal/Modal";
 
 function LeftDiv({
   setShowLoginModal,
@@ -55,6 +56,8 @@ function LeftDiv({
   const [noOfFollower, setNoOfFollower] = useState(stream?.streamData?.vendorDetails?.follower_count ?? 0)
   //to handle width of the screen and call methods accordingly
   const [windowWidth, setWindowWidth] = useState(0);
+  const [showLogin, setShowLogin] = useState(false);
+
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
   };
@@ -161,9 +164,14 @@ function LeftDiv({
    * @param {*} product
    */
   const handleBuyNow = (product) => {
-    productDetail(product);
-    setIsBuyNowPaymentModal(true);
-    openPayment(true);
+    if (isLoggedIn) {
+      productDetail(product);
+      setIsBuyNowPaymentModal(true);
+      openPayment(true);
+    } else {
+      setShowLogin(true);
+    }
+
   };
 
   /**
@@ -216,7 +224,6 @@ function LeftDiv({
                 <button
                   className="border-btn"
                   onClick={() => handleBuyNow(product)}
-                  disabled={isLoggedIn ? false : true}
                 >
                   Buy Now
                 </button>
@@ -365,6 +372,17 @@ function LeftDiv({
 
   return (
     <div className="streaming-left">
+      {showLogin && (
+        <SignUPGoogle
+          customMsg={
+            "In order to buy a product in the stream, you need to sign up or log in."
+          }
+          onDismiss={(e) => {
+            e.preventDefault();
+            setShowLogin(false);
+          }}
+        />
+      )}
       {showUnFollowModal && UnfollowModal()}
       <div className="flex profile-wrapper">
         <div className="image">
