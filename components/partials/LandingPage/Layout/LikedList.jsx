@@ -2,7 +2,6 @@ import React from "react";
 import IconLike from "../../../Icons/IconLike";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { subcatstreamDetailApi } from "../../../../api/stream/subStreamDetail";
 import { stringFormatter } from "../../../../utilities/utils";
 import Router from "next/router";
 import StreamCard from "../../../elements/StreamCard";
