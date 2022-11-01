@@ -147,7 +147,12 @@ function MobileHeader({ auth }) {
             <label className="switch toggle-switch darkBlue">
               <input type="checkbox" id="togBtn" />
               <span className="toogle-slide round">
-                <span className="on">Seller</span>
+                <span
+                  className="on"
+                  onClick={() => handleStoreAndVendorToggle("seller")}
+                >
+                  Seller
+                </span>
                 <span
                   className="off"
                   onClick={() => handleStoreAndVendorToggle("seller")}
@@ -164,7 +169,7 @@ function MobileHeader({ auth }) {
         return (
           <>
             <div className="text-center become-seller border-btn">
-            Want to sell? 
+              Want to sell?
               <Link href="/become-seller/guidelines">
                 <a className="flex flex-center justify-center become">
                   Become a Seller
@@ -177,7 +182,7 @@ function MobileHeader({ auth }) {
         return (
           <>
             <div className="text-center become-seller flex flex-center justify-center">
-            Want to sell?
+              Want to sell?
               <Link href="/account/login">
                 <a className="flex flex-center justify-center become Link">
                   Become a Seller
@@ -272,11 +277,11 @@ function MobileHeader({ auth }) {
                             <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
                         </div> */}
           </div>
-          
+
           {auth.isLoggedIn ? (
             <>
               <div className="mob-navigation mb32">
-              {handleCheckUserLoginForVendor()}
+                {handleCheckUserLoginForVendor()}
                 <ul>
                   <li>
                     <Link href="/account/myprofile">

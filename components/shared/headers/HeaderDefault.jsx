@@ -174,7 +174,12 @@ function HeaderDefault({ auth }) {
           <label className="switch toggle-switch darkBlue">
             <input type="checkbox" id="togBtn" />
             <span className="toogle-slide round">
-              <span className="on">Seller</span>
+              <span
+                className="on"
+                onClick={() => handleStoreAndVendorToggle("seller")}
+              >
+                Seller
+              </span>
               <span
                 className="off"
                 onClick={() => handleStoreAndVendorToggle("seller")}
