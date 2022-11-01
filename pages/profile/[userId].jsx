@@ -9,9 +9,6 @@ import Footer from "../../components/partials/LandingPage/Footer";
 import IconShareFacebook from "../../components/Icons/IconShareFacebook"
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
 import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
-import { useSelector, useDispatch } from "react-redux";
-
-import { subcatstreamDetailApi } from "../../api/stream/subStreamDetail";
 import ProfileMethods from "../../api/profile/ProfileMethods";
 import PublicProfileConstants from "../../components/Constants/publicProfile";
 import StreamCard from "../../components/elements/StreamCard";
@@ -89,11 +86,6 @@ export default function categoryStream() {
     let resizeWindow = () => {
         setWindowWidth(window.innerWidth);
     };
-
-    const dispatch = useDispatch();
-    useEffect(() => {
-        subcatstreamDetailApi(dispatch)
-    }, [])
 
     useEffect(() => {
         resizeWindow();
