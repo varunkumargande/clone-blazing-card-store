@@ -1,5 +1,6 @@
 import APIServices from "../../services";
-import { show } from "../../store/toast/action";
+import { apiValidation } from "../utils/apiValidation";
+
 export async function editAddressApi(
   values,
   addressId,
@@ -23,12 +24,11 @@ export async function editAddressApi(
     addressId,
     data
   );
-  if (result.data.status === 1) {
+  const resp = apiValidation(result, dispatch);
+  if (resp) {
     addressList();
-    dispatch(show({ message: result.data.message, type: "success" }));
-  } else {
-    dispatch(show({ message: "Error updating information", type: "error" }));
-    setAddressLoader(false);
   }
+  setAddressLoader(false)
+
   return result.data;
 }

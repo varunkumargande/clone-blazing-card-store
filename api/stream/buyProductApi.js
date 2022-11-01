@@ -1,12 +1,17 @@
 import APIServices from "../../services";
 import { modalSuccess, modalWarning } from "../intercept";
+import { show } from "../../store/toast/action";
+import { apiValidation } from "../utils/apiValidation";
 
 async function buyProduct(
   paymentData,
   shipData,
   productDetail,
   openPayment,
-  streamUuid
+  streamUuid,
+  dispatch,
+  setPaymentSuccessful,
+  setPaymentLoader
 ) {
   const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
   if (userData) {
@@ -58,20 +63,17 @@ async function buyProduct(
       customerStripeRefId: paymentData.customer,
       streamUUID: streamUuid || "",
     };
-
     const result = await APIServices.create("orders/customer-pay", jsonData);
-    if (result && result.data && result.data) {
-      if (result.status == 200) {
-        modalSuccess("success", result.data.message);
-        openPayment(false);
-        return result.data?.data?.orderId;
-      } else {
-        modalWarning("error", result.data.message);
-        openPayment(false);
-      }
+    const resp = apiValidation(result, dispatch);
+    openPayment(false);
+    if (resp) {
+      setPaymentSuccessful(true);
+      setPaymentLoader(false);
+      return result?.data?.data?.orderId
     }
-    return;
   }
+  setPaymentLoader(false)
+  return;
 }
 
 export { buyProduct };

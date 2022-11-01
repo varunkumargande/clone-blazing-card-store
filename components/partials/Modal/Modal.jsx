@@ -383,6 +383,8 @@ export function AddNewCardModal(props) {
     fetchCardDetail,
   } = props;
 
+  const dispatch = useDispatch();
+
   const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
@@ -426,13 +428,23 @@ export function AddNewCardModal(props) {
 
       if (payDetail == false) {
         setPaymentLoader(true);
-        handleCardApi(jsonData, false, fetchCardDetail, setPaymentLoader);
-        fetchShiipmentApi();
+        handleCardApi(
+          jsonData,
+          false,
+          fetchCardDetail,
+          setPaymentLoader,
+          dispatch
+        );
         close(false);
       } else {
         setPaymentLoader(true);
-        handleCardApi(jsonData, true, fetchCardDetail, setPaymentLoader);
-        fetchShiipmentApi();
+        handleCardApi(
+          jsonData,
+          true,
+          fetchCardDetail,
+          setPaymentLoader,
+          dispatch
+        );
         close(false);
       }
     },
