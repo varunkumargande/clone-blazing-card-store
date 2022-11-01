@@ -4,11 +4,6 @@ import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {
-  subcatstreamDetailApi,
-  catStreamDetailApi,
-  catSubStreamDetailApi,
-} from "../../api/stream/subStreamDetail";
 import { connect } from "react-redux";
 import { categoryApi } from "../../api/category/category";
 import SeeAllParentCategories from "../../components/partials/SeeAll/parentCategories";
