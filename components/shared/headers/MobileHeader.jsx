@@ -23,11 +23,13 @@ import { useSelector, useDispatch } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
+import { vendorAuth } from "../../../store/vendorAuth/action";
 
 function MobileHeader({ auth }) {
   const [active, setActive] = useState(false);
   const [mobActive, mobSetActive] = useState(false);
   const [profile, setProfile] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
@@ -36,6 +38,16 @@ function MobileHeader({ auth }) {
       dispatch(login());
     }
   };
+
+  const handleStoreAndVendorToggle = () => {
+    dispatch(vendorAuth());
+  };
+
+  useEffect(() => {
+    if (toggle) {
+      handleStoreAndVendorToggle("seller");
+    }
+  }, [toggle]);
 
   useEffect(() => {
     categoryListApi(dispatch);
@@ -145,20 +157,16 @@ function MobileHeader({ auth }) {
         <>
           <div className="text-center become-seller">
             <label className="switch toggle-switch darkBlue">
-              <input type="checkbox" id="togBtn" />
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  setToggle((prev) => !prev);
+                }}
+                id="togBtn"
+              />
               <span className="toogle-slide round">
-                <span
-                  className="on"
-                  onClick={() => handleStoreAndVendorToggle("seller")}
-                >
-                  Seller
-                </span>
-                <span
-                  className="off"
-                  onClick={() => handleStoreAndVendorToggle("seller")}
-                >
-                  Store
-                </span>
+                <span className="on">Seller</span>
+                <span className="off">Store</span>
               </span>
             </label>
           </div>

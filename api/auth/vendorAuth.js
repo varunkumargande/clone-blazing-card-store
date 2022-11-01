@@ -10,11 +10,9 @@ export async function vendorAuthApi() {
     `${apiConstant.vendor.VENDOR_AUTH_API}?loginType=${apiConstant.vendor.VENDOR_AUTH_TYPE}`
   );
   if (result.status == 200) {
-    window.open(
-      `${apiConstant.vendor.VENDOR_LOGIN_URL}?auth=${token}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
+    window
+      .open(`${apiConstant.vendor.VENDOR_LOGIN_URL}?auth=${token}`, "mywindow")
+      .focus();
   }
 }
 /**
