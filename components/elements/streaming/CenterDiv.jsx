@@ -15,6 +15,8 @@ import { UserAddAddress } from "../../../api";
 import { editAddressApi } from "../../../api";
 import { getStreamingCardDetail } from "../../../api/stream/cardApi";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { show } from "../../../store/toast/action";
 
 function CenterDiv({
   productDetail,
@@ -27,6 +29,8 @@ function CenterDiv({
   setShowLoginModal,
   userCount,
 }) {
+  const dispatch = useDispatch();
+
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
@@ -84,16 +88,14 @@ function CenterDiv({
         addressList[addressList.length - 1],
         productDetail,
         openPayment,
-        streamUuid
+        streamUuid,
+        dispatch,
+        setPaymentSuccessful,
+        setPaymentLoader
       );
       setOrderId(orderIdValue);
-      setPaymentLoader(false);
-      setPaymentSuccessful(true);
     } else {
-      modalWarning(
-        "error",
-        "Please select your card detail and shippment address"
-      );
+      dispatch(show({ message: "Please enter the details !", type: "error" }));
     }
   };
 
@@ -101,11 +103,11 @@ function CenterDiv({
     setShipData(data);
     if (data.addressId) {
       setAddressLoader(true);
-      editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi);
+      editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi, dispatch);
       setShippmentFormOpen(false);
     } else {
       setAddressLoader(true);
-      UserAddAddress(data, setAddressLoader, fetchShiipmentApi);
+      UserAddAddress(data, setAddressLoader, fetchShiipmentApi, dispatch);
       setShippmentFormOpen(false);
     }
   };

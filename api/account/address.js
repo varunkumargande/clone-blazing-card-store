@@ -1,10 +1,12 @@
 import APIServices from "../../services";
 import { show } from "../../store/toast/action";
+import { apiValidation } from "../utils/apiValidation";
+
 export async function UserAddAddress(
   values,
-  dispatch,
   setAddressLoader,
-  addressList
+  addressList,
+  dispatch
 ) {
   const data = JSON.stringify({
     address1: values.address1,
@@ -17,11 +19,9 @@ export async function UserAddAddress(
     company: values.company,
   });
   const result = await APIServices.create("CustomerAddress/add-address", data);
-  if (result?.status === 200) {
-    dispatch(show({ message: result.data.message, type: "success" }));
+  const resp = apiValidation(result, dispatch);
+  if (resp) {
     addressList();
-  } else {
-    dispatch(show({ message: "Error updating information", type: "error" }));
-    setAddressLoader(false);
   }
+  setAddressLoader(false)
 }
