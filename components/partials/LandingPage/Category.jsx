@@ -6,199 +6,119 @@ import { connect } from "react-redux";
 import Router from "next/router";
 import IconBack from "../../Icons/IconBack";
 import { stringFormatter } from "../../../utilities/utils";
+import { useRouter } from "next/router";
+import {
+  saveCategoryName,
+  saveCategoryId,
+} from "../../../store/category/action";
+import { useDispatch } from "react-redux";
+import { categoryConstant } from "../../Constants/category";
 
-function Category({
-  isSeeAllCate,
-  isSeeAll,
-  subCateId,
-  seeAllHeading,
-  setSubCateId,
-  category,
-  setActiveCategoryName,
-  activeCategoryName,
-  activeCategoryIndex,
-  setActiveCategoryIndex,
-  activeCategory,
-  setActiveCategory,
-  setIsLikedShow,
-  isLikedShow,
-  auth,
-}) {
-  
-  const [active, setActive] = useState(false);
-  const [categoryName, setCategoryName] = useState([]);
-
-  const wrapperRef = useRef(null);
-  const handleOnClick = () => {
-    setActive(!active);
-  };
-  const handleClickOutside = (event) => {
-    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-      setActive(false);
-    }
-  };
+function Category({ seeAllHeading, auth, category }) {
+  const dispatch = useDispatch();
+  const { query } = useRouter();
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside, false);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, false);
-    };
-  }, []);
-
-  
+    if (Object.keys(query).length && query?.category) {
+      dispatch(saveCategoryName(query?.category));
+      dispatch(saveCategoryId(query?.cid));
+    }
+  }, [query]);
 
   const handleActiveCategory = (index, name, id) => {
-    setActiveCategoryIndex(index);
-    setActiveCategoryName(name);
-    setActiveCategory(category["categories"][index]);
-    setSubCateId(id);
-    setIsLikedShow(false);
+    dispatch(saveCategoryName(name));
+    dispatch(saveCategoryId(id));
+    Router.push({
+      pathname: "/",
+      query: {
+        cid: id,
+        category: name,
+      },
+    });
   };
 
-  const handleAllCate = () => {
-    setActiveCategoryName("All")
-    setSubCateId("select");
-    setActiveCategoryIndex(null);
-    setIsLikedShow(false);
+  const handleAllCategory = () => {
+    dispatch(saveCategoryName(null));
+    dispatch(saveCategoryId(null));
+    Router.push({
+      pathname: "/",
+    });
   };
 
   const handleLikedShow = () => {
-    if (isLikedShow) {
-      setIsLikedShow(false);
-      setSubCateId(null);
-      setActiveCategoryIndex(null);
-    } else {
-      setIsLikedShow(true);
-      setSubCateId("liked");
-      setActiveCategoryIndex(false);
-    }
+    dispatch(saveCategoryName("likes"));
+    // dispatch(saveCategoryId(null));
   };
 
   const getCategoryList = () => {
-    if (isSeeAll == true) {
-      if (Object.keys(category).length != 0) {
-        return (
-          <>
-            <div className="category-list">
-              <button
-                className={
-                  activeCategoryIndex === null ? "title active" : "title"
-                }
-                onClick={handleAllCate}
-              >
-                All
-              </button>
-            </div>
-            {category["categories"]?.map((res, index) => {
-              if (res.name === seeAllHeading) {
-                if (res.length != 0) {
-                  return (
-                    <>
-                      {res?.children?.map((item, index2) => {
-                        return (
-                          <>
-                            <div className="category-list">
-                              <button
-                                className={
-                                  activeCategoryIndex === index2
-                                    ? "title active"
-                                    : "title"
-                                }
-                                onClick={() =>
-                                  handleActiveCategory(
-                                    index2,
-                                    item?.name,
-                                    item?.categoryId
-                                  )
-                                }
-                              >
-                                {stringFormatter(item?.name)}
-                              </button>
-                            </div>
-                          </>
-                        );
-                      })}
-                    </>
-                  );
-                }
-              }
-            })}
-          </>
-        );
-      }
-    } else {
-      if (Object.keys(category).length != 0) {
-        return (
-          <>
-            {auth?.isLoggedIn ? (
-              <>
-                <div className="category-like like">
-                  <button
-                    className={
-                      subCateId === "liked"
-                        ? "Like Liked flex justify-center flex-center"
-                        : "flex justify-center flex-center Like"
-                    }
-                    onClick={() => handleLikedShow()}
-                  >
-                    <span>
-                      <IconLike />
-                    </span>
-                  </button>
-                </div>
-              </>
-            ) : (
-              ""
-            )}
+    if (Object.keys(category).length != 0) {
+      return (
+        <>
+          {auth?.isLoggedIn && (
+            <>
+              <div className="category-like like">
+                <button
+                  className={`flex justify-center flex-center Like ${
+                    category.categoryName === "likes" && `Liked`
+                  }`}
+                  onClick={() => handleLikedShow()}
+                >
+                  <span>
+                    <IconLike />
+                  </span>
+                </button>
+              </div>
+            </>
+          )}
 
-            <div className="category-list">
+          <div className="category-list">
+            <button
+              className={!!category.categoryName ? "title" : "title active"}
+              onClick={handleAllCategory}
+            >
+              {categoryConstant.homeTag}
+            </button>
+          </div>
+          {category?.categories?.map((res, index) => (
+            <div className="category-list" keys={index}>
               <button
                 className={
-                  activeCategoryIndex === null ? "title active" : "title"
+                  category.categoryName === res?.categorySlug
+                    ? "title active"
+                    : "title"
                 }
-                // onClick={() => setActiveCategoryIndex(null)}
-                onClick={handleAllCate}
+                onClick={() =>
+                  handleActiveCategory(
+                    index,
+                    res?.categorySlug,
+                    res?.categoryId
+                  )
+                }
               >
-                Explore
+                {stringFormatter(res?.name)}
               </button>
             </div>
-            {category["categories"]?.map((res, index) => (
-              <>
-                <div className="category-list">
-                  <button
-                    className={
-                      activeCategoryIndex === index ? "title active" : "title"
-                    }
-                    onClick={() =>
-                      handleActiveCategory(index, res?.name, res?.categoryId)
-                    }
-                  >
-                    {stringFormatter(res?.name)}
-                  </button>
-                </div>
-              </>
-            ))}
-          </>
-        );
-      }
+          ))}
+        </>
+      );
     }
   };
 
   const handleGoToSeeAll = () => {
     Router.push({
-      pathname: "/see-all",
+      pathname: categoryConstant.url.path,
       query: {
-        page: "all categories",
+        page: categoryConstant.url.page,
         category: "",
+        subCategory: "all",
       },
     });
   };
-
 
   const handleToGoHome = () => {
     window.location.href = "/";
   };
 
-  const handleSubCateHead = () => {
+  const handleSubCatHead = () => {
     if (!!seeAllHeading) {
       return (
         <>
@@ -206,17 +126,13 @@ function Category({
             <IconBack />
           </div>
           &nbsp;&nbsp;&nbsp;
-          <h3 className="title">
-            {stringFormatter(seeAllHeading)}
-          </h3>
+          <h3 className="title">{stringFormatter(seeAllHeading)}</h3>
         </>
       );
     } else {
       return (
         <>
-          <h3 className="title">
-            Categories
-          </h3>
+          <h3 className="title">{categoryConstant.headingTag}</h3>
         </>
       );
     }
@@ -229,20 +145,12 @@ function Category({
           <div className="flex flex-center">
             <section className="breadcrumbs-wrapper">
               <ul className="breadcrumbs flex flex-center">
-               {handleSubCateHead()}
+                {handleSubCatHead()}
               </ul>
             </section>
-            <div className="category-btn-wrap">
-              {/* <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
-                                <ul className={active ? "dropDown active" : "dropDown"} >
-                                    <li className="active">Creator</li>
-                                    <li>Athelete</li>
-                                    <li>Artist</li>
-                                </ul> */}
-            </div>
           </div>
           <div className="seeAll" onClick={() => handleGoToSeeAll()}>
-            <a className="flex flex-center">View All</a>
+            <a className="flex flex-center">{categoryConstant.viewTag}</a>
           </div>
         </div>
       </div>

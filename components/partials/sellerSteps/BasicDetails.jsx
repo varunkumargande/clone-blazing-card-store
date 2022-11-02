@@ -15,6 +15,7 @@ import { uploadImageToServer } from "../../../utilities/common-helpers";
 import DefaultConstants from "../../../utilities/constants";
 
 
+
 export default function BasicDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -22,28 +23,53 @@ export default function BasicDetails() {
   const BasicDetails = useSelector(
     (state) => state?.becomeSeller?.basicDetails
   );
+  const [updateFileName, setUpdateFileName] = useState(BasicDetails?.documents?.image || null)
 
   const handleSubmit = async (values) => {
-    const uploadImage = await uploadImageToServer(imageData, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH);
-    if (uploadImage) {
+    if (!!values?.fullName && !!values?.uniqueId && !!values?.upload) {
+      const time = new Date().getTime();
+      const fileName  = `${time}_${values?.upload?.name}`
       const data = {
         fullName: values.fullName,
-        ssn: values.ssn,
+        uniqueId: values.uniqueId,
         documents: {
           fileName: values?.upload?.name,
-          image: uploadImage?.fileName,
+          image: updateFileName,
           path: DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH,
         },
       };
       dispatch(addBasicData(data, router));
   }
   };
+  const getBase64 = (file, cb) => {
+    if(!!file){
+      let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      cb(reader.result);
+    };
+    reader.onerror = function (error) {
+    };
+    }
+  };
+  
 
   const setImage = (file) => {
-    setImageData(file)
+    if(!!file){
+      getBase64(file, (result) => {
+        handleFileUpload(file,result)
+      });
+    }
+   
   }
 
-
+  const handleFileUpload = async (image, base64) => {
+    const uploadImage = await uploadImageToServer(image, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH);
+    if(uploadImage.status==200){
+      setImageData(base64)
+      setUpdateFileName(uploadImage.fileName)
+    }
+  }
   return (
     <div className="step-container">
       <BackButton name={"Basic Details"}/>
@@ -55,12 +81,13 @@ export default function BasicDetails() {
       <Formik
         initialValues={{
           fullName: BasicDetails?.fullName ?? "",
-          ssn: BasicDetails?.ssn ?? "",
-          upload: "",
+          uniqueId: BasicDetails?.uniqueId ?? "",
+          upload: BasicDetails?.documents?.fileName ? new File([""], BasicDetails?.documents?.fileName,{
+            type : "image/jpeg"
+          } ) : "",
         }}
         validationSchema={basicDetailvalidation}
         onSubmit={(values) => {
-
           if (values) {
             handleSubmit(values);
           }
@@ -75,14 +102,17 @@ export default function BasicDetails() {
                 name="fullName"
                 type="text"
                 placeholder="Enter here"
+                maxLength="25"
               />
 
               <TextInput
                 className="input-control wd48"
-                label="SSN *"
-                name="ssn"
+                label="Unique Id *"
+                name="uniqueId"
                 type="text"
                 placeholder="Enter here"
+                maxLength={9}
+                minLength={9}
               />
             </div>
             <div className="flex space-between">
@@ -95,6 +125,8 @@ export default function BasicDetails() {
                 placeholder="Enter here"
                 formProps={formProps}
                 setImage={setImage}
+                imageData={imageData}
+                setImageData={setImageData}
               />
             </div>
             <div className="submit-wrapper flex space-between">

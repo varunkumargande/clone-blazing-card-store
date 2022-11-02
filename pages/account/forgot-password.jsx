@@ -7,8 +7,10 @@ import HeaderMobile from '../../components/shared/headers/HeaderMobile';
 // import NavigationList from '../../components/shared/navigation/NavigationList';
 import useNetwork from '../../components/reusable/NetworkCheck';
 import Router from 'next/router';
-
+import { useSelector } from "react-redux";
+import { TostMessage } from "../../components/partials/ToastMessage/ToastMessage";
 const ForgotPasswordPage = () => {
+    const toast = useSelector((state) => state?.toast?.toast);
     const network = useNetwork()
 
     useEffect(() => {
@@ -35,6 +37,7 @@ const ForgotPasswordPage = () => {
                 {/* <BreadCrumb breacrumb={breadCrumb} /> */}
                 <ForgotPassword />
             </div>
+            {!!toast.message && <TostMessage data={toast}></TostMessage>}
             {/* <FooterDefault /> */}
         </div>
     );

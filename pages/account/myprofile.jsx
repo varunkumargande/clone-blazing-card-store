@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
 import IconLike from "../../components/Icons/IconLike";
 import Footer from "../../components/partials/LandingPage/Footer";
-import { useSelector, useDispatch } from "react-redux";
-import { subcatstreamDetailApi } from "../../api/stream/subStreamDetail";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import Router, { useRouter } from "next/router";
 // import all sub component from components/partials/account/myprofile
@@ -16,14 +14,14 @@ import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
 import IconBack from "../../components/Icons/IconBack";
 import StreamCard from "../../components/elements/StreamCard";
 import ProfileMethods from "../../api/profile/ProfileMethods";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import PublicProfileConstants from "../../components/Constants/publicProfile";
 import Link from "next/link";
 import { imageUrl } from "../../api/url";
 import Followers from "../../components/partials/Profile/Followers";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
-
+import BackButton from "../../components/CommonComponents/BackButton";
 function MyProfile(props) {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
@@ -40,6 +38,7 @@ function MyProfile(props) {
     tabs && tabs.length > 0 ? tabs[0].key : ""
   );
   const wrapperRef = useRef(null);
+  const dislikedStreams = useSelector((state) => state?.likeDislikeStream?.dislikedData);
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -48,10 +47,18 @@ function MyProfile(props) {
   };
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
+    const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
     setUserId(userData.id);
     setProfile(userData);
   }, []);
+
+  useEffect(() => {
+    let currentLikedShows = likedShows;
+    dislikedStreams.map(streamID => {
+      currentLikedShows = currentLikedShows.filter(show => show.uuid !== streamID);
+    });
+    setLikedShows(currentLikedShows);
+  }, [dislikedStreams])
 
   const getAllBuyerDetails = () => {
     ProfileMethods.GetLikedStreams(userId, setLikedShows);
@@ -109,11 +116,6 @@ function MyProfile(props) {
     setWindowWidth(window.innerWidth);
   };
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    subcatstreamDetailApi(dispatch);
-  }, []);
-
   useEffect(() => {
     resizeWindow();
     window.addEventListener("resize", resizeWindow);
@@ -162,11 +164,9 @@ function MyProfile(props) {
     if (likedShows) {
       if (likedShows.length > 0) {
         return (
-          <>
-            {likedShows.map((show, index) => (
-              <StreamCard detail={show} />
-            ))}
-          </>
+          likedShows.map((show) => (
+            <StreamCard detail={show} />
+          ))
         );
       } else {
         return (
@@ -320,10 +320,7 @@ function MyProfile(props) {
     <div className="home-container profile-container-wrap">
       {windowWidth <= 1024 ? (
         <div className="profile-title flex flex-center">
-          <div className="edit-back">
-            <IconBack />
-          </div>
-          Profile
+          <BackButton name={"Profile"} />
         </div>
       ) : (
         <HeaderDefault />

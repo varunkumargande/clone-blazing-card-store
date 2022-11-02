@@ -6,10 +6,10 @@ async function getStreamingShippmentDetail(setAddressList, setAddressLoader) {
   if (result && result.data && result.data) {
     if(result.status == 200){
         setAddressList(result.data.data)
-        setAddressLoader(false)
     }else{
         // error
     }
+    setAddressLoader(false)
   }
 }
 

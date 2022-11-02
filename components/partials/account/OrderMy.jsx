@@ -308,7 +308,7 @@ function MyOrderComp() {
                   <div className="ps-block__content">
                     <center>
                       <img
-                        src="/static/img/spurt-original-loader.gif"
+                        src="/static/img/Loader/loader_blue.gif"
                         style={{ width: "80px", height: "80px" }}
                       />
                     </center>

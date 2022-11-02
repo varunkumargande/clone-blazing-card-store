@@ -1,9 +1,6 @@
 import React from "react";
 import * as cryptoJs from "crypto-js";
-import { socketIO, imageUrl } from "../../api/url";
-import { io } from "socket.io-client";
 import { DefaultImagePath } from "../Constants/defaultImage";
-
 
 class StreamDetailModel {
   constructor(streamData) {
@@ -14,8 +11,11 @@ class StreamDetailModel {
   }
 
   getStreamPageData(streamData) {
-    const userDetails = JSON.parse(sessionStorage.getItem("spurtUser"));
-    var bytes = cryptoJs.AES.decrypt(streamData?.streamAPPID, 'ff20a253698574300fe4c77abfd5c18ff65367a8');
+    const userDetails = JSON.parse(sessionStorage.getItem("blazingUser"));
+    var bytes = cryptoJs.AES.decrypt(
+      streamData?.streamAPPID,
+      "ff20a253698574300fe4c77abfd5c18ff65367a8"
+    );
     var appId = bytes.toString(cryptoJs.enc.Utf8);
     let streamDetails = {
       sellerName: streamData?.vendorDetails?.username,
@@ -32,17 +32,19 @@ class StreamDetailModel {
       messageChannel: streamData?.vendorDetails?.message_channel,
       agoraAppId: appId,
       scheduleDate: streamData?.scheduleDate,
-      scheduleTime:  streamData?.scheduletime,
+      scheduleTime: streamData?.scheduletime,
       isLoggedIn: false,
-      avatarImage : userDetails?.avatar ? userDetails?.avatarPath + '/' + userDetails?.avatar : DefaultImagePath.defaultImage
-      
+      avatarImage: userDetails?.avatar
+        ? userDetails?.avatarPath + "/" + userDetails?.avatar
+        : DefaultImagePath.defaultImage,
+
       // ToDo: Need to remove commented code. Keeping it for refrence for now.
       // avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"
-    }
+    };
     if (!!userDetails) {
       streamDetails.loggedInUserName = userDetails?.firstName;
       streamDetails.loggedInUserId = userDetails?.id;
-      streamDetails.isLoggedIn= true;
+      streamDetails.isLoggedIn = true;
     }
     return streamDetails;
   }
@@ -55,13 +57,11 @@ class StreamDetailModel {
       messageChannel: data.messageChannel,
       audience: data.loggedInUserName,
       audienceId: data.loggedInUserId,
-      userType: 'audience',
-      accountType: 'userAccount',
-      rtc: 'RTC',
-      rtm: 'RTM',
-    }
+      userType: "audience",
+      accountType: "userAccount",
+      rtc: "RTC",
+      rtm: "RTM",
+    };
   }
-
 }
 export default StreamDetailModel;
-

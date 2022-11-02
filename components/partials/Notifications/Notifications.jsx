@@ -1,98 +1,94 @@
-import React, { useEffect } from 'react';
-import IconNoNotifications from '../../Icons/IconNoNotifications';
+import React, { useState, useEffect } from "react";
+import Router from "next/router";
+import IconNoNotifications from "../../Icons/IconNoNotifications";
+import { getInTime } from "../../../utilities/time";
+import NotificationMethods from "../../../api/notification/NotificationMethods";
 
 const Notifications = (props) => {
-    const {
-        notifications
-    } = props;
+  const { notifications, handleNotifications, setNotificationsUnreadCount } =
+    props;
 
-    useEffect(() => {
-        if (props.notifications) {
-            console.log(props.notifications);
+  // const OrderRecievedNotificationIcon = (notification) => {
+  //   return <img src="/static/images/order-receive.svg" alt="bought" />;
+  // };
+
+  const GreetingNotificationIcon = (notification) => {
+    return <img src="/static/images/bank-card-fill-new.svg" alt="bought" />;
+  };
+
+  const OrderConfirmationIcon = (notification) => {
+    return <img src="/static/images/successfully.svg" alt="bought" />;
+  };
+
+  const FollowingNotificationIcon = (notification) => {
+    return <img src="/static/images/bronco.svg" alt="bought" />;
+  };
+
+  const renderNotificationsIconsBasedOnType = (notification) => {
+    if (notification.notify_type === "follow") {
+      return FollowingNotificationIcon(notification);
+    } else if (notification.notify_type === "orders") {
+      return OrderConfirmationIcon(notification);
+    } else if (notification.notify_type === "stream") {
+      return GreetingNotificationIcon(notification);
+    }
+  };
+
+  const updateElementAsRead = (data, index) => {
+    const newData = [...notifications];
+    newData[index].notify_seen = 1;
+    setNotificationsUnreadCount(data.unreadcount);
+    handleNotifications(newData);
+  };
+
+  const handleRead = (e, notification, index) => {
+    e.preventDefault();
+    if (notification.notify_seen === 0) {
+      NotificationMethods.MARK_NOTIFICATION_AS_SEEN(
+        notification.notify_id,
+        (data) => {
+          updateElementAsRead(data, index);
         }
-    }, [props.notifications])
-
-    const OrderRecievedNotification = (notification) => {
-        return (
-            <div className="notifications-list flex">
-                <div className="cart-icon flex align-center justify-content-center">
-                    <img src="/static/images/order-receive.svg" alt="bought" />
-                </div>
-                <div className="cart-description">
-                    <div className="text"> Order received product added by you is accepted by Admin.</div>
-                    <span className='time flex align-center'> <img src="/static/images/time.svg" alt="bought" />Just now</span>
-                </div>
-            </div>
-        )
+      );
     }
+    Router.push(notification.notify_url || "/");
+  };
 
-    const GreetingNotification = (notification) => {
-        return (
-            <div className="notifications-list flex active">
-                <div className="cart-icon flex align-center justify-content-center">
-                    <img src="/static/images/bought.svg" alt="bought" />
-                </div>
-                <div className="cart-description">
-                    <div className="text"> Congratulation, you won the pokenmon cards auction and bought #52 pokemon card.</div>
-                    <span className='time flex align-center'> <img src="/static/images/time.svg" alt="bought" />2 hours ago</span>
-                </div>
-            </div>
-        )
+  const renderNotifications = () => {
+    if (notifications && notifications.length > 0) {
+      return notifications.map((notification, index) => (
+        <div
+          key={notification.notify_id}
+          onClick={(e) => handleRead(e, notification, index)}
+          className={`notifications-list flex ${
+            notification.notify_seen === 1 && "active"
+          }`}
+        >
+          <div className="cart-icon flex flex-center justify-content-center">
+            {renderNotificationsIconsBasedOnType(notification)}
+          </div>
+          <div className="cart-description">
+            <div className="text">{notification.notify_notification}</div>
+            <span className="time flex flex-center">
+              <img src="/static/images/time.svg" alt="bought" />
+              {getInTime(notification.notify_created_date)}
+            </span>
+          </div>
+        </div>
+      ));
+    } else {
+      return (
+        <div className="noNotifications flex justify-center flex-center text-center column">
+          <idv className="image mb26">
+            <IconNoNotifications />
+          </idv>
+          <h3>No Notification</h3>
+        </div>
+      );
     }
+  };
 
-    const OrderConfirmation = (notification) => {
-        return (
-            <div className="notifications-list flex">
-                <div className="cart-icon flex align-center justify-content-center">
-                    <img src="/static/images/successfully.svg" alt="bought" />
-                </div>
-                <div className="cart-description">
-                    <div className="text">Your order ID no. TL129303020 have been placed successfully.</div>
-                    <span className='time flex align-center'> <img src="/static/images/time.svg" alt="bought" />2 hours ago</span>
-                </div>
-            </div>
-        )
-    }
-
-    const FollowingNotification = (notification) => {
-        return (
-            <div className="notifications-list flex">
-                <div className="cart-icon flex align-center justify-content-center">
-                    <img src="/static/images/bronco.svg" alt="bought" />
-                </div>
-                <div className="cart-description">
-                    <div className="text"><strong>@felix.bronco</strong> started following you. </div>
-                    <span className='time flex align-center'> <img src="/static/images/time.svg" alt="bought" />2 hours ago</span>
-                </div>
-            </div>
-        )
-    }
-
-    const renderNotifications = () => {
-        if(notifications && notifications.length > 0) {
-            return(
-                <>
-                    {OrderRecievedNotification()}
-                    {GreetingNotification()}
-                    {OrderConfirmation()}
-                    {FollowingNotification()}
-                </>
-            );
-        } else {
-            return(
-                <div className='noNotifications flex justify-center flex-center text-center column'>
-                    <idv className="image mb26"><IconNoNotifications/></idv>
-                    <h3>No Notification</h3>
-                </div>
-            )
-        }
-    }
-
-    return (
-        <>
-            {renderNotifications()}
-        </>
-    );
-}
+  return <>{renderNotifications()}</>;
+};
 
 export default Notifications;

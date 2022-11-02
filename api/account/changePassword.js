@@ -1,6 +1,6 @@
-import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from "../../services";
-export async function changePasswordApi(values, setPassLoader) {
+import { show } from "../../store/toast/action";
+export async function changePasswordApi(values, setPassLoader, dispatch) {
   const data = JSON.stringify({
     oldPassword: values.currentPassword,
     newPassword: values.newPassword,
@@ -11,10 +11,10 @@ export async function changePasswordApi(values, setPassLoader) {
     setPassLoader(false);
 
     if (result && result.data && result.data.status === 1) {
-      modalSuccess("success", result.data.message);
+      dispatch(show({ message: result.data.message, type: "success" }));
     } else {
-      modalWarning("error", result.data.message);
+      dispatch(show({ message: result.data.message, type: "error" }));
     }
-    return result.data; //unwanted
+    return result.data; 
   }
 }

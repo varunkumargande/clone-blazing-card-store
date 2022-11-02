@@ -14,8 +14,11 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
-
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { useDispatch } from "react-redux";
 export default function ProfileInformation() {
+  const dispatch = useDispatch();
+  const MaxProfileImageSize = 5; // in MB
   const [profileData, setProfileData] = useState(null);
   const [newDpError, setNewDpError] = useState("");
   const [impuploadsuccess, setimpuploadsuccess] = useState(false);
@@ -27,21 +30,23 @@ export default function ProfileInformation() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem("spurtUser")) {
+    if (sessionStorage.getItem("blazingUser")) {
       setLoader(true);
       let jsonObject = {
-        firstName: JSON.parse(sessionStorage.getItem("spurtUser"))?.firstName,
-        lastName: JSON.parse(sessionStorage.getItem("spurtUser"))?.lastName,
-        bio: JSON.parse(sessionStorage.getItem("spurtUser"))?.bio,
-        twitterUrl: JSON.parse(sessionStorage.getItem("spurtUser"))?.twitterUrl,
-        facebookUrl: JSON.parse(sessionStorage.getItem("spurtUser"))
+        firstName: JSON.parse(sessionStorage.getItem("blazingUser"))?.firstName,
+        lastName: JSON.parse(sessionStorage.getItem("blazingUser"))?.lastName,
+        bio: JSON.parse(sessionStorage.getItem("blazingUser"))?.bio,
+        twitterUrl: JSON.parse(sessionStorage.getItem("blazingUser"))
+          ?.twitterUrl,
+        facebookUrl: JSON.parse(sessionStorage.getItem("blazingUser"))
           ?.facebookUrl,
-        phoneNumber: JSON.parse(sessionStorage.getItem("spurtUser"))
+        phoneNumber: JSON.parse(sessionStorage.getItem("blazingUser"))
           ?.mobileNumber,
-        emailId: JSON.parse(sessionStorage.getItem("spurtUser"))?.email,
-        avatar: JSON.parse(sessionStorage.getItem("spurtUser"))?.avatar,
-        avatarPath: JSON.parse(sessionStorage.getItem("spurtUser"))?.avatarPath,
-        username: JSON.parse(sessionStorage.getItem("spurtUser"))?.username,
+        emailId: JSON.parse(sessionStorage.getItem("blazingUser"))?.email,
+        avatar: JSON.parse(sessionStorage.getItem("blazingUser"))?.avatar,
+        avatarPath: JSON.parse(sessionStorage.getItem("blazingUser"))
+          ?.avatarPath,
+        username: JSON.parse(sessionStorage.getItem("blazingUser"))?.username,
       };
       setProfileData(jsonObject);
       setLoader(false);
@@ -58,7 +63,7 @@ export default function ProfileInformation() {
     ) {
       const fsize = files[0].size;
       const file = Math.round(fsize / 1024);
-      if (file < 2048) {
+      if (file < 1024 * MaxProfileImageSize) {
         // setNewDp(files[0])
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -66,7 +71,7 @@ export default function ProfileInformation() {
         };
         reader.readAsDataURL(files[0]);
       } else {
-        setNewDpError("Profile Image cannot exceed 2MB");
+        setNewDpError(`Profile image must be of max ${MaxProfileImageSize}MB`);
       }
     } else {
       setNewDpError("Please upload a valid Profile Image");
@@ -90,7 +95,7 @@ export default function ProfileInformation() {
   const profileSchema = Yup.object().shape({
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
-    bio: Yup.string().nullable().max(300),
+    bio: Yup.string().max(300),
     twitterUrl: Yup.string()
       .matches(
         /(?:http:\/\/)?(?:www\.)?twitter\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)/,
@@ -181,6 +186,7 @@ export default function ProfileInformation() {
                   Update Profile Image
                   <input
                     type="file"
+                    accept=".png, .jpg, .jpeg"
                     ref={inputFile}
                     disabled={showImageLoader}
                     onChange={(e) => changeDP(e)}
@@ -191,10 +197,11 @@ export default function ProfileInformation() {
               </button> */}
               </div>
               <div className="dicscription">
-                Must be JPEG, JPG, PNG and cannot exceed 2MB.
+                {newDpError ||
+                  `Must be JPEG, JPG, PNG and cannot exceed ${MaxProfileImageSize}MB`}
               </div>
               <div className="input-control wd50">
-                <span className="errorMessage">{newDpError || null}</span>
+                <ErrorMessage errors={newDpError} />
               </div>
             </div>
           </div>
@@ -215,18 +222,26 @@ export default function ProfileInformation() {
             {handleImageUpload()}
             <Formik
               initialValues={{
-                firstName: profileData?.firstName,
-                lastName: profileData?.lastName,
-                bio: profileData?.bio,
-                twitterUrl: profileData?.twitterUrl,
-                facebookUrl: profileData?.facebookUrl,
-                phoneNumber: profileData?.phoneNumber,
-                emailId: profileData?.emailId,
+                firstName: !!profileData?.firstName
+                  ? profileData?.firstName
+                  : "",
+                lastName: !!profileData?.lastName ? profileData?.lastName : "",
+                bio: !!profileData?.bio ? profileData?.bio : "",
+                twitterUrl: !!profileData?.twitterUrl
+                  ? profileData?.twitterUrl
+                  : "",
+                facebookUrl: !!profileData?.facebookUrl
+                  ? profileData?.facebookUrl
+                  : "",
+                phoneNumber: !!profileData?.phoneNumber
+                  ? profileData?.phoneNumber
+                  : "",
+                emailId: !!profileData?.emailId ? profileData?.emailId : "",
               }}
               validationSchema={profileSchema}
               onSubmit={(values) => {
                 setLoader(true);
-                editProfileApi(values, newDpName, Router, setLoader);
+                editProfileApi(values, newDpName, Router, setLoader, dispatch);
               }}
             >
               {({
@@ -264,11 +279,10 @@ export default function ProfileInformation() {
                               value={values.firstName}
                               type="text"
                             />
-                            <span className="errorMessage">
-                              {errors.firstName && touched.firstName
-                                ? errors.firstName
-                                : null}
-                            </span>
+                            <ErrorMessage
+                              errors={errors.firstName}
+                              touched={touched.firstName}
+                            />
                           </div>
                           <div className="input-control wd50">
                             <label>Last Name *</label>
@@ -288,14 +302,12 @@ export default function ProfileInformation() {
                               }
                               value={values.lastName}
                             />
-                            <span className="errorMessage">
-                              {errors.lastName && touched.lastName
-                                ? errors.lastName
-                                : null}
-                            </span>
+                            <ErrorMessage
+                              errors={errors.lastName}
+                              touched={touched.lastName}
+                            />
                           </div>
                         </div>
-
                         <div className="flex space-between">
                           <div className="input-control wd50">
                             <div className="flex space-between flex-center">
@@ -309,7 +321,6 @@ export default function ProfileInformation() {
                               value={profileData?.username}
                               disabled
                             />
-                            <span className="errorMessage"></span>
                           </div>
                           <div className="input-control wd50">
                             <label htmlFor="usr">Phone Number *</label>
@@ -322,8 +333,10 @@ export default function ProfileInformation() {
                               value={values.phoneNumber}
                               type="number"
                             />
-
-                            <span className="errorMessage"></span>
+                            <ErrorMessage
+                              errors={errors.phoneNumber}
+                              touched={touched.phoneNumber}
+                            />
                           </div>
                         </div>
 
@@ -339,10 +352,12 @@ export default function ProfileInformation() {
                             className="grey-bg"
                             onChange={handleChange}
                             value={values.bio}
+                            maxLength={300}
                           ></textarea>
-                          <span className="errorMessage">
-                            {errors.bio && touched.bio ? errors.bio : null}
-                          </span>
+                          <ErrorMessage
+                            errors={errors.bio}
+                            touched={touched.bio}
+                          />
                         </div>
                       </div>
                     </div>
@@ -360,11 +375,11 @@ export default function ProfileInformation() {
                               onChange={handleChange}
                               value={values.twitterUrl}
                             />
-                            <span className="errorMessage">
-                              {errors.twitterUrl && touched.twitterUrl
-                                ? errors.twitterUrl
-                                : null}
-                            </span>
+
+                            <ErrorMessage
+                              errors={errors.twitterUrl}
+                              touched={touched.twitterUrl}
+                            />
                           </div>
                           <div className="input-control">
                             <div className="flex space-between flex-center">
@@ -378,11 +393,10 @@ export default function ProfileInformation() {
                               onChange={handleChange}
                               value={values.facebookUrl}
                             />
-                            <span className="errorMessage">
-                              {errors.facebookUrl && touched.facebookUrl
-                                ? errors.facebookUrl
-                                : null}
-                            </span>
+                            <ErrorMessage
+                              errors={errors.facebookUrl}
+                              touched={touched.facebookUrl}
+                            />
                           </div>
                         </div>
                       </div>
@@ -423,7 +437,7 @@ export default function ProfileInformation() {
 
       {isOpen ? (
         <>
-          <DeletAccountModal setIsOpen={setIsOpen} />
+          <DeletAccountModal setIsOpen={setIsOpen} userName={profileData?.username} />
         </>
       ) : (
         ""

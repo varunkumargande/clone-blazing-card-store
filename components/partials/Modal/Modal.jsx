@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
@@ -17,8 +17,40 @@ import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
-import { addChatFrend } from "../../../api/chat";
+import { addChatFrend, searchUser } from "../../../api/chat";
 import { regex } from "../../Constants/regex";
+import { apiUrl } from "../../../api/url";
+import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
+import { io } from "socket.io-client";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { useDispatch } from "react-redux";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
+import Router from "next/router";
+
+const responseGoogle = (response) => {
+  GoogleLoginApi(
+    response.given_name,
+    response.family_name,
+    response.email,
+    "",
+    "",
+    response.email.split("@")[0],
+    "gmail",
+    "",
+    "",
+    "",
+    "",
+    response.picture,
+    Router,
+    response
+  );
+};
+
+const responseGoogleFailure = (response) => {
+  console.error("Failure response", response);
+};
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
@@ -41,19 +73,41 @@ export function ShareModalModal({ setIsShareModalOpen }) {
         </div>
         <div className="modal-body">
           <div className="flex justify-center social-link">
-            <button>
-              <IconShareWhatsup />
-            </button>
-            <button>
-              <IconShareTwitter />
-            </button>
-            <button>
-              <IconShareFacebook />
-            </button>
+            <a
+              href={`${SocialMediaShareLink.whatsapp}${apiUrl}`}
+              target="_blank"
+            >
+              <button>
+                <IconShareWhatsup />
+              </button>
+            </a>
+            <a
+              href={`${SocialMediaShareLink.twitter}${apiUrl}`}
+              target="_blank"
+            >
+              <button>
+                <IconShareTwitter />
+              </button>
+            </a>
+            <a
+              href={`${SocialMediaShareLink.facebook}${apiUrl}`}
+              target="_blank"
+            >
+              <button>
+                <IconShareFacebook />
+              </button>
+            </a>
           </div>
           <div className="copy flex space-between flex-center nowrap">
             <span className="url">{pageUrl}</span>
-            <button className="copy-btn" onClick={() => {navigator.clipboard.writeText(pageUrl)}}>Copy</button>
+            <button
+              className="copy-btn"
+              onClick={() => {
+                navigator.clipboard.writeText(pageUrl);
+              }}
+            >
+              Copy
+            </button>
           </div>
         </div>
       </div>
@@ -108,6 +162,7 @@ export function CustomBidModal(props) {
     handleConfirmBid,
     increaseBidAmount,
     checkBidAmount,
+    setAmountToBid,
   } = props;
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -149,7 +204,9 @@ export function CustomBidModal(props) {
             <input
               type="number"
               className="text-center"
-              placeholder={amountToBid}
+              // placeholder={amountToBid}
+              value={amountToBid}
+              onChange={(e) => setAmountToBid(e.target.value)}
             />
             <button
               className="increase flex flex-center justify-center"
@@ -164,8 +221,13 @@ export function CustomBidModal(props) {
             <button className="disable-btn" onClick={() => setOpen(false)}>
               Cancel
             </button>
-            <button className="primary-btn" onClick={handleConfirmBid}>
-              Confrrm
+            <button
+              className={
+                bidAmount <= amountToBid ? "primary-btn" : "primary-btn disable"
+              }
+              onClick={handleConfirmBid}
+            >
+              Confirm
             </button>
           </div>
         </div>
@@ -263,7 +325,6 @@ export function PaymentInfoModal(props) {
                   className="address"
                   onClick={handleShippmentMethod}
                 />
-                <span className="errorMessage"></span>
               </div>
               <div className="input-control with-bg">
                 <label>Payment Details</label>
@@ -274,7 +335,6 @@ export function PaymentInfoModal(props) {
                   className="payment"
                   onClick={handlePaymentMethod}
                 />
-                <span className="errorMessage"></span>
               </div>
             </div>
           </>
@@ -287,7 +347,8 @@ export function PaymentInfoModal(props) {
             </button>
             {isBuyNowPaymentModal ? (
               <button
-                className="primary-btn"
+                disabled={paymentLoader}
+                className={`primary-btn ${paymentLoader && "disable-btn"}`}
                 onClick={() => {
                   handleSubmitBuyProduct();
                 }}
@@ -322,9 +383,18 @@ export function AddNewCardModal(props) {
     fetchCardDetail,
   } = props;
 
-  const userDetail = JSON.parse(sessionStorage.getItem("spurtUser"));
+  const dispatch = useDispatch();
+
+  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
+  const [initialValueFlag, setInitialValueFlag] = useState(
+    Array.isArray(payDetail) &&
+      payDetail[0]?.card?.last4 &&
+      payDetail[0]?.card?.last4 !== ""
+      ? true
+      : false
+  );
 
   const shipSchema = Yup.object().shape({
     // cardHolderName: Yup.string().min(2, "Too Short!").required("Required"),
@@ -342,8 +412,12 @@ export function AddNewCardModal(props) {
       cardNumber:
         payDetail != false ? "XXXX XXXX XXXX " + payDetail[0]?.card.last4 : "",
       cvc: (payDetail != false) != 0 ? payDetail[0]?.cvc : "",
-      expireDate: "",
-      // expireDate:(payDetail != false) != 0? payDetail[0]?.card.exp_month + "/" + payDetail[0]?.card.exp_year: "",
+      expireDate:
+        (payDetail != false) != 0
+          ? payDetail[0]?.card.exp_month +
+            "/" +
+            payDetail[0]?.card?.exp_year.toString().slice(-2)
+          : "",
     },
     onSubmit: (values) => {
       const jsonData = JSON.stringify({
@@ -354,18 +428,39 @@ export function AddNewCardModal(props) {
 
       if (payDetail == false) {
         setPaymentLoader(true);
-        handleCardApi(jsonData, false, fetchCardDetail, setPaymentLoader);
-        fetchShiipmentApi();
+        handleCardApi(
+          jsonData,
+          false,
+          fetchCardDetail,
+          setPaymentLoader,
+          dispatch
+        );
         close(false);
       } else {
         setPaymentLoader(true);
-        handleCardApi(jsonData, true, fetchCardDetail, setPaymentLoader);
-        fetchShiipmentApi();
+        handleCardApi(
+          jsonData,
+          true,
+          fetchCardDetail,
+          setPaymentLoader,
+          dispatch
+        );
         close(false);
       }
     },
     validationSchema: () => shipSchema,
   });
+
+  const resetFormData = () => {
+    if (initialValueFlag) {
+      setInitialValueFlag(false);
+      formik.setValues({
+        expireDate: "",
+        cardNumber: "",
+        cvc: "",
+      });
+    }
+  };
 
   const handleExpDate = (values) => {
     const dateExp = values.expireDate
@@ -376,10 +471,10 @@ export function AddNewCardModal(props) {
     return dateExp;
   };
 
-  const CardImage =
+  const [type, CardImage] =
     formik?.values?.cardNumber >= 3
       ? getCardImagesByName(formik?.values?.cardNumber)
-      : "";
+      : ["", ""];
 
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -408,24 +503,18 @@ export function AddNewCardModal(props) {
                 name="cardNumber"
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
-                onChange={formik.handleChange}
-                type="text"
                 onChange={(e) =>
                   formik.setFieldValue(
                     "cardNumber",
                     e.target.value.replace(regex.onlyNumbers, "")
                   )
                 }
-                maxLength={
-                  CardImage?.type?.name === "IconAmericanExpressCard" ? 15 : 16
-                }
+                maxLength={type === "amex" ? 15 : 16}
               />
               <span className="card-icon">
-                {formik?.values?.cardNumber >= 3
-                  ? getCardImagesByName(formik.values.cardNumber)
-                  : ""}
+                {formik?.values?.cardNumber >= 3 ? CardImage : ""}
               </span>
-              <span className="errorMessage">{formik.errors.cardNumber}</span>
+              <ErrorMessage errors={formik.errors.cardNumber} />
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
@@ -434,32 +523,33 @@ export function AddNewCardModal(props) {
                   type="text"
                   name="expireDate"
                   placeholder={"MM/YY"}
-                  onChange={formik.handleChange}
+                  onChange={(event) => {
+                    resetFormData();
+                    formik.handleChange(event);
+                  }}
                   value={handleExpDate(formik.values)}
                   maxLength={5}
                 />
-                <span className="errorMessage">{formik.errors.expireDate}</span>
+                <ErrorMessage errors={formik.errors.expireDate} />
                 {expValid == false ? "Expiary date is invalide" : ""}
               </div>
               <div className="input-control wd50">
                 <label>CVV</label>
                 <input
-                  type="text"
                   name="cvc"
                   placeholder={"Enter here"}
                   value={formik.values.cvc}
                   type="password"
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    resetFormData();
                     formik.setFieldValue(
                       "cvc",
                       e.target.value.replace(regex.onlyNumbers, "")
-                    )
-                  }
-                  maxLength={
-                    CardImage?.type?.name === "IconAmericanExpressCard" ? 4 : 3
-                  }
+                    );
+                  }}
+                  maxLength={type === "amex" ? 4 : 3}
                 />
-                <span className="errorMessage">{formik.errors.cvc}</span>
+                <ErrorMessage errors={formik.errors.cvc} />{" "}
               </div>
             </div>
             <div className="infotext">
@@ -550,7 +640,7 @@ export function AddAddressModal(props) {
                     value={formik.values.company}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
+                  <ErrorMessage errors={formik.errors.company} />{" "}
                 </div>
                 {/* <div className="input-control">
                   <label>Phone Number *</label>
@@ -560,8 +650,7 @@ export function AddAddressModal(props) {
                     value={formik.values.phoneNumber}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div>
+                  <ErrorMessage errors={errors} />                </div>
                 <div className="input-control">
                   <label>Email Address *</label>
                   <input
@@ -570,8 +659,7 @@ export function AddAddressModal(props) {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
-                </div> */}
+                  <ErrorMessage errors={errors} />                </div> */}
                 <div className="input-control">
                   <label>Address Line 1 *</label>
                   <input
@@ -580,7 +668,7 @@ export function AddAddressModal(props) {
                     value={formik.values.address1}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
+                  <ErrorMessage errors={formik.errors.address1} />{" "}
                 </div>
                 <div className="input-control">
                   <label>Address Line 2 *</label>
@@ -590,7 +678,7 @@ export function AddAddressModal(props) {
                     value={formik.values.address2}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
+                  <ErrorMessage errors={formik.errors.address2} />{" "}
                 </div>
                 <div className="input-control">
                   <label>Post Code *</label>
@@ -600,11 +688,10 @@ export function AddAddressModal(props) {
                     value={formik.values.postcode}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
+                  <ErrorMessage errors={formik.errors.postcode} />{" "}
                 </div>
                 <div className="input-control" hidden>
                   <input name="addressId" value={formik.values.addressId} />
-                  <span className="errorMessage"></span>
                 </div>
 
                 <div className="input-control">
@@ -615,7 +702,7 @@ export function AddAddressModal(props) {
                     value={formik.values.city}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
+                  <ErrorMessage errors={formik.errors.city} />{" "}
                 </div>
 
                 <div className="input-control">
@@ -626,7 +713,7 @@ export function AddAddressModal(props) {
                     value={formik.values.state}
                     onChange={formik.handleChange}
                   />
-                  <span className="errorMessage"></span>
+                  <ErrorMessage errors={formik.errors.state} />{" "}
                 </div>
 
                 <div className="input-control">
@@ -645,7 +732,7 @@ export function AddAddressModal(props) {
                       );
                     })}
                   </select>
-                  <p className="errorMessage">{formik.errors.countryId}</p>
+                  <ErrorMessage errors={formik.errors.countryId} />
                 </div>
               </div>
               <div className="modal-footer">
@@ -665,19 +752,22 @@ export function AddAddressModal(props) {
   );
 }
 
-export function DeletAccountModal({ setIsOpen }) {
+export function DeletAccountModal({ setIsOpen, userName }) {
+  const dispatch = useDispatch();
+
   const deleteSchema = Yup.object().shape({
-    emailId: Yup.string().email("Invalid email format").required("Required"),
+    userName: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      emailId: "",
+      userName: userName,
       password: "",
     },
+    validateOnMount: true,
     onSubmit: (values) => {
-      deleteAccountApi(values);
+      deleteAccountApi(values, dispatch);
     },
     validationSchema: () => deleteSchema,
   });
@@ -704,15 +794,17 @@ export function DeletAccountModal({ setIsOpen }) {
           <div className="modal-body">
             <div className="infotextlg">Are you sure you want to leave?</div>
             <div className="input-control">
-              <label>User Name</label>
+              <label className="disable-opacity">Username</label>
               <input
-                type="email"
-                name="emailId"
+                type="text"
+                name="userName"
+                className="disable-opacity"
                 onChange={formik.handleChange}
                 placeholder={"Enter here"}
-                value={formik.values.emailId}
+                value={formik.values.userName}
+                disabled
               />
-              <span className="errorMessage">{formik.errors.emailId}</span>
+              <ErrorMessage errors={formik.errors.userName} />{" "}
             </div>
             <div className="input-control">
               <label>Password *</label>
@@ -723,7 +815,7 @@ export function DeletAccountModal({ setIsOpen }) {
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
-              <span className="errorMessage">{formik.errors.password}</span>
+              <ErrorMessage errors={formik.errors.password} />{" "}
             </div>
             <div className="flex btn-wrap delete">
               <button
@@ -732,7 +824,13 @@ export function DeletAccountModal({ setIsOpen }) {
               >
                 Cancel
               </button>
-              <button className="primary-btn" type="submit">
+              <button
+                className={`primary-btn ${
+                  !formik.isValid && "disable-opacity"
+                }`}
+                disabled={!formik.isValid}
+                type="submit"
+              >
                 Delete Account
               </button>
             </div>
@@ -743,49 +841,34 @@ export function DeletAccountModal({ setIsOpen }) {
   );
 }
 
-export function ChatUserModal({ setIsOpen, fetchUserData }) {
+export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState("");
   const [isButton, setIsButton] = useState(false);
 
+  // handle username and search frend
   const handleUsername = async (e) => {
     setIsButton(true);
-    setUserDataLoader(true);
     if (e.target.value != "") {
-      const token = sessionStorage.getItem("spurtToken");
-      const chatHeader = {
-        // 'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      };
-      const data = await axios.post(
-        searchUsers,
-        {
-          slang: e.target.value,
-        },
-        {
-          headers: chatHeader,
-        }
-      );
-      if (data.status == 200) {
-        setUserData(data?.data?.response);
-        setUserDataLoader(false);
-      }
-    } else {
-      setUserData([]);
-      setUserDataLoader(false);
+      searchUser(setUserData, setUserDataLoader, e.target.value);
     }
   };
+  // ====================================================================
 
+  // handle add user id and username for save information
   const handleAddUserForChat = (id, name) => {
     setUserId(id);
     setUsername(name);
   };
+  // ==============================================================
 
+  // handle for submit for add frend
   const handleSubmitUser = () => {
-    addChatFrend(userId, fetchUserData, setIsOpen);
+    addChatFrend(userId, fetchUserData, setIsOpen, socket);
   };
+  // =============================================================
 
   const showUserList = () => {
     if (!!userData) {
@@ -901,7 +984,44 @@ export function UnfollowModal() {
   );
 }
 
-export function SignUPGoogle() {
+export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-body text-center">
+          <div className="flex justify-content-end flex-center">
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={() => setPaymentSuccessful(false)}
+            >
+              <span aria-hidden="true">
+                <IconClose />
+              </span>
+            </button>
+          </div>
+          <div className="profile-icon">
+            <img src="/static/images/order-successfull.svg" alt="" />
+          </div>
+          <h5 className="modal-title profile-id">{message}</h5>
+          <div className="profile-id text-black-50">{subMessage}</div>
+          <div className="btn-wrap follow-btn-wrap flex justify-center">
+            <button
+              onClick={() => setPaymentSuccessful(false)}
+              className="primary-btn w-75 my-4"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SignUPGoogle({ onDismiss, customMsg }) {
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal signup">
@@ -912,6 +1032,9 @@ export function SignUPGoogle() {
             className="close"
             data-dismiss="modal"
             aria-label="Close"
+            onClick={(e) => {
+              onDismiss(e);
+            }}
           >
             <span aria-hidden="true">
               <IconClose />
@@ -920,12 +1043,25 @@ export function SignUPGoogle() {
         </div>
         <div className="modal-body text-center">
           <div className="Stream-title text-center mb16">
-            Signup to join the stream
+            {customMsg || "Signup to join the stream"}
           </div>
-          <button className="google-btn mb16">
-            <IconGoogle />
-            Continue with Google
-          </button>
+          <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
+            <GoogleLogin
+              render={(renderProps) => (
+                <button className="google-btn" onClick={renderProps.onClick}>
+                  <IconGoogle />
+                  Continue with Google
+                </button>
+              )}
+              onSuccess={(credentialResponse) => {
+                let data = jwt_decode(credentialResponse.credential);
+                responseGoogle(data);
+              }}
+              onError={(response) => {
+                responseGoogleFailure(response);
+              }}
+            />
+          </GoogleOAuthProvider>
           <div class="or mb26 flex flex-center justify-center">
             <span>Or</span>
           </div>

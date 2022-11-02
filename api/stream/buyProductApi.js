@@ -1,8 +1,19 @@
 import APIServices from "../../services";
 import { modalSuccess, modalWarning } from "../intercept";
+import { show } from "../../store/toast/action";
+import { apiValidation } from "../utils/apiValidation";
 
-async function buyProduct(paymentData, shipData, productDetail, openPayment, streamingDetails) {
-  const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
+async function buyProduct(
+  paymentData,
+  shipData,
+  productDetail,
+  openPayment,
+  streamUuid,
+  dispatch,
+  setPaymentSuccessful,
+  setPaymentLoader
+) {
+  const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
   if (userData) {
     const jsonData = {
       shippingLastName: "",
@@ -50,20 +61,19 @@ async function buyProduct(paymentData, shipData, productDetail, openPayment, str
       password: "",
       paymentMethodId: paymentData.id,
       customerStripeRefId: paymentData.customer,
-      streamUUID: streamingDetails?.uuid ?? ""
+      streamUUID: streamUuid || "",
     };
-
     const result = await APIServices.create("orders/customer-pay", jsonData);
-    if (result && result.data && result.data) {
-      if (result.status == 200) {
-        modalSuccess("success", result.data.message);
-        openPayment(false)
-      } else {
-        modalWarning("error", result.data.message);
-        openPayment(false);
-      }
+    const resp = apiValidation(result, dispatch);
+    openPayment(false);
+    if (resp) {
+      setPaymentSuccessful(true);
+      setPaymentLoader(false);
+      return result?.data?.data?.orderId
     }
   }
+  setPaymentLoader(false)
+  return;
 }
 
 export { buyProduct };

@@ -1,9 +1,7 @@
 import { cartListApi } from "../cart/cartList";
 import getProfileApi from "../home/getInfo";
 import APIServices from "../../services";
-import { modalSuccess, modalWarning } from "../intercept";
-import { getProfile } from "../../store/profile/action";
-
+import { show } from "../../store/toast/action";
 export async function UserLogin(
   email,
   password,
@@ -21,24 +19,22 @@ export async function UserLogin(
     type: loginType,
   });
   const result = await APIServices.create("customer/login", data);
-  const errrorMessage = result.data.message;
 
-  if (result && result.data && result.data.status === 1) {
-    sessionStorage.setItem("spurtToken", result.data.data.token);
+  if (result && result?.data && result?.data?.status === 1) {
+    sessionStorage.setItem("blazingToken", result.data.data.token);
     sessionStorage.setItem("userPass", password);
     getProfileApi();
-    modalSuccess("success", result.data.message);
+    dispatch(show({ message: result.data.message, type: "success" }));
     Router.push("/");
     cartListApi(dispatch);
-    // dispatch(getProfile(result.data))
   } else {
     setLoginError(
       result.data.message === "Invalid EmailId" ||
         result.data.message === "Invalid password"
         ? "Password/Email is not correct"
-        : errrorMessage
+        : result?.data?.message
     );
-    modalWarning("error", errrorMessage);
+    dispatch(show({ message: result.data.message, type: "error" }));
     setMail("");
     setPassword("");
   }

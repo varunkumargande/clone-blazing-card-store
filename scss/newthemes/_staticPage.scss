@@ -139,6 +139,11 @@
         padding: 20px 15px;
     }
     .static-container{
+        .edit-back{
+            .icon{
+                fill:$primary-color;
+            }
+        }
         &.faqs{
             padding-top:0;
             h1{

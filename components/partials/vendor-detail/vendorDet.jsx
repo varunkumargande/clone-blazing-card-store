@@ -21,34 +21,33 @@ export default function VendorDetailShow({
   setvendoreviews,
   vendorId,
 }) {
- 
   const { t } = useTranslation("common");
 
-  
- 
   return vendorLoading === false ? (
     <div className="vendor-complete-wrapper">
       <div className="vendor-detail-content-wrapper">
         <div className="vendor-detail-img-left">
-        {vendorInfo&&vendorInfo.companyCoverImage !==null&&vendorInfo&&vendorInfo.companyCoverImagePath?<>
-          <img
-            src={
-              imageUrl +
-              "?path=" +
-              vendorInfo.companyCoverImagePath +
-              "&name=" +
-              vendorInfo.companyCoverImage +
-              "&width=500&height=543"
-            }
-          ></img>
-        </>:<>
-        <img
-            src="/static/img/vendor-banner.jpg"
-             
-            
-          ></img>
-        </>}
-          
+          {vendorInfo &&
+          vendorInfo.companyCoverImage !== null &&
+          vendorInfo &&
+          vendorInfo.companyCoverImagePath ? (
+            <>
+              <img
+                src={
+                  imageUrl +
+                  "?path=" +
+                  vendorInfo.companyCoverImagePath +
+                  "&name=" +
+                  vendorInfo.companyCoverImage +
+                  "&width=500&height=543"
+                }
+              ></img>
+            </>
+          ) : (
+            <>
+              <img src="/static/img/vendor-banner.jpg"></img>
+            </>
+          )}
         </div>
       </div>
       <div className="card-containers">
@@ -56,70 +55,80 @@ export default function VendorDetailShow({
           <TabPane tab="About" key="1">
             {vendorInfo && Object.keys(vendorInfo).length >= 0 ? (
               <>
-              {vendorInfo&& vendorInfo.companyLogoPath !==null&&vendorInfo&&vendorInfo.companyLogo !=null&&vendorInfo&&vendorInfo.companyDescription !==""?<>
+                {vendorInfo &&
+                vendorInfo.companyLogoPath !== null &&
+                vendorInfo &&
+                vendorInfo.companyLogo != null &&
+                vendorInfo &&
+                vendorInfo.companyDescription !== "" ? (
+                  <>
+                    <div
+                      className="vendor-content-left"
+                      style={{ display: "flex" }}
+                    >
+                      <div className="displefelxone">
+                        <img
+                          src={
+                            imageUrl +
+                            "?path=" +
+                            vendorInfo.companyLogoPath +
+                            "&name=" +
+                            vendorInfo.companyLogo +
+                            "&width=304&height=543"
+                          }
+                        ></img>
+                      </div>
+                      <div className="displyonehta">
+                        <h1>About {vendorInfo.companyName}</h1>
 
-<div className="vendor-content-left" style={{ display: "flex" }}>
-                
-                  <div className="displefelxone">
-                  
-                  <img
-                    src={
-                      imageUrl +
-                      "?path=" +
-                      vendorInfo.companyLogoPath +
-                      "&name=" +
-                      vendorInfo.companyLogo +
-                      "&width=304&height=543"
-                    }
-                  ></img>
-                </div>
-                <div className="displyonehta">
-                  <h1>About {vendorInfo.companyName}</h1>
-
-                  {vendorInfo && vendorInfo.companyDescription && (
-                    <p>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: vendorInfo.companyDescription
-                            .replaceAll("&amp;", "&")
-                            .replaceAll("&lt;", "<")
-                            .replaceAll("&gt;", ">")
-                            .replaceAll("&quot;", '"')
-                            .replaceAll("&#39;", "'")
-                            .replaceAll("&sbquo;", "‚")
-                            .replaceAll("&#61;", "=")
-                            .replaceAll("&#45;", "-")
-                            .replaceAll("&hellip;", "…")
-                            .replaceAll("&commat;", "@")
-                            .replaceAll("&copy;", "©")
-                            .replaceAll("&#35;", "#")
-                            .replaceAll("&ldquo;", "“")
-                            .replaceAll("&rsquo;", "’")
-                            .replaceAll("&lsquo;", "‘")
-                            .replaceAll("&trade;", "™")
-                            .replaceAll("&reg;", "®")
-                            .replaceAll("&ndash;", "–")
-                            .replaceAll("&eacute;", "é")
-                            .replaceAll("&euro;", "€")
-                            .replaceAll("&pound;", "£")
-                            .replace(/<[^>]+>/g, ""),
-                        }}
-                      ></div>
-                    </p>
-                  )}
-                </div>
-               
-               
-              </div>
-
-
-</>:<>
-               <div style={{display: "flex",
- alignItems: "center",textAlign:"center",justifyContent:'center'}}>
-               <h3 style={{padding:"50px"}}>NO DATA FOUND</h3>
- </div>
-               </>}
-              
+                        {vendorInfo && vendorInfo.companyDescription && (
+                          <p>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: vendorInfo.companyDescription
+                                  .replaceAll("&amp;", "&")
+                                  .replaceAll("&lt;", "<")
+                                  .replaceAll("&gt;", ">")
+                                  .replaceAll("&quot;", '"')
+                                  .replaceAll("&#39;", "'")
+                                  .replaceAll("&sbquo;", "‚")
+                                  .replaceAll("&#61;", "=")
+                                  .replaceAll("&#45;", "-")
+                                  .replaceAll("&hellip;", "…")
+                                  .replaceAll("&commat;", "@")
+                                  .replaceAll("&copy;", "©")
+                                  .replaceAll("&#35;", "#")
+                                  .replaceAll("&ldquo;", "“")
+                                  .replaceAll("&rsquo;", "’")
+                                  .replaceAll("&lsquo;", "‘")
+                                  .replaceAll("&trade;", "™")
+                                  .replaceAll("&reg;", "®")
+                                  .replaceAll("&ndash;", "–")
+                                  .replaceAll("&eacute;", "é")
+                                  .replaceAll("&euro;", "€")
+                                  .replaceAll("&pound;", "£")
+                                  .replace(/<[^>]+>/g, ""),
+                              }}
+                            ></div>
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        textAlign: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <h3 style={{ padding: "50px" }}>NO DATA FOUND</h3>
+                    </div>
+                  </>
+                )}
               </>
             ) : (
               <div>NO DATA FOUND</div>
@@ -162,7 +171,7 @@ export default function VendorDetailShow({
           </TabPane>
           <TabPane tab="Reviews" key="3">
             <VendorRatingReviews vendorId={vendorId} />
-          {/* {ConnectPlugin.SpurtVendorRatingReviews&&<ConnectPlugin.SpurtVendorRatingReviews vendorId={vendorId} />} */}
+            {/* {ConnectPlugin.BlazingVendorRatingReviews&&<ConnectPlugin.BlazingVendorRatingReviews vendorId={vendorId} />} */}
           </TabPane>
         </Tabs>
       </div>
@@ -172,7 +181,7 @@ export default function VendorDetailShow({
       <div className="ps-container">
         <center>
           <img
-            src="/static/img/spurt-original-loader.gif"
+            src="/static/img/Loader/loader_blue.gif"
             width="100"
             height="100"
           />

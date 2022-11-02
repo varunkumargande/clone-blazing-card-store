@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Logo from "../../Icons/Logo";
 import IconMessage from "../../Icons/IconMessage";
@@ -27,10 +27,17 @@ import { chatLogin } from "../../../api";
 import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
-
+import useSessionstorage from "../../elements/sessionStorageHook/useSessionstorage";
+import Notifications from "../../partials/Notifications/Notifications";
+import { useNotifications } from "../../../contexts/Notifications/Notifications";
+import { vendorAuth } from "../../../store/vendorAuth/action";
+import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
+import { show } from "../../../store/toast/action";
 function HeaderDefault({ auth }) {
   const router = useRouter();
   const [active, setActive] = useState(false);
+  const [notificationDropdownActive, setNotificationDropdownActive] =
+    useState(false);
   const [profile, setProfile] = useState(false);
   let category = useSelector((s) => s.product);
   const dispatch = useDispatch();
@@ -39,9 +46,20 @@ function HeaderDefault({ auth }) {
   const [fname, setFname] = useState("");
   const [aimg, setAimg] = useState("");
   const [email, setEmail] = useState("");
+  const [toggle, setToggle] = useState(false);
+
   let { pageName } = router.query;
+
+  const { notifications, notificationsUnreadCount } = useNotifications();
+
+  const wrapperRef = useRef(null);
+  const notificationWrapperRef = useRef(null);
+  // ================= user data ===================
+  const userData = useSessionstorage();
+  // ===============================================
+
   const authFunc = () => {
-    if (sessionStorage.getItem("spurtToken") !== null) {
+    if (sessionStorage.getItem("blazingToken") !== null) {
       dispatch(login());
     }
   };
@@ -50,6 +68,7 @@ function HeaderDefault({ auth }) {
   const submittedDetails = useSelector(
     (state) => state?.becomeSeller?.submittedDetails
   );
+  const toast = useSelector((state) => state?.toast?.toast);
 
   const handleOnClick = () => {
     setActive(!active);
@@ -63,7 +82,7 @@ function HeaderDefault({ auth }) {
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("spurtUser");
+      let profileData = sessionStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);
@@ -77,6 +96,12 @@ function HeaderDefault({ auth }) {
       handleProfileImage();
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (toggle) {
+      handleStoreAndVendorToggle("seller");
+    }
+  }, [toggle]);
 
   const handleProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
@@ -125,9 +150,14 @@ function HeaderDefault({ auth }) {
     e.preventDefault();
     sessionStorage.clear();
     dispatch(logOut());
+    dispatch(
+      show({
+        message: "Successfully logged out",
+        type: "success",
+      })
+    );
     Router.push("/");
     window.location.href = "/";
-    modalSuccess("success", "successfully logged out");
   };
 
   const handleChangePageToHome = () => {
@@ -142,7 +172,84 @@ function HeaderDefault({ auth }) {
     chatLogin();
   };
 
-  console.log();
+  // =================== handle check user login toggle buttun ====================
+  const handleCheckUserLoginForVendor = () => {
+    if (profile?.isVendor && auth?.isLoggedIn) {
+      return (
+        <>
+          <label className="switch toggle-switch darkBlue">
+            <input
+              type="checkbox"
+              onChange={(e) => {
+                setToggle((prev) => !prev);
+              }}
+              id="togBtn"
+            />
+            <span className="toogle-slide round">
+              <span className="on">Seller</span>
+              <span className="off">Store</span>
+            </span>
+          </label>
+        </>
+      );
+    } else {
+      if (auth?.isLoggedIn) {
+        return (
+          <>
+            {!stepState.includes(pageName) ? (
+              <Link href="/become-seller/guidelines">
+                <a className="border-btn flex flex-center justify-center become">
+                  Become a Seller
+                </a>
+              </Link>
+            ) : null}
+          </>
+        );
+      } else {
+        return (
+          <>
+            {!stepState.includes(pageName) ? (
+              <Link href="/account/login">
+                <a className="flex flex-center justify-center become Link">
+                  Become a Seller
+                </a>
+              </Link>
+            ) : null}
+          </>
+        );
+      }
+    }
+  };
+  // ==============================================================================
+
+  // user information
+
+  // ==============================================================================
+
+  // ======================= handle check vendor and store ========================
+  const handleStoreAndVendorToggle = () => {
+    dispatch(vendorAuth());
+  };
+  // ==============================================================================
+  // ======================= Onclick outside dropdown close ========================
+  const handleClickOutside = (event) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      setActive(false);
+    }
+    if (
+      notificationWrapperRef.current &&
+      !notificationWrapperRef.current.contains(event.target)
+    ) {
+      setNotificationDropdownActive(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, false);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, false);
+    };
+  }, []);
 
   return (
     <header>
@@ -168,52 +275,58 @@ function HeaderDefault({ auth }) {
         </div>
         <div className="right flex flex-wrap flex-center">
           <div className="logedIn flex flex-center justify-right">
-            
-            <label className="switch toggle-switch darkBlue">
-              <input type="checkbox" id="togBtn" />
-              <span className="toogle-slide round">
-                <span className="on">Store</span>
-                <span className="off">Seller</span>
-              </span>
-            </label>
-
-            {/* {!stepState.includes(pageName) ? (
-              <>
-                <Link
-                  href={
-                    auth.isLoggedIn
-                      ? "/account/login"
-                      : `/become-seller/${stepState[stage]}`
-                  }
-                >
-                  <a className="border-btn flex flex-center justify-center become">
-                    Become a Seller
-                  </a>
-                </Link>
-              </>
-            ) : null} */}
-
+            {handleCheckUserLoginForVendor()}
             {auth.isLoggedIn ? (
               <>
                 {/* <MessageButton name={"Message"} /> */}
-                {!stepState.includes(pageName) ? (
-                  <Link href="/become-seller/guidelines">
-                    <a className="border-btn flex flex-center justify-center become">
-                      Become a Seller
-                    </a>
-                  </Link>
-                ) : null}
+
                 <button
                   className="message flex flex-center justify-center"
                   onClick={() => handeGoToChat()}
                 >
                   <IconMessage />
                 </button>
-                <button className="Notification flex flex-center justify-center">
+                <button
+                  ref={notificationWrapperRef}
+                  className={`profile Notification flex flex-center justify-center ${
+                    notificationsUnreadCount && "active"
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setNotificationDropdownActive((previous) => !previous);
+                  }}
+                >
                   <IconNotification />
+                  <ul
+                    className={
+                      notificationDropdownActive
+                        ? "dropDown active"
+                        : "dropDown"
+                    }
+                  >
+                    <div className="notification-wrapper title-wrap ">
+                      <div className="head-title flex space-between flex-center">
+                        <h1>Notification</h1>
+                      </div>
+                      <Notifications
+                        notifications={notifications.slice(0, 3)}
+                      />
+                      {notifications.length > 3 && (
+                        <li className="seeAll">
+                          <Link href="/notifications">
+                            <a>{`See All (${notificationsUnreadCount} Unread)`}</a>
+                          </Link>
+                        </li>
+                      )}
+                    </div>
+                  </ul>
                 </button>
-                <button className="profile">
-                  <span onClick={handleOnClick}>
+                <button
+                  className="profile"
+                  ref={wrapperRef}
+                  onClick={handleOnClick}
+                >
+                  <span>
                     <span className="profileImage">{handleProfileImage()}</span>
                     <IconDropdown />
                   </span>
@@ -255,13 +368,7 @@ function HeaderDefault({ auth }) {
             ) : (
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
-                {!stepState.includes(pageName) ? (
-                  <Link href="/account/login">
-                    <a className="flex flex-center justify-center become Link">
-                      Become a Seller
-                    </a>
-                  </Link>
-                ) : null}
+
                 <Link href="account/login">
                   <a className="primary-btn flex flex-center justify-center ml24">
                     Sign In
@@ -278,6 +385,7 @@ function HeaderDefault({ auth }) {
           </div>
         </div>
       </div>
+      {!!toast.message && <TostMessage data={toast}></TostMessage>}
     </header>
   );
 }

@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
-import { modalSuccess, modalWarning } from "../../../api/intercept";
+import { modalWarning } from "../../../api/intercept";
 import {
   PaymentInfoModal,
   AddNewCardModal,
   AddAddressModal,
+  OrderSuccessful,
 } from "../../partials/Modal/Modal";
 import { countryListApi } from "../../../api";
 import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
 import { UserAddAddress } from "../../../api";
-import { editShipAddressApi } from "../../../api";
 import { editAddressApi } from "../../../api";
 import { getStreamingCardDetail } from "../../../api/stream/cardApi";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { show } from "../../../store/toast/action";
 
 function CenterDiv({
   productDetail,
@@ -23,19 +26,27 @@ function CenterDiv({
   handleLeftDiv,
   setIsBuyNowPaymentModal,
   isBuyNowPaymentModal,
-  setShowLoginModal
+  setShowLoginModal,
+  userCount,
 }) {
+  const dispatch = useDispatch();
+
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
   const [addressLoader, setAddressLoader] = useState(false);
   const [paymentLoader, setPaymentLoader] = useState(false);
+  const [paymentSuccessful, setPaymentSuccessful] = React.useState(false);
   const [shipIndex, setShipIndex] = React.useState(null);
   const [shipData, setShipData] = React.useState([]);
 
   const [cardIndex, setCardIndex] = useState(null);
   const [cardDetail, setCardDetail] = useState([]);
-  
+  const [orderId, setOrderId] = useState("");
+
+  const router = useRouter();
+  const streamUuid = router.query["uuid"];
+
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
     setOpenOptions(true);
@@ -53,15 +64,15 @@ function CenterDiv({
   const [countryData, setCountryData] = useState([]);
 
   useEffect(() => {
-    setAddressLoader(true)
-    setPaymentLoader(true)
+    setAddressLoader(true);
+    setPaymentLoader(true);
     countryListApi(setCountryData);
     getStreamingShippmentDetail(setAddressList, setAddressLoader);
     getStreamingCardDetail(setCardDetail, setPaymentLoader);
   }, []);
 
   const fetchCardDetail = () => {
-    setPaymentLoader(true)
+    setPaymentLoader(true);
     getStreamingCardDetail(setCardDetail, setPaymentLoader);
   };
 
@@ -69,36 +80,38 @@ function CenterDiv({
     getStreamingShippmentDetail(setAddressList, setAddressLoader);
   };
 
-  const handleSubmitBuyProduct = () => {
+  const handleSubmitBuyProduct = async () => {
     if (cardDetail.length != 0 && addressList.length != 0) {
-      buyProduct(
+      setPaymentLoader(true);
+      const orderIdValue = await buyProduct(
         cardDetail[cardDetail.length - 1],
         addressList[addressList.length - 1],
         productDetail,
-        openPayment
-        // streamingDetails
+        openPayment,
+        streamUuid,
+        dispatch,
+        setPaymentSuccessful,
+        setPaymentLoader
       );
+      setOrderId(orderIdValue);
     } else {
-      modalWarning(
-        "error",
-        "Please select your card detail and shippment address"
-      );
+      dispatch(show({ message: "Please enter the details !", type: "error" }));
     }
   };
 
   const submitShipDetail = (data) => {
     setShipData(data);
     if (data.addressId) {
-      setAddressLoader(true)
-      editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi);
+      setAddressLoader(true);
+      editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi, dispatch);
       setShippmentFormOpen(false);
     } else {
-      setAddressLoader(true)
-      UserAddAddress(data, setAddressLoader, fetchShiipmentApi);
+      setAddressLoader(true);
+      UserAddAddress(data, setAddressLoader, fetchShiipmentApi, dispatch);
       setShippmentFormOpen(false);
     }
   };
-  
+
   return (
     <div className="streaming-live disable">
       <StreamingBase
@@ -109,31 +122,34 @@ function CenterDiv({
         setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
         isBuyNowPaymentModal={isBuyNowPaymentModal}
         setShowLoginModal={setShowLoginModal}
+        userCount={userCount}
       />
-
-      {isPayment ? (
-        <>
-          <PaymentInfoModal
-            productDetail={productDetail}
-            fetchShiipmentApi={fetchShiipmentApi}
-            openPayment={openPayment}
-            handlePaymentMethod={handlePaymentMethod}
-            handleShippmentMethod={handleShippmentMethod}
-            handleSubmitBuyProduct={handleSubmitBuyProduct}
-            addressList={addressList}
-            cardDetail={cardDetail}
-            addressLoader={addressLoader}
-            paymentLoader={paymentLoader}
-            isBuyNowPaymentModal={isBuyNowPaymentModal}
-          />
-        </>
-      ) : (
-        <></>
+      {paymentSuccessful && (
+        <OrderSuccessful
+          message={`Order Place Successfully!`}
+          subMessage={`Order ID - ${orderId}`}
+          setPaymentSuccessful={setPaymentSuccessful}
+        />
+      )}
+      {isPayment && (
+        <PaymentInfoModal
+          productDetail={productDetail}
+          fetchShiipmentApi={fetchShiipmentApi}
+          openPayment={openPayment}
+          handlePaymentMethod={handlePaymentMethod}
+          handleShippmentMethod={handleShippmentMethod}
+          handleSubmitBuyProduct={handleSubmitBuyProduct}
+          addressList={addressList}
+          cardDetail={cardDetail}
+          addressLoader={addressLoader}
+          paymentLoader={paymentLoader}
+          isBuyNowPaymentModal={isBuyNowPaymentModal}
+        />
       )}
       {paymentForm == true ? (
         <>
           <AddNewCardModal
-          fetchCardDetail={fetchCardDetail}
+            fetchCardDetail={fetchCardDetail}
             productDetail={productDetail}
             countryData={countryData}
             fetchShiipmentApi={fetchShiipmentApi}

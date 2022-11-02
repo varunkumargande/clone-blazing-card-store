@@ -7,13 +7,19 @@ import { EmailValidator } from "../../helper/emailValidator";
 import { UserLogin } from "../../../api";
 import { connect, useDispatch } from "react-redux";
 import Router from "next/router";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { loginConstant } from "../../Constants/login";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
+
+// ==================== import input common =====================
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { TextInput } from "../../CommonComponents/TextInput";
+// ==============================================================
+
 function Login(props) {
   const dispatch = useDispatch();
   const [mail, setMail] = useState("");
@@ -29,9 +35,6 @@ function Login(props) {
   const [conpassShow, setConPassShow] = useState(false);
   const emailInputRef = React.useRef(null);
   const router = useRouter();
-  useEffect(() => {
-    emailInputRef.current.focus();
-  }, []);
 
   useEffect(() => {
     if (props.isLoggedIn === true) {
@@ -59,13 +62,15 @@ function Login(props) {
   };
 
   const loginSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email format").required("Required"),
+    email: Yup.string()
+      .email(loginConstant.form.emailField.validateEmail)
+      .required(loginConstant.form.emailField.requiredEmail),
     password: Yup.string()
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+        loginConstant.passwordRegex,
+        loginConstant.form.passwordField.validatePassword
       )
-      .required("Required"),
+      .required(loginConstant.form.passwordField.requiredPassword),
   });
   //go back to previous page
   const handleBackButton = () => {
@@ -76,7 +81,9 @@ function Login(props) {
       <div className="back mb32" onClick={handleBackButton}>
         <IconBack />
       </div>
-      <h1 className="title mb32">Sign In to Blazing Cards</h1>
+
+      <h1 className="title mb32">{loginConstant.heading.name}</h1>
+
       <div className="GoogleWrap mb42">
         <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
           <GoogleLogin
@@ -114,85 +121,78 @@ function Login(props) {
           );
         }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }) => (
+        {({ errors, touched, values, handleChange, handleBlur }, formProps) => (
           <>
-            <form className="login flex space-between" onSubmit={handleSubmit}>
-              <div className="input-control">
-                <label>Email Address*</label>
+            <Form className="login flex space-between">
+              <TextInput
+                className="input-control wd100"
+                label={loginConstant.form.emailField.emailLabel}
+                name={loginConstant.form.emailField.emailName}
+                type="text"
+                placeholder={loginConstant.form.emailField.emailPlaceholder}
+              />
+
+              {/* <TextInput
+                className="input-control wd100"
+                label={loginConstant.form.passwordField.passwordLabel}
+                name={loginConstant.form.passwordField.passwordName}
+                type={conpassShow ? "text" : "password"}
+                placeholder={
+                  loginConstant.form.passwordField.passwordPlaceholder
+                }
+              /> */}
+
+              <div className="input-control wd100 pass">
+                <label>Password*</label>
                 <input
-                  name="email"
-                  placeholder={"Email"}
-                  ref={emailInputRef}
-                  value={values.email}
-                  onChange={handleChange}
-                  className="errorBorder"
-                  onBlur={handleBlur}
-                />
-                <span className="errorMessage">
-                  {errors.email && touched.email ? errors.email : null}
-                </span>
-              </div>
-              <div className="input-control pass">
-                <label>Password</label>
-                <input
-                  name="password"
-                  placeholder={"Password"}
-                  type={conpassShow ? "text" : "password"}
+                  name={loginConstant.form.passwordField.passwordName}
+                  placeholder={
+                    loginConstant.form.passwordField.passwordPlaceholder
+                  }
+                  type={passShow ? "text" : "password"}
                   value={values.password}
-                  className="errorBorder"
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <span className="errorMessage">
-                  {errors.password && touched.password ? errors.password : null}
-                </span>
-                {conpassShow ? (
+                {passShow ? (
                   <button
                     className="show-hide"
-                    onClick={(e) => setConPassShow(!conpassShow)}
+                    onClick={(e) => setPassShow(!passShow)}
                   >
                     <IconEye />
                   </button>
                 ) : (
                   <>
-                    {" "}
                     <button
                       className="show-hide"
-                      onClick={(e) => setConPassShow(!conpassShow)}
+                      onClick={(e) => setPassShow(!passShow)}
                     >
                       <IconEye />
-                    </button>{" "}
+                    </button>
                   </>
                 )}
+                <ErrorMessage errors={errors.password} touched={touched.password} />
                 <div className="flex justify-right mb16 forget mb32">
                   <Link href="/account/forgot-password">
-                    <a>Forgot Password</a>
+                    <a>{loginConstant.form.forgetPassword}</a>
                   </Link>
                 </div>
-                <div align={"center"}>
-                  <h5 className="errorMessage">{loginError}</h5>
-                </div>
+              </div>
+              <div className="errorMessage text-center mb16">
+                {loginError}
               </div>
               <div className="submitWrap mb32">
                 <button type="submit" className="primary-btn">
-                  Sign in
+                  {loginConstant.form.button.name}
                 </button>
               </div>
               <div className="text-center mb16 already">
-                Don’t have an account yet?{" "}
+                Don’t have an account yet?
                 <Link href="/account/register">
-                  <a>Sign Up</a>
+                  <a> {loginConstant.form.link.signup}</a>
                 </Link>
               </div>
-            </form>
+            </Form>
           </>
         )}
       </Formik>

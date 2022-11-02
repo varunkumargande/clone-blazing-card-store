@@ -1,6 +1,13 @@
-import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from "../../services";
-export async function editAddressApi(values, addressId, setAddressLoader, addressList) {
+import { apiValidation } from "../utils/apiValidation";
+
+export async function editAddressApi(
+  values,
+  addressId,
+  setAddressLoader,
+  addressList,
+  dispatch
+) {
   const data = JSON.stringify({
     address1: values.address1,
     address2: values.address2,
@@ -17,14 +24,11 @@ export async function editAddressApi(values, addressId, setAddressLoader, addres
     addressId,
     data
   );
-  if (result.data) {
+  const resp = apiValidation(result, dispatch);
+  if (resp) {
+    addressList();
   }
-  if (result.data.status === 1) {
-    modalSuccess("success", result.data.message);
-    addressList()
-  } else {
-    modalWarning("error", result.data.message);
-    setAddressLoader(false)
-  }
+  setAddressLoader(false)
+
   return result.data;
 }

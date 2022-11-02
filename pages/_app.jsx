@@ -16,6 +16,7 @@ import Router from "next/router";
 import { Flip, ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/scss/main.scss";
 import { LanguageSwitcherAPi } from "../api/account/languageSwitcherAPi";
+import NotificationsProvider from "../contexts/Notifications/Notifications";
 
 //import "slick-carousel/slick/slick.css";
 //import "slick-carousel/slick/slick-theme.css";
@@ -39,36 +40,40 @@ function MyApp({ Component, pageProps }) {
     getPageApi(dispatch);
     LanguageSwitcherAPi(dispatch);
 
-    sessionStorage.getItem("colorThemeSpurt") &&
-      dispatch(colorThemeCurrent(sessionStorage.getItem("colorThemeSpurt")));
-    sessionStorage.getItem("colorThemeSpurtView") &&
+    sessionStorage.getItem("colorThemeBlazing") &&
+      dispatch(colorThemeCurrent(sessionStorage.getItem("colorThemeBlazing")));
+    sessionStorage.getItem("colorThemeBlazingView") &&
       dispatch(
-        viewcolorThemeCurrent(sessionStorage.getItem("colorThemeSpurtView"))
+        viewcolorThemeCurrent(sessionStorage.getItem("colorThemeBlazingView"))
       );
   }, []);
 
   const getLayout =
     Component.getLayout || ((page) => <DefaultLayout children={page} />);
-  return getLayout(
-    <Provider store={configureStore}>
-      <Component {...pageProps} />
+  return (
+    <NotificationsProvider>
+      {getLayout(
+        <Provider store={configureStore}>
+          <Component {...pageProps} />
 
-      <ToastContainer
-        // limit={1}
-        transition={Zoom}
-        theme="colored"
-        autoClose={1000}
-        hideProgressBar={true}
-        newestOnTop={true}
-        draggable={false}
-        pauseOnVisibilityChange
-        closeOnClick
-        pauseOnHover
-        // hideDuration={100}
-        // position='fixed'
-        // containerId="second"
-      />
-    </Provider>
+          <ToastContainer
+            // limit={1}
+            transition={Zoom}
+            theme="colored"
+            autoClose={1000}
+            hideProgressBar={true}
+            newestOnTop={true}
+            draggable={false}
+            pauseOnVisibilityChange
+            closeOnClick
+            pauseOnHover
+            // hideDuration={100}
+            // position='fixed'
+            // containerId="second"
+          />
+        </Provider>
+      )}
+    </NotificationsProvider>
   );
 }
 

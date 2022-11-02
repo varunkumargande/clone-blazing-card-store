@@ -4,8 +4,8 @@ import { apiUrl } from "../url";
 
 async function getStreamData(streamUuid) {
   let user = null;
-  if(sessionStorage.getItem("spurtUser")) {
-    user = JSON.parse(sessionStorage.getItem("spurtUser"));
+  if (sessionStorage.getItem("blazingUser")) {
+    user = JSON.parse(sessionStorage.getItem("blazingUser"));
   }
   const http = Axios.create({
     baseURL: apiUrl,
@@ -13,24 +13,21 @@ async function getStreamData(streamUuid) {
       "Content-type": "application/json",
     },
   });
-  let url = `stream/getStream?uuid=${streamUuid}`
-  if(user) {
+  let url = `stream/getStream?uuid=${streamUuid}`;
+  if (user) {
     url += "&user_id=" + user.id;
   }
 
-  const result = await http.get(url)
+  const result = await http.get(url);
 
   if (result && result.data && result.data) {
-
     modalSuccess("success", result.data.message);
-    if(!!result.data?.data?.null) {
+    if (!!result.data?.data?.null) {
       return result.data?.data?.null[0];
-    }else {
+    } else {
       return result.data?.data;
     }
-    
   }
-
 }
 
 export { getStreamData };

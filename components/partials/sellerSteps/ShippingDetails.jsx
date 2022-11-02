@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MySelect from "../../CommonComponents/MySelect";
 import { Formik, Form } from "formik";
 import { TextInput } from "../../CommonComponents/TextInput";
@@ -9,12 +9,19 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { addShippingData } from "../../../store/becomeSeller/action";
 import BackButton from "../../CommonComponents/BackButton";
+import { countryListApi } from "../../../api";
+
 export default function ShippingDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [countryData, setCountryData] = useState(null);
   const shippingDetails = useSelector(
     (state) => state?.becomeSeller?.shippingDetails
   );
+  
+  useEffect(() => {
+    countryListApi(setCountryData);
+  },[]);
 
   const handleSubmit = (values) => {
 
@@ -64,6 +71,7 @@ export default function ShippingDetails() {
                 name="fullName"
                 type="text"
                 placeholder="Enter here"
+                maxLength="25"
               />
             </div>
             <div className="flex space-between">
@@ -89,9 +97,13 @@ export default function ShippingDetails() {
                 name="country"
               >
                 <option>Select here</option>
-                <option value="india">India</option>
-                <option value="australia">Australia</option>
-                <option value="america">America</option>
+                {countryData?.map((item, index) => {
+                  return (
+                    <>
+                      <option value={item.countryId}>{item.name}</option>
+                    </>
+                  );
+                })}
               </MySelect>
 
               <TextInput

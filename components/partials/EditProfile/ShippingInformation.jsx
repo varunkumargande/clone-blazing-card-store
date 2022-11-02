@@ -8,10 +8,12 @@ import * as Yup from "yup";
 import { countryListApi, editAddressApi, UserAddAddress } from "../../../api";
 import Router from "next/router";
 import { Loader } from "../../reusable/Loader";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 export default function ShippingDetails() {
+  const dispatch = useDispatch();
   const [addressData, setAddressData] = useState([]);
-  const [addressLoader, setAddressLoader] = useState(true);
+  const [addressLoader, setAddressLoader] = useState(false);
   const [delStatus, setDelStatus] = useState(0);
   const [countryData, setCountryData] = useState([]);
 
@@ -69,10 +71,16 @@ export default function ShippingDetails() {
                   values,
                   addressData[0].addressId,
                   setAddressLoader,
-                  addressList
+                  addressList,
+                  dispatch
                 );
               } else {
-                UserAddAddress(values, Router, setAddressLoader, addressList);
+                UserAddAddress(
+                  values,
+                  dispatch,
+                  setAddressLoader,
+                  addressList,
+                );
               }
             }}
           >
@@ -86,7 +94,6 @@ export default function ShippingDetails() {
               isSubmitting,
               setValues,
             }) => (
-              <>
                 <form onSubmit={handleSubmit}>
                   <div className="box">
                     <div className="inner-box">
@@ -104,12 +111,12 @@ export default function ShippingDetails() {
                             className="grey-bg"
                             onChange={handleChange}
                             value={values.company}
+                            maxLength={50}
                           />
-                          <span className="errorMessage">
-                            {errors.company && touched.company
-                              ? errors.company
-                              : null}
-                          </span>
+                          <ErrorMessage
+                            errors={errors.company}
+                            touched={touched.company}
+                          />
                         </div>
                         <div className="input-control wd50">
                           <label>Address Line 1 *</label>
@@ -120,11 +127,10 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.address1}
                           />
-                          <span className="errorMessage">
-                            {errors.address1 && touched.address1
-                              ? errors.address1
-                              : null}
-                          </span>
+                          <ErrorMessage
+                            errors={errors.address1}
+                            touched={touched.address1}
+                          />
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">Address Line 2</label>
@@ -157,11 +163,10 @@ export default function ShippingDetails() {
                               );
                             })}
                           </select>
-                          <span className="errorMessage">
-                            {errors.countryId && touched.countryId
-                              ? errors.countryId
-                              : null}
-                          </span>
+                          <ErrorMessage
+                            errors={errors.countryId}
+                            touched={touched.countryId}
+                          />
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">Postal Code *</label>
@@ -173,11 +178,10 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.postcode}
                           />
-                          <span className="errorMessage">
-                            {errors.postcode && touched.postcode
-                              ? errors.postcode
-                              : null}
-                          </span>
+                          <ErrorMessage
+                            errors={errors.postcode}
+                            touched={touched.postcode}
+                          />
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">City *</label>
@@ -189,9 +193,10 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.city}
                           />
-                          <span className="errorMessage">
-                            {errors.city && touched.city ? errors.city : null}
-                          </span>
+                          <ErrorMessage
+                            errors={errors.city}
+                            touched={touched.city}
+                          />
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">State *</label>
@@ -203,11 +208,10 @@ export default function ShippingDetails() {
                             onChange={handleChange}
                             value={values.state}
                           />
-                          <span className="errorMessage">
-                            {errors.state && touched.state
-                              ? errors.state
-                              : null}
-                          </span>
+                          <ErrorMessage
+                            errors={errors.state}
+                            touched={touched.state}
+                          />
                         </div>
                       </div>
                     </div>
@@ -227,8 +231,7 @@ export default function ShippingDetails() {
                     </button>
                   </div>
                 </form>
-              </>
-            )}
+              )}
           </Formik>
         </>
       )}

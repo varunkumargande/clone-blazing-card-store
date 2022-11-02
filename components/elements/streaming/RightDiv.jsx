@@ -1,64 +1,69 @@
 import React, { useState, useEffect } from "react";
-import AgoraRTM from "agora-rtm-sdk";
-import { getToken } from "../../../api/stream/getToken";
 import IconChat from "../../Icons/IconChat";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { connect } from "react-redux";
+import { SignUPGoogle } from "../../partials/Modal/Modal";
 
-function RightDiv({ streamData }) {
-  const [channel, setChannel] = useState(null);
+// import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
+// import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
+
+function RightDiv({ streamData, channel, client, auth }) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
-  let userDetails = sessionStorage.getItem("spurtUser");
-  userDetails = JSON.parse(userDetails);
-
-  useEffect(() => {
-    joinChannel();
-  }, []);
+  const profileUrl = streamData?.streamPageDteails?.avatarImage;
 
   useEffect(() => {
     if (channel) {
       sendAndUpdateMessage("JOINED 👋");
       channel.on("ChannelMessage", (message, peerId) => {
         if (message.messageType === "TEXT") {
-          const messageObject = { message: message.text, userId: peerId };
+          const messageJson = JSON.parse(message.text);
+          const messageObject = {
+            message: messageJson.text,
+            profileUrl: messageJson.profileUrl,
+            userId: peerId,
+          };
           setMessages((messages) => [...messages, messageObject]);
         }
       });
+      return () => {
+        client.logout();
+        channel.leave();
+      };
     }
   }, [channel]);
 
-  const joinChannel = async () => {
-    const options = streamData?.option;
-    const client = AgoraRTM.createInstance(options.appId);
-    const token = await getToken(
-      options.rtm,
-      options.messageChannel,
-      options.audience,
-      options.accountType,
-      options.userType
-    );
+  // do not remove
 
-    await client.login({ uid: options.audience, token });
-    const channel = client.createChannel(options.messageChannel);
-    await channel.join();
-    setChannel(channel);
-    return channel;
-  };
+  // const {count} = useLiveUserCount(streamData, setChannel);
+
+  // useEffect(() => {
+  //   setUserCount(count)
+  // }, [count])
 
   const sendAndUpdateMessage = async (initialMessage = null) => {
-    const options = streamData?.option;
-    const message = initialMessage ?? inputValue;
-    const messageObject = { 
-      message, 
-      userId: options.audience 
-    };
+    if (!auth.isLoggedIn && initialMessage !== "JOINED 👋") {
+      setShowLoginModal(true);
+      setInputValue("");
+    } else if (initialMessage || inputValue) {
+      const options = streamData?.option;
+      const message = initialMessage ?? inputValue;
+      const messageObject = {
+        message,
+        userId: options.audience + options.audienceId,
+        profileUrl: profileUrl,
+      };
 
-    setMessages((messages) => [...messages, messageObject]);
-    await channel.sendMessage({ text: message, type: "text" });
-    setInputValue("");
-    // channel.on("MemberJoined", (memberId) => {});
+      setMessages((messages) => [...messages, messageObject]);
+      await channel.sendMessage({
+        text: JSON.stringify({ text: message, profileUrl: profileUrl }),
+        type: "text",
+      });
+      setInputValue("");
+    }
   };
 
   const inputChange = (e) => {
@@ -77,14 +82,13 @@ function RightDiv({ streamData }) {
     return (
       <>
         <div className="chat-inner-wrap flex column justify-right">
-          {messages?.map(({ message, userId }) => {
+          {messages?.map(({ message, userId, profileUrl }) => {
             return (
               <>
                 <div className="flex flex-center chat">
                   <div className="chat-img br50">
-
                     <CloudinaryImage
-                      imageUrl={streamData?.streamPageDteails?.avatarImage}
+                      imageUrl={profileUrl}
                       keyId={`chatBox${userId}`}
                       transformation={ImageTransformation.streamChatProfile}
                       alternative="profile"
@@ -98,7 +102,7 @@ function RightDiv({ streamData }) {
                     /> */}
                   </div>
                   <div className="chat-text-wrap">
-                    <div className="name">{userId}</div>
+                    <div className="name">{userId.replace(/\d+/g, "")}</div>
                     <div className="chat">{message}</div>
                   </div>
                 </div>
@@ -113,6 +117,17 @@ function RightDiv({ streamData }) {
   return (
     <>
       <div className="streaming-right">
+        {showLoginModal && (
+          <SignUPGoogle
+            customMsg={
+              "In order to chat in the stream, you need to sign up or log in."
+            }
+            onDismiss={(e) => {
+              e.preventDefault();
+              setShowLoginModal(false);
+            }}
+          />
+        )}
         <div className="chat-wrap">{getMessages()}</div>
         <div className="input-chat">
           <input
@@ -149,4 +164,8 @@ function RightDiv({ streamData }) {
   );
 }
 
-export default RightDiv;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(RightDiv);

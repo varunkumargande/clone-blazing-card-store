@@ -1,23 +1,22 @@
-import { ViewAllQuestionApi } from "../product/viewAllQuestionApi";
 import APIServices from "../../services";
-import { modalSuccess, modalWarning } from "../intercept";
 import { logOut } from "../../store/auth/action";
 import Router from "next/router";
-
-export async function deleteAccountApi(values) {
+import { show } from "../../store/toast/action";
+export async function deleteAccountApi(values, dispatch) {
   const data = JSON.stringify({
-    emailId: values.emailId,
+    userId: values.userName,
     password: values.password,
     type: "normal",
   });
 
   const result = await APIServices.create("customer/delete", data);
-  if (result && result.data && result.data.data) {
-    modalSuccess("success", "Accout has deleted !");
+  if (result && result?.data && result?.data?.status === 1) {
+    dispatch(show({ message: "Account deleted !", type: "success" }));
     localStorage.clear();
-    Router.push("/account/login")
+    sessionStorage.clear();
+    dispatch(logOut());
+    Router.push("/");
   } else {
-    modalSuccess("success", "UnAuthorized user");
-    Router.push("/account/login")
+    dispatch(show({ message: "UnAuthorized user", type: "error" }));
   }
 }

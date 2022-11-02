@@ -1,11 +1,12 @@
 import * as yup from "yup";
+import { regex } from "../../components/Constants/regex";
 
 export const basicDetailvalidation = yup.object().shape({
-  fullName: yup.string().required('Please Enter Your Full name'),
-  ssn: yup.number().typeError("Invalid Details Entered").required("Please Enter your SSN"),
+  fullName: yup.string().matches(regex.onlyAlphabetsBothCases, 'Please enter letters only').required('Please Enter Your Full name'),
+  uniqueId: yup.string().matches(regex.isNumbers, 'Please enter digits only').min(9, "Digits should be equal to 9").required("Please Enter your UniqueId"),
   upload: yup
     .mixed()
-    .required("A file is required")
+    .required("Please upload identification document")
     // .test(
     //   "fileSize",
     //   "File is too large",

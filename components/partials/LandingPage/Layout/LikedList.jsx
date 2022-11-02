@@ -2,7 +2,6 @@ import React from "react";
 import IconLike from "../../../Icons/IconLike";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { subcatstreamDetailApi } from "../../../../api/stream/subStreamDetail";
 import { stringFormatter } from "../../../../utilities/utils";
 import Router from "next/router";
 import StreamCard from "../../../elements/StreamCard";
@@ -17,7 +16,7 @@ export default function LikedList({
   setIsSeeAll,
   setSeeAllHeading,
   setIsLikedShow,
-  isLikedShow
+  isLikedShow,
 }) {
   const dispatch = useDispatch();
 
@@ -25,12 +24,13 @@ export default function LikedList({
     (state) => state?.stream?.streamdetails?.stream
   );
 
+  const dislikedStreams = useSelector((state) => state?.likeDislikeStream?.dislikedData);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [likedShows, setLikedShows] = useState([]);
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("spurtUser"));
+    const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
     ProfileMethods.GetLikedStreams(userData?.id, setLikedShows);
     setUserId(userData.id);
     setProfile(userData);
@@ -44,7 +44,7 @@ export default function LikedList({
 
   const getStreamCards = () => {
     return likedShows?.map((detail) => {
-      if (detail?.islike) {
+      if (detail?.islike && !dislikedStreams.find(streamId => streamId === detail?.uuid)) {
         return <StreamCard isLive={false} detail={detail} />;
       }
     });

@@ -4,10 +4,15 @@ import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { addNotification, clearState, streamData } from "../../../store/stream/action";
+import {
+  addNotification,
+  clearState,
+  streamData,
+} from "../../../store/stream/action";
 import { io } from "socket.io-client";
-import { socketIO } from "../../../api/url";
+import { notificationBaseUrl } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
+import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -23,6 +28,9 @@ function Index() {
   const [auctionNotification, setAuctionNotification] = useState(null);
   const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  // const [userCount, setUserCount] = useState(null);
+  const [channel, setChannel] = useState(null);
+
   const stream = useSelector((state) => {
     return state?.stream;
   });
@@ -31,44 +39,55 @@ function Index() {
   );
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
+  const { count, client } = useLiveUserCount(streamPageData, setChannel);
   const [isLeftDivOpen, setLeftDivOpen] = useState();
 
   useEffect(() => {
     dispatch(streamData(uuid));
 
     return () => {
-      dispatch(clearState())
-    }
+      dispatch(clearState());
+    };
+  }, []);
+  useEffect(() => {
+    socketInitializer();
   }, []);
 
-  useEffect(() => {socketInitializer()}, []);
-
   const socketInitializer = () => {
-    const socketObject = io(socketIO);
-    socketObject.on(`${uuid}-bid`, (bid) => {
+    const bidNotification = new EventSource(
+      `${notificationBaseUrl}${uuid}-bid`
+    );
+    const auctionNotification = new EventSource(
+      `${notificationBaseUrl}${uuid}-auction`
+    );
+    const winNotification = new EventSource(
+      `${notificationBaseUrl}${uuid}-win`
+    );
+
+    bidNotification.onmessage = (bid) => {
       dispatch(
         addNotification({
           type: "bid",
-          value: bid,
+          value: JSON.parse(bid.data),
         })
       );
-    });
-    socketObject.on(`${uuid}-auction`, (auction) => {
+    };
+    auctionNotification.onmessage = (auction) => {
       dispatch(
         addNotification({
           type: "auction",
-          value: auction,
+          value: JSON.parse(auction.data),
         })
       );
-    });
-    socketObject.on(`${uuid}-win`, (winner) => {
+    };
+    winNotification.onmessage = (winner) => {
       dispatch(
         addNotification({
           type: "win",
-          value: winner,
+          value: JSON.parse(winner.data),
         })
       );
-    });
+    };
   };
 
   useEffect(() => {
@@ -84,7 +103,12 @@ function Index() {
     <>
       {streamingDetails?.uuid ? (
         <>
-          {showLoginModal && (<DynamicModal title="Signup to Join Blazing Cards" setShowModal={setShowLoginModal} />)}
+          {showLoginModal && (
+            <DynamicModal
+              title="Signup to Join Blazing Cards"
+              setShowModal={setShowLoginModal}
+            />
+          )}
           <div className="streaming-page flex space-between">
             <LeftDiv
               setShowLoginModal={setShowLoginModal}
@@ -116,10 +140,13 @@ function Index() {
               setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
               isBuyNowPaymentModal={isBuyNowPaymentModal}
               setShowLoginModal={setShowLoginModal}
+              userCount={count}
             />
             <RightDiv
               streamingDetails={streamingDetails}
               streamData={streamPageData}
+              channel={channel}
+              client={client}
             />
           </div>
         </>

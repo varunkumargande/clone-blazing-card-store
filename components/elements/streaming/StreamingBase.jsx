@@ -27,7 +27,8 @@ function StreamingBase({
   openPayment,
   handleLeftDiv,
   setIsBuyNowPaymentModal,
-  setShowLoginModal
+  setShowLoginModal,
+  userCount
 }) {
   const stream = useSelector((state) => state.stream);
   const streamNotification = useSelector(
@@ -166,14 +167,17 @@ function StreamingBase({
    */
   const handleConfirmBid = async () => {
     if (!!cardDetail && !!addressList) {
-      setOpen(false);
+      if(amountToBid > bidAmount){
+        setOpen(false);
       increaseBidAmount();
       createBid(
         Number(auctionId),
         Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
-        amountToBid
+        Number(amountToBid)
       );
       setIsBidResponseModal(!isBidResponseModal);
+      }
+      
     } else {
       openPayment(true);
     }
@@ -262,7 +266,7 @@ function StreamingBase({
    * Method to increase bid amount by 1
    */
   const increaseBidAmount = () => {
-    setAmountToBid(amountToBid + 1);
+    setAmountToBid(Number(amountToBid) + 1);
   };
 
   /**
@@ -373,7 +377,7 @@ function StreamingBase({
               </>
             )}
             <div className="tme-wrap flex flex-center justify-center live">
-              <span>1.2K</span> <button className="live"></button>
+              <span>{userCount}</span> <button className="live"></button>
             </div>
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
@@ -447,7 +451,7 @@ function StreamingBase({
           <div className="stream-footer flex flex-center space-between">
             <div className="left">
               <div className="time-left">
-                Time left - <Timer minutes={minutes} seconds={seconds} />
+                {(minutes !== 0 || seconds !== 0) && <> Time left - <Timer minutes={minutes} seconds={seconds} /> </>}
               </div>
               <div className="bid-status flex flex-center">
                 {winnerNotification?.bidAmount ? (
@@ -480,6 +484,7 @@ function StreamingBase({
               amountToBid={amountToBid}
               handleConfirmBid={handleConfirmBid}
               checkBidAmount={checkBidAmount}
+              setAmountToBid={setAmountToBid}
             />
           </>
         ) : (
