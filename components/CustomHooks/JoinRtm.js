@@ -14,6 +14,7 @@ export default function useJoinRTM(streamData, callBack) {
     const options = streamData?.option;
     if (options?.appId) {
       const client = AgoraRTM.createInstance(options.appId);
+      debugger
       const token = await getToken(
         options.rtm,
         options.messageChannel,

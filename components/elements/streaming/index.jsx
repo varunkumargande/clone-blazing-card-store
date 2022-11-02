@@ -38,16 +38,16 @@ function Index() {
   const streamPageData = stream?.streamPageData;
   const { count, client } = useLiveUserCount(streamPageData, setChannel);
   const [isLeftDivOpen, setLeftDivOpen] = useState();
-  const [login, setLogin] = useState(false);
+  const [fetch, setFetch] = useState(false);
 
-  const bid = useEventSocket(`${notificationBaseUrl}${uuid}-bid`, login);
+  const bid = useEventSocket(`${notificationBaseUrl}${uuid}-bid`, fetch);
 
   const auction = useEventSocket(
     `${notificationBaseUrl}${uuid}-auction`,
-    login
+    fetch
   );
 
-  const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, login);
+  const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, fetch);
 
   useEffect(() => {
     dispatch(streamData(uuid));
@@ -61,7 +61,7 @@ function Index() {
   }, []);
 
   const socketInitializer = () => {
-    setLogin(true);
+    setFetch(true);
     dispatch(
       addNotification({
         type: "bid",

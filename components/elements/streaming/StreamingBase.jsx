@@ -92,12 +92,8 @@ function StreamingBase({
    * This useEffect will calculate time and set bid amount on changes of notification
    */
   useEffect(() => {
-    if (
-      !!auctionNotification ||
-      !!bidNotification ||
-      stream?.streamProducts?.AuctionDetails?.latestAuction !== {}
-    ) {
-      getTimeDifference(getTime(), getCurrentTime());
+    if (!!auctionNotification || !!bidNotification || stream?.streamProducts?.AuctionDetails?.latestAuction !== {}) {
+      getTimeDifference(getTime());
       if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
         setDisableBid(false);
       }
@@ -165,21 +161,19 @@ function StreamingBase({
    * Method will calculate Live Auction endtime
    * @param {*} endTime
    */
-
-  const getTimeDifference = (endTime, currentTime) => {
-    if (!endTime) return;
-
-    if (!currentTime) return;
+  
+  const getTimeDifference = (endTime) => {
+    if(!endTime) return
 
     let [date, time] = endTime.split(" ");
     const endTime = moment(date.replaceAll("-", "/") + " " + time);
-
-    let [cdate, ctime] = currentTime.split(" ");
-    const currentTime = moment(cdate.replaceAll("-", "/") + " " + ctime);
-
-    //moment.utc().format("YYYY/MM/DD, HH:mm:ss")
-
-    const duration = moment.duration(endTime.diff(currentTime));
+    
+    const currentTime = moment(moment.utc().format("YYYY/MM/DD, HH:mm:ss"));
+  
+    const duration = moment.duration(
+      endTime.diff(currentTime)
+    );
+    
 
     let minutes = Math.floor(duration.asSeconds() / 60);
     let seconds = Math.ceil(duration.asSeconds() % 60);
