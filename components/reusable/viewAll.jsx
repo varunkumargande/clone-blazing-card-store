@@ -1,15 +1,12 @@
 import { limit } from "../Constants";
 
-const ShowViewAll = (detail, handleGoToSeeAll) => {
+const ShowViewAll = ({ data, handleSeeAll, catName }) => {
   return (
-    detail > limit && (
+    data?.length > limit && (
       <div className="seeAll">
         <a
           className="flex flex-center"
-          onClick={(e) => {
-            e.preventDefault();
-            handleGoToSeeAll(e);
-          }}
+          onClick={() => handleSeeAll(catName)}
         >
           View All
         </a>

@@ -1,43 +1,29 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import StreamCard from "../../elements/StreamCard";
-import Router from "next/router";
-import ShowViewAll  from "../../reusable/viewAll";
+import { streamDetailApi } from "../../../api/stream/subStreamDetail";
+import CardLoader from "../../reusable/CardLoader";
+import { showCardLoader } from "../../../api/utils/showCardLoader";
 
-export default function LiveShow({
-  setIsSeeAll,
-  setSeeAllHeading,
-  setIsLiveScheduleSeeAll,
-  showLoginModal,
-  streamSchDetail
-}) {
-  const streamDetail = useSelector((state) => state?.stream?.streamdetails);
-  const handleSeeAll = (name) => {
-    setIsSeeAll(true);
-    setIsLiveScheduleSeeAll(true);
-    setSeeAllHeading(name);
-  };
+export default function LiveShow({ showLoginModal }) {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    streamDetailApi(setData, page);
+  }, [page]);
 
   const getStreamCards = () => {
-    return streamDetail?.map((detail) => {
-      return (
-        <StreamCard
-          isLive={false}
-          detail={detail}
-          showLoginModal={showLoginModal}
-        />
-      );
-    });
-  };
-
-  const handleGoToSeeAll = () => {
-    Router.push({
-      pathname: "/see-all",
-      query: {
-        page: "scheduled",
-        category: "",
-      },
-    });
+    if (data.length) {
+      return data?.map((detail) => {
+        return (
+          <StreamCard
+            isLive={false}
+            detail={detail}
+            showLoginModal={showLoginModal}
+          />
+        );
+      });
+    }
   };
 
   return (
@@ -47,16 +33,17 @@ export default function LiveShow({
           <div className="flex flex-center">
             <h3 className="title">Scheduled Shows</h3>
           </div>
-          <ShowViewAll
+          {/* <ShowViewAll
             data={streamSchDetail}
             handleGoToSeeAll={handleGoToSeeAll}
-          />
+          /> */}
         </div>
       </div>
       <div className="overflow-wrap">
         <div className="flex inner-container">
           <div className="card-wrap flex">
             {getStreamCards()}
+            {showCardLoader(setPage, page, data)}
           </div>
         </div>
       </div>

@@ -9,11 +9,11 @@ export const categoryConstant = {
     },
     "LIVE_DATA":{
         "type": 1,
-        "limit": 8
+        "limit": 10
     },
     "SCHEDULE_DATA":{
         "type": 2,
-        "limit": 8
+        "limit": 10
     },
     "CATEGORY_DATA":{
         "type": 3

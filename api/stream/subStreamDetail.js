@@ -15,18 +15,23 @@ export async function substreamDetailApi(
     dispatch(getStreamDetails(result?.data?.data));
 }
 
-export async function streamDetailApi(dispatch) {
+export async function streamDetailApi(setData,page) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant.SCHEDULE_DATA.type}&limit=${categoryConstant.SCHEDULE_DATA.limit}`
+    `stream/stream-homePage?type=${categoryConstant.SCHEDULE_DATA.type}&limit=${categoryConstant.SCHEDULE_DATA.limit}&offset=${page}`
   );
-  if (result?.status === 200) dispatch(getStreamDetails(result?.data?.data));
+  if (result?.status === 200) {
+    setData(data => data.concat(result?.data?.data))
+  }
 }
 
-export async function liveDetailApi(dispatch) {
+export async function liveDetailApi(setData,page) {
+  
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant.LIVE_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}`
+    `stream/stream-homePage?type=${categoryConstant.LIVE_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}`
   );
-  if (result?.status === 200) dispatch(getLiveDetails(result?.data?.data));
+  if (result?.status === 200) {
+    setData(data => data.concat(result?.data?.data))
+  }
 }
 
 export async function catStreamDetailApi(setCategories) {

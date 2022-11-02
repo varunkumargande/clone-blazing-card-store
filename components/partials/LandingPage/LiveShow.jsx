@@ -1,70 +1,55 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import StreamCard from "../../elements/StreamCard";
-import Router from "next/router";
-import ShowViewAll from "../../reusable/viewAll";
+import { liveDetailApi } from "../../../api/stream/subStreamDetail";
+import { showCardLoader } from "../../../api/utils/showCardLoader";
 
-export default function LiveShow({
-  setIsSeeAll,
-  setSeeAllHeading,
-  setIsLiveScheduleSeeAll,
-  showLoginModal,
-  streamLiveDetail,
-}) {
-  const handleSeeAll = (name) => {
-    setIsSeeAll(true);
-    setIsLiveScheduleSeeAll(true);
-    setSeeAllHeading(name);
-  };
-  const streamDetail = useSelector((state) => state?.stream?.liveDetails);
+export default function LiveShow({ showLoginModal }) {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    liveDetailApi(setData, page);
+  }, [page]);
+
   const getStreamCards = () => {
-    return streamDetail?.map((detail, index) => {
-      return (
-        <React.Fragment key={index}>
-          <StreamCard
-            showLoginModal={showLoginModal}
-            detail={detail}
-            isLive={true}
-          />
-        </React.Fragment>
-      );
-    });
-  };
-
-  const handleGoToSeeAll = () => {
-    Router.push({
-      pathname: "/see-all",
-      query: {
-        page: "live",
-        category: "",
-      },
-    });
+    if (data.length) {
+      return data?.map((detail, index) => {
+        return (
+          <React.Fragment key={index}>
+            <StreamCard
+              showLoginModal={showLoginModal}
+              detail={detail}
+              isLive={true}
+            />
+          </React.Fragment>
+        );
+      });
+    }
   };
 
   return (
     <>
-      {streamDetail?.live?.length == 0 ? (
-        ""
-      ) : (
-        <section className="Live-wrapper card-inner">
-          <div className="inner-container">
-            <div className="title-wrap flex space-between flex-center">
-              <div className="flex flex-center">
-                <h3 className="title">Live Shows</h3>
-              </div>
-              <ShowViewAll
-                data={streamLiveDetail}
-                handleGoToSeeAll={handleGoToSeeAll}
-              />
+      <section className="Live-wrapper card-inner">
+        <div className="inner-container">
+          <div className="title-wrap flex space-between flex-center">
+            <div className="flex flex-center">
+              <h3 className="title">Live Shows</h3>
+            </div>
+            {/* <ShowViewAll
+              data={streamLiveDetail}
+              handleGoToSeeAll={handleGoToSeeAll}
+            /> */}
+          </div>
+        </div>
+        <div className="overflow-wrap">
+          <div className="flex inner-container">
+            <div className="card-wrap flex">
+              {getStreamCards()}
+              {showCardLoader(setPage, page, data)}
             </div>
           </div>
-          <div className="overflow-wrap">
-            <div className="flex inner-container">
-              <div className="card-wrap flex">{getStreamCards()}</div>
-            </div>
-          </div>
-        </section>
-      )}
+        </div>
+      </section>
     </>
   );
 }

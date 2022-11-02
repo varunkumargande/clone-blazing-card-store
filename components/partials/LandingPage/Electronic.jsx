@@ -15,14 +15,15 @@ function CategoryStream({ categoryData, showLoginModal, category }) {
   const dispatch = useDispatch();
 
   const handleSeeAll = (name) => {
+    /**
+     * regex is using for change formate of category name to category slug
+     */
+    let outString = name
+      .replace(regex.nameToSlug, "")
+      .replace(/ /g, "-")
+      .toLowerCase();
+
     if (!!category?.categoryName) {
-      /**
-       * regex is using for change formate of category name to category slug
-       */
-      let outString = name
-        .replace(regex.nameToSlug, "")
-        .replace(/ /g, "-")
-        .toLowerCase();
       dispatch(saveSubCategoryName(outString));
       Router.push({
         pathname: "/see-all",
@@ -37,7 +38,7 @@ function CategoryStream({ categoryData, showLoginModal, category }) {
         pathname: "/see-all",
         query: {
           page: "allCategory",
-          category: name,
+          category: outString,
           subCategory: "all",
         },
       });
@@ -60,7 +61,8 @@ function CategoryStream({ categoryData, showLoginModal, category }) {
           </div>
           <ShowViewAll
             data={categoryData[categoryConstant.categoryData]}
-            handleGoToSeeAll={() => handleSeeAll(categoryData[0])}
+            handleSeeAll={handleSeeAll}
+            catName={categoryData[0]}
           />
         </div>
       </div>

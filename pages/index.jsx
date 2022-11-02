@@ -16,7 +16,6 @@ import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
 import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
 import {
-  streamDetailApi,
   catStreamDetailApi,
   liveDetailApi,
 } from "../api/stream/subStreamDetail";
@@ -30,8 +29,6 @@ function landingPage({ auth, category }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    streamDetailApi(dispatch);
-    liveDetailApi(dispatch);
     catStreamDetailApi(setCategories);
   }, []);
 
@@ -140,26 +137,9 @@ function landingPage({ auth, category }) {
           <>
             {category.categoryName === null ? (
               <>
-                {streamLiveDetail ? (
-                  <LiveShow
-                    setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
-                    setSeeAllHeading={setSeeAllHeading}
-                    setIsSeeAll={setIsSeeAll}
-                    showLoginModal={setShowModal}
-                    streamLiveDetail={streamLiveDetail}
-                  />
-                ): ""}
-                {streamSchDetail ? (
-                  <ScheduledShow
-                    liveScheduleCategoryName={liveScheduleCategoryName}
-                    // activeCategoryName={activeCategoryName}
-                    setIsLiveScheduleSeeAll={setIsLiveScheduleSeeAll}
-                    setSeeAllHeading={setSeeAllHeading}
-                    setIsSeeAll={setIsSeeAll}
-                    showLoginModal={setShowModal}
-                    streamSchDetail={streamSchDetail}
-                  />
-                ):""}
+                <LiveShow showLoginModal={setShowModal} />
+
+                <ScheduledShow showLoginModal={setShowModal} />
 
                 {getAllCategoriesCard()}
               </>
