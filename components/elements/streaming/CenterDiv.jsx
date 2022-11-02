@@ -28,6 +28,7 @@ function CenterDiv({
   isBuyNowPaymentModal,
   setShowLoginModal,
   userCount,
+  streamNotification,
 }) {
   const dispatch = useDispatch();
 
@@ -103,7 +104,13 @@ function CenterDiv({
     setShipData(data);
     if (data.addressId) {
       setAddressLoader(true);
-      editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi, dispatch);
+      editAddressApi(
+        data,
+        data.addressId,
+        setAddressLoader,
+        fetchShiipmentApi,
+        dispatch
+      );
       setShippmentFormOpen(false);
     } else {
       setAddressLoader(true);
@@ -123,6 +130,7 @@ function CenterDiv({
         isBuyNowPaymentModal={isBuyNowPaymentModal}
         setShowLoginModal={setShowLoginModal}
         userCount={userCount}
+        streamNotification={streamNotification}
       />
       {paymentSuccessful && (
         <OrderSuccessful
