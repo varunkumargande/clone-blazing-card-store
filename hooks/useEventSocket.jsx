@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
 // This hook will enable the eventsocket connection for the specified url
-export default function useEventSocket(resoureUrl, login = false) {
+export default function useEventSocket(resoureUrl, global = false) {
   const [data, setData] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(login);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isStatus, setIsStatus] = useState(true);
 
   useEffect(() => {
     if (
-      !login &&
+      !global &&
       isLoggedIn !== !!sessionStorage.getItem("blazingUser") &&
       typeof window !== "undefined"
     ) {
@@ -18,7 +18,7 @@ export default function useEventSocket(resoureUrl, login = false) {
   }, [typeof window]);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn || global) {
       const token = sessionStorage.getItem("blazingToken");
       const chatHeader = {
         Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ export default function useEventSocket(resoureUrl, login = false) {
         setIsStatus(!isStatus);
       };
     }
-  }, [isLoggedIn, isStatus]);
+  }, [isLoggedIn, isStatus, global]);
 
   return {
     data,
