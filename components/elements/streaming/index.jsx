@@ -13,6 +13,7 @@ import { io } from "socket.io-client";
 import { notificationBaseUrl } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
 import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
+import useEventSocket from "../../../hooks/useEventSocket";
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -41,6 +42,16 @@ function Index() {
   const streamPageData = stream?.streamPageData;
   const { count, client } = useLiveUserCount(streamPageData, setChannel);
   const [isLeftDivOpen, setLeftDivOpen] = useState();
+  const [login, setLogin] = useState(false);
+
+  const bid = useEventSocket(`${notificationBaseUrl}${uuid}-bid`, login);
+
+  const auction = useEventSocket(
+    `${notificationBaseUrl}${uuid}-auction`,
+    login
+  );
+
+  const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, login);
 
   useEffect(() => {
     dispatch(streamData(uuid));
@@ -54,40 +65,27 @@ function Index() {
   }, []);
 
   const socketInitializer = () => {
-    const bidNotification = new EventSource(
-      `${notificationBaseUrl}${uuid}-bid`
-    );
-    const auctionNotification = new EventSource(
-      `${notificationBaseUrl}${uuid}-auction`
-    );
-    const winNotification = new EventSource(
-      `${notificationBaseUrl}${uuid}-win`
+    setLogin(true)
+    dispatch(
+      addNotification({
+        type: "bid",
+        value: bid?.data,
+      })
     );
 
-    bidNotification.onmessage = (bid) => {
-      dispatch(
-        addNotification({
-          type: "bid",
-          value: JSON.parse(bid.data),
-        })
-      );
-    };
-    auctionNotification.onmessage = (auction) => {
-      dispatch(
-        addNotification({
-          type: "auction",
-          value: JSON.parse(auction.data),
-        })
-      );
-    };
-    winNotification.onmessage = (winner) => {
-      dispatch(
-        addNotification({
-          type: "win",
-          value: JSON.parse(winner.data),
-        })
-      );
-    };
+    dispatch(
+      addNotification({
+        type: "auction",
+        value: auction?.data,
+      })
+    );
+
+    dispatch(
+      addNotification({
+        type: "win",
+        value: win?.data,
+      })
+    );
   };
 
   useEffect(() => {
