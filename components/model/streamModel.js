@@ -51,7 +51,7 @@ class StreamDetailModel {
 
   getAgoraClientOptions(data) {
     return {
-      appId: "8a97cfb3badd4d31b0a400946febcc38", //data.agoraAppId,
+      appId: data.agoraAppId,
       streamChannel: data.streamChannel,
       notificationChannel: data.notificationChannel,
       messageChannel: data.messageChannel,
