@@ -26,7 +26,6 @@ function Index() {
   const [openPayment, setOpenPayment] = useState(false);
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
-  const [auctionNotification, setAuctionNotification] = useState(null);
   const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   // const [userCount, setUserCount] = useState(null);
@@ -35,9 +34,6 @@ function Index() {
   const stream = useSelector((state) => {
     return state?.stream;
   });
-  const streamNotification = useSelector(
-    (state) => state.stream?.streamNotification
-  );
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
   const { count, client } = useLiveUserCount(streamPageData, setChannel);
@@ -65,7 +61,7 @@ function Index() {
   }, []);
 
   const socketInitializer = () => {
-    setLogin(true)
+    setLogin(true);
     dispatch(
       addNotification({
         type: "bid",
@@ -88,13 +84,15 @@ function Index() {
     );
   };
 
-  useEffect(() => {
-    setAuctionNotification(streamNotification?.auction);
-  }, [streamNotification]);
-
   //Method to show and hide left div
   const handleLeftDiv = (toggle) => {
     setLeftDivOpen(toggle);
+  };
+
+  const notificationData = {
+    bid: bid?.data,
+    auction: auction?.data,
+    win: win?.data,
   };
 
   return (
@@ -110,7 +108,7 @@ function Index() {
           <div className="streaming-page flex space-between">
             <LeftDiv
               setShowLoginModal={setShowLoginModal}
-              auctionNotification={auctionNotification}
+              auctionNotification={auction?.data}
               open={open}
               productDetail={setProductDetail}
               openPayment={setOpenPayment}
@@ -139,6 +137,7 @@ function Index() {
               isBuyNowPaymentModal={isBuyNowPaymentModal}
               setShowLoginModal={setShowLoginModal}
               userCount={count}
+              streamNotification={notificationData}
             />
             <RightDiv
               streamingDetails={streamingDetails}
