@@ -5,6 +5,7 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 export default function useEventSocket(resoureUrl) {
   const [data, setData] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isStatus, setIsStatus] = useState(true);
 
   useEffect(() => {
     if (
@@ -35,13 +36,15 @@ export default function useEventSocket(resoureUrl) {
 
       sse.onerror = (e) => {
         sse.close();
+        setIsStatus(!isStatus);
       };
 
       return () => {
         sse.close();
+        setIsStatus(!isStatus);
       };
     }
-  });
+  }, [isLoggedIn, isStatus]);
 
   return {
     data,
