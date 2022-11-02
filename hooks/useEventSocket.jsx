@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
 // This hook will enable the eventsocket connection for the specified url
-export default function useEventSocket(resoureUrl) {
+export default function useEventSocket(resoureUrl, login = false) {
   const [data, setData] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(login);
   const [isStatus, setIsStatus] = useState(true);
 
   useEffect(() => {
     if (
+      !login &&
       isLoggedIn !== !!sessionStorage.getItem("blazingUser") &&
       typeof window !== "undefined"
     ) {
