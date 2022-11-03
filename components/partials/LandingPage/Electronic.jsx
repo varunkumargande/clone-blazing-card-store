@@ -26,30 +26,24 @@ function CategoryStream({
 }) {
   const getStreamCards = () => {
     if (!!catData[catId]) {
-      const dataObj = Object.keys(catData[catId]?.data).length
-        ? Object.keys(catData[catId]?.data)
-        : null;
-      if (Object.keys(catData[catId]?.data).length) {
-        return catData[catId]?.data[dataObj[0]].map((detail) => {
-          return <StreamCard showLoginModal={showLoginModal} detail={detail} />;
-        });
-      }
+      return catData[catId]?.data?.map((detail) => {
+        return <StreamCard showLoginModal={showLoginModal} detail={detail} />;
+      });
     }
   };
 
   const handleCatCardVisisble = () => {
     if (!!catData[catId]) {
-      if (Object.keys(catData[catId]?.data).length) {
-        if (catData[catId]?.total == limit) {
-          return <>{showCatCardLoader(setPage, page, catId, setCatId)} </>;
-        }
+      if (catData[catId]?.total == limit) {
+        return <>{showCatCardLoader(setPage, page, catId, setCatId)} </>;
       }
     }
   };
 
   return (
     <section className="Live-wrapper card-inner">
-      {!!loader[catId] ? (
+      
+      {!!catData[catId] ? (
         <div className="inner-container">
           <div className="title-wrap flex space-between flex-center">
             <h3 className="title">{stringFormatter(catName)}</h3>
@@ -58,6 +52,7 @@ function CategoryStream({
       ) : (
         ""
       )}
+
       <div className="overflow-wrap">
         <div className="flex inner-container">
           {loader[catId] ? (
