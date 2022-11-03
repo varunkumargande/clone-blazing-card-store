@@ -4,23 +4,37 @@ import { catSubStreamDetailApi } from "../../../../api/stream/subStreamDetail";
 import CategoryStream from "../Electronic";
 
 function Vertical({ category, showLoginModal }) {
-  const [categories, setCategories] = useState(null);
   useEffect(() => {
-    catSubStreamDetailApi(setCategories, category?.categoryId);
+    catSubStreamDetailApi(setData, page, category?.categoryId);
   }, [category?.categoryName]);
 
-  const handleCardDetail = () => {
-    if (categories) {
-      const categoriesData = Object.entries(categories);
-      return categoriesData.map((element) => {
-        return (
-          <CategoryStream
-            showLoginModal={showLoginModal}
-            categoryData={element}
-          />
-        );
-      });
+  const [data, setData] = useState(null);
+  const [page, setPage] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const handleCardVisisble = () => {
+    if (total === limit) {
+      return <> {showCardLoader(setPage, page, data)} </>;
     }
+  };
+
+  const handleCardDetail = () => {
+
+    
+
+    // if (data.length) {
+    //   const categoriesData = Object.entries(categories);
+    //   return categoriesData.map((element) => {
+    //     return (
+    //       <></>
+    //       // <CategoryStream
+    //       //   showLoginModal={showLoginModal}
+    //       //   categoryData={element}
+    //       //   apiCallBack={catSubStreamDetailApi}
+    //       // />
+    //     );
+    //   });
+    // }
   };
 
   return <div className="home-container">{handleCardDetail()}</div>;
