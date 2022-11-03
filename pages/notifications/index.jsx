@@ -16,8 +16,7 @@ const notifications = () => {
     isFetching,
   } = useNotifications();
 
-  //const {isMobile} = useIsMobile()
-const isMobile = false
+  const { isMobile } = useIsMobile();
 
   return (
     <>

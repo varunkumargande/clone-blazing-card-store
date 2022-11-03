@@ -4,10 +4,7 @@ import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearState,
-  streamData,
-} from "../../../store/stream/action";
+import { clearState, streamData } from "../../../store/stream/action";
 import { notificationBaseUrl } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
 import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
@@ -16,8 +13,7 @@ import { useCallback } from "react";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function Index() {
-  //const {isMobile} = useIsMobile()
-const isMobile = false
+  const { isMobile } = useIsMobile();
 
   const [open, setOpen] = useState(false);
   const [addShippInfo, setAddShippInfo] = useState(false);
@@ -120,12 +116,12 @@ const isMobile = false
               userCount={count}
               streamNotification={notificationData}
             />
-            {/* <RightDiv
+            <RightDiv
               streamingDetails={streamingDetails}
               streamData={streamPageData}
               channel={channel}
               client={client}
-            /> */}
+            />
           </div>
         </>
       ) : null}

@@ -49,7 +49,7 @@ function LeftDiv({
   const [followed, setFollowed] = useState(
     streamingDetails.isFollow ? streamingDetails.isFollow : false
   );
-  const [filterKeyword, setFilterKeyword] = useState('');
+  const [filterKeyword, setFilterKeyword] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
   const [noOfFollower, setNoOfFollower] = useState(
@@ -67,8 +67,7 @@ function LeftDiv({
   };
   const [streamProducts, setStreamProduct] = useState(initialStreamingData);
 
-  //const {isMobile} = useIsMobile()
-  const isMobile = false;
+  const { isMobile } = useIsMobile();
 
   // to initially show left div on desktop and hide on mobile screen
   useEffect(() => {
@@ -106,7 +105,7 @@ function LeftDiv({
         datum[toggleState] = result;
         setStreamProduct(datum);
       }
-      setFilterKeyword('')
+      setFilterKeyword("");
     } catch (error) {
       if (error.response) {
       } else {
@@ -127,7 +126,7 @@ function LeftDiv({
     // setStreamProduct([]);
     // dispatch(addStreamProducts({}));
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
-    setFilterKeyword('');
+    setFilterKeyword("");
     setFilteredProducts([]);
   };
 
@@ -187,7 +186,7 @@ function LeftDiv({
 
   const handleProductCount = useMemo(() => {
     if (filteredProducts?.length === 0 && !!filterKeyword) {
-      return 0
+      return 0;
     } else {
       return (
         filteredProducts?.length ||
@@ -374,7 +373,7 @@ function LeftDiv({
       setFilteredProducts(filtered);
     } else {
       setFilteredProducts([]);
-      setFilterKeyword('');
+      setFilterKeyword("");
     }
   };
 

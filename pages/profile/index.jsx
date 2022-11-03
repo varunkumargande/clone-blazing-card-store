@@ -106,16 +106,7 @@ export default function PublicProfile() {
     }
   }, [tabs]);
 
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+  const { isMobile } = useIsMobile();
 
   const UpcomingShowsComponent = () => {
     if (upcomingShows) {
@@ -308,7 +299,7 @@ export default function PublicProfile() {
       {showModal && (
         <DynamicModal title="SJoin Blazing Cards" setShowModal={setShowModal} />
       )}
-      {windowWidth <= 1024 ? (
+      {isMobile ? (
         <div className="profile-title flex flex-center">
           <BackButton name={"Profile"} />
         </div>
