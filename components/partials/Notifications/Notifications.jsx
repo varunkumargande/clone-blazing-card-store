@@ -79,9 +79,9 @@ const Notifications = (props) => {
     } else {
       return (
         <div className="noNotifications flex justify-center flex-center text-center column">
-          <idv className="image mb26">
+          <div className="image mb26">
             <IconNoNotifications />
-          </idv>
+          </div>
           <h3>No Notification</h3>
         </div>
       );

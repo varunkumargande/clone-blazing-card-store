@@ -1,21 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import LeftDiv from "./LeftDiv";
 import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addNotification,
-  clearState,
-  streamData,
-} from "../../../store/stream/action";
-import { io } from "socket.io-client";
+import { clearState, streamData } from "../../../store/stream/action";
 import { notificationBaseUrl } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
 import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 import useEventSocket from "../../../hooks/useEventSocket";
+import { useCallback } from "react";
+import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function Index() {
+  const { isMobile } = useIsMobile();
+
   const [open, setOpen] = useState(false);
   const [addShippInfo, setAddShippInfo] = useState(false);
   const [addPayInfo, setAddPayInfo] = useState(false);
@@ -28,6 +27,7 @@ function Index() {
   const dispatch = useDispatch();
   const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [liveAuctionDetails, setLiveAuctionDetails]= useState({});
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
 
@@ -57,9 +57,9 @@ function Index() {
   }, []);
 
   //Method to show and hide left div
-  const handleLeftDiv = (toggle) => {
+  const handleLeftDiv = useCallback((toggle) => {
     setLeftDivOpen(toggle);
-  };
+  }, []);
 
   const notificationData = {
     bid: bid?.data,
@@ -77,7 +77,13 @@ function Index() {
               setShowModal={setShowLoginModal}
             />
           )}
-          <div className="streaming-page flex space-between">
+          <div
+            className="streaming-page flex space-between"
+            onClick={(e) => {
+              e.preventDefault();
+              isMobile && handleLeftDiv(false);
+            }}
+          >
             <LeftDiv
               setShowLoginModal={setShowLoginModal}
               auctionNotification={auction?.data}
@@ -92,6 +98,7 @@ function Index() {
               handleLeftDiv={handleLeftDiv}
               isLeftDivOpen={isLeftDivOpen}
               setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
+              auctionCallBack={setLiveAuctionDetails}
             />
             <CenterDiv
               open={open}
@@ -110,6 +117,7 @@ function Index() {
               setShowLoginModal={setShowLoginModal}
               userCount={count}
               streamNotification={notificationData}
+              liveAuctionDetails={liveAuctionDetails}
             />
             <RightDiv
               streamingDetails={streamingDetails}
@@ -124,4 +132,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default memo(Index);
