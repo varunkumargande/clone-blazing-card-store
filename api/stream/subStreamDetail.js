@@ -43,12 +43,11 @@ export async function liveDetailApi(setData, page, setTotal, setLoader) {
 export async function catStreamDetailApi(
   setData,
   page,
-  setTotal,
   catId,
   setApiCount,
   setLoader,
-  loader,
-  data
+  data,
+  setCategories
 ) {
   const result = await APIServices.getAll(
     `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}&categoryId=${catId}&key=10980374eab848ac`
@@ -62,6 +61,15 @@ export async function catStreamDetailApi(
       newData[catId].data = data[catId].data.concat(newData[catId].data);
     }
     setData(newData);
+  }
+  if (result?.data?.data?.total === 0) {
+    setCategories((categories) =>
+      categories.filter((item) => {
+        if (item.categoryId !== catId) {
+          return item;
+        }
+      })
+    );
   }
   setLoader((loader) => ({ ...loader, [catId]: true }));
   setApiCount((count) => count + 1);

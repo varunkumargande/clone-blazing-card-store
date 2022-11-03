@@ -38,7 +38,7 @@ function landingPage({ auth, category }) {
   // ========================= category for home page ==============================
   // const [activeCategoryName, setActiveCategoryName] = useState(null);
   const [subCateId, setSubCateId] = useState("select");
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [isLikedShow, setIsLikedShow] = useState(false);
   // ===============================================================================
   // ========================= category for live and schedule page ==============================
@@ -86,12 +86,11 @@ function landingPage({ auth, category }) {
       catStreamDetailApi(
         setData,
         page,
-        setTotal,
         category?.categories[apiCount]?.categoryId,
         setApiCount,
         setLoader,
-        loader,
-        data
+        data,
+        setCategories
       );
     } else {
       setCatVisible(false);
@@ -103,12 +102,11 @@ function landingPage({ auth, category }) {
       catStreamDetailApi(
         setData,
         page,
-        setTotal,
         catId,
         setApiCount,
         setLoader,
-        loader,
-        data
+        data,
+        setCategories
       );
     }
   }, [page]);
