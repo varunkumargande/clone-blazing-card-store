@@ -27,6 +27,7 @@ function Index() {
   const dispatch = useDispatch();
   const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [liveAuctionDetails, setLiveAuctionDetails]= useState({});
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
 
@@ -97,6 +98,7 @@ function Index() {
               handleLeftDiv={handleLeftDiv}
               isLeftDivOpen={isLeftDivOpen}
               setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
+              auctionCallBack={setLiveAuctionDetails}
             />
             <CenterDiv
               open={open}
@@ -115,6 +117,7 @@ function Index() {
               setShowLoginModal={setShowLoginModal}
               userCount={count}
               streamNotification={notificationData}
+              liveAuctionDetails={liveAuctionDetails}
             />
             <RightDiv
               streamingDetails={streamingDetails}

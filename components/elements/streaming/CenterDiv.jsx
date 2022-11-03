@@ -29,6 +29,7 @@ function CenterDiv({
   setShowLoginModal,
   userCount,
   streamNotification,
+  liveAuctionDetails
 }) {
   const dispatch = useDispatch();
 
@@ -131,6 +132,7 @@ function CenterDiv({
         setShowLoginModal={setShowLoginModal}
         userCount={userCount}
         streamNotification={streamNotification}
+        liveAuctionDetails={liveAuctionDetails}
       />
       {paymentSuccessful && (
         <OrderSuccessful
