@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect, memo, useMemo } from "react";
 import StreamingElement from "./StreamingElement";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
@@ -31,11 +31,9 @@ function StreamingBase({
   setShowLoginModal,
   userCount,
   streamNotification,
+  liveAuctionDetails
 }) {
   const stream = useSelector((state) => state.stream);
-  const auctionDetails = useSelector(
-    (state) => state?.stream?.streamProducts?.AuctionDetails
-  );
   const [open, setOpen] = useState(false);
   const [bidAmount, setBidAmount] = useState(null);
   const [amountToBid, setAmountToBid] = useState(bidAmount + 2);
@@ -68,10 +66,10 @@ function StreamingBase({
   useEffect(() => {
     setAuctionNotification(streamNotification?.auction);
     setBidNotification(streamNotification?.bid);
-    setAuctionId(
-      streamNotification?.bid?.auctionId ??
-        streamNotification?.auction?.auction?.id
-    );
+    // setAuctionId(
+    //   streamNotification?.bid?.auctionId ??
+    //     streamNotification?.auction?.auction?.id
+    // );
     setWinnerNotification(streamNotification?.win);
     if (!!streamNotification?.auction) {
       setCurrentAuctionName(streamNotification?.auction?.product?.name);
@@ -101,29 +99,29 @@ function StreamingBase({
       if (
         !!auctionNotification?.auction?.id ||
         !!bidNotification?.auctionId ||
-        !!auctionDetails?.latestAuction?.auctionId
+        !!liveAuctionDetails?.latestAuction?.auctionId
       ) {
         setAuctionId(getAuctionId());
       }
       if (
         bidNotification ||
-        auctionDetails?.latestBidding !== {} ||
-        auctionDetails.latestAuction !== {}
+        liveAuctionDetails?.latestBidding !== {} ||
+        liveAuctionDetails.latestAuction !== {}
       ) {
-        const amount = Number(getBidAmount());
+        const amount = getBidAmount || 0;
         setBidAmount(amount);
         setAmountToBid(amount + 1);
       }
     }
-  }, [bidNotification, auctionNotification, auctionDetails]);
+  }, [bidNotification, auctionNotification, liveAuctionDetails]);
 
   const getTime = () => {
     return bidNotification?.endTime
       ? bidNotification?.endTime
       : auctionNotification?.auction?.endTime
       ? auctionNotification?.auction?.endTime
-      : auctionDetails?.latestAuction?.endTime
-      ? auctionDetails?.latestAuction?.endTime
+      : liveAuctionDetails?.latestAuction?.endTime
+      ? liveAuctionDetails?.latestAuction?.endTime
       : null;
   };
   const getCurrentTime = () => {
@@ -131,8 +129,8 @@ function StreamingBase({
       ? bidNotification?.currentTime
       : auctionNotification?.auction?.currentTime
       ? auctionNotification?.auction?.currentTime
-      : auctionDetails?.latestAuction?.currentTime
-      ? auctionDetails?.latestAuction?.currentTime
+      : liveAuctionDetails?.latestAuction?.currentTime
+      ? liveAuctionDetails?.latestAuction?.currentTime
       : null;
   };
 
@@ -141,22 +139,23 @@ function StreamingBase({
       ? auctionNotification?.auction?.id
       : bidNotification?.auctionId
       ? bidNotification?.auctionId
-      : auctionDetails?.latestAuction?.auctionId
-      ? auctionDetails?.latestAuction?.auctionId
+      : liveAuctionDetails?.latestAuction?.auctionId
+      ? liveAuctionDetails?.latestAuction?.auctionId
       : null;
   };
 
-  const getBidAmount = () => {
-    return bidNotification?.bidAmount
+  const getBidAmount = useMemo(() => {
+    const data =  bidNotification?.bidAmount
       ? bidNotification?.bidAmount
       : auctionNotification?.auction?.bidAmount
       ? auctionNotification?.auction?.bidAmount
-      : auctionDetails?.latestBidding?.bidAmount
-      ? auctionDetails?.latestBidding?.bidAmount
-      : auctionDetails?.latestAuction.bidAmount
-      ? auctionDetails?.latestAuction.bidAmount
+      : liveAuctionDetails?.latestBidding?.bidAmount
+      ? liveAuctionDetails?.latestBidding?.bidAmount
+      : liveAuctionDetails?.latestAuction?.bidAmount
+      ? liveAuctionDetails?.latestAuction?.bidAmount
       : null;
-  };
+    return data
+  }, [liveAuctionDetails, streamNotification]);
 
   /**
    * Method will calculate Live Auction endtime

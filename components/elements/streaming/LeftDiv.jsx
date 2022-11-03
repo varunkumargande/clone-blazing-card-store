@@ -22,6 +22,7 @@ function LeftDiv({
   handleLeftDiv,
   isLeftDivOpen,
   setIsBuyNowPaymentModal,
+  auctionCallBack
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -104,6 +105,9 @@ function LeftDiv({
         const datum = { ...streamProducts };
         datum[toggleState] = result;
         setStreamProduct(datum);
+        if(toggleState == TOGGLE_STATES.AUCTION) {
+          auctionCallBack(datum[toggleState]?.AuctionDetails)
+        }
       }
       setFilterKeyword("");
     } catch (error) {
