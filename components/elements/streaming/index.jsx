@@ -38,51 +38,23 @@ function Index() {
   const streamPageData = stream?.streamPageData;
   const { count, client } = useLiveUserCount(streamPageData, setChannel);
   const [isLeftDivOpen, setLeftDivOpen] = useState();
-  const [login, setLogin] = useState(false);
+  const [fetch, setFetch] = useState(false);
 
-  const bid = useEventSocket(`${notificationBaseUrl}${uuid}-bid`, login);
-
+  const bid = useEventSocket(`${notificationBaseUrl}${uuid}-bid`, fetch);
   const auction = useEventSocket(
     `${notificationBaseUrl}${uuid}-auction`,
-    login
+    fetch
   );
-
-  const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, login);
+  const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, fetch);
 
   useEffect(() => {
+    setFetch(true);
     dispatch(streamData(uuid));
 
     return () => {
       dispatch(clearState());
     };
   }, []);
-  useEffect(() => {
-    socketInitializer();
-  }, []);
-
-  const socketInitializer = () => {
-    setLogin(true);
-    dispatch(
-      addNotification({
-        type: "bid",
-        value: bid?.data,
-      })
-    );
-
-    dispatch(
-      addNotification({
-        type: "auction",
-        value: auction?.data,
-      })
-    );
-
-    dispatch(
-      addNotification({
-        type: "win",
-        value: win?.data,
-      })
-    );
-  };
 
   //Method to show and hide left div
   const handleLeftDiv = (toggle) => {
