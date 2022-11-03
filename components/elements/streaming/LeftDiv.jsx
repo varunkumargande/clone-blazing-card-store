@@ -52,7 +52,7 @@ function LeftDiv({
     stream?.streamData?.vendorDetails?.follower_count ?? 0
   );
   //to handle width of the screen and call methods accordingly
-  const [windowWidth, setWindowWidth] = useState(0);
+  
   const [showLogin, setShowLogin] = useState(false);
   const [streamProducts, setStreamProduct] = useState([]);
 
