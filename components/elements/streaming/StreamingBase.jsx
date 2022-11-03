@@ -319,7 +319,7 @@ function StreamingBase({
               disabled={disableBid}
               onClick={(e) => {
                 e.preventDefault();
-                handleCustomBid;
+                handleCustomBid();
               }}
             >
               Custom Bid
@@ -329,7 +329,7 @@ function StreamingBase({
               disabled={disableBid}
               onClick={(e) => {
                 e.preventDefault();
-                handleConfirmBid;
+                handleConfirmBid();
               }}
             >
               Bid US ${amountToBid}
@@ -449,7 +449,7 @@ function StreamingBase({
               className="flex flex-center justify-center br50"
               onClick={(e) => {
                 e.preventDefault();
-                handleShareButton;
+                handleShareButton();
               }}
             >
               <IconShare />
@@ -457,7 +457,7 @@ function StreamingBase({
             <button
               onClick={(e) => {
                 e.preventDefault();
-                handleLikeUnlike;
+                handleLikeUnlike();
               }}
               className={getlikeClass()}
             >
@@ -467,7 +467,7 @@ function StreamingBase({
               className="flex flex-center justify-center br50"
               onClick={(e) => {
                 e.preventDefault();
-                handleDollarClick;
+                handleDollarClick();
               }}
             >
               <IconAdd />
@@ -512,7 +512,7 @@ function StreamingBase({
                   className="flex flex-center justify-center br50"
                   onClick={(e) => {
                     e.preventDefault();
-                    handleShipModal;
+                    handleShipModal();
                   }}
                 >
                   i

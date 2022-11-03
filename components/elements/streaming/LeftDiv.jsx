@@ -410,7 +410,7 @@ function LeftDiv({
           className="profile-wrap"
           onClick={(e) => {
             e.preventDefault();
-            handleProfileClick;
+            handleProfileClick();
           }}
         >
           <div className="name">{vendorName}</div>
@@ -421,7 +421,7 @@ function LeftDiv({
             <button
               onClick={(e) => {
                 e.preventDefault();
-                handleFollowUnfollow;
+                handleFollowUnfollow();
               }}
               className="following primary-btn"
             >
@@ -431,7 +431,7 @@ function LeftDiv({
             <button
               onClick={(e) => {
                 e.preventDefault();
-                handleFollowUnfollow;
+                handleFollowUnfollow();
               }}
               className="primary-btn"
             >
