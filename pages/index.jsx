@@ -107,7 +107,8 @@ function landingPage({ auth, category }) {
         catId,
         setApiCount,
         setLoader,
-        loader
+        loader,
+        data
       );
     }
   }, [page]);

@@ -54,9 +54,16 @@ export async function catStreamDetailApi(
     `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}&categoryId=${catId}&key=10980374eab848ac`
   );
   if (result?.status === 200) {
-    console.log({ [catId]: result?.data?.data})
-    // // console.log(Object.keys(result?.data?.data?.data)[0])
-    setData((data) => ({ ...data, [catId]: result?.data?.data }));
+    
+    const newData = {...data}
+    const subData={...newData[catId]}
+    const newsubdata = result?.data?.data
+    newData[catId] = {...subData,...newsubdata}
+    // remove this code after BE deployment Object.keys(result?.data?.data?.data)[0] 
+    if( data[catId]?.data) {  
+      newData[catId].data[Object.keys(result?.data?.data?.data)[0]] = data[catId].data[Object.keys(result?.data?.data?.data)[0]].concat(newData[catId].data[Object.keys(result?.data?.data?.data)[0]])
+    }
+    setData(newData)
   }
   setLoader((loader) => ({ ...loader, [catId]: true }));
   setApiCount((count) => count + 1);
