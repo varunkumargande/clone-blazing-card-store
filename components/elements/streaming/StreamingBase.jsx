@@ -77,7 +77,7 @@ function StreamingBase({
     setBidNotification(streamNotification?.bid);
     setAuctionId(
       streamNotification?.bid?.auctionId ??
-      streamNotification?.auction?.auction?.id
+        streamNotification?.auction?.auction?.id
     );
     setWinnerNotification(streamNotification?.win);
     if (!!streamNotification?.auction) {
@@ -89,14 +89,18 @@ function StreamingBase({
   }, [streamNotification]);
 
   useEffect(() => {
-    setBidAmount(null)
-  }, [winnerNotification])
+    setBidAmount(null);
+  }, [winnerNotification]);
 
   /**
    * This useEffect will calculate time and set bid amount on changes of notification
    */
   useEffect(() => {
-    if (!!auctionNotification || !!bidNotification || stream?.streamProducts?.AuctionDetails?.latestAuction !== {}) {
+    if (
+      !!auctionNotification ||
+      !!bidNotification ||
+      stream?.streamProducts?.AuctionDetails?.latestAuction !== {}
+    ) {
       getTimeDifference(getTime());
       if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
         setDisableBid(false);
@@ -151,7 +155,7 @@ function StreamingBase({
 
   const getBidAmount = () => {
     return bidNotification?.bidAmount
-    ? bidNotification?.bidAmount
+      ? bidNotification?.bidAmount
       : auctionNotification?.auction?.bidAmount
       ? auctionNotification?.auction?.bidAmount
       : auctionDetails?.latestBidding?.bidAmount
@@ -165,19 +169,16 @@ function StreamingBase({
    * Method will calculate Live Auction endtime
    * @param {*} endTime
    */
-  
+
   const getTimeDifference = (endTime) => {
-    if(!endTime) return
+    if (!endTime) return;
 
     let [date, time] = endTime.split(" ");
     const endTime = moment(date.replaceAll("-", "/") + " " + time);
-    
+
     const currentTime = moment(moment.utc().format("YYYY/MM/DD, HH:mm:ss"));
-  
-    const duration = moment.duration(
-      endTime.diff(currentTime)
-    );
-    
+
+    const duration = moment.duration(endTime.diff(currentTime));
 
     let minutes = Math.floor(duration.asSeconds() / 60);
     let seconds = Math.ceil(duration.asSeconds() % 60);
@@ -372,10 +373,6 @@ function StreamingBase({
     }
     return "like flex flex-center justify-center br50";
   };
-  //clicking on shops icon will open product list panel
-  const handleLeftDivVisbibility = () => {
-    handleLeftDiv(true);
-  };
 
   const handleDollarClick = () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -409,7 +406,10 @@ function StreamingBase({
             {windowWidth <= 1024 ? (
               <button
                 className="flex flex-center justify-center br50 shops"
-                onClick={handleLeftDivVisbibility}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleLeftDiv(true);
+                }}
               >
                 <IconShops />
               </button>

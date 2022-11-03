@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, memo } from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -50,10 +50,12 @@ function LeftDiv({
   const [followed, setFollowed] = useState(
     streamingDetails.isFollow ? streamingDetails.isFollow : false
   );
-  const [flterKeyword, setFilterKeyword] = useState(null)
-  const [filteredProducts, setFilteredProducts] = useState(null)
+  const [flterKeyword, setFilterKeyword] = useState(null);
+  const [filteredProducts, setFilteredProducts] = useState(null);
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
-  const [noOfFollower, setNoOfFollower] = useState(stream?.streamData?.vendorDetails?.follower_count ?? 0)
+  const [noOfFollower, setNoOfFollower] = useState(
+    stream?.streamData?.vendorDetails?.follower_count ?? 0
+  );
   //to handle width of the screen and call methods accordingly
   const [windowWidth, setWindowWidth] = useState(0);
   const [showLogin, setShowLogin] = useState(false);
@@ -70,26 +72,30 @@ function LeftDiv({
 
   // to initially show left div on desktop and hide on mobile screen
   useEffect(() => {
-    windowWidth <= 1024 ? handleLeftDiv(false) : handleLeftDiv(true);
+    if (windowWidth <= 1024 && isLeftDivOpen) {
+      handleLeftDiv(false);
+    } else if (!isLeftDivOpen) {
+      handleLeftDiv(true);
+    }
   }, [windowWidth]);
 
-  const leftDivRef = useRef();
-  const filterKeyword = useRef()
+  // const leftDivRef = useRef();
+  const filterKeyword = useRef();
   //clicking somewhere except on product list panel will close the product list panel(mobile screen)
-  useEffect(() => {
-    if (windowWidth <= 1024) {
-      function handler(event) {
-        if (
-          !leftDivRef?.current?.contains(event.target) &&
-          !event.target.classList.contains("shops")
-        ) {
-          handleLeftDiv(false);
-        }
-      }
-      window.addEventListener("click", handler);
-      return () => window.removeEventListener("click", handler);
-    }
-  }, [leftDivRef.current]);
+  // useEffect(() => {
+  //   if (windowWidth <= 1024) {
+  //     function handler(event) {
+  //       if (
+  //         !leftDivRef?.current?.contains(event.target) &&
+  //         !event.target.classList.contains("shops")
+  //       ) {
+  //         handleLeftDiv(false);
+  //       }
+  //     }
+  //     window.addEventListener("click", handler);
+  //     return () => window.removeEventListener("click", handler);
+  //   }
+  // }, [leftDivRef.current]);
 
   /**
    * Method to get All products of a stream
@@ -131,8 +137,8 @@ function LeftDiv({
   const setToggle = (element) => {
     dispatch(addStreamProducts({}));
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
-    filterKeyword.current.value=null
-    setFilteredProducts(null)
+    filterKeyword.current.value = null;
+    setFilteredProducts(null);
   };
 
   /**
@@ -142,19 +148,18 @@ function LeftDiv({
   const getToggles = () => {
     return TOGGLES.map((element) => {
       return (
-          <div
-            key={`tabs-${element}`}
-            className={
-              toggleState ===
-              TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
-                ? "tab-link active"
-                : "tab-link"
-            }
-            onClick={() => setToggle(element)}
-          >
-            {" "}
-            {element}
-          </div>
+        <div
+          key={`tabs-${element}`}
+          className={
+            toggleState ===
+            TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
+              ? "tab-link active"
+              : "tab-link"
+          }
+          onClick={() => setToggle(element)}
+        >
+          {element}
+        </div>
       );
     });
   };
@@ -171,7 +176,6 @@ function LeftDiv({
     } else {
       setShowLogin(true);
     }
-
   };
 
   /**
@@ -189,7 +193,8 @@ function LeftDiv({
     }
     return "";
   };
-  const handleProductCount = (filteredProducts?.length ?? stream?.streamProducts?.products?.length) ?? 0
+  const handleProductCount =
+    filteredProducts?.length ?? stream?.streamProducts?.products?.length ?? 0;
 
   /**
    * Method will render all product listing
@@ -267,7 +272,6 @@ function LeftDiv({
       );
     });
   };
-    
 
   const handleFollowUnfollow = async (_, isFromModal = false) => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -281,7 +285,7 @@ function LeftDiv({
         };
         const response = await userFollowUnfollow(data);
         if (response.status) {
-          setNoOfFollower(response?.data?.followerCount)
+          setNoOfFollower(response?.data?.followerCount);
           setFollowed(!followed);
           setShowUnFollowModal(false);
         }
@@ -359,16 +363,19 @@ function LeftDiv({
       </div>
     );
   };
-  const handleSearchProduct=(e)=>{
-    const products = stream?.streamProducts?.products
-    if(products?.length > 0){
+  const handleSearchProduct = (e) => {
+    const products = stream?.streamProducts?.products;
+    if (products?.length > 0) {
       const filtered = products.filter((element) => {
-        return element.name.toLowerCase().includes(e.target.value.toLowerCase())})
-       setFilteredProducts(filtered)
-    } else{
-      setFilteredProducts([])
+        return element.name
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase());
+      });
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]);
     }
-  }
+  };
 
   return (
     <div className="streaming-left">
@@ -410,10 +417,7 @@ function LeftDiv({
         </div>
         <div className="profile-wrap" onClick={handleProfileClick}>
           <div className="name">{vendorName}</div>
-          <div className="followrs-count">
-            {noOfFollower}{" "}
-            Followers
-          </div>
+          <div className="followrs-count">{noOfFollower} Followers</div>
         </div>
         <div className="btn-wrap">
           {followed ? (
@@ -431,11 +435,21 @@ function LeftDiv({
         </div>
       </div>
       {isLeftDivOpen ? (
-        <div className="leftdata-wrapper" ref={leftDivRef}>
+        <div
+          className="leftdata-wrapper"
+          onClick={(e) => e.stopPropagation()}
+          // ref={leftDivRef}
+        >
           <h3 className="title">{streamTitle}</h3>
           <div className="tab-wrapper flex">{getToggles()}</div>
           <div className="search">
-            <input type="text" placeholder="Search products..." value={flterKeyword} ref={filterKeyword} onChange={(e) => handleSearchProduct(e)}/>
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={flterKeyword}
+              ref={filterKeyword}
+              onChange={(e) => handleSearchProduct(e)}
+            />
           </div>
           <div className={`${toggleState}-list leftdata-list`}>
             <div className="product-count">{handleProductCount} Products</div>
@@ -449,4 +463,5 @@ function LeftDiv({
   );
 }
 
-export default LeftDiv;
+export default memo(LeftDiv);
+
