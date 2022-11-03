@@ -6,11 +6,12 @@ import React, {
   useEffect,
 } from "react";
 
-export const CurrentDevice = createContext();
+export const CurrentDeviceContext = createContext();
 
 // This context will handle all notifications related stuff globally
 export function CurrentDeviceProvider(props) {
   const [windowWidth, setWindowWidth] = useState(0);
+  const [isMobile, setIsMobileDevice] = useState(false);
 
   const resizeWindow = () => {
     setWindowWidth(window.innerWidth);
@@ -22,26 +23,30 @@ export function CurrentDeviceProvider(props) {
     return () => window.removeEventListener("resize", resizeWindow);
   }, []);
 
-  const isMobileDevice = () => {
-    if (windowWidth < 1024) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  // const isMobile = () => {
+  //   if (windowWidth < 1024) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+
+  useEffect(() => {
+    setIsMobileDevice(windowWidth <= 1024)
+  }, [windowWidth]);
 
   const contextValue = useMemo(
     () => ({
-      isMobileDevice,
+      isMobile,
     }),
-    [windowWidth]
+    [isMobile]
   );
 
-  return <CurrentDevice.Provider {...props} value={contextValue} />;
+  return <CurrentDeviceContext.Provider {...props} value={contextValue} />;
 }
 
-export function useNotifications() {
-  return useContext(CurrentDevice);
+export function useIsMobile() {
+  return useContext(CurrentDeviceContext);
 }
 
 export default CurrentDeviceProvider;

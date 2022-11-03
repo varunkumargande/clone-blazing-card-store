@@ -13,8 +13,11 @@ import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
 import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 import useEventSocket from "../../../hooks/useEventSocket";
 import { useCallback } from "react";
+import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function Index() {
+  const {isMobile} = useIsMobile()
+
   const [open, setOpen] = useState(false);
   const [addShippInfo, setAddShippInfo] = useState(false);
   const [addPayInfo, setAddPayInfo] = useState(false);
@@ -77,10 +80,10 @@ function Index() {
             />
           )}
           <div
-            className="streaming-page flex space-between hi"
+            className="streaming-page flex space-between"
             onClick={(e) => {
               e.preventDefault();
-              // handleLeftDiv(false);
+              isMobile && handleLeftDiv(false);
             }}
           >
             <LeftDiv

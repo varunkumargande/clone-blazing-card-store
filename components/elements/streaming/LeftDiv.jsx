@@ -8,6 +8,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
+import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function LeftDiv({
   setShowLoginModal,
@@ -56,24 +57,16 @@ function LeftDiv({
   const [showLogin, setShowLogin] = useState(false);
   const [streamProducts, setStreamProduct] = useState([]);
 
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+  const {isMobile} = useIsMobile()
 
   // to initially show left div on desktop and hide on mobile screen
   useEffect(() => {
-    if (windowWidth <= 1024 && isLeftDivOpen) {
+    if (isMobile && isLeftDivOpen) {
       handleLeftDiv(false);
     } else if (!isLeftDivOpen) {
       handleLeftDiv(true);
     }
-  }, [windowWidth]);
+  }, [isMobile]);
 
   /**
    * Method to get All products of a stream

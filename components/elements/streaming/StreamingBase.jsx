@@ -20,6 +20,7 @@ import moment from "moment/moment";
 import { useRouter } from "next/router";
 import { streamLikeDislike } from "../../../api/stream/streams_api";
 import IconSpeakerMute from "../../Icons/IconSpeakerMute";
+import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function StreamingBase({
   cardDetail,
@@ -57,17 +58,9 @@ function StreamingBase({
   const [liked, setLiked] = useState(
     stream?.streamData?.isLike ? stream?.streamData?.isLike : false
   );
-  const [windowWidth, setWindowWidth] = useState(0);
-  const [currentAuctionName, setCurrentAuctionName] = useState(null);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
 
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+  const {isMobile} = useIsMobile()
+  const [currentAuctionName, setCurrentAuctionName] = useState(null);
 
   /**
    * Will Subscribe to all Notofication type channels
@@ -403,7 +396,7 @@ function StreamingBase({
             {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
           </div>
           <div className="video-icon">
-            {windowWidth <= 1024 ? (
+            {isMobile ? (
               <button
                 className="flex flex-center justify-center br50 shops"
                 onClick={(e) => {

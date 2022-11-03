@@ -21,6 +21,7 @@ import NotificationsProvider from "../contexts/Notifications/Notifications";
 //import "slick-carousel/slick/slick.css";
 //import "slick-carousel/slick/slick-theme.css";
 import "../scss/elements/_streaming.scss";
+import CurrentDeviceProvider from "../contexts/Devices/CurrentDevices";
 
 function MyApp({ Component, pageProps }) {
   const RedirectMaintain = useSelector((s) => s.setting.maintenance);
@@ -52,27 +53,29 @@ function MyApp({ Component, pageProps }) {
     Component.getLayout || ((page) => <DefaultLayout children={page} />);
   return (
     <NotificationsProvider>
-      {getLayout(
-        <Provider store={configureStore}>
-          <Component {...pageProps} />
+      <CurrentDeviceProvider>
+        {getLayout(
+          <Provider store={configureStore}>
+            <Component {...pageProps} />
 
-          <ToastContainer
-            // limit={1}
-            transition={Zoom}
-            theme="colored"
-            autoClose={1000}
-            hideProgressBar={true}
-            newestOnTop={true}
-            draggable={false}
-            pauseOnVisibilityChange
-            closeOnClick
-            pauseOnHover
-            // hideDuration={100}
-            // position='fixed'
-            // containerId="second"
-          />
-        </Provider>
-      )}
+            <ToastContainer
+              // limit={1}
+              transition={Zoom}
+              theme="colored"
+              autoClose={1000}
+              hideProgressBar={true}
+              newestOnTop={true}
+              draggable={false}
+              pauseOnVisibilityChange
+              closeOnClick
+              pauseOnHover
+              // hideDuration={100}
+              // position='fixed'
+              // containerId="second"
+            />
+          </Provider>
+        )}
+      </CurrentDeviceProvider>
     </NotificationsProvider>
   );
 }
