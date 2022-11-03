@@ -1,21 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import LeftDiv from "./LeftDiv";
 import RightDiv from "./RightDiv";
 import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addNotification,
-  clearState,
-  streamData,
-} from "../../../store/stream/action";
-import { io } from "socket.io-client";
+import { clearState, streamData } from "../../../store/stream/action";
 import { notificationBaseUrl } from "../../../api/url";
 import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
 import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 import useEventSocket from "../../../hooks/useEventSocket";
+import { useCallback } from "react";
+import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function Index() {
+  const { isMobile } = useIsMobile();
+
   const [open, setOpen] = useState(false);
   const [addShippInfo, setAddShippInfo] = useState(false);
   const [addPayInfo, setAddPayInfo] = useState(false);
@@ -26,75 +25,46 @@ function Index() {
   const [openPayment, setOpenPayment] = useState(false);
   const [productDetail, setProductDetail] = useState([]);
   const dispatch = useDispatch();
-  const [auctionNotification, setAuctionNotification] = useState(null);
   const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [liveAuctionDetails, setLiveAuctionDetails]= useState({});
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
 
   const stream = useSelector((state) => {
     return state?.stream;
   });
-  const streamNotification = useSelector(
-    (state) => state.stream?.streamNotification
-  );
   const streamingDetails = stream?.streamData;
   const streamPageData = stream?.streamPageData;
   const { count, client } = useLiveUserCount(streamPageData, setChannel);
   const [isLeftDivOpen, setLeftDivOpen] = useState();
-  const [login, setLogin] = useState(false);
+  const [fetch, setFetch] = useState(false);
 
-  const bid = useEventSocket(`${notificationBaseUrl}${uuid}-bid`, login);
-
+  const bid = useEventSocket(`${notificationBaseUrl}${uuid}-bid`, fetch);
   const auction = useEventSocket(
     `${notificationBaseUrl}${uuid}-auction`,
-    login
+    fetch
   );
-
-  const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, login);
+  const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, fetch);
 
   useEffect(() => {
+    setFetch(true);
     dispatch(streamData(uuid));
 
     return () => {
       dispatch(clearState());
     };
   }, []);
-  useEffect(() => {
-    socketInitializer();
-  }, []);
-
-  const socketInitializer = () => {
-    setLogin(true)
-    dispatch(
-      addNotification({
-        type: "bid",
-        value: bid?.data,
-      })
-    );
-
-    dispatch(
-      addNotification({
-        type: "auction",
-        value: auction?.data,
-      })
-    );
-
-    dispatch(
-      addNotification({
-        type: "win",
-        value: win?.data,
-      })
-    );
-  };
-
-  useEffect(() => {
-    setAuctionNotification(streamNotification?.auction);
-  }, [streamNotification]);
 
   //Method to show and hide left div
-  const handleLeftDiv = (toggle) => {
+  const handleLeftDiv = useCallback((toggle) => {
     setLeftDivOpen(toggle);
+  }, []);
+
+  const notificationData = {
+    bid: bid?.data,
+    auction: auction?.data,
+    win: win?.data,
   };
 
   return (
@@ -107,10 +77,16 @@ function Index() {
               setShowModal={setShowLoginModal}
             />
           )}
-          <div className="streaming-page flex space-between">
+          <div
+            className="streaming-page flex space-between"
+            onClick={(e) => {
+              e.preventDefault();
+              isMobile && handleLeftDiv(false);
+            }}
+          >
             <LeftDiv
               setShowLoginModal={setShowLoginModal}
-              auctionNotification={auctionNotification}
+              auctionNotification={auction?.data}
               open={open}
               productDetail={setProductDetail}
               openPayment={setOpenPayment}
@@ -122,6 +98,7 @@ function Index() {
               handleLeftDiv={handleLeftDiv}
               isLeftDivOpen={isLeftDivOpen}
               setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
+              auctionCallBack={setLiveAuctionDetails}
             />
             <CenterDiv
               open={open}
@@ -139,6 +116,8 @@ function Index() {
               isBuyNowPaymentModal={isBuyNowPaymentModal}
               setShowLoginModal={setShowLoginModal}
               userCount={count}
+              streamNotification={notificationData}
+              liveAuctionDetails={liveAuctionDetails}
             />
             <RightDiv
               streamingDetails={streamingDetails}
@@ -153,4 +132,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default memo(Index);

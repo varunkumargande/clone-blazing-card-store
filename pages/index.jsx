@@ -16,23 +16,16 @@ import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
 import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
 import { catStreamDetailApi } from "../api/stream/subStreamDetail";
+import { useIsMobile } from "../contexts/Devices/CurrentDevices";
 
 function landingPage({ auth, category }) {
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
+  const { isMobile } = useIsMobile();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     categoryApi(dispatch);
     dispatch(getBecomeSellerInfo());
-  }, []);
-
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
   }, []);
 
   // ========================= category for home page ==============================
@@ -152,7 +145,7 @@ function landingPage({ auth, category }) {
 
   return (
     <div className="home-container">
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      {isMobile ? <MobileHeader /> : <HeaderDefault />}
       {showModal && (
         <DynamicModal
           title="Signup to Join Blazing Cards"
@@ -175,9 +168,7 @@ function landingPage({ auth, category }) {
                 {getAllCategoriesCard()}
               </>
             ) : (
-              <>
-                <Vertical showLoginModal={setShowModal} />
-              </>
+              <Vertical showLoginModal={setShowModal} />
             )}
           </>
         )}

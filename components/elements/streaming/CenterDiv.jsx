@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
@@ -28,6 +28,8 @@ function CenterDiv({
   isBuyNowPaymentModal,
   setShowLoginModal,
   userCount,
+  streamNotification,
+  liveAuctionDetails
 }) {
   const dispatch = useDispatch();
 
@@ -103,7 +105,13 @@ function CenterDiv({
     setShipData(data);
     if (data.addressId) {
       setAddressLoader(true);
-      editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi, dispatch);
+      editAddressApi(
+        data,
+        data.addressId,
+        setAddressLoader,
+        fetchShiipmentApi,
+        dispatch
+      );
       setShippmentFormOpen(false);
     } else {
       setAddressLoader(true);
@@ -123,6 +131,8 @@ function CenterDiv({
         isBuyNowPaymentModal={isBuyNowPaymentModal}
         setShowLoginModal={setShowLoginModal}
         userCount={userCount}
+        streamNotification={streamNotification}
+        liveAuctionDetails={liveAuctionDetails}
       />
       {paymentSuccessful && (
         <OrderSuccessful
@@ -188,4 +198,4 @@ function CenterDiv({
   );
 }
 
-export default CenterDiv;
+export default memo(CenterDiv);

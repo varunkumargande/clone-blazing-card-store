@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import IconSearch from "../../components/Icons/IconSearch";
-import IconBack from '../../components/Icons/IconBack';
+import IconBack from "../../components/Icons/IconBack";
 import IconDropdown from "../../components/Icons/IconDropdown";
 import MyOrders from "../../components/partials/MyOrders/MyOrders";
 import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
@@ -10,28 +10,20 @@ import { orderListApi } from "../../api";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import BackButton from "../../components/CommonComponents/BackButton";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 export default function Myorders() {
   const [searchVal, setSearchVal] = useState("");
   const [active, setActive] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const { isMobile } = useIsMobile();
   const wrapperRef = useRef(null);
   const [filter, setFilter] = useState("Recent");
   const dispatch = useDispatch();
   const DROPDOWN_FILTERS = {
-    "Recent": "",
+    Recent: "",
     "Last month": "last_1",
     "Last 3 months": "last_3",
   };
   const [dropFilter, setDropFilter] = useState("Recent");
-
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
 
   const handleOnClick = () => {
     setActive(!active);
@@ -61,11 +53,7 @@ export default function Myorders() {
     return Object.entries(DROPDOWN_FILTERS).map((index) => {
       return (
         <>
-          <li
-            onClick={(e) => handleFilter(index)}
-          >
-            {index[0]}
-          </li>
+          <li onClick={(e) => handleFilter(index)}>{index[0]}</li>
         </>
       );
     });
@@ -103,19 +91,24 @@ export default function Myorders() {
   };
   return (
     <>
-      {windowWidth <= 1024 ? "" : <HeaderDefault />}
+      {isMobile ? "" : <HeaderDefault />}
       <div className="myorder-wrapper">
-        
-        {windowWidth <= 1024 ? "" : <section className="breadcrumbs-wrapper no-bg mb26">
-          <ul className="breadcrumbs flex flex-center">{createBreadCrumb()}</ul>
-        </section>}
+        {isMobile ? (
+          ""
+        ) : (
+          <section className="breadcrumbs-wrapper no-bg mb26">
+            <ul className="breadcrumbs flex flex-center">
+              {createBreadCrumb()}
+            </ul>
+          </section>
+        )}
         <div className="heading-wrapper flex space-between flex-center mb16">
-        {windowWidth <= 1024 &&
-          <h1><BackButton name={"My Orders"} /></h1>
-        }
-        {windowWidth >= 1025 &&
-          <h1>My Orders</h1>
-        }
+          {isMobile && (
+            <h1>
+              <BackButton name={"My Orders"} />
+            </h1>
+          )}
+          {windowWidth >= 1025 && <h1>My Orders</h1>}
           <div className="search-wrapper flex flex-center">
             <div className="Search">
               <input

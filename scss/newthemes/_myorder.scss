@@ -298,6 +298,10 @@
             .border-btn{
                 width: 100%;
                 background-color: $white-color;
+                &:hover{
+                    background-color: $blue-color;
+                    color: $white-color;
+                  }
             }
         }
     }

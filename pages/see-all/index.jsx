@@ -16,10 +16,12 @@ import {
   saveCategoryName,
   saveSubCategoryName,
 } from "../../store/category/action";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const { isMobile } = useIsMobile();
   const [active, setActive] = useState(false);
   const [subCatId, setSubCatId] = useState("all");
   const [catIndex, setCatIndex] = useState(null);
@@ -38,15 +40,7 @@ function categoryStream({ auth, category }) {
       document.removeEventListener("click", handleClickOutside, false);
     };
   }, []);
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+
   useEffect(() => {
     categoryApi(dispatch);
     setCatIndex(0);
@@ -102,8 +96,8 @@ function categoryStream({ auth, category }) {
 
   return (
     <div className="home-container">
-      {windowWidth <= 1024 ? "" : <HeaderDefault />}
-      {windowWidth <= 1024 ? (
+      {isMobile ? "" : <HeaderDefault />}
+      {isMobile ? (
         ""
       ) : (
         <section className="breadcrumbs-wrapper">
