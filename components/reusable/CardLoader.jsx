@@ -3,13 +3,16 @@ import IconLoaderPlay from "../Icons/IconLoaderPlay";
 import { useDispatch } from "react-redux";
 import { limit } from "../Constants";
 
-const CardLoader = ({setPage, page}) => {
-  const dispatch = useDispatch()
+const CardLoader = ({ setPage, page, isCat, catId, setCatId }) => {
+  const dispatch = useDispatch();
 
   const handleCallApi = () => {
-    const pageAdd = page + limit
-    setPage(pageAdd)
-  }
+    const pageAdd = page + limit;
+    setPage(pageAdd);
+    if(isCat){
+      setCatId(catId)
+    }
+  };
 
   return (
     <div className="card-list flex flex-center" onClick={handleCallApi}>

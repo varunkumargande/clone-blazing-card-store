@@ -15,21 +15,18 @@ import Vertical from "../components/partials/LandingPage/Layout/vertical";
 import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
 import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
-import {
-  catStreamDetailApi,
-  liveDetailApi,
-} from "../api/stream/subStreamDetail";
+import { catStreamDetailApi } from "../api/stream/subStreamDetail";
 
 function landingPage({ auth, category }) {
   const [windowWidth, setWindowWidth] = useState(0);
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
   };
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    catStreamDetailApi(setCategories);
+    categoryApi(dispatch);
+    dispatch(getBecomeSellerInfo());
   }, []);
 
   useEffect(() => {
@@ -40,33 +37,20 @@ function landingPage({ auth, category }) {
 
   // ========================= category for home page ==============================
   // const [activeCategoryName, setActiveCategoryName] = useState(null);
-
   const [subCateId, setSubCateId] = useState("select");
   const [categories, setCategories] = useState(null);
   const [isLikedShow, setIsLikedShow] = useState(false);
   // ===============================================================================
-
   // ========================= category for live and schedule page ==============================
   const [liveScheduleCategoryName, setLiveScheduleCategoryName] =
     useState(null);
   const [isLiveScheduleSeeAll, setIsLiveScheduleSeeAll] = useState(false);
   // ============================================================================================
-
   const [isSeeAll, setIsSeeAll] = useState(false);
   const [isSeeAllCate, setIsSeeAllCate] = useState(true);
-
   const [seeAllHeading, setSeeAllHeading] = useState(null);
   const [catStreamData, setCateStreamData] = useState(null);
-
   const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    categoryApi(dispatch);
-  }, []);
-
-  useEffect(() => {
-    dispatch(getBecomeSellerInfo());
-  }, []);
 
   const streamLiveDetail = useSelector(
     (state) => state?.stream?.liveDetails
@@ -75,20 +59,75 @@ function landingPage({ auth, category }) {
     (state) => state?.stream?.streamdetails
   )?.length;
 
+  const [loader, setLoader] = useState(null);
+  const [catIds, setCatIds] = useState(null);
+  const [apiCount, setApiCount] = useState(0);
+  const [catVisible, setCatVisible] = useState(true);
+  const [data, setData] = useState({});
+  const [page, setPage] = useState(0);
+  const [total, setTotal] = useState(null);
+  const [catId, setCatId] = useState(null);
+
+  useEffect(() => {
+    setCategories(category?.categories);
+    const catObject = {};
+    const catListIds = {};
+    category?.categories?.map((data) => (catObject[data.categoryId] = false));
+    category?.categories?.map(
+      (data) => (catListIds[data.categorySlug] = data.categoryId)
+    );
+    setLoader(catObject);
+    setCatIds(catListIds);
+  }, [category?.categories]);
+
+  useEffect(() => {
+    const catLength = category?.categories?.length;
+    if (apiCount < catLength) {
+      catStreamDetailApi(
+        setData,
+        page,
+        setTotal,
+        category?.categories[apiCount]?.categoryId,
+        setApiCount,
+        setLoader,
+        loader,
+        data
+      );
+    } else {
+      setCatVisible(false);
+    }
+  }, [category?.categories, apiCount]);
+
+  useEffect(() => {
+    if (!!catId) {
+      catStreamDetailApi(
+        setData,
+        page,
+        setTotal,
+        catId,
+        setApiCount,
+        setLoader,
+        loader
+      );
+    }
+  }, [page]);
+
   const getAllCategoriesCard = () => {
-    if (categories) {
-      const categoriesData = Object.entries(categories);
-      return categoriesData.map((element) => {
+    if (!!data && !!categories) {
+      return categories.map((elem) => {
         return (
           <CategoryStream
-            isSeeAll={isSeeAll}
-            setIsSeeAllCate={setIsSeeAllCate}
-            setSeeAllHeading={setSeeAllHeading}
-            setIsSeeAll={setIsSeeAll}
-            categoryData={element}
-            isLikedShow={isLikedShow}
-            setIsLikedShow={setIsLikedShow}
+            catData={data}
             showLoginModal={setShowModal}
+            catName={elem?.name}
+            catId={elem?.categoryId}
+            loader={loader}
+            setCategories={setCategories}
+            categories={categories}
+            catVisible={catVisible}
+            setPage={setPage}
+            page={page}
+            setCatId={setCatId}
           />
         );
       });
@@ -121,15 +160,10 @@ function landingPage({ auth, category }) {
           setShowModal={setShowModal}
         />
       )}
-      {!!categories && (
-        <>
-          <Category
-            seeAllHeading={seeAllHeading}
-            setCateStreamData={setCateStreamData}
-          />
-        </>
-      )}
-
+      <Category
+        seeAllHeading={seeAllHeading}
+        setCateStreamData={setCateStreamData}
+      />
       <div className="card-wrapper">
         {category.categoryName == "likes" ? (
           <>{getAllLikedCard()}</>
@@ -138,22 +172,12 @@ function landingPage({ auth, category }) {
             {category.categoryName === null ? (
               <>
                 <LiveShow showLoginModal={setShowModal} />
-
                 <ScheduledShow showLoginModal={setShowModal} />
-
                 {getAllCategoriesCard()}
               </>
             ) : (
               <>
-                {categories && (
-                  <Vertical
-                    subCateId={subCateId}
-                    setSubCateId={setSubCateId}
-                    data={categories}
-                    catStreamData={catStreamData}
-                    showLoginModal={setShowModal}
-                  />
-                )}
+                <Vertical showLoginModal={setShowModal} />
               </>
             )}
           </>

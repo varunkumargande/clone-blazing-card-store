@@ -15,38 +15,62 @@ export async function substreamDetailApi(
     dispatch(getStreamDetails(result?.data?.data));
 }
 
-export async function streamDetailApi(setData,page) {
+export async function streamDetailApi(setData, page, setTotal, setLoader) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant.SCHEDULE_DATA.type}&limit=${categoryConstant.SCHEDULE_DATA.limit}&offset=${page}`
+    `stream/stream-homePage?type=${categoryConstant.SCHEDULE_DATA.type}&limit=${categoryConstant.SCHEDULE_DATA.limit}&offset=${page}&key=10980374eab848ac`
   );
   if (result?.status === 200) {
-    setData(data => data.concat(result?.data?.data))
+    setData((data) => data.concat(result?.data?.data?.data));
+    setTotal(result?.data?.data?.total);
   }
+  setLoader(false);
 }
 
-export async function liveDetailApi(setData,page) {
-  
+export async function liveDetailApi(setData, page, setTotal, setLoader) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant.LIVE_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}`
+    `stream/stream-homePage?type=${categoryConstant.LIVE_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}&key=10980374eab848ac`
   );
   if (result?.status === 200) {
-    setData(data => data.concat(result?.data?.data))
+    setData((data) => data.concat(result?.data?.data?.data));
+    setTotal(result?.data?.data?.total);
   }
+  setLoader(false);
 }
 
-export async function catStreamDetailApi(setCategories) {
+/**
+ * fetching data based on categories for homepage
+ */
+export async function catStreamDetailApi(
+  setData,
+  page,
+  setTotal,
+  catId,
+  setApiCount,
+  setLoader,
+  loader,
+  data
+) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}`
+    `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}&categoryId=${catId}&key=10980374eab848ac`
   );
-  if (result?.status === 200) setCategories(result?.data?.data);
+  if (result?.status === 200) {
+    console.log({ [catId]: result?.data?.data})
+    // // console.log(Object.keys(result?.data?.data?.data)[0])
+    setData((data) => ({ ...data, [catId]: result?.data?.data }));
+  }
+  setLoader((loader) => ({ ...loader, [catId]: true }));
+  setApiCount((count) => count + 1);
 }
 
-export async function catSubStreamDetailApi(setCategories, id) {
+export async function catSubStreamDetailApi(setData, page, catId) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&categoryId=${id}`
+    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&categoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}&key:10980374eab848ac`
   );
-  if (result?.status === 200) setCategories(result?.data?.data);
+  if (result?.status === 200) setData(result?.data?.data);
 }
+/**
+ * *************************************************************************************************
+ */
 
 /**
  * calling api based on category and sub category for see-all component

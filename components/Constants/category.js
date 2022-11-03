@@ -2,7 +2,7 @@ export const categoryConstant = {
     "homeTag": "Explore",
     "headingTag": "Categories",
     "viewTag":"View All",
-    "categoryData":1,
+    "categoryData":0,
     "url": {
         "path":"/see-all",
         "page": "allCategory"

@@ -1,7 +1,5 @@
 import CardLoader from "../../components/reusable/CardLoader";
 
-export const showCardLoader = (setPage, page, data) => {
-  if (data.length) {
-    return <CardLoader setPage={setPage} page={page} />;
-  }
+export const showCardLoader = (setPage, page) => {
+  return <CardLoader setPage={setPage} page={page} isCat={false}  />;
 };
