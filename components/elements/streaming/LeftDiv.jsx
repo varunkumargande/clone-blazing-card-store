@@ -115,7 +115,6 @@ function LeftDiv({
       const result = await getProducts(url)
       if(result?.products) {
         // dispatch(addStreamProducts(result))
-        debugger
         setStreamProduct(result)
       }
     } catch (error) {
