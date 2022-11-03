@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, memo } from "react";
 import StreamingElement from "./StreamingElement";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
@@ -539,4 +539,4 @@ function StreamingBase({
     </>
   );
 }
-export default StreamingBase;
+export default memo(StreamingBase);
