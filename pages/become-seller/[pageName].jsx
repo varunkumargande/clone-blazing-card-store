@@ -9,7 +9,7 @@ import ShippingDetails from "../../components/partials/sellerSteps/ShippingDetai
 import ApplicationSubmitted from "../../components/partials/sellerSteps/ApplicationSubmitted";
 import Footer from "../../components/partials/LandingPage/Footer";
 import { useRouter } from "next/router";
-
+import BackButton from "../../components/CommonComponents/BackButton";
 
 export default function Steps() {
   const [windowWidth, setWindowWidth] = useState(0);
@@ -52,7 +52,7 @@ export default function Steps() {
       {windowWidth <= 1024 ? "" : <HeaderDefault />}
       <section className="steps-wrapper flex">
         <div className="step-left">
-          {windowWidth <= 1024 ? <div className="header-title">Become a Seller</div> : ""}
+          {windowWidth <= 1024 ? <div className="header-title"><BackButton name={"Become a Seller"}/></div> : ""}
           <LeftPannel />
         </div>
         <div className="step-right">
