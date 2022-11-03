@@ -1,28 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { agoraGettToken } from "../../../api/stream/agora";
-import { imageUrl } from "../../../api/url";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 const StreamingElement = ({ volume, isMute }) => {
   const options = useSelector((state) => state?.stream?.streamPageData?.option);
   const streamData = useSelector((state) => state?.stream?.streamData);
-  const loading = useSelector((state) => state?.stream?.loading)
-  const [volumeLevel, setVolumeLevel] = useState(volume);
   const rtc = useRef({});
   const [remoteUser, setRemoteUser] = useState(null);
 
   useEffect(() => {
-    const volumeLevel = !!isMute ? 0 : 100;
-    setVolumeLevel(Number(volumeLevel));
+    const volumeLevel = !!isMute ? 0 : volume;
     if (!!remoteUser?.audioTrack) {
       remoteUser?.audioTrack?.setVolume(volumeLevel);
     }
-  }, [isMute]);
+  }, [isMute, volume]);
   
   useEffect(() => {
-
     rtc.current.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
     joinChannelAsAudience();
     return async () => {
@@ -85,15 +80,6 @@ const StreamingElement = ({ volume, isMute }) => {
     return response.rtcToken;
   };
 
-  // Do not remove
-  // const getImagePath = (type) => {
-
-  //   if(stream?.streamData?.vendorDetails?.avatar_path && stream?.streamData?.vendorDetails?.avatar && type == 'vendor') {
-  //    return imageUrl + "?path=" + stream?.streamData?.vendorDetails?.avatar_path + "&name=" + stream?.streamData?.vendorDetails?.avatar + "&width=50&height=50";
-  //   }
-  //     return "/static/images/stream-image.jpg";
-  // }
-
   return (
     <>
       {" "}
@@ -103,16 +89,7 @@ const StreamingElement = ({ volume, isMute }) => {
           className="local_stream"
           style={{ width: "100%", height: "100%" }}
         ></div>
-      ) : // Do not remove this code
-      // <img
-      //     onError={({ currentTarget }) => {
-      //       currentTarget.onerror = null; // prevents looping
-      //       currentTarget.src="/static/images/stream-image.jpg";
-      //     }}
-      //       src={getImagePath('profile')}
-      //     />
-
-      !!streamData ? (
+      ) : !!streamData ? (
         streamData?.preview_image_path && streamData?.preview_image ? (
           <CloudinaryImage
             imageUrl={streamData?.preview_image_path+"/"+streamData?.preview_image}

@@ -50,8 +50,8 @@ function LeftDiv({
   const [followed, setFollowed] = useState(
     streamingDetails.isFollow ? streamingDetails.isFollow : false
   );
-  const [flterKeyword, setFilterKeyword] = useState(null);
-  const [filteredProducts, setFilteredProducts] = useState(null);
+  const [filterKeyword, setFilterKeyword] = useState(null)
+  const [filteredProducts, setFilteredProducts] = useState(null)
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
   const [noOfFollower, setNoOfFollower] = useState(
     stream?.streamData?.vendorDetails?.follower_count ?? 0
@@ -80,7 +80,6 @@ function LeftDiv({
   }, [windowWidth]);
 
   // const leftDivRef = useRef();
-  const filterKeyword = useRef();
   //clicking somewhere except on product list panel will close the product list panel(mobile screen)
   // useEffect(() => {
   //   if (windowWidth <= 1024) {
@@ -137,8 +136,8 @@ function LeftDiv({
   const setToggle = (element) => {
     dispatch(addStreamProducts({}));
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
-    filterKeyword.current.value = null;
-    setFilteredProducts(null);
+    setFilterKeyword(null)
+    setFilteredProducts(null)
   };
 
   /**
@@ -295,23 +294,6 @@ function LeftDiv({
     }
   };
 
-  const getImagePath = (type) => {
-    if (
-      stream?.streamData?.vendorDetails?.avatar_path &&
-      stream?.streamData?.vendorDetails?.avatar &&
-      type == "vendor"
-    ) {
-      return (
-        imageUrl +
-        "?path=" +
-        stream?.streamData?.vendorDetails?.avatar_path +
-        "&name=" +
-        stream?.streamData?.vendorDetails?.avatar +
-        "&width=50&height=50"
-      );
-    }
-    return "/static/images/profileImg.png";
-  };
   const handleProfileClick = () => {
     router.push(
       "/profile?userId=" + stream?.streamData?.vendorDetails?.vendor_id
@@ -363,17 +345,16 @@ function LeftDiv({
       </div>
     );
   };
-  const handleSearchProduct = (e) => {
-    const products = stream?.streamProducts?.products;
-    if (products?.length > 0) {
+  const handleSearchProduct = event => {
+    const products = stream?.streamProducts?.products
+    setFilterKeyword(event.target.value.toLowerCase());
+    if(products?.length > 0){
       const filtered = products.filter((element) => {
-        return element.name
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase());
-      });
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts([]);
+        return element.name.toLowerCase().includes(event.target.value.toLowerCase())})
+       setFilteredProducts(filtered)
+    } else{
+      setFilteredProducts([])
+      setFilterKeyword(null);
     }
   };
 
@@ -393,7 +374,6 @@ function LeftDiv({
       {showUnFollowModal && UnfollowModal()}
       <div className="flex profile-wrapper">
         <div className="image">
-          {/* <img src="/static/images/profileImg.png" alt="profile" /> */}
           <CloudinaryImage
             imageUrl={DefaultServices?.GetFullImageURL(
               stream?.streamData?.vendorDetails,
@@ -406,14 +386,6 @@ function LeftDiv({
             transformation={ImageTransformation.streamPageProfile}
             alternative={"Card"}
           />
-          {/* <img
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = "/static/images/profileImg.png";
-            }}
-            src={getImagePath("vendor")}
-            alt="Card"
-          /> */}
         </div>
         <div className="profile-wrap" onClick={handleProfileClick}>
           <div className="name">{vendorName}</div>
@@ -443,13 +415,7 @@ function LeftDiv({
           <h3 className="title">{streamTitle}</h3>
           <div className="tab-wrapper flex">{getToggles()}</div>
           <div className="search">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={flterKeyword}
-              ref={filterKeyword}
-              onChange={(e) => handleSearchProduct(e)}
-            />
+            <input type="text" placeholder="Search products..." value={filterKeyword} onChange={handleSearchProduct}/>
           </div>
           <div className={`${toggleState}-list leftdata-list`}>
             <div className="product-count">{handleProductCount} Products</div>
