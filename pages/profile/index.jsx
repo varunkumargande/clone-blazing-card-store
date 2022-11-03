@@ -18,9 +18,11 @@ import DynamicModal from "../../components/CommonComponents/ModalWithDynamicTitl
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 export default function PublicProfile() {
   const router = useRouter();
+  const { isMobile } = useIsMobile();
   const [active, setActive] = useState(false);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -105,8 +107,6 @@ export default function PublicProfile() {
       setActiveTab(tabs[0].key);
     }
   }, [tabs]);
-
-  const { isMobile } = useIsMobile();
 
   const UpcomingShowsComponent = () => {
     if (upcomingShows) {
