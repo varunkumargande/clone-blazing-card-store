@@ -1,14 +1,9 @@
-import React, { useRef, memo } from "react";
+import React, { memo } from "react";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import {
-  addStreamProducts,
-  streamProducts,
-} from "../../../store/stream/action";
-import { userFollowUnfollow } from "../../../api/stream/streams_api";
-import { imageUrl } from "../../../api/url";
+import { getProducts, userFollowUnfollow } from "../../../api/stream/streams_api";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
@@ -46,12 +41,12 @@ function LeftDiv({
   const toggleTab = (index) => {
     setToggleState(index);
   };
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [followed, setFollowed] = useState(
     streamingDetails.isFollow ? streamingDetails.isFollow : false
   );
   const [filterKeyword, setFilterKeyword] = useState(null)
-  const [filteredProducts, setFilteredProducts] = useState(null)
+  const [filteredProducts, setFilteredProducts] = useState([])
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
   const [noOfFollower, setNoOfFollower] = useState(
     stream?.streamData?.vendorDetails?.follower_count ?? 0
@@ -59,6 +54,7 @@ function LeftDiv({
   //to handle width of the screen and call methods accordingly
   const [windowWidth, setWindowWidth] = useState(0);
   const [showLogin, setShowLogin] = useState(false);
+  const [streamProducts, setStreamProduct] = useState([]);
 
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
@@ -116,7 +112,12 @@ function LeftDiv({
           url = `stream/streamSoldProductList?streamuuid=${streamUuid}`;
           break;
       }
-      dispatch(streamProducts(url));
+      const result = await getProducts(url)
+      if(result?.products) {
+        // dispatch(addStreamProducts(result))
+        debugger
+        setStreamProduct(result)
+      }
     } catch (error) {
       if (error.response) {
       } else {
@@ -134,10 +135,11 @@ function LeftDiv({
    * @param {*} element
    */
   const setToggle = (element) => {
-    dispatch(addStreamProducts({}));
+    setStreamProduct([])
+    // dispatch(addStreamProducts({}));
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
     setFilterKeyword(null)
-    setFilteredProducts(null)
+    setFilteredProducts([])
   };
 
   /**
@@ -185,22 +187,28 @@ function LeftDiv({
   const getLiveAuctionClass = (productId) => {
     if (
       productId == auctionNotification?.product?.productId ||
-      productId ==
-        stream?.streamProducts?.AuctionDetails?.latestAuction?.productId
+      productId == streamProducts?.AuctionDetails?.latestAuction?.productId
     ) {
       return "pined";
     }
     return "";
   };
   const handleProductCount =
-    filteredProducts?.length ?? stream?.streamProducts?.products?.length ?? 0;
+    filteredProducts?.length ?? streamProducts?.products?.length ?? 0;
 
   /**
    * Method will render all product listing
    * @returns JSX
    */
   const getProductList = () => {
-    const productList = filteredProducts ?? stream?.streamProducts?.products;
+
+    let productList = [];
+    if(streamProducts && streamProducts?.products?.length) {
+      productList = [...streamProducts?.products];
+    }
+    if(filteredProducts?.length){
+      productList = filteredProducts;
+    }
     if (!productList) return null;
     return productList?.map((product) => {
       const productDetails = {
@@ -346,7 +354,7 @@ function LeftDiv({
     );
   };
   const handleSearchProduct = event => {
-    const products = stream?.streamProducts?.products
+    const products = [...streamProducts?.products];
     setFilterKeyword(event.target.value.toLowerCase());
     if(products?.length > 0){
       const filtered = products.filter((element) => {
