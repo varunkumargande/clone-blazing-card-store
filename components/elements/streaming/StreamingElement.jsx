@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import { useSelector } from "react-redux";
 import { agoraGettToken } from "../../../api/stream/agora";
 import AgoraRTC from "agora-rtc-sdk-ng";
@@ -109,4 +109,4 @@ const StreamingElement = ({ volume, isMute }) => {
   );
 };
 
-export default StreamingElement;
+export default memo(StreamingElement);

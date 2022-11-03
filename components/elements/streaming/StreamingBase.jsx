@@ -59,7 +59,7 @@ function StreamingBase({
     stream?.streamData?.isLike ? stream?.streamData?.isLike : false
   );
 
-  const {isMobile} = useIsMobile()
+  const { isMobile } = useIsMobile();
   const [currentAuctionName, setCurrentAuctionName] = useState(null);
 
   /**
@@ -315,14 +315,20 @@ function StreamingBase({
             <button
               className={disableBid ? "border-btn disable" : "border-btn"}
               disabled={disableBid}
-              onClick={handleCustomBid}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCustomBid;
+              }}
             >
               Custom Bid
             </button>
             <button
               className={disableBid ? "primary-btn disable" : "primary-btn"}
               disabled={disableBid}
-              onClick={handleConfirmBid}
+              onClick={(e) => {
+                e.preventDefault();
+                handleConfirmBid;
+              }}
             >
               Bid US ${amountToBid}
             </button>
@@ -410,7 +416,10 @@ function StreamingBase({
               ""
             )}
             <button
-              onClick={(e) => handleMuteButton(e)}
+              onClick={(e) => {
+                e.preventDefault();
+                handleMuteButton(e);
+              }}
               className="flex flex-center justify-center br50 valum"
               id="mute"
             >
@@ -436,16 +445,28 @@ function StreamingBase({
             </button> */}
             <button
               className="flex flex-center justify-center br50"
-              onClick={handleShareButton}
+              onClick={(e) => {
+                e.preventDefault();
+                handleShareButton;
+              }}
             >
               <IconShare />
             </button>
-            <button onClick={handleLikeUnlike} className={getlikeClass()}>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleLikeUnlike;
+              }}
+              className={getlikeClass()}
+            >
               <IconLikeWhite />
             </button>
             <button
               className="flex flex-center justify-center br50"
-              onClick={handleDollarClick}
+              onClick={(e) => {
+                e.preventDefault();
+                handleDollarClick;
+              }}
             >
               <IconAdd />
             </button>
@@ -487,7 +508,10 @@ function StreamingBase({
                 )}
                 <span
                   className="flex flex-center justify-center br50"
-                  onClick={handleShipModal}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleShipModal;
+                  }}
                 >
                   i
                 </span>

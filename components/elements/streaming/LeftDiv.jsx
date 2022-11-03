@@ -1,9 +1,12 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { getProducts, userFollowUnfollow } from "../../../api/stream/streams_api";
+import {
+  getProducts,
+  userFollowUnfollow,
+} from "../../../api/stream/streams_api";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
@@ -46,18 +49,26 @@ function LeftDiv({
   const [followed, setFollowed] = useState(
     streamingDetails.isFollow ? streamingDetails.isFollow : false
   );
-  const [filterKeyword, setFilterKeyword] = useState(null)
-  const [filteredProducts, setFilteredProducts] = useState([])
+  const [filterKeyword, setFilterKeyword] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
   const [noOfFollower, setNoOfFollower] = useState(
     stream?.streamData?.vendorDetails?.follower_count ?? 0
   );
   //to handle width of the screen and call methods accordingly
-  
-  const [showLogin, setShowLogin] = useState(false);
-  const [streamProducts, setStreamProduct] = useState([]);
 
-  const {isMobile} = useIsMobile()
+  const [showLogin, setShowLogin] = useState(false);
+
+  const initialStreamingData = {
+    auction: [],
+    buynow: [],
+    sold: [],
+    purchased: [],
+  };
+  const [streamProducts, setStreamProduct] = useState(initialStreamingData);
+
+  //const {isMobile} = useIsMobile()
+  const isMobile = false;
 
   // to initially show left div on desktop and hide on mobile screen
   useEffect(() => {
@@ -73,7 +84,7 @@ function LeftDiv({
    */
   const fetchProducts = async () => {
     try {
-      const url = "";
+      let url = "";
       switch (toggleState) {
         case TOGGLE_STATES.AUCTION:
           url = `stream/streamProductList?streamuuid=${streamUuid}&sellType=auction`;
@@ -88,11 +99,14 @@ function LeftDiv({
           url = `stream/streamSoldProductList?streamuuid=${streamUuid}`;
           break;
       }
-      const result = await getProducts(url)
-      if(result?.products) {
+      const result = await getProducts(url);
+      if (result?.products) {
         // dispatch(addStreamProducts(result))
-        setStreamProduct(result)
+        const datum = { ...streamProducts };
+        datum[toggleState] = result;
+        setStreamProduct(datum);
       }
+      setFilterKeyword('')
     } catch (error) {
       if (error.response) {
       } else {
@@ -109,12 +123,12 @@ function LeftDiv({
    * Method to set tab type
    * @param {*} element
    */
-  const setToggle = (element) => {
-    setStreamProduct([])
+  const updateCurrentToggleValue = (element) => {
+    // setStreamProduct([]);
     // dispatch(addStreamProducts({}));
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
-    setFilterKeyword(null)
-    setFilteredProducts([])
+    setFilterKeyword('');
+    setFilteredProducts([]);
   };
 
   /**
@@ -122,22 +136,23 @@ function LeftDiv({
    * @returns
    */
   const getToggles = () => {
-    return TOGGLES.map((element) => {
-      return (
-        <div
-          key={`tabs-${element}`}
-          className={
-            toggleState ===
-            TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
-              ? "tab-link active"
-              : "tab-link"
-          }
-          onClick={() => setToggle(element)}
-        >
-          {element}
-        </div>
-      );
-    });
+    return TOGGLES.map((element) => (
+      <div
+        key={`tabs-${element}`}
+        className={
+          toggleState ===
+          TOGGLE_STATES[element.split(" ").join("").toUpperCase()]
+            ? "tab-link active"
+            : "tab-link"
+        }
+        onClick={(e) => {
+          e.preventDefault();
+          updateCurrentToggleValue(element);
+        }}
+      >
+        {element}
+      </div>
+    ));
   };
 
   /**
@@ -155,33 +170,43 @@ function LeftDiv({
   };
 
   /**
-   * This Method will pined that particular product which is currently on auction
+   * This Method will pinned that particular product which is currently on auction
    * @param {*} productId
    * @returns
    */
   const getLiveAuctionClass = (productId) => {
     if (
       productId == auctionNotification?.product?.productId ||
-      productId == streamProducts?.AuctionDetails?.latestAuction?.productId
+      productId ==
+        streamProducts[toggleState]?.AuctionDetails?.latestAuction?.productId
     ) {
-      return "pined";
+      return "pinned";
     }
     return "";
   };
-  const handleProductCount =
-    filteredProducts?.length ?? streamProducts?.products?.length ?? 0;
+
+  const handleProductCount = useMemo(() => {
+    if (filteredProducts?.length === 0 && !!filterKeyword) {
+      return 0
+    } else {
+      return (
+        filteredProducts?.length ||
+        streamProducts[toggleState]?.products?.length ||
+        0
+      );
+    }
+  }, [filteredProducts?.length, streamProducts[toggleState]?.products?.length]);
 
   /**
    * Method will render all product listing
    * @returns JSX
    */
   const getProductList = () => {
-
     let productList = [];
-    if(streamProducts && streamProducts?.products?.length) {
-      productList = [...streamProducts?.products];
+    if (streamProducts && streamProducts[toggleState]?.products?.length) {
+      productList = [...streamProducts[toggleState]?.products];
     }
-    if(filteredProducts?.length){
+    if (filteredProducts?.length || !!filterKeyword) {
       productList = filteredProducts;
     }
     if (!productList) return null;
@@ -210,7 +235,10 @@ function LeftDiv({
               <div className="right">
                 <button
                   className="border-btn"
-                  onClick={() => handleBuyNow(product)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleBuyNow(product);
+                  }}
                 >
                   Buy Now
                 </button>
@@ -312,13 +340,19 @@ function LeftDiv({
             <div className="btn-wrap follow-btn-wrap flex justify-center">
               <button
                 className="border-btn"
-                onClick={() => setShowUnFollowModal(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowUnFollowModal(false);
+                }}
               >
                 Cancel
               </button>
               <button
                 className="primary-btn"
-                onClick={(_) => handleFollowUnfollow(_, true)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleFollowUnfollow(e, true);
+                }}
               >
                 Unfollow
               </button>
@@ -328,16 +362,19 @@ function LeftDiv({
       </div>
     );
   };
-  const handleSearchProduct = event => {
-    const products = [...streamProducts?.products];
+  const handleSearchProduct = (event) => {
+    const products = [...streamProducts[toggleState]?.products];
     setFilterKeyword(event.target.value.toLowerCase());
-    if(products?.length > 0){
+    if (products?.length > 0) {
       const filtered = products.filter((element) => {
-        return element.name.toLowerCase().includes(event.target.value.toLowerCase())})
-       setFilteredProducts(filtered)
-    } else{
-      setFilteredProducts([])
-      setFilterKeyword(null);
+        return element.name
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase());
+      });
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]);
+      setFilterKeyword('');
     }
   };
 
@@ -370,20 +407,35 @@ function LeftDiv({
             alternative={"Card"}
           />
         </div>
-        <div className="profile-wrap" onClick={handleProfileClick}>
+        <div
+          className="profile-wrap"
+          onClick={(e) => {
+            e.preventDefault();
+            handleProfileClick;
+          }}
+        >
           <div className="name">{vendorName}</div>
           <div className="followrs-count">{noOfFollower} Followers</div>
         </div>
         <div className="btn-wrap">
           {followed ? (
             <button
-              onClick={handleFollowUnfollow}
+              onClick={(e) => {
+                e.preventDefault();
+                handleFollowUnfollow;
+              }}
               className="following primary-btn"
             >
               Following
             </button>
           ) : (
-            <button onClick={handleFollowUnfollow} className="primary-btn">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleFollowUnfollow;
+              }}
+              className="primary-btn"
+            >
               Follow
             </button>
           )}
@@ -392,12 +444,20 @@ function LeftDiv({
       {isLeftDivOpen ? (
         <div
           className="leftdata-wrapper"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           <h3 className="title">{streamTitle}</h3>
           <div className="tab-wrapper flex">{getToggles()}</div>
           <div className="search">
-            <input type="text" placeholder="Search products..." value={filterKeyword} onChange={handleSearchProduct}/>
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={filterKeyword}
+              onChange={handleSearchProduct}
+            />
           </div>
           <div className={`${toggleState}-list leftdata-list`}>
             <div className="product-count">{handleProductCount} Products</div>
@@ -412,4 +472,3 @@ function LeftDiv({
 }
 
 export default memo(LeftDiv);
-

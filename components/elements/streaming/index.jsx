@@ -16,7 +16,8 @@ import { useCallback } from "react";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function Index() {
-  const {isMobile} = useIsMobile()
+  //const {isMobile} = useIsMobile()
+const isMobile = false
 
   const [open, setOpen] = useState(false);
   const [addShippInfo, setAddShippInfo] = useState(false);
@@ -119,12 +120,12 @@ function Index() {
               userCount={count}
               streamNotification={notificationData}
             />
-            <RightDiv
+            {/* <RightDiv
               streamingDetails={streamingDetails}
               streamData={streamPageData}
               channel={channel}
               client={client}
-            />
+            /> */}
           </div>
         </>
       ) : null}
