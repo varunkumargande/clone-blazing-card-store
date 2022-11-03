@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
@@ -29,6 +29,7 @@ function CenterDiv({
   setShowLoginModal,
   userCount,
   streamNotification,
+  liveAuctionDetails
 }) {
   const dispatch = useDispatch();
 
@@ -131,6 +132,7 @@ function CenterDiv({
         setShowLoginModal={setShowLoginModal}
         userCount={userCount}
         streamNotification={streamNotification}
+        liveAuctionDetails={liveAuctionDetails}
       />
       {paymentSuccessful && (
         <OrderSuccessful
@@ -196,4 +198,4 @@ function CenterDiv({
   );
 }
 
-export default CenterDiv;
+export default memo(CenterDiv);

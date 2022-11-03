@@ -1,69 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import HeaderDefault from "../../components/shared/headers/HeaderDefault";
+import BreadCrumb from "../../components/elements/BreadCrumb";
+import UserInformation from "../../components/partials/account/UserInformation";
+import ThemeChanger from "../../components/elements/color/themeControl";
+import useNetwork from "../../components/reusable/NetworkCheck";
+import Router from "next/router";
+import FooterFullwidth from "../../components/shared/footers/FooterFullwidth";
 
-import Newsletters from '../../components/partials/commons/Newletters';
-import FooterDefault from '../../components/shared/footers/FooterDefault';
-import HeaderDefault from '../../components/shared/headers/HeaderDefault';
-import BreadCrumb from '../../components/elements/BreadCrumb';
-import UserInformation from '../../components/partials/account/UserInformation';
-import HeaderMobile from '../../components/shared/headers/HeaderMobile';
-import NavigationList from '../../components/shared/navigation/NavigationList';
-import ThemeChanger from '../../components/elements/color/themeControl';
-import useNetwork from '../../components/reusable/NetworkCheck';
-import  Router  from 'next/router';
-import FooterFullwidth from '../../components/shared/footers/FooterFullwidth';
-
-import MobileHeader from '../../components/shared/headers/MobileHeader';
-import Category from '../../components/partials/LandingPage/Category';
+import MobileHeader from "../../components/shared/headers/MobileHeader";
 import { categoryApi } from "../../api/category/category";
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 const UserInformationPage = () => {
-    const network=useNetwork()
+  const network = useNetwork();
 
-    const [windowWidth, setWindowWidth] = useState(0);
-    let resizeWindow = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    const categories = useSelector((state)=>state?.category?.categories)
-    const dispatch = useDispatch();
-    useEffect(() => {
-      resizeWindow();
-      window.addEventListener("resize", resizeWindow);
-      return () => window.removeEventListener("resize", resizeWindow);
-    }, []);
+  const { isMobile } = useIsMobile();
 
-    useEffect(()=>{
-      categoryApi(dispatch);
-    },[])
+  const dispatch = useDispatch();
 
-    useEffect(()=>{
-        if(network===false){ Router.push('/network-error')  }
-    },[])
+  useEffect(() => {
+    categoryApi(dispatch);
+  }, []);
 
-    const breadCrumb = [
-        {
-            text: 'Account',
-            url: '/',
-        },
-        {
-            text: 'Account Dashboard',
-        },
-    ];
+  useEffect(() => {
+    if (network === false) {
+      Router.push("/network-error");
+    }
+  }, []);
 
-    return (
-        <div className="site-content">
-           {windowWidth <= 1024 ? <MobileHeader/> : <HeaderDefault />}
-            <ThemeChanger/>
-            <div className="ps-page--my-account">
-                <div style={{backgroundColor:"#f1f1f1",padding:"16px"}}>
-                    <BreadCrumb breacrumb={breadCrumb} />
-                </div>
-                <UserInformation />
-            </div>
-            {/* <Newsletters layout="container" /> */}
-            <FooterFullwidth />
+  const breadCrumb = [
+    {
+      text: "Account",
+      url: "/",
+    },
+    {
+      text: "Account Dashboard",
+    },
+  ];
+
+  return (
+    <div className="site-content">
+      {isMobile ? <MobileHeader /> : <HeaderDefault />}
+      <ThemeChanger />
+      <div className="ps-page--my-account">
+        <div style={{ backgroundColor: "#f1f1f1", padding: "16px" }}>
+          <BreadCrumb breacrumb={breadCrumb} />
         </div>
-    );
+        <UserInformation />
+      </div>
+      {/* <Newsletters layout="container" /> */}
+      <FooterFullwidth />
+    </div>
+  );
 };
 
 export default UserInformationPage;
