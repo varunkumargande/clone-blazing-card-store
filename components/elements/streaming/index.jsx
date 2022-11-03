@@ -77,10 +77,10 @@ function Index() {
             />
           )}
           <div
-            className="streaming-page flex space-between"
+            className="streaming-page flex space-between hi"
             onClick={(e) => {
               e.preventDefault();
-              handleLeftDiv(false);
+              // handleLeftDiv(false);
             }}
           >
             <LeftDiv

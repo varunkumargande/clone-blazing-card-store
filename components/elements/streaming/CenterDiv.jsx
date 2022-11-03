@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
@@ -196,4 +196,4 @@ function CenterDiv({
   );
 }
 
-export default CenterDiv;
+export default memo(CenterDiv);
