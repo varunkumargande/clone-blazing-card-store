@@ -194,13 +194,15 @@ function StreamingBase({
     if (!!cardDetail && !!addressList) {
       if (amountToBid > bidAmount) {
         setOpen(false);
-        increaseBidAmount();
-        createBid(
+        const res = await createBid(
           Number(auctionId),
           Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
           Number(amountToBid)
         );
-        setIsBidResponseModal(!isBidResponseModal);
+        if (res?.status === 200) {
+          increaseBidAmount();
+          setIsBidResponseModal(!isBidResponseModal);
+        }
       }
     } else {
       openPayment(true);
