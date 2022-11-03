@@ -1,4 +1,4 @@
-import React, { useRef, memo } from "react";
+import React, { memo } from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -8,7 +8,6 @@ import {
   streamProducts,
 } from "../../../store/stream/action";
 import { userFollowUnfollow } from "../../../api/stream/streams_api";
-import { imageUrl } from "../../../api/url";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
@@ -78,23 +77,6 @@ function LeftDiv({
       handleLeftDiv(true);
     }
   }, [windowWidth]);
-
-  // const leftDivRef = useRef();
-  //clicking somewhere except on product list panel will close the product list panel(mobile screen)
-  // useEffect(() => {
-  //   if (windowWidth <= 1024) {
-  //     function handler(event) {
-  //       if (
-  //         !leftDivRef?.current?.contains(event.target) &&
-  //         !event.target.classList.contains("shops")
-  //       ) {
-  //         handleLeftDiv(false);
-  //       }
-  //     }
-  //     window.addEventListener("click", handler);
-  //     return () => window.removeEventListener("click", handler);
-  //   }
-  // }, [leftDivRef.current]);
 
   /**
    * Method to get All products of a stream
@@ -410,7 +392,6 @@ function LeftDiv({
         <div
           className="leftdata-wrapper"
           onClick={(e) => e.stopPropagation()}
-          // ref={leftDivRef}
         >
           <h3 className="title">{streamTitle}</h3>
           <div className="tab-wrapper flex">{getToggles()}</div>
