@@ -12,6 +12,9 @@
 }
 .card-inner{
     padding-bottom: 40px;
+    .overflow-wrap{
+        overflow: scroll;
+    }
 }
 .card-wrap,.Category-list-wrap{
     flex-wrap: nowrap;
@@ -212,7 +215,7 @@
             @include pos(re);
             z-index: 5;
             span{
-                @include pos(ab,4px,null,null,9px);
+                @include pos(ab,3px,null,null,9px);
             }
         }
         .loading{
