@@ -576,15 +576,10 @@ export function AddNewCardModal(props) {
 
 export function AddAddressModal(props) {
   const {
-    setShipIndex,
-    shipIndex,
-    setShipData,
-    shipData,
     close,
     setShip,
     addressList,
     countryData,
-    setAddressList,
   } = props;
 
   const [stateList, setStateList] = useState([]);
@@ -617,8 +612,8 @@ export function AddAddressModal(props) {
       setShip(values);
       fetchShiipmentApi();
       close(false);
-    }
-
+    },
+    validationSchema: () => shipSchema
   });
   return (
     <>
@@ -639,7 +634,7 @@ export function AddAddressModal(props) {
                 </span>
               </button>
             </div>
-            <form onSubmit={formik.handleSubmit} onError={console.log(formik.values)} >
+            <form onSubmit={formik.handleSubmit}>
               <div className="modal-body">
                 <div className="input-control">
                   <label>Company *</label>
@@ -716,7 +711,7 @@ export function AddAddressModal(props) {
                     value={formik.values.state}
                   >
                     <option>Select here</option>
-                    {stateList?.map((item, index) => {
+                    {stateList?.map((item) => {
                       return (
                         <>
                           <option value={item.name}>{item.name}</option>
@@ -737,7 +732,7 @@ export function AddAddressModal(props) {
                     disabled={true}
                   >
                     <option>United States</option>
-                    {countryData?.map((item, index) => {
+                    {countryData?.map((item) => {
                       return (
                         <>
                           <option value={item.countryId}>{item.name}</option>
@@ -750,7 +745,7 @@ export function AddAddressModal(props) {
               </div>
               <div className="modal-footer">
                 <div className="flex justify-center btn-wrap">
-                  <button type="submit" className="primary-btn">
+                  <button className="primary-btn" type="submit">
                     Save Changes
                   </button>
                 </div>
@@ -1008,7 +1003,7 @@ export function UnfollowModal(props) {
             <button
               className="border-btn"
               onClick={(e) => {
-                e.preventDefault();
+                // e.preventDefault();
                 setIsOpenFollowUnfollow(false);
               }}
             >
@@ -1017,7 +1012,7 @@ export function UnfollowModal(props) {
             <button
               className="primary-btn"
               onClick={(e) => {
-                e.preventDefault();
+                // e.preventDefault();
                 handleUnfollowClick();
               }}
             >
