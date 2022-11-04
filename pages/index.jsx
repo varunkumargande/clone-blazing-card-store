@@ -22,10 +22,20 @@ function landingPage({ auth, category }) {
   const { isMobile } = useIsMobile();
 
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(null);
+  const [catIds, setCatIds] = useState(null);
+  const [apiCount, setApiCount] = useState(0);
+  const [catVisible, setCatVisible] = useState(true);
+  const [data, setData] = useState({});
+  const [page, setPage] = useState(0);
+  const [total, setTotal] = useState(null);
+  const [catId, setCatId] = useState(null);
+  const [fetch, setFetch] = useState(true);
 
   useEffect(() => {
     categoryApi(dispatch);
     dispatch(getBecomeSellerInfo());
+    setApiCount(0)
   }, []);
 
   // ========================= category for home page ==============================
@@ -52,15 +62,7 @@ function landingPage({ auth, category }) {
     (state) => state?.stream?.streamdetails
   )?.length;
 
-  const [loader, setLoader] = useState(null);
-  const [catIds, setCatIds] = useState(null);
-  const [apiCount, setApiCount] = useState(0);
-  const [catVisible, setCatVisible] = useState(true);
-  const [data, setData] = useState({});
-  const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(null);
-  const [catId, setCatId] = useState(null);
-  const [fetch, setFetch] = useState(true);
+ 
 
   useEffect(() => {
     setCategories(category?.categories);
@@ -78,7 +80,7 @@ function landingPage({ auth, category }) {
 
   useEffect(() => {
     const catLength = category?.categories?.length;
-    if (apiCount < catLength || fetch) {
+    if ((apiCount < catLength || fetch) && catLength) {
       catStreamDetailApi(
         setData,
         page,
@@ -92,7 +94,7 @@ function landingPage({ auth, category }) {
         setFetch(false);
       }
     }
-  }, [apiCount]);
+  }, [category?.categories, apiCount]);
 
   useEffect(() => {
     if (!!catId) {
