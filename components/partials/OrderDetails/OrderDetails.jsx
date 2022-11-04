@@ -22,10 +22,6 @@ export default function OrderDetails() {
               <div className="order-body-wrapper">
                 <div className="order-body flex space-between">
                   <div className="order-text flex">
-                    <img
-                      src="/static/images/card.png"
-                      alt=""
-                    />
                     <div className="order-details">
                       <div className="flex mb12">
                         <div className="order-title">{productData.name}</div>
