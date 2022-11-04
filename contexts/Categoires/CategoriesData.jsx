@@ -10,13 +10,12 @@ import { categoryApi } from "../../api";
 
 export const CategoriesDataContext = createContext();
 
-// This context will handle all notifications related stuff globally
+// This context will handle fetch category data only once
 export function CategoriesDataProvider(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const data = categoryApi(dispatch);
-    console.log("Data", data);
+    categoryApi(dispatch);
   }, []);
 
   const contextValue = useMemo(() => ({}), []);
