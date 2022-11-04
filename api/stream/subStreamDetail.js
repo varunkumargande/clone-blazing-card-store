@@ -77,8 +77,11 @@ export async function catStreamDetailApi(
 
 export async function catSubStreamDetailApi(setData, page, catId) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&categoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}&key:10980374eab848ac`
+    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}&key=10980374eab848ac`
   );
+
+  console.log(result?.data?.data)
+  
   if (result?.status === 200) setData(result?.data?.data);
 }
 /**
@@ -112,10 +115,10 @@ export async function getStreamSubCategoryBasedApi(
   catName,
   subCatName,
   setStreamData,
-  setLoader
+  setLoader,
 ) {
   const result = await APIServices.getAll(
-    `stream/categories-stream?category_slug=${catName}&subCategory_slug=${subCatName}&type=${type}`
+    `stream/categories-stream?category_slug=${catName}&subCategory_slug=${subCatName}&type=${type}&key:10980374eab848ac`
   );
   if (result?.status === 200) {
     setStreamData(result?.data?.data?.result);

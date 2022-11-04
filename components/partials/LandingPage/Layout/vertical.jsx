@@ -4,13 +4,19 @@ import { catSubStreamDetailApi } from "../../../../api/stream/subStreamDetail";
 import CategoryStream from "../Electronic";
 
 function Vertical({ category, showLoginModal }) {
-  useEffect(() => {
-    catSubStreamDetailApi(setData, page, category?.categoryId);
-  }, [category?.categoryName]);
 
-  const [data, setData] = useState(null);
-  const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [subCategories, setSubCategories] = useState({});
+
+
+  useEffect(() => {
+    const catData = category?.categories.find(
+      (obj) => obj.categoryId === parseInt(category?.categoryId)
+    );
+    setSubCategories(catData?.children)
+    // catSubStreamDetailApi(setData, page, catData?.categoryId);
+  }, [category]);
+
+  console.log(subCategories)
 
   const handleCardVisisble = () => {
     if (total === limit) {
@@ -19,9 +25,6 @@ function Vertical({ category, showLoginModal }) {
   };
 
   const handleCardDetail = () => {
-
-    
-
     // if (data.length) {
     //   const categoriesData = Object.entries(categories);
     //   return categoriesData.map((element) => {
