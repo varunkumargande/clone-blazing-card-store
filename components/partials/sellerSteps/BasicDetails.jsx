@@ -9,26 +9,26 @@ import { useEffect } from "react";
 import { addBasicData } from "../../../store/becomeSeller/action";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import IconBack from '../../Icons/IconBack';
+import IconBack from "../../Icons/IconBack";
 import BackButton from "../../CommonComponents/BackButton";
 import { uploadImageToServer } from "../../../utilities/common-helpers";
 import DefaultConstants from "../../../utilities/constants";
 
-
-
 export default function BasicDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [imageData, setImageData] = useState(null)
+  const [imageData, setImageData] = useState(null);
   const BasicDetails = useSelector(
     (state) => state?.becomeSeller?.basicDetails
   );
-  const [updateFileName, setUpdateFileName] = useState(BasicDetails?.documents?.image || null)
+  const [updateFileName, setUpdateFileName] = useState(
+    BasicDetails?.documents?.image || null
+  );
 
   const handleSubmit = async (values) => {
     if (!!values?.fullName && !!values?.uniqueId && !!values?.upload) {
       const time = new Date().getTime();
-      const fileName  = `${time}_${values?.upload?.name}`
+      const fileName = `${time}_${values?.upload?.name}`;
       const data = {
         fullName: values.fullName,
         uniqueId: values.uniqueId,
@@ -39,53 +39,58 @@ export default function BasicDetails() {
         },
       };
       dispatch(addBasicData(data, router));
-  }
+    }
   };
   const getBase64 = (file, cb) => {
-    if(!!file){
+    if (!!file) {
       let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      cb(reader.result);
-    };
-    reader.onerror = function (error) {
-    };
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        cb(reader.result);
+      };
+      reader.onerror = function (error) {};
     }
   };
-  
 
   const setImage = (file) => {
-    if(!!file){
+    if (!!file) {
       getBase64(file, (result) => {
-        handleFileUpload(file,result)
+        handleFileUpload(file, result);
       });
     }
-   
-  }
+  };
+
+  const initialValues = {
+    fullName: BasicDetails?.fullName ?? "",
+    uniqueId: BasicDetails?.uniqueId ?? "",
+    upload: BasicDetails?.documents?.fileName
+      ? new File([""], BasicDetails?.documents?.fileName, {
+          type: "image/jpeg",
+        })
+      : "",
+  };
 
   const handleFileUpload = async (image, base64) => {
-    const uploadImage = await uploadImageToServer(image, DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH);
-    if(uploadImage.status==200){
-      setImageData(base64)
-      setUpdateFileName(uploadImage.fileName)
+    const uploadImage = await uploadImageToServer(
+      image,
+      DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH
+    );
+    if (uploadImage.status == 200) {
+      setImageData(base64);
+      setUpdateFileName(uploadImage.fileName);
     }
-  }
+  };
   return (
     <div className="step-container">
-      <BackButton name={"Basic Details"}/>
+      <BackButton name={"Basic Details"} />
       <div className="sub-title">
         Blazing Cards takes marketplace safety seriously. Sellers must have a
         valid payment method on file. In rare occasions, sellers are charged a
         $100 fee for severe or repeated infractions of our policies.
       </div>
       <Formik
-        initialValues={{
-          fullName: BasicDetails?.fullName ?? "",
-          uniqueId: BasicDetails?.uniqueId ?? "",
-          upload: BasicDetails?.documents?.fileName ? new File([""], BasicDetails?.documents?.fileName,{
-            type : "image/jpeg"
-          } ) : "",
-        }}
+        initialValues={initialValues}
+        validateOnChange
         validationSchema={basicDetailvalidation}
         onSubmit={(values) => {
           if (values) {
@@ -102,6 +107,7 @@ export default function BasicDetails() {
                 name="fullName"
                 type="text"
                 placeholder="Enter here"
+                maxLength="25"
               />
 
               <TextInput
@@ -109,6 +115,11 @@ export default function BasicDetails() {
                 label="Unique Id *"
                 name="uniqueId"
                 type="text"
+                value={formProps.values.uniqueId}
+                onChange={(e) => {
+                  formProps.setFieldTouched("uniqueId", true, true);
+                  formProps.handleChange(e);
+                }}
                 placeholder="Enter here"
                 maxLength={9}
                 minLength={9}
@@ -129,8 +140,9 @@ export default function BasicDetails() {
               />
             </div>
             <div className="submit-wrapper flex space-between">
-              <button type="reset" onClick={ () => {
-              } } className="border-btn">Cancel</button>
+              <button type="reset" onClick={() => {}} className="border-btn">
+                Cancel
+              </button>
               <button type="submit" className="primary-btn">
                 Save & Next
               </button>

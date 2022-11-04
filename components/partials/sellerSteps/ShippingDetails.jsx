@@ -71,6 +71,7 @@ export default function ShippingDetails() {
                 name="fullName"
                 type="text"
                 placeholder="Enter here"
+                maxLength="25"
               />
             </div>
             <div className="flex space-between">

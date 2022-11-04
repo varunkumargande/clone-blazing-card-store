@@ -5,6 +5,7 @@ export const initState = {
   streamdetails: null,
   streamPageData: null,
   streamProducts: null,
+  liveDetails: null,
   streamNotification: {
     auction: null,
     bid: null,

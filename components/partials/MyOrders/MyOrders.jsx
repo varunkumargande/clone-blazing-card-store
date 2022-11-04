@@ -38,7 +38,17 @@ export default function MyOrders() {
                   </span>
                 </div>
                 <div className="btn-wrap">
-                  <button className="primary-btn">Track Now</button>
+                  <a
+                    href={order?.trackingUrl}
+                    target="_blank"
+                  >
+                    <button
+                      className={`primary-btn ${(!order?.trackingUrl) && 'disable-opacity'}`}
+                      disabled={!order?.trackingUrl}
+                    >
+                      Track Now
+                    </button>
+                  </a>
                 </div>
               </div>
               <div className="order-body flex space-between">
@@ -64,8 +74,9 @@ export default function MyOrders() {
               </div>
               <div className="order-footer flex flex-center space-between">
                 <div className="order-status flex flex-center">
-                  <IconReturn />
-                  Return Order
+                  {/* ToDo: Return Order will be implemented in future. */}
+                  {/* <IconReturn />
+                  Return Order */}
                 </div>
                 <div className="order-detail link">
                 <button onClick={e => handleOrderDetails(order.orderProductId)}>Order Details</button>

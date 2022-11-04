@@ -28,6 +28,9 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import Router from "next/router";
+import DefaultServices from "../../Services/DefaultServices";
+import { ImageTransformation } from "../../Constants/imageTransformation";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 
 const responseGoogle = (response) => {
   GoogleLoginApi(
@@ -383,6 +386,8 @@ export function AddNewCardModal(props) {
     fetchCardDetail,
   } = props;
 
+  const dispatch = useDispatch();
+
   const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
@@ -426,13 +431,23 @@ export function AddNewCardModal(props) {
 
       if (payDetail == false) {
         setPaymentLoader(true);
-        handleCardApi(jsonData, false, fetchCardDetail, setPaymentLoader);
-        fetchShiipmentApi();
+        handleCardApi(
+          jsonData,
+          false,
+          fetchCardDetail,
+          setPaymentLoader,
+          dispatch
+        );
         close(false);
       } else {
         setPaymentLoader(true);
-        handleCardApi(jsonData, true, fetchCardDetail, setPaymentLoader);
-        fetchShiipmentApi();
+        handleCardApi(
+          jsonData,
+          true,
+          fetchCardDetail,
+          setPaymentLoader,
+          dispatch
+        );
         close(false);
       }
     },
@@ -953,18 +968,44 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   );
 }
 
-export function UnfollowModal() {
+export function UnfollowModal(props) {
+  const {profile, setIsOpenFollowUnfollow, profileMethods,setKey} = props;
+  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
+  const handleUnfollowClick = () => {
+    profileMethods.UserFollowUser(userDetail.id, profile.id, setKey,setIsOpenFollowUnfollow)
+  }
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
         <div className="modal-body text-center">
           <div className="profile-icon">
-            <img src="/static/images/profile-large.svg" alt="" />
+            {
+              !!profile && <CloudinaryImage
+              imageUrl={DefaultServices?.GetFullImageURL(
+                profile,
+                "profile"
+              )}
+              keyId={DefaultServices?.GetFullImageURL(
+                profile,
+                "profile"
+              )}
+              transformation={ImageTransformation.streamPageProfile}
+              alternative={"profileImg"}
+            />
+            }
           </div>
-          <div className="profile-id">Want to follow @felix.bronco?</div>
+          <div className="profile-id">Want to follow @{profile?.username}</div>
           <div className="btn-wrap follow-btn-wrap flex justify-center">
-            <button className="border-btn">Cancel</button>
-            <button className="primary-btn">Unfollow</button>
+            <button className="border-btn" onClick={(e) => {
+              e.preventDefault();
+              setIsOpenFollowUnfollow(false);
+            }
+              }>Cancel
+            </button>
+            <button className="primary-btn" onClick={(e) => {
+              e.preventDefault();
+              handleUnfollowClick()}
+              }>Unfollow</button>
           </div>
         </div>
       </div>

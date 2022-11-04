@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 import StreamingBase from "./StreamingBase";
 import { buyProduct } from "../../../api/stream/buyProductApi";
@@ -14,6 +14,9 @@ import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
 import { UserAddAddress } from "../../../api";
 import { editAddressApi } from "../../../api";
 import { getStreamingCardDetail } from "../../../api/stream/cardApi";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { show } from "../../../store/toast/action";
 
 function CenterDiv({
   productDetail,
@@ -25,7 +28,11 @@ function CenterDiv({
   isBuyNowPaymentModal,
   setShowLoginModal,
   userCount,
+  streamNotification,
+  liveAuctionDetails
 }) {
+  const dispatch = useDispatch();
+
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
   const [shippmentForm, setShippmentFormOpen] = React.useState(false);
@@ -38,6 +45,9 @@ function CenterDiv({
   const [cardIndex, setCardIndex] = useState(null);
   const [cardDetail, setCardDetail] = useState([]);
   const [orderId, setOrderId] = useState("");
+
+  const router = useRouter();
+  const streamUuid = router.query["uuid"];
 
   const handlePaymentAndShippmentModal = () => {
     setOpen(true);
@@ -79,17 +89,15 @@ function CenterDiv({
         cardDetail[cardDetail.length - 1],
         addressList[addressList.length - 1],
         productDetail,
-        openPayment
-        // streamingDetails
+        openPayment,
+        streamUuid,
+        dispatch,
+        setPaymentSuccessful,
+        setPaymentLoader
       );
       setOrderId(orderIdValue);
-      setPaymentLoader(false);
-      setPaymentSuccessful(true);
     } else {
-      modalWarning(
-        "error",
-        "Please select your card detail and shippment address"
-      );
+      dispatch(show({ message: "Please enter the details !", type: "error" }));
     }
   };
 
@@ -97,11 +105,17 @@ function CenterDiv({
     setShipData(data);
     if (data.addressId) {
       setAddressLoader(true);
-      editAddressApi(data, data.addressId, setAddressLoader, fetchShiipmentApi);
+      editAddressApi(
+        data,
+        data.addressId,
+        setAddressLoader,
+        fetchShiipmentApi,
+        dispatch
+      );
       setShippmentFormOpen(false);
     } else {
       setAddressLoader(true);
-      UserAddAddress(data, setAddressLoader, fetchShiipmentApi);
+      UserAddAddress(data, setAddressLoader, fetchShiipmentApi, dispatch);
       setShippmentFormOpen(false);
     }
   };
@@ -117,6 +131,8 @@ function CenterDiv({
         isBuyNowPaymentModal={isBuyNowPaymentModal}
         setShowLoginModal={setShowLoginModal}
         userCount={userCount}
+        streamNotification={streamNotification}
+        liveAuctionDetails={liveAuctionDetails}
       />
       {paymentSuccessful && (
         <OrderSuccessful
@@ -174,4 +190,4 @@ function CenterDiv({
   );
 }
 
-export default CenterDiv;
+export default memo(CenterDiv);

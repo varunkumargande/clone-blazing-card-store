@@ -9,7 +9,7 @@ import {
 } from "../../../store/category/action";
 import { getStreamCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 
-function SeeAllParentCategories({ category, setCatIndex, setStreamData }) {
+function SeeAllParentCategories({ category, setCatIndex, setStreamData, setLoader }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
 
@@ -25,7 +25,6 @@ function SeeAllParentCategories({ category, setCatIndex, setStreamData }) {
         subCategory: "all",
       },
     });
-    // getStreamCategoryBasedApi(name, setStreamData)
   };
 
   useEffect(() => {
@@ -41,7 +40,7 @@ function SeeAllParentCategories({ category, setCatIndex, setStreamData }) {
           subCategory: category?.subCategoryName,
         },
       });
-      getStreamCategoryBasedApi(category?.categories[0]?.categorySlug, category?.subCategoryName, query?.page, setStreamData)
+      getStreamCategoryBasedApi(category?.categories[0]?.categorySlug, category?.subCategoryName, query?.page, setStreamData, setLoader)
     } 
   }, [query]);
 
@@ -64,7 +63,10 @@ function SeeAllParentCategories({ category, setCatIndex, setStreamData }) {
   return (
     <>
       <aside className="aside-wrapper">
-        <ul className="aside-container">{getAllCategoriesCard()}</ul>
+        <ul className="aside-container">
+        
+          {getAllCategoriesCard()}
+        </ul>
       </aside>
     </>
   );

@@ -49,6 +49,7 @@ function Category({ seeAllHeading, auth, category }) {
     // dispatch(saveCategoryId(null));
   };
 
+  
   const getCategoryList = () => {
     if (Object.keys(category).length != 0) {
       return (

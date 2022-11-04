@@ -43,7 +43,7 @@ function StreamCard({ detail, showLoginModal, auth }) {
           } */}
           <LiveStreamStatus
             isLive={detail?.isLive}
-            uuid={detail.uuid}
+            uuid={detail?.uuid}
             detail={detail}
             showLoginModal={showLoginModal}
           />

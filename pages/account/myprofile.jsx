@@ -22,6 +22,7 @@ import Followers from "../../components/partials/Profile/Followers";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 function MyProfile(props) {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
@@ -38,7 +39,9 @@ function MyProfile(props) {
     tabs && tabs.length > 0 ? tabs[0].key : ""
   );
   const wrapperRef = useRef(null);
-  const dislikedStreams = useSelector((state) => state?.likeDislikeStream?.dislikedData);
+  const dislikedStreams = useSelector(
+    (state) => state?.likeDislikeStream?.dislikedData
+  );
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -54,11 +57,13 @@ function MyProfile(props) {
 
   useEffect(() => {
     let currentLikedShows = likedShows;
-    dislikedStreams.map(streamID => {
-      currentLikedShows = currentLikedShows.filter(show => show.uuid !== streamID);
+    dislikedStreams.map((streamID) => {
+      currentLikedShows = currentLikedShows.filter(
+        (show) => show.uuid !== streamID
+      );
     });
     setLikedShows(currentLikedShows);
-  }, [dislikedStreams])
+  }, [dislikedStreams]);
 
   const getAllBuyerDetails = () => {
     ProfileMethods.GetLikedStreams(userId, setLikedShows);
@@ -111,16 +116,7 @@ function MyProfile(props) {
     }
   }, [tabs]);
 
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+  const { isMobile } = useIsMobile();
 
   const UpcomingShowsComponent = () => {
     if (upcomingShows) {
@@ -163,11 +159,7 @@ function MyProfile(props) {
   const LikedShowsComponent = () => {
     if (likedShows) {
       if (likedShows.length > 0) {
-        return (
-          likedShows.map((show) => (
-            <StreamCard detail={show} />
-          ))
-        );
+        return likedShows.map((show) => <StreamCard detail={show} />);
       } else {
         return (
           <div className="no-record flex justify-center">No Data found</div>
@@ -318,7 +310,7 @@ function MyProfile(props) {
 
   return (
     <div className="home-container profile-container-wrap">
-      {windowWidth <= 1024 ? (
+      {isMobile ? (
         <div className="profile-title flex flex-center">
           <BackButton name={"Profile"} />
         </div>
