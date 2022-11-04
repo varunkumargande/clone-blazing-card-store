@@ -12,7 +12,7 @@ import IconMessageMobile from "../../Icons/IconMessageMobile";
 import IconLogoutMobile from "../../Icons/IconLogoutMobile";
 import IconNotificationMobile from "../../Icons/IconNotificationMobile";
 import { useTranslation } from "../../../i18n";
-import { categoryListApi } from "../../../api";
+// import { categoryListApi } from "../../../api";
 import { useRouter } from "next/router";
 import { login } from "../../../store/auth/action";
 import { connect } from "react-redux";
@@ -24,6 +24,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { vendorAuth } from "../../../store/vendorAuth/action";
+import { categoryApi } from "../../../api";
 
 function MobileHeader({ auth }) {
   const [active, setActive] = useState(false);
@@ -50,7 +51,7 @@ function MobileHeader({ auth }) {
   }, [toggle]);
 
   useEffect(() => {
-    categoryListApi(dispatch);
+    categoryApi(dispatch);
     authFunc();
     // getServiceApi(dispatch);
   }, []);

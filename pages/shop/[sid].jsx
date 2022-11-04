@@ -21,7 +21,7 @@ import { productListApi } from "../../api";
 import { useState } from "react";
 
 import { productCountApi } from "../../api";
-import { categoryListApi } from "../../api";
+// import { categoryListApi } from "../../api";
 import { ManufacturerApi } from "../../api";
 import { specificCategoryApi } from "../../api";
 import ThemeChanger from "../../components/elements/color/themeControl";
@@ -175,9 +175,6 @@ function ShopDefaultPage(props, { query }) {
 
   }, [categorySlug]);
 
-  useEffect(() => {
-    categoryListApi(dispatch);
-  }, []);
 
   useEffect(() => {
     if (selectedCategoryId.length > 0) {

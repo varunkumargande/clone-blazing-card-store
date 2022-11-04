@@ -16,7 +16,7 @@ import { addToCartApi } from '../../../api/cart/addToCart';
 import NextArrow from '../../elements/carousel/NextArrow';
 import PrevArrow from '../../elements/carousel/PrevArrow';
 import Slider from 'react-slick';
-import { categoryListApi } from '../../../api/product/categoryListTree';
+// import { categoryListApi } from '../../../api/product/categoryListTree';
 import { colorThemeShow } from '../../helper/colorTheme';
 // import {getServiceApi} from '../../../api';
 import LanguageSwicher from './modules/LanguageSwicher';
@@ -64,7 +64,7 @@ const carouselSetting = {
 
 useEffect(()=>{
     
-    categoryListApi(dispatch)
+    // categoryListApi(dispatch)
     // getServiceApi(dispatch)
 
 

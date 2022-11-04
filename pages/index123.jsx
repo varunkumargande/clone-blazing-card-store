@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { dealOfDayApi } from "../api";
 import { homeBannerApi } from "../api";
 import { featuredApi } from "../api";
-import { categoryListApi } from "../api";
+// import { categoryListApi } from "../api";
 import useNetwork from "../components/reusable/NetworkCheck";
 import Router from "next/router";
 import getPageApi from "../api/home/getPage";
@@ -44,7 +44,7 @@ function Index(props) {
   
   useEffect(() => {
     // ManufacturerApi(dispatch);
-    categoryListApi(dispatch);
+    // categoryListApi(dispatch);
     dealOfDayApi(dispatch);
     homeBannerApi(dispatch);
     featuredApi(dispatch);

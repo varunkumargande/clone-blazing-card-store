@@ -7,7 +7,6 @@ import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 const StreamCardSkeleton = ({ count = 1, name = "" }) => {
   const { isMobile } = useIsMobile();
   const data = new Array(count).fill(0);
-  console.log(data);
   return data.map((_item, index) => (
     <div
       key={`${index}-${count}-${name}`}

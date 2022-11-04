@@ -18,7 +18,8 @@ import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
 import { catStreamDetailApi } from "../api/stream/subStreamDetail";
 import { useIsMobile } from "../contexts/Devices/CurrentDevices";
 
-function landingPage({ auth, category }) {
+function landingPage({ category }) {
+
   const { isMobile } = useIsMobile();
 
   const dispatch = useDispatch();
@@ -33,9 +34,8 @@ function landingPage({ auth, category }) {
   const [fetch, setFetch] = useState(true);
 
   useEffect(() => {
-    categoryApi(dispatch);
+
     dispatch(getBecomeSellerInfo());
-    setApiCount(0)
   }, []);
 
   // ========================= category for home page ==============================
@@ -62,7 +62,6 @@ function landingPage({ auth, category }) {
     (state) => state?.stream?.streamdetails
   )?.length;
 
- 
 
   useEffect(() => {
     setCategories(category?.categories);

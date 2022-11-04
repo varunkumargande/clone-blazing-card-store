@@ -4,7 +4,7 @@ import SearchHeader from "./modules/SearchHeader";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "../../../i18n";
-import { categoryListApi } from "../../../api";
+// import { categoryListApi } from "../../../api";
 import { getServiceApi } from "../../../api";
 import LanguageSwicher from "./modules/LanguageSwicher";
 import { useRouter } from "next/router";
@@ -20,7 +20,7 @@ function HeaderHome() {
   let currentColor = useSelector((s) => s.palette.currentColor);
 
   useEffect(() => {
-    categoryListApi(dispatch);
+    // categoryListApi(dispatch);
     // getServiceApi(dispatch);
   }, []);
 
