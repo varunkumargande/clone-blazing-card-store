@@ -20,6 +20,10 @@ function CategoryStream({
   setCatId,
   category,
 }) {
+
+  /**
+   * showing streamcard data
+   */
   const getStreamCards = useMemo(() => {
     if (!!catData[catId]) {
       return catData[catId]?.data?.map((detail) => (
@@ -31,7 +35,11 @@ function CategoryStream({
       ));
     }
   }, [catData[catId]]);
+  // =======================================================
 
+  /**
+   * showing and handling card loader component
+   */
   const handleCatCardVisisble = () => {
     if (!!catData[catId]) {
       if (catData[catId]?.total == limit) {
@@ -39,7 +47,9 @@ function CategoryStream({
       }
     }
   };
+  // =========================================================================
 
+  
   const handleGoToSeeAll = () => {
     if (!!category?.categoryName) {
       Router.push({
