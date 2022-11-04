@@ -228,7 +228,7 @@ function Chat({ auth }) {
   return (
     <>
       {isMobile ? (
-        <div className="message-title flex flex-center">
+        <div className="header-title flex flex-center">
           <BackButton name={"Message"} />
         </div>
       ) : (
