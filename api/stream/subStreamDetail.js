@@ -75,7 +75,9 @@ export async function catStreamDetailApi(
   }
 
   setLoader((loader) => ({ ...loader, [catId]: true }));
-  setApiCount((count) => count + 1);
+  if(result?.status) {
+    setApiCount((count) => count + 1);
+  }
 }
 
 export async function catSubStreamDetailApi(

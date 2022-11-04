@@ -24,6 +24,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 //import "slick-carousel/slick/slick-theme.css";
 import "../scss/elements/_streaming.scss";
 import CurrentDeviceProvider from "../contexts/Devices/CurrentDevices";
+import CategoriesDataProvider from "../contexts/Categoires/CategoriesData";
 
 function MyApp({ Component, pageProps }) {
   const RedirectMaintain = useSelector((s) => s.setting.maintenance);
@@ -58,27 +59,28 @@ function MyApp({ Component, pageProps }) {
     <SkeletonTheme>
       <NotificationsProvider>
         <CurrentDeviceProvider>
-          {getLayout(
-            <Provider store={configureStore}>
-              <Component {...pageProps} />
-
-              <ToastContainer
-                // limit={1}
-                transition={Zoom}
-                theme="colored"
-                autoClose={1000}
-                hideProgressBar={true}
-                newestOnTop={true}
-                draggable={false}
-                pauseOnVisibilityChange
-                closeOnClick
-                pauseOnHover
-                // hideDuration={100}
-                // position='fixed'
-                // containerId="second"
-              />
-            </Provider>
-          )}
+          <CategoriesDataProvider>
+            {getLayout(
+              <Provider store={configureStore}>
+                <Component {...pageProps} />
+                <ToastContainer
+                  // limit={1}
+                  transition={Zoom}
+                  theme="colored"
+                  autoClose={1000}
+                  hideProgressBar={true}
+                  newestOnTop={true}
+                  draggable={false}
+                  pauseOnVisibilityChange
+                  closeOnClick
+                  pauseOnHover
+                  // hideDuration={100}
+                  // position='fixed'
+                  // containerId="second"
+                />
+              </Provider>
+            )}
+          </CategoriesDataProvider>
         </CurrentDeviceProvider>
       </NotificationsProvider>
     </SkeletonTheme>
