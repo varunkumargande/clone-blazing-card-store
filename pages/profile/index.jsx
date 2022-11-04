@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import Router, { useRouter } from "next/router";
-import Header from "../../components/partials/LandingPage/Header";
-import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
-import IconLike from "../../components/Icons/IconLike";
-import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
 import IconShareFacebook from "../../components/Icons/IconShareFacebook";
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
@@ -356,18 +353,34 @@ export default function PublicProfile() {
                   <div className="social-icons-wrapper">
                     <div className="social-border"></div>
                     <ul className="social-icons flex">
-                      {profile && profile.facebookUrl && (
+                      {profile?.facebookUrl && (
                         <li
                           onClick={() => handleSocialLinks(profile.facebookUrl)}
                         >
                           <IconShareFacebook />
                         </li>
                       )}
-                      {profile && profile.twitterUrl && (
+                      {profile?.twitterUrl && (
                         <li
                           onClick={() => handleSocialLinks(profile.twitterUrl)}
                         >
                           <IconShareTwitter />
+                        </li>
+                      )}
+                      {profile?.mobileNumber && (
+                        <li>
+                          <Link
+                            href={`https://api.whatsapp.com/send?phone=${profile.mobileNumber}&text=Hi ${renderProfileName()}!`}
+                          >
+                            <a
+                              target={
+                                profile?.mobileNumber ? "_blank" : "_self"
+                              }
+                              rel="noopener noreferrer"
+                            >
+                              <IconShareWhatsup />
+                            </a>
+                          </Link>
                         </li>
                       )}
                     </ul>
