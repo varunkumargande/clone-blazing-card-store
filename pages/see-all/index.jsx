@@ -16,15 +16,18 @@ import {
   saveCategoryName,
   saveSubCategoryName,
 } from "../../store/category/action";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const { isMobile } = useIsMobile();
   const [active, setActive] = useState(false);
   const [subCatId, setSubCatId] = useState("all");
   const [catIndex, setCatIndex] = useState(null);
   const [streamData, setStreamData] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [loader, setLoader] = useState(true);
 
   const wrapperRef = useRef(null);
   const handleClickOutside = (event) => {
@@ -38,15 +41,7 @@ function categoryStream({ auth, category }) {
       document.removeEventListener("click", handleClickOutside, false);
     };
   }, []);
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+
   useEffect(() => {
     categoryApi(dispatch);
     setCatIndex(0);
@@ -76,6 +71,7 @@ function categoryStream({ auth, category }) {
         <SeeAllParentCategories
           setCatIndex={setCatIndex}
           setStreamData={setStreamData}
+          setLoader={setLoader}
         />
       );
     }
@@ -88,6 +84,7 @@ function categoryStream({ auth, category }) {
           catIndex={catIndex}
           setSubCatId={setSubCatId}
           setStreamData={setStreamData}
+          setLoader={setLoader}
         />
       );
     }
@@ -102,8 +99,8 @@ function categoryStream({ auth, category }) {
 
   return (
     <div className="home-container">
-      {windowWidth <= 1024 ? "" : <HeaderDefault />}
-      {windowWidth <= 1024 ? (
+      {isMobile ? "" : <HeaderDefault />}
+      {isMobile ? (
         ""
       ) : (
         <section className="breadcrumbs-wrapper">
@@ -139,7 +136,7 @@ function categoryStream({ auth, category }) {
               <div className="overflow-none">
                 {handleShowSubCategories()}
                 <div className="card-wrap flex inner-container">
-                  {getStreamCards()}
+                  {loader ? "loading ..." : <>{getStreamCards()}</>}
                 </div>
               </div>
             </div>

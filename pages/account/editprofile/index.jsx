@@ -13,6 +13,7 @@ import ShippingInformation from "../../../components/partials/EditProfile/Shippi
 import Router from "next/router";
 import EditProfileTab from "../../../components/partials/EditProfile/EditProfileTab";
 import BackButton from "../../../components/CommonComponents/BackButton";
+import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 export default function categoryStream() {
   const [activeTab, setActiveTab] = useState("PROFILE");
 
@@ -35,20 +36,11 @@ export default function categoryStream() {
     },
   ]);
 
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
+  const { isMobile } = useIsMobile();
 
   const streamDetail = useSelector(
     (state) => state?.stream?.streamdetails?.stream
   );
-
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
 
   useEffect(() => {
     if (sessionStorage.getItem("blazingUser") == null) {
@@ -72,11 +64,11 @@ export default function categoryStream() {
   };
   return (
     <div className="Edit-profile">
-      {windowWidth <= 1024 ? null : <HeaderDefault />}
+      {isMobile ? null : <HeaderDefault />}
 
       <div className="edit-inner-container">
         <div className="edit-inner">
-          {windowWidth <= 1024 ? (
+          {isMobile ? (
             ""
           ) : (
             <section className="breadcrumbs-wrapper mb32">

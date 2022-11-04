@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import IconChat from "../../Icons/IconChat";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { connect } from "react-redux";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 
 // import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
 // import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
-
-function RightDiv({ streamData, channel, client, auth }) {
+function RightDiv({ streamData, channel, client }) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -45,7 +43,7 @@ function RightDiv({ streamData, channel, client, auth }) {
   // }, [count])
 
   const sendAndUpdateMessage = async (initialMessage = null) => {
-    if (!auth.isLoggedIn && initialMessage !== "JOINED 👋") {
+    if (!streamData?.streamPageDteails.isLoggedIn && initialMessage !== "JOINED 👋") {
       setShowLoginModal(true);
       setInputValue("");
     } else if (initialMessage || inputValue) {
@@ -164,8 +162,4 @@ function RightDiv({ streamData, channel, client, auth }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return state;
-};
-
-export default connect(mapStateToProps)(RightDiv);
+export default memo(RightDiv);
