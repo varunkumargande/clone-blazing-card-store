@@ -214,3 +214,15 @@
         }        
     }
 }
+
+@media all and (min-width:320px) and (max-width:1024px){
+    .messages-wrapper { 
+        .profile-wrapper {
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+        .right-pannel{
+            width:100%;
+        }
+    }
+}

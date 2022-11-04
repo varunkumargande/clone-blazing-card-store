@@ -172,14 +172,11 @@ function Login(props) {
                   </>
                 )}
                 <ErrorMessage errors={errors.password} touched={touched.password} />
-                <div className="flex justify-right mb16 forget mb32">
+                <div className="flex justify-right mb16 forget">
                   <Link href="/account/forgot-password">
                     <a>{loginConstant.form.forgetPassword}</a>
                   </Link>
                 </div>
-              </div>
-              <div className="errorMessage text-center mb16">
-                {loginError}
               </div>
               <div className="submitWrap mb32">
                 <button type="submit" className="primary-btn">
