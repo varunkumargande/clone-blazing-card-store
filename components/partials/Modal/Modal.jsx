@@ -31,6 +31,8 @@ import Router from "next/router";
 import DefaultServices from "../../Services/DefaultServices";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { getStateList } from "../../../api/common/common";
+import { US_CODE } from "../../Constants";
 
 const responseGoogle = (response) => {
   GoogleLoginApi(
@@ -585,11 +587,16 @@ export function AddAddressModal(props) {
     setAddressList,
   } = props;
 
+  const [stateList, setStateList] = useState([]);
+  useEffect(() => {
+    getStateList(setStateList)
+  },[])
+
   const shipSchema = Yup.object().shape({
     company: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
-    countryId: Yup.string().required("Required"),
+    countryId: Yup.number().required("Required").typeError(),
     state: Yup.string().required("Required"),
     city: Yup.string().required("Required"),
     postcode: Yup.string().min(4, "Invalide PinCode").required("Required"),
@@ -600,7 +607,7 @@ export function AddAddressModal(props) {
       company: addressList[0]?.company ?? "",
       address1: addressList[0]?.address1 ?? "",
       address2: addressList[0]?.address2 ?? "",
-      countryId: addressList[0]?.countryId ?? "",
+      countryId: addressList[0]?.countryId ?? US_CODE,
       postcode: addressList[0]?.postcode ?? "",
       addressId: addressList[0]?.addressId ?? "",
       state: addressList[0]?.state ?? "",
@@ -610,10 +617,9 @@ export function AddAddressModal(props) {
       setShip(values);
       fetchShiipmentApi();
       close(false);
-    },
-    validationSchema: () => shipSchema,
-  });
+    }
 
+  });
   return (
     <>
       {formik ? (
@@ -633,7 +639,7 @@ export function AddAddressModal(props) {
                 </span>
               </button>
             </div>
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} onError={console.log(formik.values)} >
               <div className="modal-body">
                 <div className="input-control">
                   <label>Company *</label>
@@ -645,24 +651,6 @@ export function AddAddressModal(props) {
                   />
                   <ErrorMessage errors={formik.errors.company} />{" "}
                 </div>
-                {/* <div className="input-control">
-                  <label>Phone Number *</label>
-                  <input
-                    name="phoneNumber"
-                    placeholder={"Enter here"}
-                    value={formik.values.phoneNumber}
-                    onChange={formik.handleChange}
-                  />
-                  <ErrorMessage errors={errors} />                </div>
-                <div className="input-control">
-                  <label>Email Address *</label>
-                  <input
-                    name="email"
-                    placeholder={"Enter here"}
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                  />
-                  <ErrorMessage errors={errors} />                </div> */}
                 <div className="input-control">
                   <label>Address Line 1 *</label>
                   <input
@@ -696,7 +684,6 @@ export function AddAddressModal(props) {
                 <div className="input-control" hidden>
                   <input name="addressId" value={formik.values.addressId} />
                 </div>
-
                 <div className="input-control">
                   <label>City *</label>
                   <input
@@ -708,8 +695,9 @@ export function AddAddressModal(props) {
                   <ErrorMessage errors={formik.errors.city} />{" "}
                 </div>
 
-                <div className="input-control">
-                  <label>State *</label>
+
+                {/* <div className="input-control"> Please do not remove this code 
+                  <label>State *</label> A quick fix for the stable build
                   <input
                     name="state"
                     placeholder={"Enter here"}
@@ -717,6 +705,26 @@ export function AddAddressModal(props) {
                     onChange={formik.handleChange}
                   />
                   <ErrorMessage errors={formik.errors.state} />{" "}
+                </div> */}
+
+                <div className="input-control">
+                  <label>State *</label>
+                  <select
+                    className="input-control"
+                    name="state"
+                    onChange={formik.handleChange}
+                    value={formik.values.state}
+                  >
+                    <option>Select here</option>
+                    {stateList?.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.name}>{item.name}</option>
+                        </>
+                      );
+                    })}
+                  </select>
+                  <ErrorMessage errors={formik.errors.state} />
                 </div>
 
                 <div className="input-control">
@@ -726,7 +734,9 @@ export function AddAddressModal(props) {
                     name="countryId"
                     onChange={formik.handleChange}
                     value={formik.values.countryId}
+                    disabled={true}
                   >
+                    <option>United States</option>
                     {countryData?.map((item, index) => {
                       return (
                         <>
@@ -969,43 +979,50 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 }
 
 export function UnfollowModal(props) {
-  const {profile, setIsOpenFollowUnfollow, profileMethods,setKey} = props;
+  const { profile, setIsOpenFollowUnfollow, profileMethods, setKey } = props;
   const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
   const handleUnfollowClick = () => {
-    profileMethods.UserFollowUser(userDetail.id, profile.id, setKey,setIsOpenFollowUnfollow)
-  }
+    profileMethods.UserFollowUser(
+      userDetail.id,
+      profile.id,
+      setKey,
+      setIsOpenFollowUnfollow
+    );
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
         <div className="modal-body text-center">
           <div className="profile-icon">
-            {
-              !!profile && <CloudinaryImage
-              imageUrl={DefaultServices?.GetFullImageURL(
-                profile,
-                "profile"
-              )}
-              keyId={DefaultServices?.GetFullImageURL(
-                profile,
-                "profile"
-              )}
-              transformation={ImageTransformation.streamPageProfile}
-              alternative={"profileImg"}
-            />
-            }
+            {!!profile && (
+              <CloudinaryImage
+                imageUrl={DefaultServices?.GetFullImageURL(profile, "profile")}
+                keyId={DefaultServices?.GetFullImageURL(profile, "profile")}
+                transformation={ImageTransformation.streamPageProfile}
+                alternative={"profileImg"}
+              />
+            )}
           </div>
           <div className="profile-id">Want to follow @{profile?.username}</div>
           <div className="btn-wrap follow-btn-wrap flex justify-center">
-            <button className="border-btn" onClick={(e) => {
-              e.preventDefault();
-              setIsOpenFollowUnfollow(false);
-            }
-              }>Cancel
+            <button
+              className="border-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpenFollowUnfollow(false);
+              }}
+            >
+              Cancel
             </button>
-            <button className="primary-btn" onClick={(e) => {
-              e.preventDefault();
-              handleUnfollowClick()}
-              }>Unfollow</button>
+            <button
+              className="primary-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                handleUnfollowClick();
+              }}
+            >
+              Unfollow
+            </button>
           </div>
         </div>
       </div>

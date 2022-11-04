@@ -7,3 +7,11 @@ export const getImageSignedUrl = async (payLoad) => {
   }
   return false
 }
+
+
+export const getStateList = async (setStateList) => {
+  const result = await APIServices.getAll("list/zone-list?limit=0&offset=0&keyword=&count=0&status=1")
+  if (result && result?.status == 200 && result?.data?.status == 1) {
+    setStateList(result.data.data);
+  }
+}
