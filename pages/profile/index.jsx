@@ -18,6 +18,7 @@ import DynamicModal from "../../components/CommonComponents/ModalWithDynamicTitl
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
+import { UnfollowModal } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 export default function PublicProfile() {
@@ -37,7 +38,7 @@ export default function PublicProfile() {
   );
   const [showModal, setShowModal] = useState(false);
   const [key, setKey] = useState(1);
-
+  const [isOpenFollowUnfollow, setIsOpenFollowUnfollow] = useState(false);
   const wrapperRef = useRef(null);
 
   const getSessionUser = () => {
@@ -278,8 +279,12 @@ export default function PublicProfile() {
   const handleFollow = () => {
     if (sessionStorage.getItem("blazingUser")) {
       let user = JSON.parse(sessionStorage.getItem("blazingUser"));
-
-      ProfileMethods.UserFollowUser(user.id, profile.id, setKey);
+      if (profile?.isFollow) {
+        setIsOpenFollowUnfollow(true);
+      }
+      if(!profile?.isFollow){
+        ProfileMethods.UserFollowUser(user.id, profile.id, setKey);
+      }
     } else {
       setShowModal(true);
     }
@@ -384,7 +389,16 @@ export default function PublicProfile() {
             </div>
           </div>
         </section>
+        {isOpenFollowUnfollow && (
+          <UnfollowModal
+            profile={profile}
+            setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+            profileMethods={ProfileMethods}
+            setKey={setKey}
+          />
+        )}
       </div>
+
       <Footer />
     </div>
   );
