@@ -4,19 +4,47 @@ import { catSubStreamDetailApi } from "../../../../api/stream/subStreamDetail";
 import CategoryStream from "../Electronic";
 
 function Vertical({ category, showLoginModal }) {
+  const [subCategories, setSubCategories] = useState([]);
+  const [data, setData] = useState({});
+  const [page, setPage] = useState(0);
+  const [catId, setCatId] = useState(null);
+  const [loader, setLoader] = useState({});
+  const [apiCount, setApiCount] = useState(0);
+  const [fetch, setFetch] = useState(true);
 
-  const [subCategories, setSubCategories] = useState({});
-
+  useEffect(() => {
+    setApiCount(0);
+    setData({});
+  }, [category?.categoryName]);
 
   useEffect(() => {
     const catData = category?.categories.find(
       (obj) => obj.categoryId === parseInt(category?.categoryId)
     );
-    setSubCategories(catData?.children)
-    // catSubStreamDetailApi(setData, page, catData?.categoryId);
+    setSubCategories(catData?.children);
+    setApiCount(0);
+    setFetch(true);
   }, [category]);
 
-  console.log(subCategories)
+  useEffect(() => {
+    const catLength = subCategories?.length;
+    if (apiCount < catLength) {
+      catSubStreamDetailApi(
+        setData,
+        page,
+        subCategories[apiCount]?.categoryId,
+        data,
+        setLoader,
+        setApiCount
+      );
+    }
+  }, [apiCount, subCategories]);
+
+  useEffect(() => {
+    if (!!catId) {
+      catSubStreamDetailApi(setData, page, catId, data, setLoader, setApiCount);
+    }
+  }, [page]);
 
   const handleCardVisisble = () => {
     if (total === limit) {
@@ -25,19 +53,23 @@ function Vertical({ category, showLoginModal }) {
   };
 
   const handleCardDetail = () => {
-    // if (data.length) {
-    //   const categoriesData = Object.entries(categories);
-    //   return categoriesData.map((element) => {
-    //     return (
-    //       <></>
-    //       // <CategoryStream
-    //       //   showLoginModal={showLoginModal}
-    //       //   categoryData={element}
-    //       //   apiCallBack={catSubStreamDetailApi}
-    //       // />
-    //     );
-    //   });
-    // }
+    if (subCategories) {
+      return subCategories.map((item) => {
+        return (
+          <CategoryStream
+            catData={data}
+            showLoginModal={showLoginModal}
+            catName={item?.name}
+            catSlug={item?.categorySlug}
+            catId={item?.categoryId}
+            loader={loader}
+            setPage={setPage}
+            page={page}
+            setCatId={setCatId}
+          />
+        );
+      });
+    }
   };
 
   return <div className="home-container">{handleCardDetail()}</div>;
