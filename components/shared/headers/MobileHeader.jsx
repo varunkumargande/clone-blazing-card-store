@@ -308,7 +308,7 @@ function MobileHeader({ auth }) {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/">
+                    <Link href="/chat">
                       <a className="message">
                         <IconMessageMobile />
                         <span>Message</span>
@@ -316,7 +316,7 @@ function MobileHeader({ auth }) {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/">
+                    <Link href="/notifications">
                       <a className="notification">
                         <IconNotificationMobile />
                         <span>Notification</span>

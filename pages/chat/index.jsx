@@ -24,6 +24,7 @@ import { ChatUserModal } from "../../components/partials/Modal/Modal";
 import { Loader } from "../../components/reusable/Loader";
 import moment from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import BackButton from "../../components/CommonComponents/BackButton";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
@@ -226,7 +227,13 @@ function Chat({ auth }) {
 
   return (
     <>
-      {isMobile ? <MobileHeader /> : <HeaderDefault />}
+      {isMobile ? (
+        <div className="message-title flex flex-center">
+          <BackButton name={"Message"} />
+        </div>
+      ) : (
+        <HeaderDefault />
+      )}
       <div className="messages-wrapper">
         <h1>Messages</h1>
         <div className="flex space-between message-inner">
