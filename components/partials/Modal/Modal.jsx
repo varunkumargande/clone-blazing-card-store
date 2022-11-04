@@ -57,7 +57,14 @@ const responseGoogleFailure = (response) => {
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
-  useState
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = (e) => {
+    e.preventDefault();
+    setIsCopied(true);
+    navigator.clipboard.writeText(pageUrl);
+    setTimeout(() => setIsCopied(false), 1000);
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
@@ -116,12 +123,10 @@ export function ShareModalModal({ setIsShareModalOpen }) {
             <button
               className="copy-btn"
               onClick={(e) => {
-                e.preventDefault();
-                navigator.clipboard.writeText(pageUrl);
-
+                handleCopy(e);
               }}
             >
-              Copy
+              {isCopied ? "Copied" : "Copy"}
             </button>
           </div>
         </div>
