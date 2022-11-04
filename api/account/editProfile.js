@@ -1,6 +1,7 @@
 import APIServices from "../../services";
 import DefaultConstants from "../../utilities/constants";
 import { show } from "../../store/toast/action";
+import { getErrorMessage } from "../../utilities/common-helpers";
 export async function editProfileApi(
   values,
   newDpName,
@@ -27,7 +28,8 @@ export async function editProfileApi(
     setLoader(false);
     Router.push("/account/myprofile");
   } else {
-    dispatch(show({ message: result.data.message, type: "error" }));
+    const errorMessage = getErrorMessage(result);
+    dispatch(show({ message: errorMessage, type: "error" }));
     setLoader(false);
   }
   return result.data;
