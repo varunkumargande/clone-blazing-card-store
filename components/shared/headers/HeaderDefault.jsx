@@ -33,6 +33,7 @@ import { useNotifications } from "../../../contexts/Notifications/Notifications"
 import { vendorAuth } from "../../../store/vendorAuth/action";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
 import { show } from "../../../store/toast/action";
+
 function HeaderDefault({ auth }) {
   const router = useRouter();
   const [active, setActive] = useState(false);
@@ -75,9 +76,7 @@ function HeaderDefault({ auth }) {
   };
 
   useEffect(() => {
-    categoryListApi(dispatch);
     authFunc();
-    // getServiceApi(dispatch);
   }, []);
 
   useEffect(() => {

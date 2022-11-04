@@ -53,33 +53,80 @@ export async function catStreamDetailApi(
     `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}&categoryId=${catId}&key=10980374eab848ac`
   );
   if (result?.status === 200) {
-    const newData = { ...data };
-    const subData = { ...newData[catId] };
-    const newsubdata = result?.data?.data;
-    newData[catId] = { ...subData, ...newsubdata };
-    if (data[catId]?.data) {
-      newData[catId].data = data[catId].data.concat(newData[catId].data);
+    if (!!result?.data?.data?.total) {
+      // duplicating old data to newdata var
+      const newData = { ...data };
+      // duplicating old data sub data to sub data var
+      const subData = { ...newData[catId] };
+      // getting new sub data from api
+      const newsubdata = result?.data?.data;
+      // sub data's old data and new data from api is merged
+      newData[catId] = { ...subData, ...newsubdata };
+      // if old data exist then concatenate inside  else direcltly save new data
+      if (data[catId]?.data) {
+        newData[catId].data = data[catId].data.concat(newData[catId].data);
+      }
+      setData(newData);
     }
-    setData(newData);
-  }
-  if (result?.data?.data?.total === 0) {
-    setCategories((categories) =>
-      categories.filter((item) => {
-        if (item.categoryId !== catId) {
-          return item;
-        }
-      })
-    );
+    if (result?.data?.data?.total === 0) {
+      // remove category which has no data
+      setCategories((categories) =>
+        categories.filter((item) => {
+          if (item.categoryId !== catId) {
+            return item;
+          }
+        })
+      );
+    }
   }
   setLoader((loader) => ({ ...loader, [catId]: true }));
-  setApiCount((count) => count + 1);
+  if (result?.status) {
+    setApiCount((count) => count + 1);
+  }
 }
 
-export async function catSubStreamDetailApi(setData, page, catId) {
+export async function catSubStreamDetailApi(
+  setData,
+  page,
+  catId,
+  data,
+  setLoader,
+  setApiCount,
+  setSubCategories
+) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&categoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}&key:10980374eab848ac`
+    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}&key=10980374eab848ac`
   );
-  if (result?.status === 200) setData(result?.data?.data);
+
+  if (result?.status === 200) {
+    if (!!result?.data?.data?.total) {
+      // duplicating old data to newdata var
+      const newData = { ...data };
+      // getting new sub data from api
+      const newsubdata = result?.data?.data;
+      // adding api reponse data to particular sub category
+      newData[catId] = { ...newsubdata };
+      if (data[catId]?.data) {
+        newData[catId].data = data[catId].data.concat(newData[catId].data);
+      }
+      // if old data exist then concatenate inside  else direcltly save new data
+      setData(newData);
+    }
+    if (result?.data?.data?.total === 0) {
+      setSubCategories((categories) =>
+        categories.filter((item) => {
+          if (item.categoryId !== catId) {
+            return item;
+          }
+        })
+      );
+    }
+  }
+
+  setLoader((loader) => ({ ...loader, [catId]: true }));
+  if (result?.status) {
+    setApiCount((count) => count + 1);
+  }
 }
 /**
  * *************************************************************************************************
@@ -101,7 +148,7 @@ export async function getStreamCategoryBasedApi(
   );
   if (result?.status === 200) {
     setStreamData(result?.data?.data?.result);
-    setLoader(false)
+    setLoader(false);
   } else {
     Router.push("/404");
   }
@@ -115,11 +162,11 @@ export async function getStreamSubCategoryBasedApi(
   setLoader
 ) {
   const result = await APIServices.getAll(
-    `stream/categories-stream?category_slug=${catName}&subCategory_slug=${subCatName}&type=${type}`
+    `stream/categories-stream?category_slug=${catName}&subCategory_slug=${subCatName}&type=${type}&key:10980374eab848ac`
   );
   if (result?.status === 200) {
     setStreamData(result?.data?.data?.result);
-    setLoader(false)
+    setLoader(false);
   } else {
     Router.push("/404");
   }

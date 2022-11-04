@@ -7,10 +7,8 @@ import ThemeChanger from "../../components/elements/color/themeControl";
 import FooterFullwidth from "../../components/shared/footers/FooterFullwidth";
 import MyOrderComp from "../../components/partials/account/OrderMy";
 import { useRouter } from "next/router";
-
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import MobileHeader from "../../components/shared/headers/MobileHeader";
-import { categoryApi } from "../../api/category/category";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 const breadCrumb = [
@@ -24,14 +22,8 @@ const breadCrumb = [
 
 const MyOrders = ({ auth, compare }) => {
   const router = useRouter();
-
   const { isMobile } = useIsMobile();
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    categoryApi(dispatch);
-  }, []);
 
   useEffect(() => {
     if (auth.isLoggedIn == false) {
