@@ -1,16 +1,13 @@
 import IconLoader from "../Icons/IconLoader";
 import IconLoaderPlay from "../Icons/IconLoaderPlay";
-import { useDispatch } from "react-redux";
 import { limit } from "../Constants";
 
 const CardLoader = ({ setPage, page, isCat, catId, setCatId }) => {
-  const dispatch = useDispatch();
-
   const handleCallApi = () => {
     const pageAdd = page + limit;
     setPage(pageAdd);
-    if(isCat){
-      setCatId(catId)
+    if (isCat) {
+      setCatId(catId);
     }
   };
 
@@ -26,7 +23,7 @@ const CardLoader = ({ setPage, page, isCat, catId, setCatId }) => {
               <IconLoaderPlay />
             </span>
           </div>
-          <div className="loading">Load All</div>
+          <div className="loading">Load More</div>
         </div>
         <div className="text">
           <div className="title"></div>

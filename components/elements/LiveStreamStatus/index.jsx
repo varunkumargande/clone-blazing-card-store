@@ -76,17 +76,15 @@ function LiveStreamStatus({
   const handleLikeButton = () => {
     if (auth?.isLoggedIn) {
       return (
-        <>
-          <button
-            className={getlikedStatus(uuid)}
-            id={uuid + "-btn"}
-            onClick={() => handleLikeUnlike(uuid)}
-          >
-            <span>
-              <IconLike />
-            </span>
-          </button>
-        </>
+        <button
+          className={getlikedStatus(uuid)}
+          id={uuid + "-btn"}
+          onClick={() => handleLikeUnlike(uuid)}
+        >
+          <span>
+            <IconLike />
+          </span>
+        </button>
       );
     } else {
       return (
@@ -116,7 +114,12 @@ function LiveStreamStatus({
       ) : (
         <>
           <div className="tme-wrap flex flex-center justify-center">
-            <span>{getStreamScheduleDate(detail?.scheduleDate, detail?.scheduletime)}</span>
+            <span>
+              {getStreamScheduleDate(
+                detail?.scheduleDate,
+                detail?.scheduletime
+              )}
+            </span>
           </div>
           {handleLikeButton()}
         </>

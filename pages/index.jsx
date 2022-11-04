@@ -106,24 +106,22 @@ function landingPage({ auth, category }) {
 
   const getAllCategoriesCard = () => {
     if (!!data && !!categories) {
-      return categories.map((elem) => {
-        return (
-          <CategoryStream
-            catData={data}
-            showLoginModal={setShowModal}
-            catName={elem?.name}
-            catSlug={elem?.categorySlug}
-            catId={elem?.categoryId}
-            loader={loader}
-            setCategories={setCategories}
-            categories={categories}
-            catVisible={catVisible}
-            setPage={setPage}
-            page={page}
-            setCatId={setCatId}
-          />
-        );
-      });
+      return categories.map((elem) => (
+        <CategoryStream
+          catData={data}
+          showLoginModal={setShowModal}
+          catName={elem?.name}
+          catSlug={elem?.categorySlug}
+          catId={elem?.categoryId}
+          loader={loader}
+          setCategories={setCategories}
+          categories={categories}
+          catVisible={catVisible}
+          setPage={setPage}
+          page={page}
+          setCatId={setCatId}
+        />
+      ));
     }
   };
 
@@ -159,19 +157,15 @@ function landingPage({ auth, category }) {
       />
       <div className="card-wrapper">
         {category.categoryName == "likes" ? (
-          <>{getAllLikedCard()}</>
-        ) : (
+          getAllLikedCard()
+        ) : category.categoryName === null ? (
           <>
-            {category.categoryName === null ? (
-              <>
-                <LiveShow showLoginModal={setShowModal} />
-                <ScheduledShow showLoginModal={setShowModal} />
-                {getAllCategoriesCard()}
-              </>
-            ) : (
-              <Vertical showLoginModal={setShowModal} />
-            )}
+            <LiveShow showLoginModal={setShowModal} />
+            <ScheduledShow showLoginModal={setShowModal} />
+            {getAllCategoriesCard()}
           </>
+        ) : (
+          <Vertical showLoginModal={setShowModal} />
         )}
       </div>
       <Footer />

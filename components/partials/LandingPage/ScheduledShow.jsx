@@ -6,6 +6,7 @@ import { showCardLoader } from "../../../api/utils/showCardLoader";
 import { limit } from "../../Constants";
 import ShowViewAll from "../../reusable/viewAll";
 import Router from "next/router";
+import StreamCardSkeleton from "../../../skeleton/StreamCardSkeleton";
 
 export default function LiveShow({ showLoginModal }) {
   const [data, setData] = useState([]);
@@ -33,7 +34,7 @@ export default function LiveShow({ showLoginModal }) {
 
   const handleCardVisisble = () => {
     if (total === limit) {
-      if(data.length) {
+      if (data.length) {
         return <> {showCardLoader(setPage, page)} </>;
       }
     }
@@ -44,7 +45,7 @@ export default function LiveShow({ showLoginModal }) {
       pathname: "/see-all",
       query: {
         page: "scheduled",
-        category: ""
+        category: "",
       },
     });
   };
@@ -58,20 +59,37 @@ export default function LiveShow({ showLoginModal }) {
               <div className="flex flex-center">
                 <h3 className="title">Scheduled Shows</h3>
               </div>
-              <ShowViewAll dataLen = {data.length} handleGoToSeeAll={handleGoToSeeAll} catName={null} />
+              <ShowViewAll
+                dataLen={data.length}
+                handleGoToSeeAll={handleGoToSeeAll}
+                catName={null}
+              />
             </div>
           </div>
           <div className="overflow-wrap">
             <div className="flex inner-container">
               <div className="card-wrap flex">
-                {loader ? (
-                  "loading ..."
-                ) : (
-                  <>
-                    {getStreamCards()}
-                    {handleCardVisisble()}
-                  </>
-                )}
+                {getStreamCards()}
+                {handleCardVisisble()}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    } else if (loader) {
+      return (
+        <section className="Live-wrapper card-inner">
+          <div className="inner-container">
+            <div className="title-wrap flex space-between flex-center">
+              <div className="flex flex-center">
+                <h3 className="title">Scheduled Shows</h3>
+              </div>
+            </div>
+          </div>
+          <div className="overflow-wrap">
+            <div className="flex inner-container">
+              <div className="card-wrap flex">
+                <StreamCardSkeleton count={7} name={"home-scheduled-shows"} />
               </div>
             </div>
           </div>

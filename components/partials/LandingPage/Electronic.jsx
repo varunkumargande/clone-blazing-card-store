@@ -13,6 +13,7 @@ import { catStreamDetailApi } from "../../../api/stream/subStreamDetail";
 import { limit } from "../../Constants";
 import { showCatCardLoader } from "../../../api/utils/showCatCardLoader";
 import ShowViewAll from "../../reusable/viewAll";
+import StreamCardSkeleton from "../../../skeleton/StreamCardSkeleton";
 
 function CategoryStream({
   showLoginModal,
@@ -47,7 +48,7 @@ function CategoryStream({
       query: {
         page: "allCategory",
         category: catSlug,
-        subCategory: "all"
+        subCategory: "all",
       },
     });
   };
@@ -70,16 +71,20 @@ function CategoryStream({
       </div>
 
       <div className="overflow-wrap">
-        <div className="flex inner-container">
-          {loader[catId] ? (
+        {loader[catId] ? (
+          <div className="flex inner-container">
             <div className="card-wrap flex">
               {getStreamCards()}
               {handleCatCardVisisble()}
             </div>
-          ) : (
-            <div> "loading ..."</div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex inner-container px-0">
+            <div className="card-wrap flex">
+              <StreamCardSkeleton count={7} name={catId} />
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
