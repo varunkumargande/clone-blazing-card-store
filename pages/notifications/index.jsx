@@ -4,6 +4,7 @@ import { useNotifications } from "../../contexts/Notifications/Notifications";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import Footer from "../../components/partials/LandingPage/Footer";
 import BackButton from "../../components/CommonComponents/BackButton";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 const notifications = () => {
   const {
@@ -14,20 +15,12 @@ const notifications = () => {
     viewMore,
     isFetching,
   } = useNotifications();
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
 
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+  const { isMobile } = useIsMobile();
 
   return (
     <>
-      {windowWidth <= 1024 ? (
+      {isMobile ? (
         <div className="notification-title flex flex-center">
           <BackButton name={"Notification"} />
         </div>
@@ -35,7 +28,7 @@ const notifications = () => {
         <HeaderDefault />
       )}
       <div className="notification-wrapper">
-        {windowWidth <= 1024 ? (
+        {isMobile ? (
           ""
         ) : (
           <div className="head-title flex space-between flex-center">

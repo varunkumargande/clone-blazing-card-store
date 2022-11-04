@@ -1,7 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 
-export default function IconChat(){
+function IconChat(){
     return(
         <img src="/static/images/send.png" alt="chat" />
     );
 }
+
+export default memo(IconChat)

@@ -11,26 +11,19 @@ import { orderDetailApi } from "../../api";
 import moment from "moment";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 export default function Orderdetails() {
   const router = useRouter();
   const orderId = router.query.id;
   const [active, setActive] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(0);
+  const { isMobile } = useIsMobile();
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   const orderDetail = useSelector((state) => state?.order?.orderDetail);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
 
   useEffect(() => {
     orderDetailApi(dispatch, orderId);
-  }, []);
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
   }, []);
 
   const handleOnClick = () => {
@@ -50,24 +43,31 @@ export default function Orderdetails() {
   }, []);
   const breadCrumb = [
     {
-        text: 'Home',
-        url: '/'
+      text: "Home",
+      url: "/",
     },
     {
-        text: '/ My orders',
-        url: '/my-orders/',
+      text: "/ My orders",
+      url: "/my-orders/",
     },
     {
-        text: '/ Order Detail',
-        url: `/order-details?id=${orderId}`,
-    }
-];
+      text: "/ Order Detail",
+      url: `/order-details?id=${orderId}`,
+    },
+  ];
 
-const createBreadCrumb = () => {
+  const createBreadCrumb = () => {
     return (
       <>
         {breadCrumb.map((link) => (
-          <li key={link.text} className={breadCrumb.indexOf(link) === (breadCrumb.length-1) ? "current" : ""}>
+          <li
+            key={link.text}
+            className={
+              breadCrumb.indexOf(link) === breadCrumb.length - 1
+                ? "current"
+                : ""
+            }
+          >
             <Link href={link.url}>
               <a>{link.text}</a>
             </Link>
@@ -78,18 +78,20 @@ const createBreadCrumb = () => {
   };
   return (
     <>
-      {windowWidth <= 1024 ? "" : <HeaderDefault />}
+      {isMobile ? "" : <HeaderDefault />}
       <div className="myorder-wrapper">
-      {windowWidth <= 1024 ? 
-            "" 
-            : <section className="breadcrumbs-wrapper no-bg mb26">
-                <ul className="breadcrumbs flex flex-center">
-                {createBreadCrumb()}
+        {isMobile ? (
+          ""
+        ) : (
+          <section className="breadcrumbs-wrapper no-bg mb26">
+            <ul className="breadcrumbs flex flex-center">
+              {createBreadCrumb()}
             </ul>
-        </section>}
+          </section>
+        )}
         <div className="heading-wrapper flex space-between flex-center mb16 border-btm">
           <h1>
-            <button className="back" onClick={e => window.history.back()}>
+            <button className="back" onClick={(e) => window.history.back()}>
               <IconBack />
             </button>
             Order Detail
@@ -97,7 +99,9 @@ const createBreadCrumb = () => {
           <div className="order-time-wrap flex flex-center">
             <div className="placed">
               Order Placed:{" "}
-              {moment(orderDetail?.productData?.createdDate).format("MMMM DD, YYYY")}
+              {moment(orderDetail?.productData?.createdDate).format(
+                "MMMM DD, YYYY"
+              )}
             </div>
             <div className="delivered">Order Delivered: In Processing</div>
           </div>
