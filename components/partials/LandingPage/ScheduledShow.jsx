@@ -23,6 +23,7 @@ function LiveShow({ showLoginModal }) {
       return data?.map((detail) => {
         return (
           <StreamCard
+            key={detail.uuid}
             isLive={false}
             detail={detail}
             showLoginModal={showLoginModal}

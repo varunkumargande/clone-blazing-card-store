@@ -99,6 +99,7 @@ function landingPage({ category }) {
     if (!!data && !!categories) {
       return categories.map((elem) => (
         <CategoryStream
+          key={elem?.name}
           catData={data}
           showLoginModal={setShowModal}
           catName={elem?.name}

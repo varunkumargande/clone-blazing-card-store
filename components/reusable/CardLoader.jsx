@@ -13,7 +13,7 @@ const CardLoader = ({ setPage, page, isCat, catId, setCatId }) => {
 
   return (
     <div className="card-list flex flex-center" onClick={handleCallApi}>
-      <div class="inner-card-list Loader">
+      <div className="inner-card-list Loader">
         <div className="image flex flex-center justify-center column">
           <div className="LoaderImg">
             <div className="loader-icon">

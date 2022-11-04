@@ -20,17 +20,14 @@ function LiveShow({ showLoginModal }) {
 
   const getStreamCards = () => {
     if (data.length) {
-      return data?.map((detail, index) => {
-        return (
-          <React.Fragment key={index}>
-            <StreamCard
-              showLoginModal={showLoginModal}
-              detail={detail}
-              isLive={true}
-            />
-          </React.Fragment>
-        );
-      });
+      return data?.map((detail) => (
+        <StreamCard
+          key={detail.uuid}
+          showLoginModal={showLoginModal}
+          detail={detail}
+          isLive={true}
+        />
+      ));
     }
   };
 
