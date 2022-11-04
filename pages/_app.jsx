@@ -19,9 +19,6 @@ import { LanguageSwitcherAPi } from "../api/account/languageSwitcherAPi";
 import NotificationsProvider from "../contexts/Notifications/Notifications";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
-//import "slick-carousel/slick/slick.css";
-//import "slick-carousel/slick/slick-theme.css";
 import "../scss/elements/_streaming.scss";
 import CurrentDeviceProvider from "../contexts/Devices/CurrentDevices";
 import CategoriesDataProvider from "../contexts/Categoires/CategoriesData";
@@ -64,7 +61,6 @@ function MyApp({ Component, pageProps }) {
               <Provider store={configureStore}>
                 <Component {...pageProps} />
                 <ToastContainer
-                  // limit={1}
                   transition={Zoom}
                   theme="colored"
                   autoClose={1000}
@@ -74,9 +70,6 @@ function MyApp({ Component, pageProps }) {
                   pauseOnVisibilityChange
                   closeOnClick
                   pauseOnHover
-                  // hideDuration={100}
-                  // position='fixed'
-                  // containerId="second"
                 />
               </Provider>
             )}

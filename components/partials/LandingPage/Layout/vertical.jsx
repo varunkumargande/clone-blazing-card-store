@@ -28,15 +28,6 @@ function Vertical({ category, showLoginModal }) {
     }
   }, [category]);
 
-  // useEffect(() => {
-  // if (category?.categories?.length) {
-  //   const catData = category?.categories.find(
-  //     (obj) => obj.categoryId === parseInt(category?.categoryId)
-  //   );
-  //   setSubCategories(catData?.children);
-  // }
-  // }, [category?.categories?.length]);
-
   useEffect(() => {
     const catLength = subCategories?.length;
     if (apiCount < catLength) {

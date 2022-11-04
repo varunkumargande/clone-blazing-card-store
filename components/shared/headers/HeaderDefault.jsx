@@ -77,7 +77,6 @@ function HeaderDefault({ auth }) {
 
   useEffect(() => {
     authFunc();
-    // getServiceApi(dispatch);
   }, []);
 
   useEffect(() => {

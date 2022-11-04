@@ -54,16 +54,22 @@ export async function catStreamDetailApi(
   );
   if (result?.status === 200) {
     if (!!result?.data?.data?.total) {
+      // duplicating old data to newdata var
       const newData = { ...data };
+      // duplicating old data sub data to sub data var
       const subData = { ...newData[catId] };
+      // getting new sub data from api
       const newsubdata = result?.data?.data;
+      // sub data's old data and new data from api is merged
       newData[catId] = { ...subData, ...newsubdata };
+      // if old data exist then concatenate inside  else direcltly save new data
       if (data[catId]?.data) {
         newData[catId].data = data[catId].data.concat(newData[catId].data);
       }
       setData(newData);
     }
     if (result?.data?.data?.total === 0) {
+      // remove category which has no data
       setCategories((categories) =>
         categories.filter((item) => {
           if (item.categoryId !== catId) {
@@ -73,9 +79,8 @@ export async function catStreamDetailApi(
       );
     }
   }
-
   setLoader((loader) => ({ ...loader, [catId]: true }));
-  if(result?.status) {
+  if (result?.status) {
     setApiCount((count) => count + 1);
   }
 }
@@ -95,12 +100,16 @@ export async function catSubStreamDetailApi(
 
   if (result?.status === 200) {
     if (!!result?.data?.data?.total) {
+      // duplicating old data to newdata var
       const newData = { ...data };
+      // getting new sub data from api
       const newsubdata = result?.data?.data;
+      // adding api reponse data to particular sub category
       newData[catId] = { ...newsubdata };
       if (data[catId]?.data) {
         newData[catId].data = data[catId].data.concat(newData[catId].data);
       }
+      // if old data exist then concatenate inside  else direcltly save new data
       setData(newData);
     }
     if (result?.data?.data?.total === 0) {
@@ -115,7 +124,9 @@ export async function catSubStreamDetailApi(
   }
 
   setLoader((loader) => ({ ...loader, [catId]: true }));
-  setApiCount((count) => count + 1);
+  if (result?.status) {
+    setApiCount((count) => count + 1);
+  }
 }
 /**
  * *************************************************************************************************

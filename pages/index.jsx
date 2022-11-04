@@ -25,7 +25,6 @@ function landingPage({ category }) {
   const [catVisible, setCatVisible] = useState(true);
   const [data, setData] = useState({});
   const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(null);
   const [catId, setCatId] = useState(null);
   const [fetch, setFetch] = useState(true);
 

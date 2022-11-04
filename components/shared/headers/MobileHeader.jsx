@@ -10,8 +10,6 @@ import IconMessageMobile from "../../Icons/IconMessageMobile";
 import IconLogoutMobile from "../../Icons/IconLogoutMobile";
 import IconNotificationMobile from "../../Icons/IconNotificationMobile";
 import { useTranslation } from "../../../i18n";
-// import { categoryListApi } from "../../../api";
-import { useRouter } from "next/router";
 import { login } from "../../../store/auth/action";
 import { connect } from "react-redux";
 import Router from "next/router";
@@ -48,7 +46,6 @@ function MobileHeader({ auth }) {
 
   useEffect(() => {
     authFunc();
-    // getServiceApi(dispatch);
   }, []);
 
   useEffect(() => {
