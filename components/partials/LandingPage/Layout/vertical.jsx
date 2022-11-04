@@ -35,14 +35,23 @@ function Vertical({ category, showLoginModal }) {
         subCategories[apiCount]?.categoryId,
         data,
         setLoader,
-        setApiCount
+        setApiCount,
+        setSubCategories
       );
     }
-  }, [apiCount, subCategories]);
+  }, [apiCount, subCategories, page]);
 
   useEffect(() => {
     if (!!catId) {
-      catSubStreamDetailApi(setData, page, catId, data, setLoader, setApiCount);
+      catSubStreamDetailApi(
+        setData,
+        page,
+        catId,
+        data,
+        setLoader,
+        setApiCount,
+        setSubCategories
+      );
     }
   }, [page]);
 

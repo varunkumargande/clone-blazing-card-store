@@ -81,7 +81,8 @@ export async function catSubStreamDetailApi(
   catId,
   data,
   setLoader,
-  setApiCount
+  setApiCount,
+  setSubCategories
 ) {
   const result = await APIServices.getAll(
     `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}&key=10980374eab848ac`
@@ -96,6 +97,15 @@ export async function catSubStreamDetailApi(
       newData[catId].data = data[catId].data.concat(newData[catId].data);
     }
     setData(newData);
+  }
+  if (result?.data?.data?.total === 0) {
+    setSubCategories((categories) =>
+      categories.filter((item) => {
+        if (item.categoryId !== catId) {
+          return item;
+        }
+      })
+    );
   }
   setLoader((loader) => ({ ...loader, [catId]: true }));
   setApiCount((count) => count + 1);

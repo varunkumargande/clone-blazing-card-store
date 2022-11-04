@@ -17,6 +17,7 @@ import {
   saveSubCategoryName,
 } from "../../store/category/action";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -51,15 +52,14 @@ function categoryStream({ auth, category }) {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-    }
-     else {
+    } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
       }
     }
   }, [query]);
 
-  const getStreamCards = (pageType) => {
+  const getStreamCards = () => {
     if (!!streamData) {
       return streamData.map((item) => {
         return <StreamCard detail={item} showLoginModal={setShowModal} />;
@@ -138,7 +138,14 @@ function categoryStream({ auth, category }) {
               <div className="overflow-none">
                 {handleShowSubCategories()}
                 <div className="card-wrap flex inner-container">
-                  {loader ? "loading ..." : <>{getStreamCards()}</>}
+                  {loader ? (
+                    <StreamCardSkeleton
+                      count={10}
+                      name={`home-intrenal-page-${query?.category}-${query?.subCategory}`}
+                    />
+                  ) : (
+                    getStreamCards()
+                  )}
                 </div>
               </div>
             </div>
