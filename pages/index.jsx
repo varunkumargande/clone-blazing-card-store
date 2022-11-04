@@ -48,6 +48,9 @@ function landingPage({ category }) {
     (state) => state?.stream?.streamdetails
   )?.length;
 
+  /**
+   * appending category ids in object for handling home page
+   */
   useEffect(() => {
     setCategories(category?.categories);
     const catObject = {};
@@ -61,7 +64,13 @@ function landingPage({ category }) {
     setApiCount(0);
     setFetch(true);
   }, [category?.categories]);
+  /**
+   * ==================================================================================
+   */
 
+  /**
+   * fetching data from api for homepage streaming data based on categories
+   */
   useEffect(() => {
     const catLength = category?.categories?.length;
     if ((apiCount < catLength || fetch) && catLength) {
@@ -79,7 +88,13 @@ function landingPage({ category }) {
       }
     }
   }, [category?.categories, apiCount]);
+  /**
+   * ==========================================================================
+   */
 
+  /**
+   * fetching data from loaderall based on category
+   */
   useEffect(() => {
     if (!!catId) {
       catStreamDetailApi(
@@ -93,7 +108,13 @@ function landingPage({ category }) {
       );
     }
   }, [page]);
+  /**
+   * ===============================================
+   */
 
+  /**
+   * showing stream data carousel based on categories
+   */
   const getAllCategoriesCard = () => {
     if (!!data && !!categories) {
       return categories.map((elem) => (
@@ -115,6 +136,9 @@ function landingPage({ category }) {
       ));
     }
   };
+  /**
+   * ==================================================
+   */
 
   const getAllLikedCard = () => {
     if (categories) {
