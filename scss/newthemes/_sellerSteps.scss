@@ -92,6 +92,18 @@
         margin-bottom: 24px;
         color: $primary-color;
     }
+    .backto-home{
+        font-size: 16px;
+        line-height: 24px;
+        color:$blue-color;
+        font-weight: 500;
+        svg{
+            width: 18px;
+        }
+        .icon{
+            fill:$blue-color;
+        }
+    }
     .submit-wrapper{
         margin-top: 16px;
         max-width: 254px;
@@ -156,21 +168,15 @@
     .step-left{
         padding: 40px 15px 24px;
         .header-title{
-            padding: 0 0 0 42px;
             margin-bottom: 32px;
             font-size: 24px;
             line-height: 34px;
             font-weight: 700;
+            .edit-back{
+                margin-right: 12px;
+            }
         }
-    }
-    .step-container {
-        h3{
-            @include pos(re);
-        }
-        .edit-back{
-            @include pos(ab,-186px,null,null,null);
-        }
-    }
+    }    
     .step-right{
         padding: 24px 15px 64px;
     }
@@ -206,7 +212,14 @@
                 background-size: 120%;
             }
         }
-
+        
+    }
+    .step-container{
+        h3{
+            .edit-back{
+                display: none;
+            }
+        }
     }
 }
 @media all and (min-width:1025px){
