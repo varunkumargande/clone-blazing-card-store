@@ -8,7 +8,7 @@ export default function PaymentCard({
   setIsCardData,
   setIsCardEdit,
 }) {
-  const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
+  const userData = JSON.parse(localStorage.getItem("blazingUser"));
 
     const handleCardFeature = () => {
         setIsCardEdit(true)

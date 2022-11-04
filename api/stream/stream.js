@@ -4,8 +4,8 @@ import { apiUrl } from "../url";
 
 async function getStreamData(streamUuid) {
   let user = null;
-  if (sessionStorage.getItem("blazingUser")) {
-    user = JSON.parse(sessionStorage.getItem("blazingUser"));
+  if (localStorage.getItem("blazingUser")) {
+    user = JSON.parse(localStorage.getItem("blazingUser"));
   }
   const http = Axios.create({
     baseURL: apiUrl,

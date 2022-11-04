@@ -17,7 +17,7 @@ function ProductWishList({ productId, wishListStatus }) {
   const handleAddItemToWishlist = (e, productId) => {
     e.preventDefault();
 
-    let AuthCheck = sessionStorage.getItem("blazingToken");
+    let AuthCheck = localStorage.getItem("blazingToken");
     if (AuthCheck) {
       setLikeAnimate((i) => !i);
       AddWishlist(productId, dispatch);

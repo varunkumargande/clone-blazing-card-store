@@ -33,7 +33,7 @@ function LiveStreamStatus({
 
   const handleLikeUnlike = async (uuid) => {
     let arr = [];
-    const userDetails = JSON.parse(sessionStorage.getItem("blazingUser"));
+    const userDetails = JSON.parse(localStorage.getItem("blazingUser"));
     if (uuid && !!userDetails) {
       const data = {
         stream_id: uuid,

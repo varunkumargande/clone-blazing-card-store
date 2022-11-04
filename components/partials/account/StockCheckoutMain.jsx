@@ -49,15 +49,15 @@ function StockCheckoutMain({ cartItems, productDetail, amount, addressData }) {
   }, [fname, lname, email, phone, addressCheck]);
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      let a = sessionStorage.getItem("blazingUser");
+    if (localStorage.getItem("blazingUser")) {
+      let a = localStorage.getItem("blazingUser");
 
-      setFname(JSON.parse(sessionStorage.getItem("blazingUser")).firstName),
-        setEmail(JSON.parse(sessionStorage.getItem("blazingUser")).email),
+      setFname(JSON.parse(localStorage.getItem("blazingUser")).firstName),
+        setEmail(JSON.parse(localStorage.getItem("blazingUser")).email),
         setPhone(
-          JSON.parse(sessionStorage.getItem("blazingUser")).mobileNumber
+          JSON.parse(localStorage.getItem("blazingUser")).mobileNumber
         );
-      setLname(JSON.parse(sessionStorage.getItem("blazingUser")).lastName);
+      setLname(JSON.parse(localStorage.getItem("blazingUser")).lastName);
     }
   }, []);
 
