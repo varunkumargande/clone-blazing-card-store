@@ -57,6 +57,7 @@ const responseGoogleFailure = (response) => {
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
+  useState
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
@@ -76,37 +77,48 @@ export function ShareModalModal({ setIsShareModalOpen }) {
         </div>
         <div className="modal-body">
           <div className="flex justify-center social-link">
-            <a
-              href={`${SocialMediaShareLink.whatsapp}${apiUrl}`}
-              target="_blank"
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.whatsapp}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareWhatsup />
-              </button>
-            </a>
-            <a
-              href={`${SocialMediaShareLink.twitter}${apiUrl}`}
-              target="_blank"
+              <IconShareWhatsup />
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.twitter}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareTwitter />
-              </button>
-            </a>
-            <a
-              href={`${SocialMediaShareLink.facebook}${apiUrl}`}
-              target="_blank"
+              <IconShareTwitter />
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.facebook}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareFacebook />
-              </button>
-            </a>
+              <IconShareFacebook />
+            </button>
           </div>
           <div className="copy flex space-between flex-center nowrap">
             <span className="url">{pageUrl}</span>
             <button
               className="copy-btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 navigator.clipboard.writeText(pageUrl);
+
               }}
             >
               Copy
@@ -969,43 +981,50 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 }
 
 export function UnfollowModal(props) {
-  const {profile, setIsOpenFollowUnfollow, profileMethods,setKey} = props;
+  const { profile, setIsOpenFollowUnfollow, profileMethods, setKey } = props;
   const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
   const handleUnfollowClick = () => {
-    profileMethods.UserFollowUser(userDetail.id, profile.id, setKey,setIsOpenFollowUnfollow)
-  }
+    profileMethods.UserFollowUser(
+      userDetail.id,
+      profile.id,
+      setKey,
+      setIsOpenFollowUnfollow
+    );
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
         <div className="modal-body text-center">
           <div className="profile-icon">
-            {
-              !!profile && <CloudinaryImage
-              imageUrl={DefaultServices?.GetFullImageURL(
-                profile,
-                "profile"
-              )}
-              keyId={DefaultServices?.GetFullImageURL(
-                profile,
-                "profile"
-              )}
-              transformation={ImageTransformation.streamPageProfile}
-              alternative={"profileImg"}
-            />
-            }
+            {!!profile && (
+              <CloudinaryImage
+                imageUrl={DefaultServices?.GetFullImageURL(profile, "profile")}
+                keyId={DefaultServices?.GetFullImageURL(profile, "profile")}
+                transformation={ImageTransformation.streamPageProfile}
+                alternative={"profileImg"}
+              />
+            )}
           </div>
           <div className="profile-id">Want to follow @{profile?.username}</div>
           <div className="btn-wrap follow-btn-wrap flex justify-center">
-            <button className="border-btn" onClick={(e) => {
-              e.preventDefault();
-              setIsOpenFollowUnfollow(false);
-            }
-              }>Cancel
+            <button
+              className="border-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpenFollowUnfollow(false);
+              }}
+            >
+              Cancel
             </button>
-            <button className="primary-btn" onClick={(e) => {
-              e.preventDefault();
-              handleUnfollowClick()}
-              }>Unfollow</button>
+            <button
+              className="primary-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                handleUnfollowClick();
+              }}
+            >
+              Unfollow
+            </button>
           </div>
         </div>
       </div>

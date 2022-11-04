@@ -295,7 +295,6 @@ export default function categoryStream() {
                         <IconShareTwitter />
                       </li>
                       <li>
-                        {" "}
                         <IconShareWhatsup />
                       </li>
                     </ul>
