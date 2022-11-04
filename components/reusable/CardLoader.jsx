@@ -1,22 +1,19 @@
 import IconLoader from "../Icons/IconLoader";
 import IconLoaderPlay from "../Icons/IconLoaderPlay";
-import { useDispatch } from "react-redux";
 import { limit } from "../Constants";
 
 const CardLoader = ({ setPage, page, isCat, catId, setCatId }) => {
-  const dispatch = useDispatch();
-
   const handleCallApi = () => {
     const pageAdd = page + limit;
     setPage(pageAdd);
-    if(isCat){
-      setCatId(catId)
+    if (isCat) {
+      setCatId(catId);
     }
   };
 
   return (
     <div className="card-list flex flex-center" onClick={handleCallApi}>
-      <div class="inner-card-list Loader">
+      <div className="inner-card-list Loader">
         <div className="image flex flex-center justify-center column">
           <div className="LoaderImg">
             <div className="loader-icon">
@@ -26,7 +23,7 @@ const CardLoader = ({ setPage, page, isCat, catId, setCatId }) => {
               <IconLoaderPlay />
             </span>
           </div>
-          <div className="loading">Load All</div>
+          <div className="loading">Load More</div>
         </div>
         <div className="text">
           <div className="title"></div>

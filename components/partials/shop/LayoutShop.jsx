@@ -3,14 +3,11 @@ import React, { Component, useEffect, useRef } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import Product from "../../elements/products/Product";
 import ProductWide from "../../elements/products/ProductWide";
-import { Pagination, Skeleton, Collapse, Checkbox } from "antd";
-// import { } from 'antd';
+import { Pagination, Collapse } from "antd";
 import "antd/dist/antd.css";
 import { useTranslation } from "../../../i18n";
 import {
-  getProducts,
   getOrderBy,
-  getProductBycurrentpage,
 } from "../../../store/product/action";
 import { useState } from "react";
 import { imageUrl } from "../../../api/url";

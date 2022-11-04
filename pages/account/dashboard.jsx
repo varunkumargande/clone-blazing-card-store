@@ -6,22 +6,13 @@ import ThemeChanger from "../../components/elements/color/themeControl";
 import useNetwork from "../../components/reusable/NetworkCheck";
 import Router from "next/router";
 import FooterFullwidth from "../../components/shared/footers/FooterFullwidth";
-
 import MobileHeader from "../../components/shared/headers/MobileHeader";
-import { categoryApi } from "../../api/category/category";
-import { useDispatch } from "react-redux";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 const UserInformationPage = () => {
   const network = useNetwork();
 
   const { isMobile } = useIsMobile();
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    categoryApi(dispatch);
-  }, []);
 
   useEffect(() => {
     if (network === false) {

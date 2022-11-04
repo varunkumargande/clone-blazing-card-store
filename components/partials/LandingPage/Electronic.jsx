@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { memo, useMemo } from "react";
 import { stringFormatter } from "../../../utilities/utils";
 import Router from "next/router";
 import StreamCard from "../../elements/StreamCard";
-import { connect, useDispatch } from "react-redux";
-import {
-  saveSubCategoryName,
-  saveCategoryName,
-} from "../../../store/category/action";
-import { regex } from "../../Constants/regex";
-import { categoryConstant } from "../../Constants/category";
-import { catStreamDetailApi } from "../../../api/stream/subStreamDetail";
+import { connect } from "react-redux";
 import { limit } from "../../Constants";
 import { showCatCardLoader } from "../../../api/utils/showCatCardLoader";
 import ShowViewAll from "../../reusable/viewAll";
+import StreamCardSkeleton from "../../../skeleton/StreamCardSkeleton";
 
 function CategoryStream({
   showLoginModal,
@@ -24,15 +18,28 @@ function CategoryStream({
   setPage,
   page,
   setCatId,
+  category,
 }) {
-  const getStreamCards = () => {
-    if (!!catData[catId]) {
-      return catData[catId]?.data?.map((detail) => {
-        return <StreamCard showLoginModal={showLoginModal} detail={detail} />;
-      });
-    }
-  };
 
+  /**
+   * showing streamcard data
+   */
+  const getStreamCards = useMemo(() => {
+    if (!!catData[catId]) {
+      return catData[catId]?.data?.map((detail) => (
+        <StreamCard
+          key={detail.uuid}
+          showLoginModal={showLoginModal}
+          detail={detail}
+        />
+      ));
+    }
+  }, [catData[catId]]);
+  // =======================================================
+
+  /**
+   * showing and handling card loader component
+   */
   const handleCatCardVisisble = () => {
     if (!!catData[catId]) {
       if (catData[catId]?.total == limit) {
@@ -40,16 +47,29 @@ function CategoryStream({
       }
     }
   };
+  // =========================================================================
 
+  
   const handleGoToSeeAll = () => {
-    Router.push({
-      pathname: "/see-all",
-      query: {
-        page: "allCategory",
-        category: catSlug,
-        subCategory: "all"
-      },
-    });
+    if (!!category?.categoryName) {
+      Router.push({
+        pathname: "/see-all",
+        query: {
+          page: "allCategory",
+          category: category?.categoryName,
+          subCategory: catSlug,
+        },
+      });
+    } else {
+      Router.push({
+        pathname: "/see-all",
+        query: {
+          page: "allCategory",
+          category: category?.categoryName,
+          subCategory: "all",
+        },
+      });
+    }
   };
 
   return (
@@ -68,18 +88,21 @@ function CategoryStream({
           )}
         </div>
       </div>
-
       <div className="overflow-wrap">
-        <div className="flex inner-container">
-          {loader[catId] ? (
+        {loader[catId] ? (
+          <div className="flex inner-container">
             <div className="card-wrap flex">
-              {getStreamCards()}
+              {getStreamCards}
               {handleCatCardVisisble()}
             </div>
-          ) : (
-            <div> "loading ..."</div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex inner-container px-0">
+            <div className="card-wrap flex">
+              <StreamCardSkeleton count={7} name={catId} />
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -89,4 +112,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(CategoryStream);
+export default connect(mapStateToProps)(memo(CategoryStream));

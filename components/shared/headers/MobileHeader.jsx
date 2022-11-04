@@ -4,25 +4,20 @@ import Logo from "../../Icons/Logo";
 import IconSearch from "../../Icons/IconSearch";
 import IconMenu from "../../Icons/IconMenu";
 import IconClose from "../../Icons/IconClose";
-import IconCategoryDrop from "../../Icons/IconCategoryDrop";
 import IconProfile from "../../Icons/IconProfile";
 import IconMyOrders from "../../Icons/IconMyOrders";
-import IconSettings from "../../Icons/IconSettings";
 import IconMessageMobile from "../../Icons/IconMessageMobile";
 import IconLogoutMobile from "../../Icons/IconLogoutMobile";
 import IconNotificationMobile from "../../Icons/IconNotificationMobile";
 import { useTranslation } from "../../../i18n";
-import { categoryListApi } from "../../../api";
-import { useRouter } from "next/router";
 import { login } from "../../../store/auth/action";
 import { connect } from "react-redux";
 import Router from "next/router";
 import { modalSuccess } from "../../../api/intercept";
 import { logOut } from "../../../store/auth/action";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
-import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { vendorAuth } from "../../../store/vendorAuth/action";
 
 function MobileHeader({ auth }) {
@@ -50,9 +45,7 @@ function MobileHeader({ auth }) {
   }, [toggle]);
 
   useEffect(() => {
-    categoryListApi(dispatch);
     authFunc();
-    // getServiceApi(dispatch);
   }, []);
 
   useEffect(() => {
