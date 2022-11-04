@@ -43,7 +43,7 @@ function MyProfile(props) {
   };
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
+    const userData = JSON.parse(localStorage.getItem("blazingUser"));
     setUserId(userData.id);
     setProfile(userData);
   }, []);

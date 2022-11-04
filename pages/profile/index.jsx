@@ -40,8 +40,8 @@ export default function PublicProfile() {
 
   const getSessionUser = () => {
     if (typeof window !== "undefined") {
-      if (window && window.sessionStorage.getItem("blazingUser")) {
-        let user = JSON.parse(sessionStorage.getItem("blazingUser"));
+      if (window && window.localStorage.getItem("blazingUser")) {
+        let user = JSON.parse(localStorage.getItem("blazingUser"));
         return user;
       }
     }
@@ -274,8 +274,8 @@ export default function PublicProfile() {
   };
 
   const handleFollow = () => {
-    if (sessionStorage.getItem("blazingUser")) {
-      let user = JSON.parse(sessionStorage.getItem("blazingUser"));
+    if (localStorage.getItem("blazingUser")) {
+      let user = JSON.parse(localStorage.getItem("blazingUser"));
       if (profile?.isFollow) {
         setIsOpenFollowUnfollow(true);
       }

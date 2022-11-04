@@ -15,8 +15,8 @@ function ProfileCard(props) {
   const [userDetail, setUserDetail] = useState();
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      setUserDetail(JSON.parse(sessionStorage.getItem("blazingUser")));
+    if (localStorage.getItem("blazingUser")) {
+      setUserDetail(JSON.parse(localStorage.getItem("blazingUser")));
     }
   }, []);
 

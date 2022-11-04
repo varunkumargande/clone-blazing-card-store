@@ -20,13 +20,13 @@ function AccountQuickLinks(props) {
   }, [showPop]);
 
   const eventToVendorAdminPanel = async () => {
-    let id = JSON.parse(sessionStorage.getItem("blazingUser")).id;
+    let id = JSON.parse(localStorage.getItem("blazingUser")).id;
     const result = await APIServices.get("vendor-store/verifyVendor", id);
     if (result.status == 200) {
       if (result.data.verifyStatus == false) {
         modalWarning("error", "Your vendor account is not verified !");
       } else {
-        let token = String(sessionStorage.getItem("blazingToken"));
+        let token = String(localStorage.getItem("blazingToken"));
         window.location.href =
           "http://localhost:4200/#/auth/vendorAuth/?access_token=" + token + "";
       }

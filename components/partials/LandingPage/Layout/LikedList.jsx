@@ -30,7 +30,7 @@ export default function LikedList({
   const [likedShows, setLikedShows] = useState([]);
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
+    const userData = JSON.parse(localStorage.getItem("blazingUser"));
     ProfileMethods.GetLikedStreams(userData?.id, setLikedShows);
     setUserId(userData.id);
     setProfile(userData);

@@ -29,8 +29,8 @@ export async function GoogleLoginApi(
   };
   const result = await axios.post(`${apiBaseUrl}/gmail-login`, data);
   if (result && result.data && result.data.status === 1) {
-    sessionStorage.setItem("blazingToken", result.data.data.token);
-    sessionStorage.setItem(
+    localStorage.setItem("blazingToken", result.data.data.token);
+    localStorage.setItem(
       "blazingUser",
       JSON.stringify(result.data.data.user)
     );

@@ -20,8 +20,8 @@ function ThemeChanger() {
     showClass === "color-show"
       ? dispatch(colorShowContent(""))
       : dispatch(colorShowContent("color-show"));
-    sessionStorage.setItem("colorThemeBlazing", color);
-    sessionStorage.setItem("colorThemeBlazingView", color + "color");
+    localStorage.setItem("colorThemeBlazing", color);
+    localStorage.setItem("colorThemeBlazingView", color + "color");
     dispatch(colorThemeCurrent(color));
     dispatch(viewcolorThemeCurrent(color + "color"));
   };

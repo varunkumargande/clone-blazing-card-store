@@ -31,8 +31,8 @@ function Payment({amount,currency}){
     };
 
     useEffect(()=>{
-        setCartItems(JSON.parse(sessionStorage.getItem("cartItem")))
-        setAddress(JSON.parse(sessionStorage.getItem("contact")))
+        setCartItems(JSON.parse(localStorage.getItem("cartItem")))
+        setAddress(JSON.parse(localStorage.getItem("contact")))
         getPaymentApi(setPaymentOption)
     
     },[])

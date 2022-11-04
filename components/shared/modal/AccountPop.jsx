@@ -56,7 +56,7 @@ function AccountPopUp({ showPop, setShowPop }) {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logOut());
     dispatch(getWishlistList([]));
     Router.push("/account/login");
@@ -64,17 +64,17 @@ function AccountPopUp({ showPop, setShowPop }) {
   };
 
   useEffect(() => {
-    let a = JSON.parse(sessionStorage.getItem("blazingUser"));
+    let a = JSON.parse(localStorage.getItem("blazingUser"));
     if (a != null) {
-      setFname(JSON.parse(sessionStorage.getItem("blazingUser")).firstName);
-      setEmail(JSON.parse(sessionStorage.getItem("blazingUser")).email);
-      JSON.parse(sessionStorage.getItem("blazingUser")).avatar
+      setFname(JSON.parse(localStorage.getItem("blazingUser")).firstName);
+      setEmail(JSON.parse(localStorage.getItem("blazingUser")).email);
+      JSON.parse(localStorage.getItem("blazingUser")).avatar
         ? setAimg(
             imageUrl +
               "?path=" +
-              JSON.parse(sessionStorage.getItem("blazingUser")).avatarPath +
+              JSON.parse(localStorage.getItem("blazingUser")).avatarPath +
               "&name=" +
-              JSON.parse(sessionStorage.getItem("blazingUser")).avatar +
+              JSON.parse(localStorage.getItem("blazingUser")).avatar +
               "&width=500&height=500"
           )
         : setAimg("/static/img/no-image.png");

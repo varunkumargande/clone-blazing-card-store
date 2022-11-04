@@ -13,7 +13,7 @@ async function buyProduct(
   setPaymentSuccessful,
   setPaymentLoader
 ) {
-  const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
+  const userData = JSON.parse(localStorage.getItem("blazingUser"));
   if (userData) {
     const jsonData = {
       shippingLastName: "",
