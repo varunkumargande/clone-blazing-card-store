@@ -112,6 +112,7 @@ function landingPage({ auth, category }) {
             catData={data}
             showLoginModal={setShowModal}
             catName={elem?.name}
+            catSlug={elem?.categorySlug}
             catId={elem?.categoryId}
             loader={loader}
             setCategories={setCategories}
