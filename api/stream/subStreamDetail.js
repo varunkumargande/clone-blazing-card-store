@@ -53,24 +53,27 @@ export async function catStreamDetailApi(
     `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}&categoryId=${catId}&key=10980374eab848ac`
   );
   if (result?.status === 200) {
-    const newData = { ...data };
-    const subData = { ...newData[catId] };
-    const newsubdata = result?.data?.data;
-    newData[catId] = { ...subData, ...newsubdata };
-    if (data[catId]?.data) {
-      newData[catId].data = data[catId].data.concat(newData[catId].data);
+    if (!!result?.data?.data?.total) {
+      const newData = { ...data };
+      const subData = { ...newData[catId] };
+      const newsubdata = result?.data?.data;
+      newData[catId] = { ...subData, ...newsubdata };
+      if (data[catId]?.data) {
+        newData[catId].data = data[catId].data.concat(newData[catId].data);
+      }
+      setData(newData);
     }
-    setData(newData);
+    if (result?.data?.data?.total === 0) {
+      setCategories((categories) =>
+        categories.filter((item) => {
+          if (item.categoryId !== catId) {
+            return item;
+          }
+        })
+      );
+    }
   }
-  if (result?.data?.data?.total === 0) {
-    setCategories((categories) =>
-      categories.filter((item) => {
-        if (item.categoryId !== catId) {
-          return item;
-        }
-      })
-    );
-  }
+
   setLoader((loader) => ({ ...loader, [catId]: true }));
   setApiCount((count) => count + 1);
 }
@@ -89,24 +92,27 @@ export async function catSubStreamDetailApi(
   );
 
   if (result?.status === 200) {
-    const newData = { ...data };
-    const subData = { ...newData[catId] };
-    const newsubdata = result?.data?.data;
-    newData[catId] = { ...newsubdata };
-    if (data[catId]?.data) {
-      newData[catId].data = data[catId].data.concat(newData[catId].data);
+    if (!!result?.data?.data?.total) {
+      const newData = { ...data };
+      const subData = { ...newData[catId] };
+      const newsubdata = result?.data?.data;
+      newData[catId] = { ...newsubdata };
+      if (data[catId]?.data) {
+        newData[catId].data = data[catId].data.concat(newData[catId].data);
+      }
+      setData(newData);
     }
-    setData(newData);
+    if (result?.data?.data?.total === 0) {
+      setSubCategories((categories) =>
+        categories.filter((item) => {
+          if (item.categoryId !== catId) {
+            return item;
+          }
+        })
+      );
+    }
   }
-  if (result?.data?.data?.total === 0) {
-    setSubCategories((categories) =>
-      categories.filter((item) => {
-        if (item.categoryId !== catId) {
-          return item;
-        }
-      })
-    );
-  }
+
   setLoader((loader) => ({ ...loader, [catId]: true }));
   setApiCount((count) => count + 1);
 }

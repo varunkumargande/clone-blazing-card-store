@@ -26,6 +26,8 @@ function Vertical({ category, showLoginModal }) {
     setFetch(true);
   }, [category]);
 
+  // console.log(data)
+
   useEffect(() => {
     const catLength = subCategories?.length;
     if (apiCount < catLength) {
@@ -39,7 +41,7 @@ function Vertical({ category, showLoginModal }) {
         setSubCategories
       );
     }
-  }, [apiCount, subCategories, page]);
+  }, [apiCount, subCategories]);
 
   useEffect(() => {
     if (!!catId) {
