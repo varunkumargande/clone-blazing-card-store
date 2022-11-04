@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, memo } from "react";
 import Link from "next/link";
 import IconCategoryDrop from "../../Icons/IconCategoryDrop";
 import IconLike from "../../Icons/IconLike";
@@ -49,8 +49,7 @@ function Category({ seeAllHeading, auth, category }) {
     // dispatch(saveCategoryId(null));
   };
 
-  
-  const getCategoryList = () => {
+  const showCategoryList = () => {
     if (Object.keys(category).length != 0) {
       return (
         <>
@@ -61,7 +60,10 @@ function Category({ seeAllHeading, auth, category }) {
                   className={`flex justify-center flex-center Like ${
                     category.categoryName === "likes" && `Liked`
                   }`}
-                  onClick={() => handleLikedShow()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLikedShow();
+                  }}
                 >
                   <span>
                     <IconLike />
@@ -74,26 +76,33 @@ function Category({ seeAllHeading, auth, category }) {
           <div className="category-list">
             <button
               className={!!category.categoryName ? "title" : "title active"}
-              onClick={handleAllCategory}
+              onClick={(e) => {
+                e.preventDefault();
+                handleAllCategory();
+              }}
             >
               {categoryConstant.homeTag}
             </button>
           </div>
           {category?.categories?.map((res, index) => (
-            <div className="category-list" key={res.categoryId || `${index}-category`}>
+            <div
+              className="category-list"
+              key={res.categoryId || `${index}-category`}
+            >
               <button
                 className={
                   category.categoryName === res?.categorySlug
                     ? "title active"
                     : "title"
                 }
-                onClick={() =>
+                onClick={(e) => {
+                  e.preventDefault();
                   handleActiveCategory(
                     index,
                     res?.categorySlug,
                     res?.categoryId
-                  )
-                }
+                  );
+                }}
               >
                 {stringFormatter(res?.name)}
               </button>
@@ -119,11 +128,17 @@ function Category({ seeAllHeading, auth, category }) {
     window.location.href = "/";
   };
 
-  const handleSubCatHead = () => {
+  const showSubCatHead = () => {
     if (!!seeAllHeading) {
       return (
         <>
-          <div className="edit-back" onClick={() => handleToGoHome()}>
+          <div
+            className="edit-back"
+            onClick={(e) => {
+              e.preventDefault();
+              handleToGoHome();
+            }}
+          >
             <IconBack />
           </div>
           &nbsp;&nbsp;&nbsp;
@@ -146,18 +161,24 @@ function Category({ seeAllHeading, auth, category }) {
           <div className="flex flex-center">
             <section className="breadcrumbs-wrapper">
               <ul className="breadcrumbs flex flex-center">
-                {handleSubCatHead()}
+                {showSubCatHead()}
               </ul>
             </section>
           </div>
-          <div className="seeAll" onClick={() => handleGoToSeeAll()}>
+          <div
+            className="seeAll"
+            onClick={(e) => {
+              e.preventDefault();
+              handleGoToSeeAll();
+            }}
+          >
             <a className="flex flex-center">{categoryConstant.viewTag}</a>
           </div>
         </div>
       </div>
       <div className="overflow-wrap">
         <div className="Category-list-wrap inner-container flex">
-          {getCategoryList()}
+          {showCategoryList()}
         </div>
       </div>
     </section>
@@ -168,4 +189,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(Category);
+export default connect(mapStateToProps)(memo(Category));

@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import MobileHeader from "../components/shared/headers/MobileHeader";
 import Category from "../components/partials/LandingPage/Category";
-import LiveScheduleCategory from "../components/partials/LandingPage/LiveScheduleCategory";
-import SeeAllList from "../components/partials/LandingPage/Layout/seeAllList";
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
 import Footer from "../components/partials/LandingPage/Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { categoryApi } from "../api/category/category";
 import CategoryStream from "../components/partials/LandingPage/Electronic";
 import LikedList from "../components/partials/LandingPage/Layout/LikedList";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
@@ -19,7 +16,6 @@ import { catStreamDetailApi } from "../api/stream/subStreamDetail";
 import { useIsMobile } from "../contexts/Devices/CurrentDevices";
 
 function landingPage({ category }) {
-
   const { isMobile } = useIsMobile();
 
   const dispatch = useDispatch();
@@ -34,7 +30,6 @@ function landingPage({ category }) {
   const [fetch, setFetch] = useState(true);
 
   useEffect(() => {
-
     dispatch(getBecomeSellerInfo());
   }, []);
 
@@ -61,7 +56,6 @@ function landingPage({ category }) {
   const streamSchDetail = useSelector(
     (state) => state?.stream?.streamdetails
   )?.length;
-
 
   useEffect(() => {
     setCategories(category?.categories);
@@ -182,4 +176,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(landingPage);
+export default connect(mapStateToProps)(memo(landingPage));

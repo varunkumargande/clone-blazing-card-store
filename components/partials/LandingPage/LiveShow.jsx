@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import StreamCard from "../../elements/StreamCard";
 import { liveDetailApi } from "../../../api/stream/subStreamDetail";
 import { showCardLoader } from "../../../api/utils/showCardLoader";
@@ -103,8 +103,4 @@ function LiveShow({ showLoginModal }) {
   return <>{showLiveComponent()}</>;
 }
 
-const mapStateToProps = (state) => {
-  return state;
-};
-
-export default connect(mapStateToProps)(LiveShow);
+export default memo(LiveShow);

@@ -1,15 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { memo, useMemo } from "react";
 import { stringFormatter } from "../../../utilities/utils";
 import Router from "next/router";
 import StreamCard from "../../elements/StreamCard";
-import { connect, useDispatch } from "react-redux";
-import {
-  saveSubCategoryName,
-  saveCategoryName,
-} from "../../../store/category/action";
-import { regex } from "../../Constants/regex";
-import { categoryConstant } from "../../Constants/category";
-import { catStreamDetailApi } from "../../../api/stream/subStreamDetail";
+import { connect } from "react-redux";
 import { limit } from "../../Constants";
 import { showCatCardLoader } from "../../../api/utils/showCatCardLoader";
 import ShowViewAll from "../../reusable/viewAll";
@@ -27,13 +20,17 @@ function CategoryStream({
   setCatId,
   category,
 }) {
-  const getStreamCards = () => {
+  const getStreamCards = useMemo(() => {
     if (!!catData[catId]) {
-      return catData[catId]?.data?.map((detail) => {
-        return <StreamCard showLoginModal={showLoginModal} detail={detail} />;
-      });
+      return catData[catId]?.data?.map((detail) => (
+        <StreamCard
+          key={detail.uuid}
+          showLoginModal={showLoginModal}
+          detail={detail}
+        />
+      ));
     }
-  };
+  }, [catData[catId]]);
 
   const handleCatCardVisisble = () => {
     if (!!catData[catId]) {
@@ -81,12 +78,11 @@ function CategoryStream({
           )}
         </div>
       </div>
-
       <div className="overflow-wrap">
         {loader[catId] ? (
           <div className="flex inner-container">
             <div className="card-wrap flex">
-              {getStreamCards()}
+              {getStreamCards}
               {handleCatCardVisisble()}
             </div>
           </div>
@@ -106,4 +102,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(CategoryStream);
+export default connect(mapStateToProps)(memo(CategoryStream));

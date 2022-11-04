@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import StreamCard from "../../elements/StreamCard";
 import { streamDetailApi } from "../../../api/stream/subStreamDetail";
 import CardLoader from "../../reusable/CardLoader";
@@ -8,7 +8,7 @@ import ShowViewAll from "../../reusable/viewAll";
 import Router from "next/router";
 import StreamCardSkeleton from "../../../skeleton/StreamCardSkeleton";
 
-export default function LiveShow({ showLoginModal }) {
+function LiveShow({ showLoginModal }) {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(null);
@@ -100,3 +100,5 @@ export default function LiveShow({ showLoginModal }) {
 
   return <>{showSheduledComponent()}</>;
 }
+
+export default memo(LiveShow)

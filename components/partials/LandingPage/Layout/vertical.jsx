@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { connect } from "react-redux";
 import { catSubStreamDetailApi } from "../../../../api/stream/subStreamDetail";
 import CategoryStream from "../Electronic";
@@ -13,20 +13,29 @@ function Vertical({ category, showLoginModal }) {
   const [fetch, setFetch] = useState(true);
 
   useEffect(() => {
-    setApiCount(0);
-    setData({});
-  }, [category?.categoryName]);
-
-  useEffect(() => {
-    const catData = category?.categories.find(
-      (obj) => obj.categoryId === parseInt(category?.categoryId)
-    );
-    setSubCategories(catData?.children);
-    setApiCount(0);
-    setFetch(true);
+    if (category?.categoryName) {
+      setApiCount(0);
+      setData({});
+      const data = { ...loader };
+      data[category?.categoryId] = false;
+      setLoader(true);
+    }
+    if (category?.categories?.length) {
+      const catData = category?.categories.find(
+        (obj) => obj.categoryId === parseInt(category?.categoryId)
+      );
+      setSubCategories(catData?.children);
+    }
   }, [category]);
 
-  // console.log(data)
+  // useEffect(() => {
+  // if (category?.categories?.length) {
+  //   const catData = category?.categories.find(
+  //     (obj) => obj.categoryId === parseInt(category?.categoryId)
+  //   );
+  //   setSubCategories(catData?.children);
+  // }
+  // }, [category?.categories?.length]);
 
   useEffect(() => {
     const catLength = subCategories?.length;
@@ -63,7 +72,7 @@ function Vertical({ category, showLoginModal }) {
     }
   };
 
-  const handleCardDetail = () => {
+  const showCardDetail = () => {
     if (subCategories) {
       return subCategories.map((item) => {
         return (
@@ -83,11 +92,11 @@ function Vertical({ category, showLoginModal }) {
     }
   };
 
-  return <div className="home-container">{handleCardDetail()}</div>;
+  return <div className="home-container">{showCardDetail()}</div>;
 }
 
 const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(Vertical);
+export default connect(mapStateToProps)(memo(Vertical));

@@ -94,7 +94,6 @@ export async function catSubStreamDetailApi(
   if (result?.status === 200) {
     if (!!result?.data?.data?.total) {
       const newData = { ...data };
-      const subData = { ...newData[catId] };
       const newsubdata = result?.data?.data;
       newData[catId] = { ...newsubdata };
       if (data[catId]?.data) {
