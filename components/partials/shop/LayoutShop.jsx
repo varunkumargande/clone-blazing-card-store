@@ -3,7 +3,7 @@ import React, { Component, useEffect, useRef } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import Product from "../../elements/products/Product";
 import ProductWide from "../../elements/products/ProductWide";
-import { Pagination, Skeleton, Collapse, Checkbox } from "antd";
+import { Pagination, Collapse } from "antd";
 // import { } from 'antd';
 import "antd/dist/antd.css";
 import { useTranslation } from "../../../i18n";
