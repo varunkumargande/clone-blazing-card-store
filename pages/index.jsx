@@ -34,16 +34,8 @@ function landingPage({ category }) {
   }, []);
 
   // ========================= category for home page ==============================
-  // const [activeCategoryName, setActiveCategoryName] = useState(null);
-  const [subCateId, setSubCateId] = useState("select");
   const [categories, setCategories] = useState([]);
   const [isLikedShow, setIsLikedShow] = useState(false);
-  // ===============================================================================
-  // ========================= category for live and schedule page ==============================
-  const [liveScheduleCategoryName, setLiveScheduleCategoryName] =
-    useState(null);
-  const [isLiveScheduleSeeAll, setIsLiveScheduleSeeAll] = useState(false);
-  // ============================================================================================
   const [isSeeAll, setIsSeeAll] = useState(false);
   const [isSeeAllCate, setIsSeeAllCate] = useState(true);
   const [seeAllHeading, setSeeAllHeading] = useState(null);
