@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { clearState } from "../../store/becomeSeller/action";
 
 
-export const CardNumber = ({ label, ...props }) => {
+export const CardNumber = ({ label, hideError=false, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
@@ -34,8 +34,8 @@ export const CardNumber = ({ label, ...props }) => {
     <>
       <div className={props.className}>
         <label htmlFor={props.id || props.name}>{label}</label>
-        <input className="text-input" maxLength={19} {...field} {...props} value={getCardValue()} onInput={() => handleChangeText()} />
-        {meta.touched && meta.error && (
+        <input className="text-input" {...field} {...props} value={getCardValue()} onInput={() => handleChangeText()} />
+        {meta.touched && meta.error && !hideError && (
           <div className="errorMessage">{meta.error}</div>
         )}
       </div>
