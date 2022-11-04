@@ -93,13 +93,15 @@ export async function getStreamCategoryBasedApi(
   catName,
   subCatName,
   type,
-  setStreamData
+  setStreamData,
+  setLoader
 ) {
   const result = await APIServices.getAll(
-    `stream/categories-stream?category_slug=${catName}&subCategory_slug=${subCatName}&type=${type}`
+    `stream/categories-stream?category_slug=${catName}&subCategory_slug=${subCatName}&type=${type}&key:10980374eab848ac`
   );
   if (result?.status === 200) {
     setStreamData(result?.data?.data?.result);
+    setLoader(false)
   } else {
     Router.push("/404");
   }
@@ -109,13 +111,15 @@ export async function getStreamSubCategoryBasedApi(
   type,
   catName,
   subCatName,
-  setStreamData
+  setStreamData,
+  setLoader
 ) {
   const result = await APIServices.getAll(
     `stream/categories-stream?category_slug=${catName}&subCategory_slug=${subCatName}&type=${type}`
   );
   if (result?.status === 200) {
     setStreamData(result?.data?.data?.result);
+    setLoader(false)
   } else {
     Router.push("/404");
   }

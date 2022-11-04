@@ -60,7 +60,7 @@ function LiveShow({ showLoginModal }) {
               <div className="flex flex-center">
                 <h3 className="title">Live Shows</h3>
               </div>
-              <ShowViewAll data={data} handleGoToSeeAll={handleGoToSeeAll} />
+              <ShowViewAll dataLen = {data.length} handleGoToSeeAll={handleGoToSeeAll} catName={null} />
             </div>
           </div>
           <div className="overflow-wrap">

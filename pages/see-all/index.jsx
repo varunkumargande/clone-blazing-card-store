@@ -27,6 +27,7 @@ function categoryStream({ auth, category }) {
   const [catIndex, setCatIndex] = useState(null);
   const [streamData, setStreamData] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [loader, setLoader] = useState(true);
 
   const wrapperRef = useRef(null);
   const handleClickOutside = (event) => {
@@ -70,6 +71,7 @@ function categoryStream({ auth, category }) {
         <SeeAllParentCategories
           setCatIndex={setCatIndex}
           setStreamData={setStreamData}
+          setLoader={setLoader}
         />
       );
     }
@@ -82,6 +84,7 @@ function categoryStream({ auth, category }) {
           catIndex={catIndex}
           setSubCatId={setSubCatId}
           setStreamData={setStreamData}
+          setLoader={setLoader}
         />
       );
     }
@@ -133,7 +136,7 @@ function categoryStream({ auth, category }) {
               <div className="overflow-none">
                 {handleShowSubCategories()}
                 <div className="card-wrap flex inner-container">
-                  {getStreamCards()}
+                  {loader ? "loading ..." : <>{getStreamCards()}</>}
                 </div>
               </div>
             </div>

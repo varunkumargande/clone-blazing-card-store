@@ -43,8 +43,8 @@ export default function LiveShow({ showLoginModal }) {
     Router.push({
       pathname: "/see-all",
       query: {
-        page: "sheduled",
-        category: "",
+        page: "scheduled",
+        category: ""
       },
     });
   };
@@ -58,7 +58,7 @@ export default function LiveShow({ showLoginModal }) {
               <div className="flex flex-center">
                 <h3 className="title">Scheduled Shows</h3>
               </div>
-              <ShowViewAll data={data} handleGoToSeeAll={handleGoToSeeAll} />
+              <ShowViewAll dataLen = {data.length} handleGoToSeeAll={handleGoToSeeAll} catName={null} />
             </div>
           </div>
           <div className="overflow-wrap">
