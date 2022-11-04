@@ -8,7 +8,7 @@ import {
 } from "../../../store/category/action";
 import { getStreamSubCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 
-function SeeAllSubCategories({ catIndex, category, setStreamData }) {
+function SeeAllSubCategories({ catIndex, category, setStreamData, setLoader }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
   const [queryCategory, setQueryCategory] = useState(null);
@@ -22,7 +22,8 @@ function SeeAllSubCategories({ catIndex, category, setStreamData }) {
         query?.page,
         query?.category,
         query?.subCategory,
-        setStreamData
+        setStreamData,
+        setLoader
       );
     }
   }, [query]);

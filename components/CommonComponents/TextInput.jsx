@@ -4,7 +4,7 @@ import { clearState } from "../../store/becomeSeller/action";
 import ErrorMessage from "./ErrorMessage";
 
 
-export const TextInput = ({ label, ...props }) => {
+export const TextInput = ({ label, hideError = false, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
@@ -27,7 +27,7 @@ export const TextInput = ({ label, ...props }) => {
       <div className={props.className}>
         <label htmlFor={props.id || props.name}>{label}</label>
         <input className="text-input" maxLength={stringLength} minLength={stringMinLength} {...field} {...props}  onInput={() => handleChangeText()}/>
-        <ErrorMessage errors={meta.error} touched={meta.touched} />
+        {!hideError && <ErrorMessage errors={meta.error} touched={meta.touched} />}
         {/* {meta.touched && meta.error ? (
           <div className="error">{meta.error}</div>
         ) : null}  */}

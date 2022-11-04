@@ -18,9 +18,12 @@ import DynamicModal from "../../components/CommonComponents/ModalWithDynamicTitl
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
+import { UnfollowModal } from "../../components/partials/Modal/Modal";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 export default function PublicProfile() {
   const router = useRouter();
+  const { isMobile } = useIsMobile();
   const [active, setActive] = useState(false);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -35,7 +38,7 @@ export default function PublicProfile() {
   );
   const [showModal, setShowModal] = useState(false);
   const [key, setKey] = useState(1);
-
+  const [isOpenFollowUnfollow, setIsOpenFollowUnfollow] = useState(false);
   const wrapperRef = useRef(null);
 
   const getSessionUser = () => {
@@ -105,17 +108,6 @@ export default function PublicProfile() {
       setActiveTab(tabs[0].key);
     }
   }, [tabs]);
-
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
 
   const UpcomingShowsComponent = () => {
     if (upcomingShows) {
@@ -287,8 +279,12 @@ export default function PublicProfile() {
   const handleFollow = () => {
     if (sessionStorage.getItem("blazingUser")) {
       let user = JSON.parse(sessionStorage.getItem("blazingUser"));
-
-      ProfileMethods.UserFollowUser(user.id, profile.id, setKey);
+      if (profile?.isFollow) {
+        setIsOpenFollowUnfollow(true);
+      }
+      if(!profile?.isFollow){
+        ProfileMethods.UserFollowUser(user.id, profile.id, setKey);
+      }
     } else {
       setShowModal(true);
     }
@@ -308,7 +304,7 @@ export default function PublicProfile() {
       {showModal && (
         <DynamicModal title="SJoin Blazing Cards" setShowModal={setShowModal} />
       )}
-      {windowWidth <= 1024 ? (
+      {isMobile ? (
         <div className="profile-title flex flex-center">
           <BackButton name={"Profile"} />
         </div>
@@ -393,7 +389,16 @@ export default function PublicProfile() {
             </div>
           </div>
         </section>
+        {isOpenFollowUnfollow && (
+          <UnfollowModal
+            profile={profile}
+            setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+            profileMethods={ProfileMethods}
+            setKey={setKey}
+          />
+        )}
       </div>
+
       <Footer />
     </div>
   );

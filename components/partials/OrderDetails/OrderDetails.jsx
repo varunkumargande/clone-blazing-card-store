@@ -1,8 +1,9 @@
 import React from "react";
-import IconTrack from "../../Icons/IconTrack";
+// import IconTrack from "../../Icons/IconTrack";
 import IconDownload from "../../Icons/IconDownload";
 import { useSelector } from "react-redux";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
+
 export default function OrderDetails() {
   const orderDetail = useSelector((state) => state?.order?.orderDetail);
   const { cardDetails, productData, deliveryStatus, shippingDetails } = orderDetail ?? "";
@@ -21,10 +22,6 @@ export default function OrderDetails() {
               <div className="order-body-wrapper">
                 <div className="order-body flex space-between">
                   <div className="order-text flex">
-                    <img
-                      src="/static/images/card.png"
-                      alt=""
-                    />
                     <div className="order-details">
                       <div className="flex mb12">
                         <div className="order-title">{productData.name}</div>
@@ -102,12 +99,20 @@ export default function OrderDetails() {
                 <div className="value">${productData.total}</div>
               </div>
             </div>
-            <div className="download-wrap flex space-between flex-center">
-              <button className="border-btn flex flex-center justify-center">
-                <IconTrack />
-                Track
-              </button>
-            </div>
+            <a
+              href={shippingDetails?.trackingUrl}
+              target="_blank"
+            >
+              <div className="download-wrap flex space-between flex-center">
+
+                <button className={`border-btn flex flex-center justify-center ${(!shippingDetails?.trackingUrl)  && 'disable-opacity'}`} disabled={!shippingDetails?.trackingUrl}>
+                  {/* ToDo: Keeping this IconTrack code for now if we need to use the icon in future. Can be removed in not needed. */}
+                  {/* <IconTrack /> */}
+                  Track Package
+                </button>
+              </div>
+            </a>
+
           </div>
         </>
       ) : (

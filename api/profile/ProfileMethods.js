@@ -64,12 +64,15 @@ let GetUserFollowings = async (userId, callback) => {
     })
 }
 
-let UserFollowUser = (userId, followerId, callback) => {
+let UserFollowUser = (userId, followerId,callback, setIsOpenFollowUnfollow) => {
     http.post('follow/follow_unfollow', {
         "following_id" : followerId,
         "follower_id" : userId
     })
     .then((res) => {
+        if(res?.data?.data?.isFollow === false){
+           setIsOpenFollowUnfollow(false) 
+        }
         callback(Math.floor((Math.random() * 100) + 1));
     })
     .catch((error) => {

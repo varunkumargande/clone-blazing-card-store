@@ -9,55 +9,41 @@ import ShippingDetails from "../../components/partials/sellerSteps/ShippingDetai
 import ApplicationSubmitted from "../../components/partials/sellerSteps/ApplicationSubmitted";
 import Footer from "../../components/partials/LandingPage/Footer";
 import { useRouter } from "next/router";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 
 export default function Steps() {
-  const [windowWidth, setWindowWidth] = useState(0);
-  
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
-
+  const { isMobile } = useIsMobile();
 
   const route = useRouter();
-  let { pageName } =  route.query;
-
-  
-
+  let { pageName } = route.query;
 
   const getComponent = () => {
     switch (pageName) {
       case "basicDetails":
-       return < BasicDetails />;
+        return <BasicDetails />;
       case "paymentDetails":
-       return < PaymentDetails />;
+        return <PaymentDetails />;
       case "guidelines":
-       return < ImportantGuidelines />;
+        return <ImportantGuidelines />;
       case "shippingDetails":
-       return < ShippingDetails />;
+        return <ShippingDetails />;
       case "submitted":
-       return < ApplicationSubmitted />;
+        return <ApplicationSubmitted />;
       default:
-        return < ImportantGuidelines />;
+        return <ImportantGuidelines />;
     }
   };
 
   return (
     <>
-      {windowWidth <= 1024 ? "" : <HeaderDefault />}
+      {isMobile ? "" : <HeaderDefault />}
       <section className="steps-wrapper flex">
         <div className="step-left">
-          {windowWidth <= 1024 ? <div className="header-title"><BackButton name={"Become a Seller"}/></div> : ""}
+          {isMobile ? <div className="header-title"><BackButton name={"Become a Seller"} /></div> : ""}
           <LeftPannel />
         </div>
-        <div className="step-right">
-          {getComponent()}
-        </div>
+        <div className="step-right">{getComponent()}</div>
       </section>
       <Footer />
     </>

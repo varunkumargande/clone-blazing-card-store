@@ -19,6 +19,8 @@ export default function Pokeman(){
                 <div className="flex inner-container">
                     <div className="card-wrap flex">
                         {/* Loader */}
+                        
+                        
                         <div className="card-list flex flex-center">
                             <div class="inner-card-list Loader">
                                 <div className="image flex flex-center justify-center column">
@@ -36,6 +38,8 @@ export default function Pokeman(){
                                 </div>
                             </div>
                         </div>
+
+
                         {/* Loader ended*/}
                         <div className="card-list flex flex-center">
                             <div class="inner-card-list">

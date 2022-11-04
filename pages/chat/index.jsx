@@ -23,6 +23,7 @@ import ChatPannel from "../../components/partials/Messages/ChatPannel";
 import { ChatUserModal } from "../../components/partials/Modal/Modal";
 import { Loader } from "../../components/reusable/Loader";
 import moment from "moment";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
@@ -45,15 +46,7 @@ function Chat({ auth }) {
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
 
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+  const { isMobile } = useIsMobile();
 
   useEffect(() => {
     if (!localStorage.getItem("chat-app-current-user") || !auth?.isLoggedIn) {
@@ -233,7 +226,7 @@ function Chat({ auth }) {
 
   return (
     <>
-      {windowWidth <= 1024 ? <MobileHeader /> : <HeaderDefault />}
+      {isMobile ? <MobileHeader /> : <HeaderDefault />}
       <div className="messages-wrapper">
         <h1>Messages</h1>
         <div className="flex space-between message-inner">

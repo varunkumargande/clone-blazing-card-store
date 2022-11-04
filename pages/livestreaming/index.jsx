@@ -7,21 +7,13 @@ import StreamingRIght from "../../components/partials/streaming/StreamingRIght";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 // import Footer from "../../components/partials/Landingpage/Footer";
 import IconBack from "../../components/Icons/IconBack";
+import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 export default function LiveStreaming() {
-  const [windowWidth, setWindowWidth] = useState(0);
-  let resizeWindow = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    resizeWindow();
-    window.addEventListener("resize", resizeWindow);
-    return () => window.removeEventListener("resize", resizeWindow);
-  }, []);
+  const { isMobile } = useIsMobile();
 
   return (
     <>
-      {windowWidth <= 1024 ? (
+      {isMobile ? (
         <div className="stream-top-header">
           <div className="edit-back">
             <IconBack />
