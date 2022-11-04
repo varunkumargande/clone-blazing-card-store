@@ -60,6 +60,7 @@ function landingPage({ auth, category }) {
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(null);
   const [catId, setCatId] = useState(null);
+  const [fetch, setFetch] = useState(true);
 
   useEffect(() => {
     setCategories(category?.categories);
@@ -71,11 +72,13 @@ function landingPage({ auth, category }) {
     );
     setLoader(catObject);
     setCatIds(catListIds);
+    setApiCount(0);
+    setFetch(true);
   }, [category?.categories]);
 
   useEffect(() => {
     const catLength = category?.categories?.length;
-    if (apiCount < catLength) {
+    if (apiCount < catLength || fetch) {
       catStreamDetailApi(
         setData,
         page,
@@ -85,10 +88,11 @@ function landingPage({ auth, category }) {
         data,
         setCategories
       );
-    } else {
-      setCatVisible(false);
+      if (fetch) {
+        setFetch(false);
+      }
     }
-  }, [category?.categories, apiCount]);
+  }, [apiCount]);
 
   useEffect(() => {
     if (!!catId) {

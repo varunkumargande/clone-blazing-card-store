@@ -75,14 +75,30 @@ export async function catStreamDetailApi(
   setApiCount((count) => count + 1);
 }
 
-export async function catSubStreamDetailApi(setData, page, catId) {
+export async function catSubStreamDetailApi(
+  setData,
+  page,
+  catId,
+  data,
+  setLoader,
+  setApiCount
+) {
   const result = await APIServices.getAll(
     `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}&key=10980374eab848ac`
   );
 
-  console.log(result?.data?.data)
-  
-  if (result?.status === 200) setData(result?.data?.data);
+  if (result?.status === 200) {
+    const newData = { ...data };
+    const subData = { ...newData[catId] };
+    const newsubdata = result?.data?.data;
+    newData[catId] = { ...newsubdata };
+    if (data[catId]?.data) {
+      newData[catId].data = data[catId].data.concat(newData[catId].data);
+    }
+    setData(newData);
+  }
+  setLoader((loader) => ({ ...loader, [catId]: true }));
+  setApiCount((count) => count + 1);
 }
 /**
  * *************************************************************************************************
@@ -104,7 +120,7 @@ export async function getStreamCategoryBasedApi(
   );
   if (result?.status === 200) {
     setStreamData(result?.data?.data?.result);
-    setLoader(false)
+    setLoader(false);
   } else {
     Router.push("/404");
   }
@@ -115,14 +131,14 @@ export async function getStreamSubCategoryBasedApi(
   catName,
   subCatName,
   setStreamData,
-  setLoader,
+  setLoader
 ) {
   const result = await APIServices.getAll(
     `stream/categories-stream?category_slug=${catName}&subCategory_slug=${subCatName}&type=${type}&key:10980374eab848ac`
   );
   if (result?.status === 200) {
     setStreamData(result?.data?.data?.result);
-    setLoader(false)
+    setLoader(false);
   } else {
     Router.push("/404");
   }

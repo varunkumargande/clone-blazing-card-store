@@ -25,6 +25,7 @@ function CategoryStream({
   setPage,
   page,
   setCatId,
+  category,
 }) {
   const getStreamCards = () => {
     if (!!catData[catId]) {
@@ -43,14 +44,25 @@ function CategoryStream({
   };
 
   const handleGoToSeeAll = () => {
-    Router.push({
-      pathname: "/see-all",
-      query: {
-        page: "allCategory",
-        category: catSlug,
-        subCategory: "all",
-      },
-    });
+    if (!!category?.categoryName) {
+      Router.push({
+        pathname: "/see-all",
+        query: {
+          page: "allCategory",
+          category: category?.categoryName,
+          subCategory: catSlug,
+        },
+      });
+    } else {
+      Router.push({
+        pathname: "/see-all",
+        query: {
+          page: "allCategory",
+          category: category?.categoryName,
+          subCategory: "all",
+        },
+      });
+    }
   };
 
   return (

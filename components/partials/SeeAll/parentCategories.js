@@ -30,7 +30,6 @@ function SeeAllParentCategories({ category, setCatIndex, setStreamData, setLoade
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
-      dispatch(saveSubCategoryName(query?.subCategory));
     } else {
       Router.push({
         pathname: "/see-all",
