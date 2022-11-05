@@ -500,6 +500,12 @@
     }
     
 }
+
+.card-list:hover {
+    transform: translateY(-5px) scale(1.01) translateZ(0);
+    transition-duration: 500ms;
+  }
+
 @media all and (min-width:1600px){
     .overflow-none{
         .card-wrap {
