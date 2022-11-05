@@ -8,7 +8,7 @@ async function getProfileInfoApi(dispatch) {
   const result = await APIServices.getAll("customer/get-profile");
   if (result && result.data) {
     if (result && result.data && result.data.status === 1) {
-      sessionStorage.setItem("blazingUser", JSON.stringify(result.data.data));
+      localStorage.setItem("blazingUser", JSON.stringify(result.data.data));
 
       getProfile(result.data.data);
 

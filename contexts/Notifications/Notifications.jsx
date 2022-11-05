@@ -24,9 +24,9 @@ export function NotificationsProvider(props) {
 
   const { data } = useEventSocket(
     typeof window !== "undefined" &&
-      JSON.parse(sessionStorage.getItem("blazingUser")) &&
+      JSON.parse(localStorage.getItem("blazingUser")) &&
       `${notificationBaseUrl}notify-${String(
-        JSON.parse(sessionStorage.getItem("blazingUser")).id
+        JSON.parse(localStorage.getItem("blazingUser")).id
       )}`
   );
 
@@ -36,10 +36,10 @@ export function NotificationsProvider(props) {
 
   useEffect(() => {
     if (
-      isLoggedIn !== !!sessionStorage.getItem("blazingUser") &&
+      isLoggedIn !== !!localStorage.getItem("blazingUser") &&
       typeof window !== "undefined"
     ) {
-      setIsLoggedIn(!!sessionStorage.getItem("blazingUser"));
+      setIsLoggedIn(!!localStorage.getItem("blazingUser"));
     }
   }, [typeof window]);
 

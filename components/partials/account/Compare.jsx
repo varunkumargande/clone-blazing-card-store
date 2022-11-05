@@ -39,12 +39,12 @@ function Compare(props) {
     let data = 1;
     let localstring = "";
     e.preventDefault();
-    let locale = JSON.parse(sessionStorage.getItem("compareId"));
+    let locale = JSON.parse(localStorage.getItem("compareId"));
     var index = locale.indexOf(product.productId);
     locale.splice(index, 1);
     dispatch(getCompareList(1));
 
-    sessionStorage.setItem("compareId", JSON.stringify(locale));
+    localStorage.setItem("compareId", JSON.stringify(locale));
     modalSuccess("success", "Product removed Successfully");
     if (locale.length === 0) {
       setCompareData([]);
@@ -68,8 +68,8 @@ function Compare(props) {
 
   useEffect(() => {
     dispatch(compareLoading(true));
-    setProductId(JSON.parse(sessionStorage.getItem("compareId")));
-    let productIdLocale = JSON.parse(sessionStorage.getItem("compareId"));
+    setProductId(JSON.parse(localStorage.getItem("compareId")));
+    let productIdLocale = JSON.parse(localStorage.getItem("compareId"));
     let data = 1;
 
     if (productIdLocale !== null) {

@@ -41,11 +41,11 @@ function MyApp({ Component, pageProps }) {
     getPageApi(dispatch);
     LanguageSwitcherAPi(dispatch);
 
-    sessionStorage.getItem("colorThemeBlazing") &&
-      dispatch(colorThemeCurrent(sessionStorage.getItem("colorThemeBlazing")));
-    sessionStorage.getItem("colorThemeBlazingView") &&
+    localStorage.getItem("colorThemeBlazing") &&
+      dispatch(colorThemeCurrent(localStorage.getItem("colorThemeBlazing")));
+    localStorage.getItem("colorThemeBlazingView") &&
       dispatch(
-        viewcolorThemeCurrent(sessionStorage.getItem("colorThemeBlazingView"))
+        viewcolorThemeCurrent(localStorage.getItem("colorThemeBlazingView"))
       );
   }, []);
 

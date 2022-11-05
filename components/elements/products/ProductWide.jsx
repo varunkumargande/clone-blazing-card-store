@@ -42,7 +42,7 @@ function ProductWide({product,key ,image,currency,crumbArray}){
     };
 
     function compareCheckFunction(){
-        let idArray=JSON.parse(sessionStorage.getItem("compareId")) ;
+        let idArray=JSON.parse(localStorage.getItem("compareId")) ;
       
         if(idArray && idArray.length !== 0) {
             let compareCheck = idArray.some((value) => value === product.productId)
@@ -74,15 +74,15 @@ function ProductWide({product,key ,image,currency,crumbArray}){
         
         let data=0
         let dummy=""
-        if(sessionStorage.getItem("compareId")!==null){
-            let idArray=JSON.parse(sessionStorage.getItem("compareId")) 
+        if(localStorage.getItem("compareId")!==null){
+            let idArray=JSON.parse(localStorage.getItem("compareId")) 
       
         var index = idArray.indexOf(product.productId);
         
         if(index!==-1){
-            let localCompareId = JSON.parse(sessionStorage.getItem("compareId"))
+            let localCompareId = JSON.parse(localStorage.getItem("compareId"))
             localCompareId.splice(index,1);
-            sessionStorage.setItem("compareId",JSON.stringify(localCompareId));
+            localStorage.setItem("compareId",JSON.stringify(localCompareId));
             setCompareStatus(1)
             dispatch(getCompareList(1))
             

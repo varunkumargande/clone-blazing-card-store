@@ -23,7 +23,7 @@ export async function editProfileApi(
 
   const result = await APIServices.create("customer/edit-profile", data);
   if (result && result.data && result.data.status === 1) {
-    sessionStorage.setItem("blazingUser", JSON.stringify(result.data.data));
+    localStorage.setItem("blazingUser", JSON.stringify(result.data.data));
     dispatch(show({ message: result.data.message, type: "success" }));
     setLoader(false);
     Router.push("/account/myprofile");

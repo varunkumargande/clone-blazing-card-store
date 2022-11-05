@@ -60,7 +60,7 @@ function HeaderDefault({ auth }) {
   // ===============================================
 
   const authFunc = () => {
-    if (sessionStorage.getItem("blazingToken") !== null) {
+    if (localStorage.getItem("blazingToken") !== null) {
       dispatch(login());
     }
   };
@@ -81,7 +81,7 @@ function HeaderDefault({ auth }) {
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("blazingUser");
+      let profileData = localStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);
@@ -147,7 +147,7 @@ function HeaderDefault({ auth }) {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logOut());
     dispatch(
       show({

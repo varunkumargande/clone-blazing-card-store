@@ -61,7 +61,7 @@ function CartPopup({ showMiniCart, setShowMiniCart, cartData }) {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingToken")) {
+    if (localStorage.getItem("blazingToken")) {
       setAuth(true);
     }
   }, []);
@@ -115,7 +115,7 @@ function CartPopup({ showMiniCart, setShowMiniCart, cartData }) {
     dispatch(addItem(1));
 
     if (auth) {
-      const localCart = JSON.parse(sessionStorage.getItem("cartItem"));
+      const localCart = JSON.parse(localStorage.getItem("cartItem"));
 
       let currentProduct = localCart.find((current) => {
         return current.productId === product.productId;
@@ -161,7 +161,7 @@ function CartPopup({ showMiniCart, setShowMiniCart, cartData }) {
       dispatch(decreaseItemQty(product));
       dispatch(addItem(1));
       if (auth) {
-        const localCart = JSON.parse(sessionStorage.getItem("cartItem"));
+        const localCart = JSON.parse(localStorage.getItem("cartItem"));
         let currentProduct = localCart.find((current) => {
           return current.productId === product.productId;
         });

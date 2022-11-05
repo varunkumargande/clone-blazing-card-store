@@ -39,12 +39,12 @@ function UserInformation() {
   let currentColor = useSelector((s) => s.palette.currentColor);
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      setUserDetail(JSON.parse(sessionStorage.getItem("blazingUser")));
-      setFname(JSON.parse(sessionStorage.getItem("blazingUser")).firstName);
-      setLname(JSON.parse(sessionStorage.getItem("blazingUser")).lastName);
-      setEmail(JSON.parse(sessionStorage.getItem("blazingUser")).email);
-      setNum(JSON.parse(sessionStorage.getItem("blazingUser")).mobileNumber);
+    if (localStorage.getItem("blazingUser")) {
+      setUserDetail(JSON.parse(localStorage.getItem("blazingUser")));
+      setFname(JSON.parse(localStorage.getItem("blazingUser")).firstName);
+      setLname(JSON.parse(localStorage.getItem("blazingUser")).lastName);
+      setEmail(JSON.parse(localStorage.getItem("blazingUser")).email);
+      setNum(JSON.parse(localStorage.getItem("blazingUser")).mobileNumber);
     }
   }, []);
 
@@ -160,7 +160,7 @@ function UserInformation() {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logOut());
     Router.push("/account/login");
   };

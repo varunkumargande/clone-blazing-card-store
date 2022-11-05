@@ -13,7 +13,7 @@ export async function deleteAccountApi(values, dispatch) {
   if (result && result?.data && result?.data?.status === 1) {
     dispatch(show({ message: "Account deleted !", type: "success" }));
     localStorage.clear();
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logOut());
     Router.push("/");
   } else {

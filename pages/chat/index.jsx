@@ -89,7 +89,7 @@ function Chat({ auth }) {
     if (localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
         ?._id;
-      const token = sessionStorage.getItem("blazingToken");
+      const token = localStorage.getItem("blazingToken");
       let userId = {
         userId: user,
       };
@@ -120,7 +120,7 @@ function Chat({ auth }) {
     const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
     setCurrentSelected(index);
     setCurrentChat(contacts[index]);
-    const token = sessionStorage.getItem("blazingToken");
+    const token = localStorage.getItem("blazingToken");
     const response = await axios.post(
       recieveMessageRoute,
       {
@@ -148,7 +148,7 @@ function Chat({ auth }) {
       from: data?.user?._id,
       msg,
     });
-    const token = sessionStorage.getItem("blazingToken");
+    const token = localStorage.getItem("blazingToken");
     await axios.post(
       sendMessageRoute,
       {

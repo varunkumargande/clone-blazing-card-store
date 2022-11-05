@@ -43,7 +43,7 @@ export default function categoryStream() {
   );
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser") == null) {
+    if (localStorage.getItem("blazingUser") == null) {
       Router.push("/");
     }
   }, []);

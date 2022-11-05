@@ -405,7 +405,7 @@ export function AddNewCardModal(props) {
 
   const dispatch = useDispatch();
 
-  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
+  const userDetail = JSON.parse(localStorage.getItem("blazingUser"));
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
   const [initialValueFlag, setInitialValueFlag] = useState(
@@ -987,7 +987,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
 export function UnfollowModal(props) {
   const { profile, setIsOpenFollowUnfollow, profileMethods, setKey } = props;
-  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
+  const userDetail = JSON.parse(localStorage.getItem("blazingUser"));
   const handleUnfollowClick = () => {
     profileMethods.UserFollowUser(
       userDetail.id,

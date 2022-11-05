@@ -14,7 +14,7 @@ function StockCheckout(){
     const [addressLoader,setAddressLoader]=useState(false)
 
     const totalInCart=()=>{
-        const locale=JSON.parse(sessionStorage.getItem("cartItem"))
+        const locale=JSON.parse(localStorage.getItem("cartItem"))
         var len = locale&&locale.length;
         let detailArray=[]
         for (var i = 0; i < len; i++) {
@@ -38,7 +38,7 @@ function StockCheckout(){
     
  
     const arrayCreate=()=>{
-        const locale=JSON.parse(sessionStorage.getItem("cartItem"))
+        const locale=JSON.parse(localStorage.getItem("cartItem"))
         var len = locale&&locale.length;
        
         let detailArray=[]
@@ -66,7 +66,7 @@ function StockCheckout(){
 
 
     useEffect(()=>{
-        setCartItems(JSON.parse(sessionStorage.getItem("backOrderLocal")))
+        setCartItems(JSON.parse(localStorage.getItem("backOrderLocal")))
         arrayCreate()
         totalInCart()
         
