@@ -60,12 +60,13 @@ function Index() {
   const handleLeftDiv = useCallback((toggle) => {
     setLeftDivOpen(toggle);
   }, []);
-
+  
   const notificationData = {
-    bid: bid?.data,
+    bid: bid?.data, 
     auction: auction?.data,
     win: win?.data,
   };
+
 
   return (
     <>

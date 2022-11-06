@@ -124,15 +124,17 @@ function StreamingBase({
       ? liveAuctionDetails?.latestAuction?.endTime
       : null;
   };
-  const getCurrentTime = () => {
-    return bidNotification?.currentTime
-      ? bidNotification?.currentTime
-      : auctionNotification?.auction?.currentTime
-      ? auctionNotification?.auction?.currentTime
-      : liveAuctionDetails?.latestAuction?.currentTime
-      ? liveAuctionDetails?.latestAuction?.currentTime
-      : null;
-  };
+
+  // Code is commented for testing only DO NOT REMOVE
+  // const getCurrentTime = () => {
+  //   return bidNotification?.currentTime
+  //     ? bidNotification?.currentTime
+  //     : auctionNotification?.auction?.currentTime
+  //     ? auctionNotification?.auction?.currentTime
+  //     : liveAuctionDetails?.latestAuction?.currentTime
+  //     ? liveAuctionDetails?.latestAuction?.currentTime
+  //     : null;
+  // };
 
   const getAuctionId = () => {
     return auctionNotification?.auction?.id
@@ -176,12 +178,6 @@ function StreamingBase({
     let seconds = Math.ceil(duration.asSeconds() % 60);
     minutes = minutes < 0 ? 0 : minutes;
     seconds = seconds < 0 ? 0 : seconds;
-    // if (minutes && seconds) {
-    //   setBidAmount(
-    //     stream?.streamProducts?.AuctionDetails?.latestBidding?.bidAmount ??
-    //       stream?.streamProducts?.AuctionDetails?.latestAuction?.bidAmount
-    //   );
-    // }
     setMinutes(minutes, "");
     setSeconds(seconds);
   };

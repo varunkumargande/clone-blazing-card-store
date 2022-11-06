@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
 // This hook will enable the eventsocket connection for the specified url
-export default function useEventSocket(resoureUrl, global = false) {
+export default function useEventSocket(resourceUrl, global = false) {
   const [data, setData] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isStatus, setIsStatus] = useState(true);
@@ -25,7 +25,7 @@ export default function useEventSocket(resoureUrl, global = false) {
       // const sse = new EventSourcePolyfill(`${resoureUrl}`, { // will remove in future
       //   headers: chatHeader,
       // });
-      const sse = new EventSource(`${resoureUrl}`);
+      const sse = new EventSource(`${resourceUrl}`);
 
       function handleStream(data) {
         setData(JSON.parse(data));
@@ -48,6 +48,6 @@ export default function useEventSocket(resoureUrl, global = false) {
   }, [isLoggedIn, isStatus, global]);
 
   return {
-    data,
+    data
   };
 }

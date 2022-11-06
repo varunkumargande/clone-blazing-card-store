@@ -463,7 +463,7 @@ function LeftDiv({
             />
           </div>
           <div className={`${toggleState}-list leftdata-list`}>
-            <div className="product-count">{handleProductCount} Products</div>
+            <div className="product-count">{ handleProductCount <= 1 ? `${handleProductCount} Product` : `${handleProductCount} Products`}</div>
             <ul className="product-list">{getProductList()}</ul>
           </div>
         </div>

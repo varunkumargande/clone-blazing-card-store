@@ -250,7 +250,6 @@ export function PaymentInfoModal(props) {
     addressList,
     cardDetail,
     productDetail,
-    fetchShiipmentApi,
     paymentLoader,
     addressLoader,
     isBuyNowPaymentModal,
@@ -268,10 +267,6 @@ export function PaymentInfoModal(props) {
         addressList[0]?.state +
         " ," +
         addressList[0]?.postcode;
-
-  const shipSchema = Yup.object().shape({
-    fullName: Yup.string().min(2, "Too Short!").required("Required"),
-  });
 
   const cardDetails =
     cardDetail == false
@@ -378,20 +373,9 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  const {
-    payDetail,
-    close,
-    productDetail,
-    countryData,
-    fetchShiipmentApi,
-    setPaymentLoader,
-    fetchCardDetail,
-  } = props;
+  const { payDetail, close, setPaymentLoader, fetchCardDetail } = props;
 
   const dispatch = useDispatch();
-
-  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
-  const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
   const [initialValueFlag, setInitialValueFlag] = useState(
     Array.isArray(payDetail) &&
@@ -565,7 +549,9 @@ export function AddNewCardModal(props) {
           </div>
           <div className="modal-footer">
             <div className="flex justify-center btn-wrap">
-              <button className="primary-btn">Save card</button>
+              <button className="primary-btn" onClick={formik.handleSubmit}>
+                Save card
+              </button>
             </div>
           </div>
         </form>
@@ -575,17 +561,12 @@ export function AddNewCardModal(props) {
 }
 
 export function AddAddressModal(props) {
-  const {
-    close,
-    setShip,
-    addressList,
-    countryData,
-  } = props;
+  const { close, setShip, addressList, countryData } = props;
 
   const [stateList, setStateList] = useState([]);
   useEffect(() => {
-    getStateList(setStateList)
-  },[])
+    getStateList(setStateList);
+  }, []);
 
   const shipSchema = Yup.object().shape({
     company: Yup.string().min(2, "Too Short!").required("Required"),
@@ -613,7 +594,7 @@ export function AddAddressModal(props) {
       fetchShiipmentApi();
       close(false);
     },
-    validationSchema: () => shipSchema
+    validationSchema: () => shipSchema,
   });
   return (
     <>
@@ -634,7 +615,7 @@ export function AddAddressModal(props) {
                 </span>
               </button>
             </div>
-            <form onSubmit={formik.handleSubmit}>
+            <form>
               <div className="modal-body">
                 <div className="input-control">
                   <label>Company *</label>
@@ -690,7 +671,6 @@ export function AddAddressModal(props) {
                   <ErrorMessage errors={formik.errors.city} />{" "}
                 </div>
 
-
                 {/* <div className="input-control"> Please do not remove this code 
                   <label>State *</label> A quick fix for the stable build
                   <input
@@ -745,7 +725,11 @@ export function AddAddressModal(props) {
               </div>
               <div className="modal-footer">
                 <div className="flex justify-center btn-wrap">
-                  <button className="primary-btn" type="submit">
+                  <button
+                    className="primary-btn"
+                    type="submit"
+                    onClick={formik.handleSubmit}
+                  >
                     Save Changes
                   </button>
                 </div>
@@ -853,12 +837,9 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [username, setUsername] = useState("");
-  const [isButton, setIsButton] = useState(false);
 
   // handle username and search frend
   const handleUsername = async (e) => {
-    setIsButton(true);
     if (e.target.value != "") {
       searchUser(setUserData, setUserDataLoader, e.target.value);
     }
@@ -868,7 +849,6 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   // handle add user id and username for save information
   const handleAddUserForChat = (id, name) => {
     setUserId(id);
-    setUsername(name);
   };
   // ==============================================================
 
@@ -1003,7 +983,7 @@ export function UnfollowModal(props) {
             <button
               className="border-btn"
               onClick={(e) => {
-                // e.preventDefault();
+                e.preventDefault();
                 setIsOpenFollowUnfollow(false);
               }}
             >
@@ -1012,7 +992,7 @@ export function UnfollowModal(props) {
             <button
               className="primary-btn"
               onClick={(e) => {
-                // e.preventDefault();
+                e.preventDefault();
                 handleUnfollowClick();
               }}
             >
