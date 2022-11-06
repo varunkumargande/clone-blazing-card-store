@@ -12,7 +12,7 @@ export async function productCompareApi(idArray,data,setCompareData,dispatch,set
     //         setloadings(true)
     //         if(data===0){
     //             if(json.status===1 && json.message !== "please choose same category product"){
-    //                 sessionStorage.setItem("compareId",JSON.stringify(idArray))
+    //                 localStorage.setItem("compareId",JSON.stringify(idArray))
     //                 dispatch(getCompareList(1))
     //                 setCompareStatus(1)
     //             }
@@ -52,7 +52,7 @@ export async function productCompareApi(idArray,data,setCompareData,dispatch,set
             setloadings(true)
             if(data===0){
                 if(result&&result.data&&result.data.status===1 && result.data.message !== "please choose same category product"){
-                    sessionStorage.setItem("compareId",JSON.stringify(idArray))
+                    localStorage.setItem("compareId",JSON.stringify(idArray))
                     dispatch(getCompareList(1))
                             setCompareStatus(1)  
                 }

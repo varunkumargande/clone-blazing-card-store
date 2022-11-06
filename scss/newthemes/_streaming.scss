@@ -362,6 +362,7 @@
                 color: $primary-color;
                 background-color: $white-color;
                 margin-left: 5px;
+                cursor: pointer;
             }
         }
     }
@@ -462,6 +463,12 @@
         @include pos(ab,40px,null,null,0,1);
         background-image: linear-gradient(rgba($stream-bg,1), rgba($stream-bg,.1));
     }
+    .chat-btn{
+        img{
+            position: relative;
+            z-index: 2;
+        }
+    }
     .chat-wrap{
         height: calc(100% - 88px);
         overflow:auto;
@@ -483,6 +490,9 @@
             border:3px solid $white-color;
             margin-right: 5px;
             overflow: hidden;
+        }
+        .chat-text-wrap{
+            width:calc(100% - 42px);
         }
         .name{
             font-size: 14px;
@@ -625,6 +635,19 @@
             }
             .chat-wrap{
                 padding: 0;
+                position: relative;
+            }
+            .chat-inner-wrap{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                max-height: 100%;
+                display: block;
+                overflow:auto;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                width: 100%;
+                min-height: auto;
             }
             .input-chat{
                 padding: 0;

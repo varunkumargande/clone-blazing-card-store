@@ -71,10 +71,10 @@ function CustomAddCardDetail({ type, addressId }) {
         expireDate: expDate,
         cvc: cvc,
         customerId: String(
-          JSON.parse(sessionStorage.getItem("blazingUser")).id
+          JSON.parse(localStorage.getItem("blazingUser")).id
         ),
-        name: JSON.parse(sessionStorage.getItem("blazingUser")).firstName,
-        emailId: JSON.parse(sessionStorage.getItem("blazingUser")).email,
+        name: JSON.parse(localStorage.getItem("blazingUser")).firstName,
+        emailId: JSON.parse(localStorage.getItem("blazingUser")).email,
       });
       const result = await APIServices.create(
         "customer-card-details/addCard",

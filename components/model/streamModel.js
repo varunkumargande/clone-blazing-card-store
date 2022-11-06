@@ -11,7 +11,7 @@ class StreamDetailModel {
   }
 
   getStreamPageData(streamData) {
-    const userDetails = JSON.parse(sessionStorage.getItem("blazingUser"));
+    const userDetails = JSON.parse(localStorage.getItem("blazingUser"));
     var bytes = cryptoJs.AES.decrypt(
       streamData?.streamAPPID,
       "ff20a253698574300fe4c77abfd5c18ff65367a8"

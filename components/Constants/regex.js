@@ -3,7 +3,7 @@ export const regex = {
   isNumbers:  /^[\d]+$/,
   onlyAlphabetsBothCases: /^[A-Za-z ]+$/,
   onlyAlphabetsWithSpaces: /[^a-z ]/gi,
-  nameToSlug: / [`~!@#,$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi
+  nameToSlug: / [`~!@#,$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi,
 };
 
 export const cardRegex = {
@@ -19,3 +19,4 @@ export const cardRegex = {
   discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/,
   jcb: /^(?:2131|1800|35\d{3})\d{11}$/,
 };
+

@@ -24,7 +24,7 @@ function LikeQues({
 
   const abuseFunc = (e, answerId) => {
     e.preventDefault();
-    let AuthCheck = sessionStorage.getItem("blazingToken");
+    let AuthCheck = localStorage.getItem("blazingToken");
 
     if (AuthCheck) {
       setAnsId(answerId);
@@ -59,7 +59,7 @@ function LikeQues({
 
   const likeHandler = (e, type) => {
     e.preventDefault();
-    let AuthCheck = sessionStorage.getItem("blazingToken");
+    let AuthCheck = localStorage.getItem("blazingToken");
 
     if (AuthCheck) {
       if (type === "likeClick") {

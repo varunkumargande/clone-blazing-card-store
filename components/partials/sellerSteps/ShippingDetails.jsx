@@ -43,7 +43,7 @@ export default function ShippingDetails() {
 
   return (
     <div className="step-container">
-      <BackButton name={"Shipping Details"}/>
+      <BackButton name={"Shipping Details"} />
       <div className="sub-title">
         A return address must be added before going live on Blazing Cards. This
         will be used on your shipment labels.

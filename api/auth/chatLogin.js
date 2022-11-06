@@ -5,7 +5,7 @@ import { modalSuccess, modalWarning } from "../intercept";
 import Router from "next/router";
 
 export async function chatLogin() {
-  const token = sessionStorage.getItem("blazingToken");
+  const token = localStorage.getItem("blazingToken");
   const chatHeader = {
     // 'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
@@ -27,8 +27,8 @@ export async function chatLogin() {
 }
 
 //  const chatData = {
-//    username: JSON.parse(sessionStorage.getItem("blazingUser")).username,
-//    password: sessionStorage.getItem("userPass"),
+//    username: JSON.parse(localStorage.getItem("blazingUser")).username,
+//    password: localStorage.getItem("userPass"),
 //  };
 //  const { data } = await axios.post(loginRoute, chatData);
 //  if (data.status === true) {

@@ -21,8 +21,8 @@ export async function UserLogin(
   const result = await APIServices.create("customer/login", data);
 
   if (result && result?.data && result?.data?.status === 1) {
-    sessionStorage.setItem("blazingToken", result.data.data.token);
-    sessionStorage.setItem("userPass", password);
+    localStorage.setItem("blazingToken", result.data.data.token);
+    localStorage.setItem("userPass", password);
     getProfileApi();
     dispatch(show({ message: result.data.message, type: "success" }));
     Router.push("/");

@@ -23,19 +23,19 @@ function FormStockCheck({ cartItems, amount, productDetail, addressData }) {
   //     }
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      if (JSON.parse(sessionStorage.getItem("blazingUser")).email) {
-        setEmail(JSON.parse(sessionStorage.getItem("blazingUser")).email);
+    if (localStorage.getItem("blazingUser")) {
+      if (JSON.parse(localStorage.getItem("blazingUser")).email) {
+        setEmail(JSON.parse(localStorage.getItem("blazingUser")).email);
       }
-      if (JSON.parse(sessionStorage.getItem("blazingUser")).firstName) {
-        setFname(JSON.parse(sessionStorage.getItem("blazingUser")).firstName);
+      if (JSON.parse(localStorage.getItem("blazingUser")).firstName) {
+        setFname(JSON.parse(localStorage.getItem("blazingUser")).firstName);
       }
-      if (JSON.parse(sessionStorage.getItem("blazingUser")).lastName) {
-        setLname(JSON.parse(sessionStorage.getItem("blazingUser")).lastName);
+      if (JSON.parse(localStorage.getItem("blazingUser")).lastName) {
+        setLname(JSON.parse(localStorage.getItem("blazingUser")).lastName);
       }
 
-      if (JSON.parse(sessionStorage.getItem("blazingUser")).mobileNumber) {
-        setNum(JSON.parse(sessionStorage.getItem("blazingUser")).mobileNumber);
+      if (JSON.parse(localStorage.getItem("blazingUser")).mobileNumber) {
+        setNum(JSON.parse(localStorage.getItem("blazingUser")).mobileNumber);
       }
     }
   }, []);
@@ -51,7 +51,7 @@ function FormStockCheck({ cartItems, amount, productDetail, addressData }) {
   const handleLoginSubmit = () => {
     if (addressCheck === 1) {
       Router.push("/account/order-shipping");
-      sessionStorage.setItem(
+      localStorage.setItem(
         "contact",
         JSON.stringify({
           fname: fname,

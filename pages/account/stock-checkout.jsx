@@ -18,7 +18,7 @@ const OrderTrackingPage = () => {
     const [addressLoader,setAddressLoader]=useState(false)
 
     const totalInCart=()=>{
-        const locale=JSON.parse(sessionStorage.getItem("cartItem"))
+        const locale=JSON.parse(localStorage.getItem("cartItem"))
         var len = locale&&locale.length;
         let detailArray=[]
         for (var i = 0; i < len; i++) {
@@ -42,7 +42,7 @@ const OrderTrackingPage = () => {
     
  
     const arrayCreate=()=>{
-        const locale=JSON.parse(sessionStorage.getItem("cartItem"))
+        const locale=JSON.parse(localStorage.getItem("cartItem"))
        
         var len = locale&&locale.length;
         
@@ -71,7 +71,7 @@ const OrderTrackingPage = () => {
 
 
     useEffect(()=>{
-        setCartItems(JSON.parse(sessionStorage.getItem("backOrderLocal")))
+        setCartItems(JSON.parse(localStorage.getItem("backOrderLocal")))
         arrayCreate()
         totalInCart()
         

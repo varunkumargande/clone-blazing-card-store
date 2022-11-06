@@ -2,10 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
-import { categoryApi } from "../../api/category/category";
 import SeeAllParentCategories from "../../components/partials/SeeAll/parentCategories";
 import SeeAllSubCategories from "../../components/partials/SeeAll/subCategories";
 import StreamCard from "../../components/elements/StreamCard";
@@ -17,6 +15,7 @@ import {
   saveSubCategoryName,
 } from "../../store/category/action";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -43,13 +42,13 @@ function categoryStream({ auth, category }) {
   }, []);
 
   useEffect(() => {
-    categoryApi(dispatch);
     setCatIndex(0);
   }, []);
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
+      dispatch(saveSubCategoryName(query?.subCategory));
     } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
@@ -57,7 +56,7 @@ function categoryStream({ auth, category }) {
     }
   }, [query]);
 
-  const getStreamCards = (pageType) => {
+  const getStreamCards = () => {
     if (!!streamData) {
       return streamData.map((item) => {
         return <StreamCard detail={item} showLoginModal={setShowModal} />;
@@ -136,7 +135,14 @@ function categoryStream({ auth, category }) {
               <div className="overflow-none">
                 {handleShowSubCategories()}
                 <div className="card-wrap flex inner-container">
-                  {loader ? "loading ..." : <>{getStreamCards()}</>}
+                  {loader ? (
+                    <StreamCardSkeleton
+                      count={10}
+                      name={`home-intrenal-page-${query?.category}-${query?.subCategory}`}
+                    />
+                  ) : (
+                    getStreamCards()
+                  )}
                 </div>
               </div>
             </div>

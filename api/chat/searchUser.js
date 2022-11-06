@@ -8,7 +8,7 @@ import { searchUsers } from "../../chatService";
 
 export async function searchUser(setUserData, setUserDataLoader, value) {
   setUserDataLoader(true);
-  const token = sessionStorage.getItem("blazingToken");
+  const token = localStorage.getItem("blazingToken");
   const chatHeader = {
     Authorization: `Bearer ${token}`,
   };

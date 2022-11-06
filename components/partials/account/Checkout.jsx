@@ -224,13 +224,13 @@ function Checkout() {
   ]);
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      setName(JSON.parse(sessionStorage.getItem("blazingUser")).firstName),
-        setMail(JSON.parse(sessionStorage.getItem("blazingUser")).email),
+    if (localStorage.getItem("blazingUser")) {
+      setName(JSON.parse(localStorage.getItem("blazingUser")).firstName),
+        setMail(JSON.parse(localStorage.getItem("blazingUser")).email),
         setNumber(
-          JSON.parse(sessionStorage.getItem("blazingUser")).mobileNumber
+          JSON.parse(localStorage.getItem("blazingUser")).mobileNumber
         );
-      setLname(JSON.parse(sessionStorage.getItem("blazingUser")).lastName);
+      setLname(JSON.parse(localStorage.getItem("blazingUser")).lastName);
     }
   }, []);
 
@@ -565,7 +565,7 @@ function Checkout() {
   };
 
   const detailCart = () => {
-    let cartLocale = JSON.parse(sessionStorage.getItem("cartItem"));
+    let cartLocale = JSON.parse(localStorage.getItem("cartItem"));
     let cartFinal = {};
     let cartArray = [];
 
@@ -589,7 +589,7 @@ function Checkout() {
   };
 
   const totalInCart = () => {
-    const locale = JSON.parse(sessionStorage.getItem("cartItem"));
+    const locale = JSON.parse(localStorage.getItem("cartItem"));
     var len = locale && locale.length;
     let detailArray = [];
     for (var i = 0; i < len; i++) {
@@ -619,7 +619,7 @@ function Checkout() {
   };
 
   const arrayCreate = () => {
-    const locale = JSON.parse(sessionStorage.getItem("cartItem"));
+    const locale = JSON.parse(localStorage.getItem("cartItem"));
     var len = locale && locale.length;
 
     let detailArray = [];
@@ -648,13 +648,13 @@ function Checkout() {
     setDetail(detailArray);
   };
   useEffect(() => {
-    if (sessionStorage.getItem("blazingToken")) {
+    if (localStorage.getItem("blazingToken")) {
       setAuth(true);
     }
   }, []);
 
   useEffect(() => {
-    setCartItems(JSON.parse(sessionStorage.getItem("cartItem")));
+    setCartItems(JSON.parse(localStorage.getItem("cartItem")));
     arrayCreate();
     totalInCart();
   }, [reloadCart, removeFromCart, incrementLoad, decrementLoad]);
@@ -672,7 +672,7 @@ function Checkout() {
     }
 
     if (auth) {
-      const localCart = JSON.parse(sessionStorage.getItem("cartItem"));
+      const localCart = JSON.parse(localStorage.getItem("cartItem"));
 
       let currentProduct = localCart.find((current) => {
         return current.productId === product.productId;
@@ -721,7 +721,7 @@ function Checkout() {
       dispatch(decreaseItemQty(product));
       dispatch(addItem(1));
       if (auth) {
-        const localCart = JSON.parse(sessionStorage.getItem("cartItem"));
+        const localCart = JSON.parse(localStorage.getItem("cartItem"));
         let currentProduct = localCart.find((current) => {
           return current.productId === product.productId;
         });

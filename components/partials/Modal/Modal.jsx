@@ -59,6 +59,14 @@ const responseGoogleFailure = (response) => {
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = (e) => {
+    e.preventDefault();
+    setIsCopied(true);
+    navigator.clipboard.writeText(pageUrl);
+    setTimeout(() => setIsCopied(false), 1000);
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
@@ -78,40 +86,49 @@ export function ShareModalModal({ setIsShareModalOpen }) {
         </div>
         <div className="modal-body">
           <div className="flex justify-center social-link">
-            <a
-              href={`${SocialMediaShareLink.whatsapp}${apiUrl}`}
-              target="_blank"
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.whatsapp}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareWhatsup />
-              </button>
-            </a>
-            <a
-              href={`${SocialMediaShareLink.twitter}${apiUrl}`}
-              target="_blank"
+              <IconShareWhatsup />
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.twitter}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareTwitter />
-              </button>
-            </a>
-            <a
-              href={`${SocialMediaShareLink.facebook}${apiUrl}`}
-              target="_blank"
+              <IconShareTwitter />
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.facebook}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareFacebook />
-              </button>
-            </a>
+              <IconShareFacebook />
+            </button>
           </div>
           <div className="copy flex space-between flex-center nowrap">
             <span className="url">{pageUrl}</span>
             <button
               className="copy-btn"
-              onClick={() => {
-                navigator.clipboard.writeText(pageUrl);
+              onClick={(e) => {
+                handleCopy(e);
               }}
             >
-              Copy
+              {isCopied ? "Copied" : "Copy"}
             </button>
           </div>
         </div>
@@ -955,7 +972,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
 export function UnfollowModal(props) {
   const { profile, setIsOpenFollowUnfollow, profileMethods, setKey } = props;
-  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
+  const userDetail = JSON.parse(localStorage.getItem("blazingUser"));
   const handleUnfollowClick = () => {
     profileMethods.UserFollowUser(
       userDetail.id,

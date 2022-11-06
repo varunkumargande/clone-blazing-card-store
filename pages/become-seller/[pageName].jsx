@@ -10,6 +10,7 @@ import ApplicationSubmitted from "../../components/partials/sellerSteps/Applicat
 import Footer from "../../components/partials/LandingPage/Footer";
 import { useRouter } from "next/router";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import BackButton from "../../components/CommonComponents/BackButton";
 
 export default function Steps() {
   const { isMobile } = useIsMobile();
@@ -39,7 +40,7 @@ export default function Steps() {
       {isMobile ? "" : <HeaderDefault />}
       <section className="steps-wrapper flex">
         <div className="step-left">
-          {isMobile ? <div className="header-title">Become a Seller</div> : ""}
+          {isMobile ? <div className="header-title"><BackButton name={"Become a Seller"} /></div> : ""}
           <LeftPannel />
         </div>
         <div className="step-right">{getComponent()}</div>

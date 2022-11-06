@@ -48,7 +48,7 @@ function AccountNav({keyValue}){
     }
 
     const handleLogout = e => {
-        sessionStorage.clear()
+        localStorage.clear()
         dispatch(logOut());
         dispatch(getWishlistList([]));
         Router.push("/account/login");

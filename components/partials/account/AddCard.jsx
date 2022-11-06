@@ -49,7 +49,7 @@ function AddCard() {
   const cardListApi = async () => {
     const result = await APIServices.get(
       "customer-card-details/listCard",
-      JSON.parse(sessionStorage.getItem("blazingUser")).id
+      JSON.parse(localStorage.getItem("blazingUser")).id
     );
     if (result.status == 200) {
       setCardData(result.data);

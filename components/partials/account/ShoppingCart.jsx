@@ -37,7 +37,7 @@ function ShoppingCart({ currency }) {
   let currentColor = useSelector((s) => s.palette.currentColor);
 
   useEffect(() => {
-    setData(JSON.parse(sessionStorage.getItem("cartItem")));
+    setData(JSON.parse(localStorage.getItem("cartItem")));
     setCartLoader(false);
 
     GrandTotal();
@@ -46,7 +46,7 @@ function ShoppingCart({ currency }) {
 ;
 
   const GrandTotal = () => {
-    const locale = JSON.parse(sessionStorage.getItem("cartItem"));
+    const locale = JSON.parse(localStorage.getItem("cartItem"));
     let temp = 0;
     let total = 0;
 
@@ -62,7 +62,7 @@ function ShoppingCart({ currency }) {
     incrementQuantity(product);
     dispatch(increaseItemQty(product));
     dispatch(addItem(1));
-    const localCart = JSON.parse(sessionStorage.getItem("cartItem"));
+    const localCart = JSON.parse(localStorage.getItem("cartItem"));
 
     let currentProduct = localCart.find((current) => {
       return current.productId === product.productId;
@@ -108,7 +108,7 @@ function ShoppingCart({ currency }) {
       decrementQuantity(product);
       dispatch(decreaseItemQty(product));
       dispatch(addItem(1));
-      const localCart = JSON.parse(sessionStorage.getItem("cartItem"));
+      const localCart = JSON.parse(localStorage.getItem("cartItem"));
       let currentProduct = localCart.find((current) => {
         return current.productId === product.productId;
       });
@@ -179,7 +179,7 @@ function ShoppingCart({ currency }) {
   }
 
   const ClearAll = () => {
-    sessionStorage.setItem("cartItem", JSON.stringify([]));
+    localStorage.setItem("cartItem", JSON.stringify([]));
     modalSuccess("success", "Successfully cleared your cart");
     dispatch(addItem(1));
   };

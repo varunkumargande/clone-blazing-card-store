@@ -4,7 +4,7 @@
     backdrop-filter: blur(2px);
     width: 100%;
     height: 100%;
-    z-index: 9;
+    z-index: 999;
     .modal{
         @include pos(static);
         width: 100%;
@@ -327,7 +327,18 @@
         }
     }
 }
-
+@media all and (min-width:320px) and (max-width:420px){
+    .modalOverlay {
+        .wd310{
+            max-width: 100%;
+        }
+        .btn-wrap{
+            button{
+                width:calc(50% - 6px);
+            }
+        }
+    }
+}
 @media all and (min-width:320px) and (max-width:1024px){
     .modalOverlay{
         .modal{

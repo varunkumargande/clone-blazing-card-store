@@ -9,16 +9,16 @@ export default function useEventSocket(resourceUrl, global = false) {
 
   useEffect(() => {
     if (
-      isLoggedIn !== !!sessionStorage.getItem("blazingUser") &&
+      isLoggedIn !== !!localStorage.getItem("blazingUser") &&
       typeof window !== "undefined"
     ) {
-      setIsLoggedIn(!!sessionStorage.getItem("blazingUser"));
+      setIsLoggedIn(!!localStorage.getItem("blazingUser"));
     }
   }, [typeof window]);
 
   useEffect(() => {
     if (isLoggedIn || global) {
-      const token = sessionStorage.getItem("blazingToken");
+      const token = localStorage.getItem("blazingToken");
       const chatHeader = {
         Authorization: `Bearer ${token}`,
       };
