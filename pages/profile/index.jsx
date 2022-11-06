@@ -16,6 +16,7 @@ import { ImageTransformation } from "../../components/Constants/imageTransformat
 import BackButton from "../../components/CommonComponents/BackButton";
 import { SignUPGoogle, UnfollowModal } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import { chatLogin } from "../../api";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -352,7 +353,7 @@ export default function PublicProfile() {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        user ? router.push("/chat") : setShowModal(true);
+                        user ? chatLogin() : setShowModal(true);
                       }}
                       className="border-btn edit-profile-btn"
                     >
