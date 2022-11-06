@@ -1,6 +1,4 @@
 import React, { useEffect, memo } from "react";
-import Link from "next/link";
-import IconCategoryDrop from "../../Icons/IconCategoryDrop";
 import IconLike from "../../Icons/IconLike";
 import { connect } from "react-redux";
 import Router from "next/router";
@@ -13,10 +11,14 @@ import {
 } from "../../../store/category/action";
 import { useDispatch } from "react-redux";
 import { categoryConstant } from "../../Constants/category";
+import { useCategoriesData } from "../../../contexts/Categoires/CategoriesData";
+import TabsSkeleton from "../../../skeleton/TabsSkeleton";
 
 function Category({ seeAllHeading, auth, category }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const { isCategoriesFetched } = useCategoriesData();
+
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
@@ -50,41 +52,42 @@ function Category({ seeAllHeading, auth, category }) {
   };
 
   const showCategoryList = () => {
-    if (Object.keys(category).length != 0) {
-      return (
-        <>
-          {auth?.isLoggedIn && (
-            <>
-              <div className="category-like like">
-                <button
-                  className={`flex justify-center flex-center Like ${
-                    category.categoryName === "likes" && `Liked`
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleLikedShow();
-                  }}
-                >
-                  <span>
-                    <IconLike />
-                  </span>
-                </button>
-              </div>
-            </>
-          )}
-
-          <div className="category-list">
+    return (
+      <>
+        {auth?.isLoggedIn && (
+          <div className="category-like like">
             <button
-              className={!!category.categoryName ? "title" : "title active"}
+              className={`flex justify-center flex-center Like ${
+                category.categoryName === "likes" && `Liked`
+              }`}
               onClick={(e) => {
                 e.preventDefault();
-                handleAllCategory();
+                handleLikedShow();
               }}
             >
-              {categoryConstant.homeTag}
+              <span>
+                <IconLike />
+              </span>
             </button>
           </div>
-          {category?.categories?.map((res, index) => (
+        )}
+        <div className="category-list">
+          <button
+            className={!!category.categoryName ? "title" : "title active"}
+            onClick={(e) => {
+              e.preventDefault();
+              handleAllCategory();
+            }}
+          >
+            {categoryConstant.homeTag}
+          </button>
+        </div>
+        {!isCategoriesFetched && (
+          <TabsSkeleton count={6} name={"home-tabs-section"} />
+        )}
+        {isCategoriesFetched &&
+          category?.categories &&
+          category?.categories?.map((res, index) => (
             <div
               className="category-list"
               key={res.categoryId || `${index}-category`}
@@ -108,9 +111,8 @@ function Category({ seeAllHeading, auth, category }) {
               </button>
             </div>
           ))}
-        </>
-      );
-    }
+      </>
+    );
   };
 
   const handleGoToSeeAll = () => {
