@@ -13,12 +13,23 @@ export const CategoriesDataContext = createContext();
 // This context will handle fetch category data only once
 export function CategoriesDataProvider(props) {
   const dispatch = useDispatch();
+  const [isCategoriesFetched, setIsCategoriesFetched] = useState(false);
+
+  const fetchCategories = async () => {
+    const response = await categoryApi(dispatch);
+    if (response.status) {
+      setIsCategoriesFetched(true);
+    }
+  };
 
   useEffect(() => {
-    categoryApi(dispatch);
+    fetchCategories();
   }, []);
 
-  const contextValue = useMemo(() => ({}), []);
+  const contextValue = useMemo(
+    () => ({ isCategoriesFetched }),
+    [isCategoriesFetched]
+  );
 
   return <CategoriesDataContext.Provider {...props} value={contextValue} />;
 }
