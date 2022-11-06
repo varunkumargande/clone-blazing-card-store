@@ -11,9 +11,9 @@ import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import Vertical from "../components/partials/LandingPage/Layout/vertical";
 import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
-import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
 import { catStreamDetailApi } from "../api/stream/subStreamDetail";
 import { useIsMobile } from "../contexts/Devices/CurrentDevices";
+import { SignUPGoogle } from "../components/partials/Modal/Modal";
 
 function landingPage({ category }) {
   const { isMobile } = useIsMobile();
@@ -161,9 +161,12 @@ function landingPage({ category }) {
     <div className="home-container">
       {isMobile ? <MobileHeader /> : <HeaderDefault />}
       {showModal && (
-        <DynamicModal
-          title="Signup to Join Blazing Cards"
-          setShowModal={setShowModal}
+        <SignUPGoogle
+          customMsg={"Signup to Join Blazing Cards"}
+          onDismiss={(e) => {
+            e.preventDefault();
+            setShowModal(false);
+          }}
         />
       )}
       <Category

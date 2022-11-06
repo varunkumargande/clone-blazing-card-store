@@ -11,11 +11,10 @@ import PublicProfileConstants from "../../components/Constants/publicProfile";
 import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
 import DefaultServices from "../../components/Services/DefaultServices";
-import DynamicModal from "../../components/CommonComponents/ModalWithDynamicTitle";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
-import { UnfollowModal } from "../../components/partials/Modal/Modal";
+import { SignUPGoogle, UnfollowModal } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
 export default function PublicProfile() {
@@ -47,6 +46,8 @@ export default function PublicProfile() {
     }
     return false;
   };
+
+  const user = getSessionUser();
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -83,7 +84,6 @@ export default function PublicProfile() {
 
   useEffect(() => {
     if (userId) {
-      let user = getSessionUser();
       ProfileMethods.GetPublicProfile(userId, setProfile, user.id);
     }
   }, [userId, key]);
@@ -279,7 +279,7 @@ export default function PublicProfile() {
       if (profile?.isFollow) {
         setIsOpenFollowUnfollow(true);
       }
-      if(!profile?.isFollow){
+      if (!profile?.isFollow) {
         ProfileMethods.UserFollowUser(user.id, profile.id, setKey);
       }
     } else {
@@ -287,7 +287,6 @@ export default function PublicProfile() {
     }
   };
   const handleFollowButtonText = () => {
-    let user = getSessionUser();
     if (user) {
       if (profile?.isFollow) {
         return "Following";
@@ -296,10 +295,17 @@ export default function PublicProfile() {
     }
     return "Follow";
   };
+
   return (
     <div className="home-container profile-container-wrap">
       {showModal && (
-        <DynamicModal title="SJoin Blazing Cards" setShowModal={setShowModal} />
+        <SignUPGoogle
+          customMsg={"Signup to Join Blazing Cards"}
+          onDismiss={(e) => {
+            e.preventDefault();
+            setShowModal(false);
+          }}
+        />
       )}
       {isMobile ? (
         <div className="profile-title flex flex-center">
@@ -343,7 +349,13 @@ export default function PublicProfile() {
                     >
                       {handleFollowButtonText()}
                     </button>
-                    <button className="border-btn edit-profile-btn">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        user ? router.push("/chat") : setShowModal(true);
+                      }}
+                      className="border-btn edit-profile-btn"
+                    >
                       Message
                     </button>
                   </div>
@@ -370,7 +382,9 @@ export default function PublicProfile() {
                       {profile?.mobileNumber && (
                         <li>
                           <Link
-                            href={`https://api.whatsapp.com/send?phone=${profile.mobileNumber}&text=Hi ${renderProfileName()}!`}
+                            href={`https://api.whatsapp.com/send?phone=${
+                              profile.mobileNumber
+                            }&text=Hi ${renderProfileName()}!`}
                           >
                             <a
                               target={
