@@ -6,11 +6,11 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { clearState, streamData } from "../../../store/stream/action";
 import { notificationBaseUrl } from "../../../api/url";
-import DynamicModal from "../../CommonComponents/ModalWithDynamicTitle";
 import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 import useEventSocket from "../../../hooks/useEventSocket";
 import { useCallback } from "react";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
+import { SignUPGoogle } from "../../partials/Modal/Modal";
 
 function Index() {
   const { isMobile } = useIsMobile();
@@ -27,7 +27,7 @@ function Index() {
   const dispatch = useDispatch();
   const [isBuyNowPaymentModal, setIsBuyNowPaymentModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [liveAuctionDetails, setLiveAuctionDetails]= useState({});
+  const [liveAuctionDetails, setLiveAuctionDetails] = useState({});
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
 
@@ -72,9 +72,12 @@ function Index() {
       {streamingDetails?.uuid ? (
         <>
           {showLoginModal && (
-            <DynamicModal
-              title="Signup to Join Blazing Cards"
-              setShowModal={setShowLoginModal}
+            <SignUPGoogle
+              customMsg={"Signup to Join Blazing Cards"}
+              onDismiss={(e) => {
+                e.preventDefault();
+                setShowLoginModal(false);
+              }}
             />
           )}
           <div
