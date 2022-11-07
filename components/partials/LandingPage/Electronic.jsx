@@ -10,7 +10,6 @@ import StreamCardSkeleton from "../../../skeleton/StreamCardSkeleton";
 import { saveSubCategoryName } from "../../../store/category/action";
 import { useDispatch } from "react-redux";
 
-
 function CategoryStream({
   showLoginModal,
   catData,
@@ -77,13 +76,14 @@ function CategoryStream({
     }
   };
 
-
   return (
     <section className="Live-wrapper card-inner">
       <div className="inner-container">
         <div className="title-wrap flex space-between flex-center">
           <div className="flex flex-center">
-            <h3 className="title text-capitalize">{stringFormatter(catName)}</h3>
+            <h3 className="title text-capitalize">
+              {stringFormatter(catName)}
+            </h3>
           </div>
           {!!catData[catId] && (
             <ShowViewAll
@@ -99,11 +99,7 @@ function CategoryStream({
           <div className="flex inner-container">
             <div className="card-wrap flex">
               {getStreamCards}
-              {/* {seeMoreLoader ? (
-                <StreamLoadSkeleton count={3} name={`home-intrenal-page`} />
-              ) : ( */}
-                {handleCatCardVisisble()}
-              {/* )} */}
+              {handleCatCardVisisble()}
             </div>
           </div>
         ) : (
