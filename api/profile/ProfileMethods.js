@@ -42,7 +42,9 @@ let GetLikedStreams = (userId, callback,setSeeMoreLoader) => {
     .catch((e) => {
         
     })
-   setSeeMoreLoader(false)
+    if (setSeeMoreLoader) {
+        setSeeMoreLoader(false);
+    }
 }
 
 const GetUserFollowers = async (userId,callback, loggedInUserId) => {
