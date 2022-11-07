@@ -167,8 +167,8 @@ function StreamingBase({
   const getTimeDifference = (endTime, currentTime) => {
     if (endTime) {
       let [date, time] = endTime.split(" ");
-      const endTime = moment(date.replaceAll("-", "/") + " " + time);
-      const duration = moment.duration(endTime.diff(currentTime));
+      const convertedEndTime = moment(date.replaceAll("-", "/") + " " + time);
+      const duration = moment.duration(convertedEndTime.diff(currentTime));
 
       let minutes = Math.floor(duration.asSeconds() / 60);
       let seconds = Math.ceil(duration.asSeconds() % 60);
