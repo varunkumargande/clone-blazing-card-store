@@ -22,14 +22,14 @@ function SeeAllSubCategories({
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const [pageType, setPageType] = useState(null);
   const { isCategoriesFetched } = useCategoriesData();
-
-  const [queryCategory, setQueryCategory] = useState(null);
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
+      setPageType(query?.page);
     }
   }, [query]);
 
@@ -40,9 +40,8 @@ function SeeAllSubCategories({
       } else {
         setLoader(true);
       }
-
       getStreamSubCategoryBasedApi(
-        query?.page,
+        pageType,
         category?.categoryName,
         category?.subCategoryName,
         setStreamData,
@@ -78,11 +77,9 @@ function SeeAllSubCategories({
         return (
           <div className="category-list">
             <button
-              className={
-                category?.subCategoryName === item.categorySlug
-                  ? "title active"
-                  : "title"
-              }
+              className={`text-capitalize title ${
+                category?.subCategoryName === item.categorySlug && "active"
+              }`}
               onClick={() =>
                 handleSubCategorySelect(item.categorySlug, item.categoryId)
               }

@@ -77,7 +77,7 @@ function StreamCard({ detail, showLoginModal, auth }) {
           <div className="disc">
             {detail?.title?.substring(0, 25) + "..."}
           </div>
-          <button className="cate-btn">
+          <button className="cate-btn text-capitalize">
             {stringFormatter(detail?.subCategory_name)}
           </button>
         </div>

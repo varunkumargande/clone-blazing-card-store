@@ -10,7 +10,6 @@ function Vertical({ category, showLoginModal }) {
   const [catId, setCatId] = useState(null);
   const [loader, setLoader] = useState({});
   const [apiCount, setApiCount] = useState(0);
-  const [fetch, setFetch] = useState(true);
   const [seeMoreLoader,setSeeMoreLoader] = useState(true);
 
   useEffect(() => {

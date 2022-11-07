@@ -72,7 +72,7 @@ function LiveShow({ showLoginModal }) {
               <div className="card-wrap flex">
                 {getStreamCards()}
                 {seeMoreLoader ? (
-                  <StreamLoadSkeleton count={3} name={`home-intrenal-page`} />
+                  <StreamCardSkeleton count={7} name={"home-live-shows"} />
                 ) : (
                   handleCardVisisble()
                 )}

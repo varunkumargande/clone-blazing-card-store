@@ -1,9 +1,9 @@
 import { limit } from "../Constants";
 
 const ShowViewAll = ({ handleGoToSeeAll, catName, dataLen }) => {
-  return (
-    <div className="seeAll">
-      {dataLen === limit && (
+  const showAllViewDiv = () => {
+    if (dataLen >= limit) {
+      return (
         <a
           className="flex flex-center"
           onClick={(e) => {
@@ -13,9 +13,11 @@ const ShowViewAll = ({ handleGoToSeeAll, catName, dataLen }) => {
         >
           View All
         </a>
-      )}
-    </div>
-  );
+      );
+    }
+  };
+
+  return <div className="seeAll">{showAllViewDiv()}</div>;
 };
 
 export default ShowViewAll;

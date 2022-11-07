@@ -21,16 +21,12 @@ export default function LikedList({ setIsSeeAll, setSeeAllHeading }) {
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [likedShows, setLikedShows] = useState([]);
-  const [seeMoreLoader,setSeeMoreLoader] = useState(true);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-   setSeeMoreLoader(true);
+    setLoader(true);
     const userData = JSON.parse(localStorage.getItem("blazingUser"));
-    ProfileMethods.GetLikedStreams(
-      userData?.id,
-      setLikedShows,
-     setSeeMoreLoader
-    );
+    ProfileMethods.GetLikedStreams(userData?.id, setLikedShows, setLoader);
     setUserId(userData.id);
     setProfile(userData);
   }, []);
@@ -51,13 +47,13 @@ export default function LikedList({ setIsSeeAll, setSeeAllHeading }) {
       <div className="inner-container">
         <div className="title-wrap flex space-between flex-center">
           <div className="flex flex-center">
-            <h3 className="title">Liked List</h3>
+            <h3 className="title">Liked Shows</h3>
           </div>
         </div>
         <div className="overflow-none">
           <div className="card-wrap flex inner-container">
-            {seeMoreLoader ? (
-              <StreamCardSkeleton count={7} name={"home-live-shows"} />
+            {loader ? (
+              <StreamCardSkeleton count={14} name={"home-live-shows"} />
             ) : (
               getStreamCards()
             )}

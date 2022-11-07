@@ -9,7 +9,7 @@ export async function editProfileApi(
   setLoader,
   dispatch
 ) {
-  const data = JSON.stringify({
+  const data = {
     firstName: values.firstName,
     lastName: values.lastName,
     emailId: values.emailId,
@@ -19,10 +19,12 @@ export async function editProfileApi(
     twitterUrl: values.twitterUrl,
     facebookUrl: values.facebookUrl,
     path: DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH,
-    username: values.userName
-  });
-
-  const result = await APIServices.create("customer/edit-profile", data);
+  };
+  if (values?.userName) {
+    data.username = values.userName;
+  }
+  const JSONdata = JSON.stringify(data);
+  const result = await APIServices.create("customer/edit-profile", JSONdata);
   if (result && result.data && result.data.status === 1) {
     localStorage.setItem("blazingUser", JSON.stringify(result.data.data));
     dispatch(show({ message: result.data.message, type: "success" }));
