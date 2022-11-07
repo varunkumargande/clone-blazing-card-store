@@ -34,7 +34,7 @@ let GetPreviousStreams = async (userId, callback) => {
     })
 }
 
-let GetLikedStreams = (userId, callback) => {
+let GetLikedStreams = (userId, callback,setSeeMoreLoader) => {
     http.get(`/stream/liked-streams?user_id=${userId}`)
     .then((res) => {
         functionCallbackSetter(res, callback);
@@ -42,6 +42,7 @@ let GetLikedStreams = (userId, callback) => {
     .catch((e) => {
         
     })
+   setSeeMoreLoader(false)
 }
 
 const GetUserFollowers = async (userId,callback, loggedInUserId) => {

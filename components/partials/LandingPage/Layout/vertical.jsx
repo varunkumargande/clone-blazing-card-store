@@ -11,6 +11,7 @@ function Vertical({ category, showLoginModal }) {
   const [loader, setLoader] = useState({});
   const [apiCount, setApiCount] = useState(0);
   const [fetch, setFetch] = useState(true);
+  const [seeMoreLoader,setSeeMoreLoader] = useState(true);
 
   useEffect(() => {
     if (category?.categoryName) {
@@ -38,13 +39,15 @@ function Vertical({ category, showLoginModal }) {
         data,
         setLoader,
         setApiCount,
-        setSubCategories
+        setSubCategories,
+       setSeeMoreLoader
       );
     }
   }, [apiCount, subCategories]);
 
   useEffect(() => {
     if (!!catId) {
+     setSeeMoreLoader(true);
       catSubStreamDetailApi(
         setData,
         page,
@@ -52,16 +55,13 @@ function Vertical({ category, showLoginModal }) {
         data,
         setLoader,
         setApiCount,
-        setSubCategories
+        setSubCategories,
+       setSeeMoreLoader
       );
     }
   }, [page]);
 
-  const handleCardVisisble = () => {
-    if (total === limit) {
-      return <> {showCardLoader(setPage, page, data)} </>;
-    }
-  };
+  
 
   const showCardDetail = () => {
     if (subCategories) {
@@ -77,6 +77,7 @@ function Vertical({ category, showLoginModal }) {
             setPage={setPage}
             page={page}
             setCatId={setCatId}
+            seeMoreLoader={seeMoreLoader}
           />
         );
       });
