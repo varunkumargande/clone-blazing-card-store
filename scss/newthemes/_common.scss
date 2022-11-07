@@ -475,6 +475,8 @@ label{
   transition: all .2s;
   &.disable{
     opacity: .6;
+    pointer-events: all;
+    cursor: not-allowed !important;
   }
   &:hover{
     color: $white-color;
@@ -743,4 +745,8 @@ label{
 }
 .disable-opacity {
   opacity: 0.5;
+  pointer-events: all;
+  cursor: not-allowed !important;
 }
+
+
