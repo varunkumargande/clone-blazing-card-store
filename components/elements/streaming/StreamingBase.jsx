@@ -56,9 +56,8 @@ function StreamingBase({
   const [liked, setLiked] = useState(
     stream?.streamData?.isLike ? stream?.streamData?.isLike : false
   );
-  const [onPageLanding,  setOnPageLanding] = useState(true);
+  const [onPageLanding, setOnPageLanding] = useState(true);
   const [currentAuctionName, setCurrentAuctionName] = useState(null);
-
 
   const { isMobile } = useIsMobile();
 
@@ -111,7 +110,8 @@ function StreamingBase({
         liveAuctionDetails?.latestBidding !== {} ||
         liveAuctionDetails.latestAuction !== {}
       ) {
-        const amount = (getBidAmount && minutes && seconds) && getBidAmount || 0;
+        const amount =
+          (getBidAmount && minutes && seconds && getBidAmount) || 0;
         setBidAmount(+amount);
         setAmountToBid(+amount + 1);
       }
@@ -244,7 +244,7 @@ function StreamingBase({
         setBidAmount(null);
       }
       if (seconds > 0) {
-        setOnPageLanding(false)
+        setOnPageLanding(false);
         setSeconds(seconds - 1);
       }
       if (seconds === 0) {
@@ -305,14 +305,18 @@ function StreamingBase({
   const getAuctionArea = useMemo(() => {
     return (
       <>
-        {minutes == 0 && seconds == 0 ? ( !onPageLanding ? 
-          <div className="auction-end">
-            <button className="primary-btn disable">Auction Ended</button>
-          </div>
-        : null)  : (
+        {minutes == 0 && seconds == 0 ? (
+          !onPageLanding ? (
+            <div className="auction-end">
+              <button className="primary-btn disable">Auction Ended</button>
+            </div>
+          ) : null
+        ) : (
           <div className="btn-wrap flex space-between">
             <button
-              className={disableBid ? "border-btn disable-opacity" : "border-btn"}
+              className={
+                disableBid ? "border-btn disable-opacity" : "border-btn"
+              }
               disabled={disableBid}
               onClick={(e) => {
                 e.preventDefault();
@@ -322,7 +326,7 @@ function StreamingBase({
               Custom Bid
             </button>
             <button
-              className={disableBid ? "primary-btn disable-opacity" : "primary-btn"}
+              className={`primary-btn ${disableBid && "disable-opacity"}`}
               disabled={disableBid}
               onClick={(e) => {
                 e.preventDefault();
@@ -393,7 +397,10 @@ function StreamingBase({
           {stream?.streamPageData?.streamPageDteails?.isLoggedIn ? (
             <div className="head-title">{liveAuctionName}</div>
           ) : (
-            <div className="head-title">Please login to participate</div>
+            <div className="head-title">
+              {stream?.streamPageData?.streamPageDteails &&
+                `Please login to participate`}
+            </div>
           )}
           <div className="tme-wrap flex flex-center justify-center live">
             <span>{userCount}</span> <button className="live"></button>
@@ -500,7 +507,9 @@ function StreamingBase({
               {winnerNotification?.bidAmount ? (
                 <>Selling Bid - ${winnerNotification?.bidAmount} + Ship/Tax </>
               ) : (
-                <>Current Bid - ${bidAmount > 0 ? bidAmount : null} + Ship/Tax </>
+                <>
+                  Current Bid - ${bidAmount > 0 ? bidAmount : null} + Ship/Tax{" "}
+                </>
               )}
               <span
                 className="flex flex-center justify-center br50"
