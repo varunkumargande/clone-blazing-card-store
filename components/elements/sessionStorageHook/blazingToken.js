@@ -4,7 +4,7 @@ const blazingToken = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    setData(JSON.parse(sessionStorage.getItem("blazingToken")));
+    setData(JSON.parse(localStorage.getItem("blazingToken")));
   }, []);
 
   return data;

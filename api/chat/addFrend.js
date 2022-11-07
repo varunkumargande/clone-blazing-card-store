@@ -18,7 +18,7 @@ export async function addChatFrend(friendId, fetchUserData, setIsOpen, socket) {
     friendId: friendId,
   };
 
-  const token = sessionStorage.getItem("blazingToken");
+  const token = localStorage.getItem("blazingToken");
   const chatHeader = {
     Authorization: `Bearer ${token}`,
   };

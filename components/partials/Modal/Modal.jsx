@@ -31,6 +31,8 @@ import Router from "next/router";
 import DefaultServices from "../../Services/DefaultServices";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { getStateList } from "../../../api/common/common";
+import { US_CODE } from "../../Constants";
 
 const responseGoogle = (response) => {
   GoogleLoginApi(
@@ -57,6 +59,14 @@ const responseGoogleFailure = (response) => {
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = (e) => {
+    e.preventDefault();
+    setIsCopied(true);
+    navigator.clipboard.writeText(pageUrl);
+    setTimeout(() => setIsCopied(false), 1000);
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
@@ -76,40 +86,49 @@ export function ShareModalModal({ setIsShareModalOpen }) {
         </div>
         <div className="modal-body">
           <div className="flex justify-center social-link">
-            <a
-              href={`${SocialMediaShareLink.whatsapp}${apiUrl}`}
-              target="_blank"
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.whatsapp}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareWhatsup />
-              </button>
-            </a>
-            <a
-              href={`${SocialMediaShareLink.twitter}${apiUrl}`}
-              target="_blank"
+              <IconShareWhatsup />
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.twitter}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareTwitter />
-              </button>
-            </a>
-            <a
-              href={`${SocialMediaShareLink.facebook}${apiUrl}`}
-              target="_blank"
+              <IconShareTwitter />
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  `${SocialMediaShareLink.facebook}${pageUrl}`,
+                  "_blank"
+                );
+              }}
             >
-              <button>
-                <IconShareFacebook />
-              </button>
-            </a>
+              <IconShareFacebook />
+            </button>
           </div>
           <div className="copy flex space-between flex-center nowrap">
             <span className="url">{pageUrl}</span>
             <button
               className="copy-btn"
-              onClick={() => {
-                navigator.clipboard.writeText(pageUrl);
+              onClick={(e) => {
+                handleCopy(e);
               }}
             >
-              Copy
+              {isCopied ? "Copied" : "Copy"}
             </button>
           </div>
         </div>
@@ -248,7 +267,6 @@ export function PaymentInfoModal(props) {
     addressList,
     cardDetail,
     productDetail,
-    fetchShiipmentApi,
     paymentLoader,
     addressLoader,
     isBuyNowPaymentModal,
@@ -266,10 +284,6 @@ export function PaymentInfoModal(props) {
         addressList[0]?.state +
         " ," +
         addressList[0]?.postcode;
-
-  const shipSchema = Yup.object().shape({
-    fullName: Yup.string().min(2, "Too Short!").required("Required"),
-  });
 
   const cardDetails =
     cardDetail == false
@@ -376,20 +390,9 @@ export function PaymentInfoModal(props) {
 }
 
 export function AddNewCardModal(props) {
-  const {
-    payDetail,
-    close,
-    productDetail,
-    countryData,
-    fetchShiipmentApi,
-    setPaymentLoader,
-    fetchCardDetail,
-  } = props;
+  const { payDetail, close, setPaymentLoader, fetchCardDetail } = props;
 
   const dispatch = useDispatch();
-
-  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
-  const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
   const [initialValueFlag, setInitialValueFlag] = useState(
     Array.isArray(payDetail) &&
@@ -563,7 +566,9 @@ export function AddNewCardModal(props) {
           </div>
           <div className="modal-footer">
             <div className="flex justify-center btn-wrap">
-              <button className="primary-btn">Save card</button>
+              <button className="primary-btn" onClick={formik.handleSubmit}>
+                Save card
+              </button>
             </div>
           </div>
         </form>
@@ -573,23 +578,18 @@ export function AddNewCardModal(props) {
 }
 
 export function AddAddressModal(props) {
-  const {
-    setShipIndex,
-    shipIndex,
-    setShipData,
-    shipData,
-    close,
-    setShip,
-    addressList,
-    countryData,
-    setAddressList,
-  } = props;
+  const { close, setShip, addressList, countryData } = props;
+
+  const [stateList, setStateList] = useState([]);
+  useEffect(() => {
+    getStateList(setStateList);
+  }, []);
 
   const shipSchema = Yup.object().shape({
     company: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
     address1: Yup.string().min(2, "Too Short!").required("Required"),
-    countryId: Yup.string().required("Required"),
+    countryId: Yup.number().required("Required").typeError(),
     state: Yup.string().required("Required"),
     city: Yup.string().required("Required"),
     postcode: Yup.string().min(4, "Invalide PinCode").required("Required"),
@@ -600,7 +600,7 @@ export function AddAddressModal(props) {
       company: addressList[0]?.company ?? "",
       address1: addressList[0]?.address1 ?? "",
       address2: addressList[0]?.address2 ?? "",
-      countryId: addressList[0]?.countryId ?? "",
+      countryId: addressList[0]?.countryId ?? US_CODE,
       postcode: addressList[0]?.postcode ?? "",
       addressId: addressList[0]?.addressId ?? "",
       state: addressList[0]?.state ?? "",
@@ -613,7 +613,6 @@ export function AddAddressModal(props) {
     },
     validationSchema: () => shipSchema,
   });
-
   return (
     <>
       {formik ? (
@@ -633,7 +632,7 @@ export function AddAddressModal(props) {
                 </span>
               </button>
             </div>
-            <form onSubmit={formik.handleSubmit}>
+            <form>
               <div className="modal-body">
                 <div className="input-control">
                   <label>Company *</label>
@@ -645,24 +644,6 @@ export function AddAddressModal(props) {
                   />
                   <ErrorMessage errors={formik.errors.company} />{" "}
                 </div>
-                {/* <div className="input-control">
-                  <label>Phone Number *</label>
-                  <input
-                    name="phoneNumber"
-                    placeholder={"Enter here"}
-                    value={formik.values.phoneNumber}
-                    onChange={formik.handleChange}
-                  />
-                  <ErrorMessage errors={errors} />                </div>
-                <div className="input-control">
-                  <label>Email Address *</label>
-                  <input
-                    name="email"
-                    placeholder={"Enter here"}
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                  />
-                  <ErrorMessage errors={errors} />                </div> */}
                 <div className="input-control">
                   <label>Address Line 1 *</label>
                   <input
@@ -696,7 +677,6 @@ export function AddAddressModal(props) {
                 <div className="input-control" hidden>
                   <input name="addressId" value={formik.values.addressId} />
                 </div>
-
                 <div className="input-control">
                   <label>City *</label>
                   <input
@@ -708,8 +688,8 @@ export function AddAddressModal(props) {
                   <ErrorMessage errors={formik.errors.city} />{" "}
                 </div>
 
-                <div className="input-control">
-                  <label>State *</label>
+                {/* <div className="input-control"> Please do not remove this code 
+                  <label>State *</label> A quick fix for the stable build
                   <input
                     name="state"
                     placeholder={"Enter here"}
@@ -717,6 +697,26 @@ export function AddAddressModal(props) {
                     onChange={formik.handleChange}
                   />
                   <ErrorMessage errors={formik.errors.state} />{" "}
+                </div> */}
+
+                <div className="input-control">
+                  <label>State *</label>
+                  <select
+                    className="input-control"
+                    name="state"
+                    onChange={formik.handleChange}
+                    value={formik.values.state}
+                  >
+                    <option>Select here</option>
+                    {stateList?.map((item) => {
+                      return (
+                        <>
+                          <option value={item.name}>{item.name}</option>
+                        </>
+                      );
+                    })}
+                  </select>
+                  <ErrorMessage errors={formik.errors.state} />
                 </div>
 
                 <div className="input-control">
@@ -726,8 +726,10 @@ export function AddAddressModal(props) {
                     name="countryId"
                     onChange={formik.handleChange}
                     value={formik.values.countryId}
+                    disabled={true}
                   >
-                    {countryData?.map((item, index) => {
+                    <option>United States</option>
+                    {countryData?.map((item) => {
                       return (
                         <>
                           <option value={item.countryId}>{item.name}</option>
@@ -740,7 +742,11 @@ export function AddAddressModal(props) {
               </div>
               <div className="modal-footer">
                 <div className="flex justify-center btn-wrap">
-                  <button type="submit" className="primary-btn">
+                  <button
+                    className="primary-btn"
+                    type="submit"
+                    onClick={formik.handleSubmit}
+                  >
                     Save Changes
                   </button>
                 </div>
@@ -848,12 +854,9 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [username, setUsername] = useState("");
-  const [isButton, setIsButton] = useState(false);
 
   // handle username and search frend
   const handleUsername = async (e) => {
-    setIsButton(true);
     if (e.target.value != "") {
       searchUser(setUserData, setUserDataLoader, e.target.value);
     }
@@ -863,7 +866,6 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   // handle add user id and username for save information
   const handleAddUserForChat = (id, name) => {
     setUserId(id);
-    setUsername(name);
   };
   // ==============================================================
 
@@ -969,43 +971,50 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 }
 
 export function UnfollowModal(props) {
-  const {profile, setIsOpenFollowUnfollow, profileMethods,setKey} = props;
-  const userDetail = JSON.parse(sessionStorage.getItem("blazingUser"));
+  const { profile, setIsOpenFollowUnfollow, profileMethods, setKey } = props;
+  const userDetail = JSON.parse(localStorage.getItem("blazingUser"));
   const handleUnfollowClick = () => {
-    profileMethods.UserFollowUser(userDetail.id, profile.id, setKey,setIsOpenFollowUnfollow)
-  }
+    profileMethods.UserFollowUser(
+      userDetail.id,
+      profile.id,
+      setKey,
+      setIsOpenFollowUnfollow
+    );
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal">
         <div className="modal-body text-center">
           <div className="profile-icon">
-            {
-              !!profile && <CloudinaryImage
-              imageUrl={DefaultServices?.GetFullImageURL(
-                profile,
-                "profile"
-              )}
-              keyId={DefaultServices?.GetFullImageURL(
-                profile,
-                "profile"
-              )}
-              transformation={ImageTransformation.streamPageProfile}
-              alternative={"profileImg"}
-            />
-            }
+            {!!profile && (
+              <CloudinaryImage
+                imageUrl={DefaultServices?.GetFullImageURL(profile, "profile")}
+                keyId={DefaultServices?.GetFullImageURL(profile, "profile")}
+                transformation={ImageTransformation.streamPageProfile}
+                alternative={"profileImg"}
+              />
+            )}
           </div>
           <div className="profile-id">Want to follow @{profile?.username}</div>
           <div className="btn-wrap follow-btn-wrap flex justify-center">
-            <button className="border-btn" onClick={(e) => {
-              e.preventDefault();
-              setIsOpenFollowUnfollow(false);
-            }
-              }>Cancel
+            <button
+              className="border-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpenFollowUnfollow(false);
+              }}
+            >
+              Cancel
             </button>
-            <button className="primary-btn" onClick={(e) => {
-              e.preventDefault();
-              handleUnfollowClick()}
-              }>Unfollow</button>
+            <button
+              className="primary-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                handleUnfollowClick();
+              }}
+            >
+              Unfollow
+            </button>
           </div>
         </div>
       </div>

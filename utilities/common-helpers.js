@@ -67,3 +67,12 @@ export const dateFormatSeperator = (date) => {
     }
     return date;
 };
+
+/**
+ * @method: getErrorMessage
+ * @description: this function receive the response and according to it
+ *                returns the error message which can be displayed.
+ */
+export const getErrorMessage = (response) => {
+    return response?.data?.data?.message || response?.data?.message || 'Something went wrong!'
+}

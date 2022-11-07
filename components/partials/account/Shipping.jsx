@@ -20,8 +20,8 @@ function Shipping({amount,currency}){
 
 
 useEffect(()=>{
-    setCartItems(JSON.parse(sessionStorage.getItem("cartItem")))
-    setAddress(JSON.parse(sessionStorage.getItem("contact")))
+    setCartItems(JSON.parse(localStorage.getItem("cartItem")))
+    setAddress(JSON.parse(localStorage.getItem("contact")))
 
     detailCart()
 
@@ -38,7 +38,7 @@ const couponSubmit=()=>{
 }
 
 const detailCart=()=>{
-    let cartLocale=JSON.parse(sessionStorage.getItem("cartItem"))
+    let cartLocale=JSON.parse(localStorage.getItem("cartItem"))
     let cartFinal={}
     let cartArray=[]
     

@@ -11,8 +11,8 @@ function OrderShipping({amount}){
 
 
 useEffect(()=>{
-    setCartItems(JSON.parse(sessionStorage.getItem("backOrderLocal")))
-    setAddress(JSON.parse(sessionStorage.getItem("contact")))
+    setCartItems(JSON.parse(localStorage.getItem("backOrderLocal")))
+    setAddress(JSON.parse(localStorage.getItem("contact")))
 
 },[])
 

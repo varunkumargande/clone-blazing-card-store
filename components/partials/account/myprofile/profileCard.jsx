@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import IconShareFacebook from "../../../../components/Icons/IconShareFacebook";
 import IconShareTwitter from "../../../../components/Icons/IconShareTwitter";
-import IconShareWhatsup from "../../../../components/Icons/IconShareWhatsup";
-import { useDispatch, connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import Router from "next/router";
-import Link from "next/link";
 import { imageUrl } from "../../../../api/url";
 
 function ProfileCard(props) {
@@ -15,8 +13,8 @@ function ProfileCard(props) {
   const [userDetail, setUserDetail] = useState();
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      setUserDetail(JSON.parse(sessionStorage.getItem("blazingUser")));
+    if (localStorage.getItem("blazingUser")) {
+      setUserDetail(JSON.parse(localStorage.getItem("blazingUser")));
     }
   }, []);
 

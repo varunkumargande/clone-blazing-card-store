@@ -9,8 +9,8 @@ export const chatHelper = async () => {
     Router.push("/chat");
   } else {
     const userJson = {
-      username: JSON.parse(sessionStorage.getItem("blazingUser")).username,
-      password: sessionStorage.getItem("userPass"),
+      username: JSON.parse(localStorage.getItem("blazingUser")).username,
+      password: localStorage.getItem("userPass"),
     };
 
     const { data } = await axios.post(loginRoute, userJson);

@@ -1,4 +1,6 @@
 import { guideLinesApi, basicDteailsApi, shippingDetails, paymentDetailsApi, getDetails } from "../../api/becomeSeller";
+import { getErrorMessage } from "../../utilities/common-helpers";
+import { show } from "../toast/action";
 
 export const actionTypes = {
   SUBMIT_GUIDELINES: "SUBMIT_GUIDELINES",
@@ -14,33 +16,42 @@ export const actionTypes = {
 export const rulesAcknowledgement =  (payLoad, router) => {
   return async dispatch => {
     const result = await guideLinesApi(payLoad)
-    if(result) {
+    if(result && result?.data?.status ===1) {
       dispatch(addGuideLines(payLoad))
       router.push("/become-seller/basicDetails", undefined, {
         shallow: true,
       })
+    } else {
+      const message = getErrorMessage(result);
+      dispatch(show({ message, type: "error" }));
     }
   };
 };
 export const addBasicData =  (payLoad, router) => {
   return async dispatch => {
     const result = await basicDteailsApi(payLoad)
-    if(result) {
+    if(result && result?.data?.status === 1) {
       dispatch(addBasicDetails(payLoad))
       router.push("/become-seller/paymentDetails", undefined, {
         shallow: true,
       })
+    } else {
+      const message = getErrorMessage(result);
+      dispatch(show({ message, type: "error" }));
     }
   };
 };
 export const addPaymentData =  (payLoad, router) => {
   return async dispatch => {
     const result = await paymentDetailsApi(payLoad)
-    if(result) {
+    if (result && result?.data?.data?.status === 1) {
       dispatch(addPaymentDetails(payLoad))
       router.push("/become-seller/shippingDetails", undefined, {
         shallow: true,
       })
+    } else {
+      const message = getErrorMessage(result);
+      dispatch(show({ message, type: "error" }));
     }
   };
 };

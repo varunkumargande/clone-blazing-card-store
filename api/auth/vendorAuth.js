@@ -5,7 +5,7 @@ import { apiConstant } from "../../components/Constants/apis";
  * vendor login feature from store
  */
 export async function vendorAuthApi() {
-  const token = sessionStorage.getItem("blazingToken");
+  const token = localStorage.getItem("blazingToken");
   const result = await APIServices.getAll(
     `${apiConstant.vendor.VENDOR_AUTH_API}?loginType=${apiConstant.vendor.VENDOR_AUTH_TYPE}`
   );

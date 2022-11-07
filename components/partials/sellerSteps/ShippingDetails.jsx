@@ -10,17 +10,21 @@ import { useSelector } from "react-redux";
 import { addShippingData } from "../../../store/becomeSeller/action";
 import BackButton from "../../CommonComponents/BackButton";
 import { countryListApi } from "../../../api";
+import { getStateList } from "../../../api/common/common";
+import { US_CODE } from "../../Constants";
 
 export default function ShippingDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [countryData, setCountryData] = useState(null);
+  const [stateList, setStateList] = useState([]);
   const shippingDetails = useSelector(
     (state) => state?.becomeSeller?.shippingDetails
   );
   
   useEffect(() => {
     countryListApi(setCountryData);
+    getStateList(setStateList)
   },[]);
 
   const handleSubmit = (values) => {
@@ -39,7 +43,7 @@ export default function ShippingDetails() {
 
   return (
     <div className="step-container">
-      <BackButton name={"Shipping Details"}/>
+      <BackButton name={"Shipping Details"} />
       <div className="sub-title">
         A return address must be added before going live on Blazing Cards. This
         will be used on your shipment labels.
@@ -49,7 +53,7 @@ export default function ShippingDetails() {
           fullName: shippingDetails?.shipFromName ?? "",
           addressLine1: shippingDetails?.addressLine1 ?? "",
           addressLine2: shippingDetails?.addressLine2 ?? "",
-          country: shippingDetails?.country ?? "",
+          country: shippingDetails?.country ?? US_CODE,
           postalCode: shippingDetails?.postalCode ?? "",
           city: shippingDetails?.city ?? "",
           state: shippingDetails?.state ?? "",
@@ -90,13 +94,14 @@ export default function ShippingDetails() {
                 placeholder="Enter here"
               />
             </div>
-            <div className="flex space-between">
+            <div className="flex space-between ">
               <MySelect
                 className="input-control wd48"
                 label="Country *"
                 name="country"
+                disabled={true}
               >
-                <option>Select here</option>
+                <option>United States</option>
                 {countryData?.map((item, index) => {
                   return (
                     <>
@@ -115,7 +120,7 @@ export default function ShippingDetails() {
               />
             </div>
             <div className="flex space-between">
-              <MySelect
+              {/* <MySelect
                 className="input-control wd48"
                 label="City *"
                 name="city"
@@ -124,15 +129,27 @@ export default function ShippingDetails() {
                 <option value="delhi">Delhi</option>
                 <option value="mumbai">Mumbai</option>
                 <option value="chennai">Channai</option>
-              </MySelect>
+              </MySelect> */}
+              <TextInput
+                className="input-control wd48"
+                label="City *"
+                name="city"
+                type="text"
+                placeholder="Enter here"
+              />
               <MySelect
                 className="input-control wd48"
                 label="State *"
                 name="state"
               >
                 <option>Select here</option>
-                <option value="delhi">Delhi</option>
-                <option value="up">Utter Pradesh</option>
+                {stateList?.map((item, index) => {
+                  return (
+                    <>
+                      <option value={item.name}>{item.name}</option>
+                    </>
+                  );
+                })}
               </MySelect>
             </div>
 

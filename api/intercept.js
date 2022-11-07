@@ -22,7 +22,7 @@ export const modalWarning = (type, message) => {
 
 http.interceptors.request.use((config) => {
   // const token = sessionStorageService.getAccessToken();
-  var token = sessionStorage.getItem("blazingToken");
+  var token = localStorage.getItem("blazingToken");
   if (token) {
     config.headers["Authorization"] = "Bearer " + token;
   }
@@ -76,10 +76,10 @@ function handleBadRequest(error) {
 
 function handleUnauthorized(error) {
   //   Router.push("/account/login")
-  // sessionStorage.removeItem('blazingToken')
+  // localStorage.removeItem('blazingToken')
   //  removes.removeItem("blazingToken")
-  // sessionStorage.removeItem('userProfile')
-  // sessionStorage.removeItem('companyProfile')
+  // localStorage.removeItem('userProfile')
+  // localStorage.removeItem('companyProfile')
   // toast({type:"error",message:error})
 }
 

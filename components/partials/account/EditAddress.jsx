@@ -21,14 +21,14 @@ function EditAddress(props) {
 
   // let names=""
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      setNames(JSON.parse(sessionStorage.getItem("blazingUser")).firstName);
+    if (localStorage.getItem("blazingUser")) {
+      setNames(JSON.parse(localStorage.getItem("blazingUser")).firstName);
     }
   }, []);
 
   const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logOut());
     Router.push("/account/login");
   };

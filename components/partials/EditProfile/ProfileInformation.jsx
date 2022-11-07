@@ -30,23 +30,23 @@ export default function ProfileInformation() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
+    if (localStorage.getItem("blazingUser")) {
       setLoader(true);
       let jsonObject = {
-        firstName: JSON.parse(sessionStorage.getItem("blazingUser"))?.firstName,
-        lastName: JSON.parse(sessionStorage.getItem("blazingUser"))?.lastName,
-        bio: JSON.parse(sessionStorage.getItem("blazingUser"))?.bio,
-        twitterUrl: JSON.parse(sessionStorage.getItem("blazingUser"))
+        firstName: JSON.parse(localStorage.getItem("blazingUser"))?.firstName,
+        lastName: JSON.parse(localStorage.getItem("blazingUser"))?.lastName,
+        bio: JSON.parse(localStorage.getItem("blazingUser"))?.bio,
+        twitterUrl: JSON.parse(localStorage.getItem("blazingUser"))
           ?.twitterUrl,
-        facebookUrl: JSON.parse(sessionStorage.getItem("blazingUser"))
+        facebookUrl: JSON.parse(localStorage.getItem("blazingUser"))
           ?.facebookUrl,
-        phoneNumber: JSON.parse(sessionStorage.getItem("blazingUser"))
+        phoneNumber: JSON.parse(localStorage.getItem("blazingUser"))
           ?.mobileNumber,
-        emailId: JSON.parse(sessionStorage.getItem("blazingUser"))?.email,
-        avatar: JSON.parse(sessionStorage.getItem("blazingUser"))?.avatar,
-        avatarPath: JSON.parse(sessionStorage.getItem("blazingUser"))
+        emailId: JSON.parse(localStorage.getItem("blazingUser"))?.email,
+        avatar: JSON.parse(localStorage.getItem("blazingUser"))?.avatar,
+        avatarPath: JSON.parse(localStorage.getItem("blazingUser"))
           ?.avatarPath,
-        username: JSON.parse(sessionStorage.getItem("blazingUser"))?.username,
+        username: JSON.parse(localStorage.getItem("blazingUser"))?.username,
       };
       setProfileData(jsonObject);
       setLoader(false);
