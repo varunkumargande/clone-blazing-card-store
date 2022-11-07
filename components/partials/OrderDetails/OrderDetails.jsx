@@ -87,7 +87,7 @@ export default function OrderDetails() {
                 </div>
                 <div className="flex space-between amount">
                   <div className="label">Tax ({productData?.taxType}%)</div>
-                  <div className="value">${productData?.taxValue}</div>
+                  <div className="value">${productData?.tax}</div>
                 </div>
                 <div className="flex space-between amount">
                   <div className="label">Shipping</div>
