@@ -24,6 +24,7 @@ import { chatLogin } from "../../api";
 export default function PublicProfile() {
   const router = useRouter();
   const { isMobile } = useIsMobile();
+  const [loader, setLoader] = useState(false);
   const [active, setActive] = useState(false);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -61,7 +62,7 @@ export default function PublicProfile() {
 
   const getAllBuyerDetails = () => {
     const loggedInUserId = getSessionUser().id;
-    ProfileMethods.GetLikedStreams(userId, setLikedShows);
+    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
     ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
   };
@@ -69,7 +70,7 @@ export default function PublicProfile() {
   const getAllVendorDetails = () => {
     const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
-    ProfileMethods.GetLikedStreams(userId, setLikedShows);
+    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
     ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
     ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);

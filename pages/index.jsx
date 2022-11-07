@@ -40,7 +40,7 @@ function landingPage({ category }) {
   const [seeAllHeading, setSeeAllHeading] = useState(null);
   const [catStreamData, setCateStreamData] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [seeMoreLoader,setSeeMoreLoader] = useState(true);
+  const [seeMoreLoader, setSeeMoreLoader] = useState(true);
 
   const streamLiveDetail = useSelector(
     (state) => state?.stream?.liveDetails
@@ -83,7 +83,7 @@ function landingPage({ category }) {
         setLoader,
         data,
         setCategories,
-       setSeeMoreLoader
+        setSeeMoreLoader
       );
       if (fetch) {
         setFetch(false);
@@ -99,7 +99,7 @@ function landingPage({ category }) {
    */
   useEffect(() => {
     if (!!catId) {
-     setSeeMoreLoader(true);
+      setSeeMoreLoader(true);
       catStreamDetailApi(
         setData,
         page,
@@ -108,7 +108,7 @@ function landingPage({ category }) {
         setLoader,
         data,
         setCategories,
-       setSeeMoreLoader
+        setSeeMoreLoader
       );
     }
   }, [page]);
