@@ -12,7 +12,13 @@ const GetFullImageURL = (details, type) => {
                 return details.stream_thumbnail_path + '/' + details.stream_thumbnail_image
             } else if (details.avatarPath && details.avatar) {
                 return details.avatarPath + "/" + details.avatar
-            } else {
+            } else if(details?.following_avatar_path && details?.following_avatar){
+                return details?.following_avatar_path + "/" + details?.following_avatar
+            } 
+            else if(details?.follower_avatar_path && details?.follower_avatar){
+                return details?.follower_avatar_path + "/" + details?.follower_avatar
+            } 
+            else {
                 return 'defaultCard.png';
             }
         } else if (type == "vendor") {

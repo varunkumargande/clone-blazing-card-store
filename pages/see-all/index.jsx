@@ -16,6 +16,7 @@ import {
 } from "../../store/category/action";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
+import SeeMoreLoader from "../../components/reusable/SeeMoreLoader";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -24,9 +25,11 @@ function categoryStream({ auth, category }) {
   const [active, setActive] = useState(false);
   const [subCatId, setSubCatId] = useState("all");
   const [catIndex, setCatIndex] = useState(null);
-  const [streamData, setStreamData] = useState(null);
+  const [streamData, setStreamData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [loader, setLoader] = useState(true);
+  const [loaderSeeMore, setSeeMoreLoader] = useState(true);
+  const [offset, setOffset] = useState(0);
 
   const wrapperRef = useRef(null);
   const handleClickOutside = (event) => {
@@ -42,22 +45,19 @@ function categoryStream({ auth, category }) {
   }, []);
 
   useEffect(() => {
-    setCatIndex(0);
-  }, []);
-
-  useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
     } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
+        dispatch(saveSubCategoryName("all"));
       }
     }
   }, [query]);
 
   const getStreamCards = () => {
-    if (!!streamData) {
+    if (streamData.length) {
       return streamData.map((item) => {
         return <StreamCard detail={item} showLoginModal={setShowModal} />;
       });
@@ -71,6 +71,9 @@ function categoryStream({ auth, category }) {
           setCatIndex={setCatIndex}
           setStreamData={setStreamData}
           setLoader={setLoader}
+          offset={offset}
+          streamData={streamData}
+          setOffset={setOffset}
         />
       );
     }
@@ -84,6 +87,10 @@ function categoryStream({ auth, category }) {
           setSubCatId={setSubCatId}
           setStreamData={setStreamData}
           setLoader={setLoader}
+          offset={offset}
+          streamData={streamData}
+          setOffset={setOffset}
+          setSeeMoreLoader={setSeeMoreLoader}
         />
       );
     }
@@ -91,6 +98,7 @@ function categoryStream({ auth, category }) {
 
   const handleToGoHome = () => {
     dispatch(saveCategoryName(null));
+    dispatch(saveSubCategoryName("all"));
     Router.push({
       pathname: "/",
     });
@@ -143,6 +151,15 @@ function categoryStream({ auth, category }) {
                   ) : (
                     getStreamCards()
                   )}
+                  {loaderSeeMore && (
+                    <StreamCardSkeleton
+                      count={3}
+                      name={`home-intrenal-page-${query?.category}-${query?.subCategory}`}
+                    />
+                  )}
+                </div>
+                <div>
+                  <SeeMoreLoader setOffset={setOffset} offset={offset} />
                 </div>
               </div>
             </div>

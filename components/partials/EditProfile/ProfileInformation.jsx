@@ -95,6 +95,10 @@ export default function ProfileInformation() {
   const profileSchema = Yup.object().shape({
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
+    phoneNumber: Yup.string().required("Required")
+      .matches(
+        regex.phoneNumber,
+        'Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)'),
     bio: Yup.string().max(300),
     twitterUrl: Yup.string()
       .matches(
@@ -237,6 +241,7 @@ export default function ProfileInformation() {
                   ? profileData?.phoneNumber
                   : "",
                 emailId: !!profileData?.emailId ? profileData?.emailId : "",
+                userName: profileData?.username || ""
               }}
               validationSchema={profileSchema}
               onSubmit={(values) => {
@@ -329,9 +334,17 @@ export default function ProfileInformation() {
                               placeholder={"Enter here"}
                               id="usr"
                               className="grey-bg"
-                              onChange={handleChange}
+                              onChange={(e) =>
+                                setFieldValue(
+                                  "phoneNumber",
+                                  e.target.value.replace(
+                                    regex.excludePlusAndNumber,
+                                    ""
+                                  )
+                                )
+                              }
                               value={values.phoneNumber}
-                              type="number"
+                              maxLength={12}
                             />
                             <ErrorMessage
                               errors={errors.phoneNumber}
