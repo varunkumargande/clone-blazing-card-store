@@ -203,7 +203,7 @@ function LeftDiv({
 
   const showProductListSkimmer = () => {
     return new Array(4).fill(0).map((_, index) => (
-      <li key={`dummy-${index}`}>
+      <li key={`dummy-left-div-streaming-${index}`}>
         <strong>
           <Skeleton
             baseColor="#dddbdb66"
