@@ -7,7 +7,7 @@ export async function cartListApi() {
     // })   
     // .then(json => {
     //     if(json.data){
-    //         sessionStorage.setItem("cartItem",JSON.stringify(json.data.cartList) )
+    //         localStorage.setItem("cartItem",JSON.stringify(json.data.cartList) )
     //         // setCartLoader(false)
     //     }            
     // })
@@ -17,7 +17,7 @@ export async function cartListApi() {
     if(result&&result.data&&result.data.data ){
        
         
-        sessionStorage.setItem("cartItem",JSON.stringify(result.data.data.cartList) )
+        localStorage.setItem("cartItem",JSON.stringify(result.data.data.cartList) )
         
     }
 

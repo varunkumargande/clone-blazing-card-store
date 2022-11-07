@@ -406,10 +406,6 @@ function Signup(auth) {
                   </Link>
                 </label>
               </div>
-                <div className="errorMessage text-center mb16">
-                  {singupError}
-                </div>
-
               <div className="submitWrap mb32">
                 <button
                   className={submitBtnState(errors)}

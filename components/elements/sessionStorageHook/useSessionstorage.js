@@ -4,7 +4,7 @@ const useSessionstorage = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    setData(JSON.parse(sessionStorage.getItem("blazingUser")));
+    setData(JSON.parse(localStorage.getItem("blazingUser")));
   }, []);
 
   return data;

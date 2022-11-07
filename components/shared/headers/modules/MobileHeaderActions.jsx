@@ -27,14 +27,14 @@ function MobileHeaderActions({ auth, cartTotal }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setCartData(JSON.parse(sessionStorage.getItem("cartItem")));
-    cartLocal = JSON.parse(sessionStorage.getItem("cartItem"));
+    setCartData(JSON.parse(localStorage.getItem("cartItem")));
+    cartLocal = JSON.parse(localStorage.getItem("cartItem"));
     cartGet();
   }, [reloadCart]);
 
   const cartGet = () => {
     if (cartLocal === null || cartLocal.length === 0) {
-      // sessionStorage.getItem("blazingToken")&&cartCountApi(dispatch)
+      // localStorage.getItem("blazingToken")&&cartCountApi(dispatch)
     }
   };
 

@@ -38,8 +38,8 @@ function MyOrder({ currency }) {
   let currentColor = useSelector((s) => s.palette.currentColor);
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      setFname(JSON.parse(sessionStorage.getItem("blazingUser")).firstName);
+    if (localStorage.getItem("blazingUser")) {
+      setFname(JSON.parse(localStorage.getItem("blazingUser")).firstName);
     }
   }, []);
 
@@ -85,7 +85,7 @@ function MyOrder({ currency }) {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logOut());
     Router.push("/account/login");
   };

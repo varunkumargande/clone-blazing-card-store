@@ -9,17 +9,11 @@ import {
   AccordionItemPanel,
 } from "react-accessible-accordion";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { categoryApi } from "../../../api/category/category";
 
 export default function AccordionMenu() {
   const categories = useSelector((state) => state?.category?.categories);
   const [toggle, setToggle] = useState(false);
-  const dispatch = useDispatch({});
 
-  useEffect(() => {
-    categoryApi(dispatch);
-  }, []);
   const handleClick = () => {
     return setToggle(!toggle);
   };

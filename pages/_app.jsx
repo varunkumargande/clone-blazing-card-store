@@ -13,15 +13,15 @@ import {
   viewcolorThemeCurrent,
 } from "../store/colorPalette/action";
 import Router from "next/router";
-import { Flip, ToastContainer, Zoom } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/scss/main.scss";
 import { LanguageSwitcherAPi } from "../api/account/languageSwitcherAPi";
 import NotificationsProvider from "../contexts/Notifications/Notifications";
-
-//import "slick-carousel/slick/slick.css";
-//import "slick-carousel/slick/slick-theme.css";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import "../scss/elements/_streaming.scss";
 import CurrentDeviceProvider from "../contexts/Devices/CurrentDevices";
+import CategoriesDataProvider from "../contexts/Categoires/CategoriesData";
 
 function MyApp({ Component, pageProps }) {
   const RedirectMaintain = useSelector((s) => s.setting.maintenance);
@@ -41,42 +41,42 @@ function MyApp({ Component, pageProps }) {
     getPageApi(dispatch);
     LanguageSwitcherAPi(dispatch);
 
-    sessionStorage.getItem("colorThemeBlazing") &&
-      dispatch(colorThemeCurrent(sessionStorage.getItem("colorThemeBlazing")));
-    sessionStorage.getItem("colorThemeBlazingView") &&
+    localStorage.getItem("colorThemeBlazing") &&
+      dispatch(colorThemeCurrent(localStorage.getItem("colorThemeBlazing")));
+    localStorage.getItem("colorThemeBlazingView") &&
       dispatch(
-        viewcolorThemeCurrent(sessionStorage.getItem("colorThemeBlazingView"))
+        viewcolorThemeCurrent(localStorage.getItem("colorThemeBlazingView"))
       );
   }, []);
 
   const getLayout =
     Component.getLayout || ((page) => <DefaultLayout children={page} />);
-  return (
-    <NotificationsProvider>
-      <CurrentDeviceProvider>
-        {getLayout(
-          <Provider store={configureStore}>
-            <Component {...pageProps} />
 
-            <ToastContainer
-              // limit={1}
-              transition={Zoom}
-              theme="colored"
-              autoClose={1000}
-              hideProgressBar={true}
-              newestOnTop={true}
-              draggable={false}
-              pauseOnVisibilityChange
-              closeOnClick
-              pauseOnHover
-              // hideDuration={100}
-              // position='fixed'
-              // containerId="second"
-            />
-          </Provider>
-        )}
-      </CurrentDeviceProvider>
-    </NotificationsProvider>
+  return (
+    <SkeletonTheme>
+      <NotificationsProvider>
+        <CurrentDeviceProvider>
+          <CategoriesDataProvider>
+            {getLayout(
+              <Provider store={configureStore}>
+                <Component {...pageProps} />
+                <ToastContainer
+                  transition={Zoom}
+                  theme="colored"
+                  autoClose={1000}
+                  hideProgressBar={true}
+                  newestOnTop={true}
+                  draggable={false}
+                  pauseOnVisibilityChange
+                  closeOnClick
+                  pauseOnHover
+                />
+              </Provider>
+            )}
+          </CategoriesDataProvider>
+        </CurrentDeviceProvider>
+      </NotificationsProvider>
+    </SkeletonTheme>
   );
 }
 

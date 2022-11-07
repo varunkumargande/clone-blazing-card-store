@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MySelect from "../../CommonComponents/MySelect";
 import { Formik, Form } from "formik";
 import { TextInput } from "../../CommonComponents/TextInput";
@@ -6,12 +6,14 @@ import { paymentDetailsvalidation } from "../../../utilities/validations/payment
 import { CardNumber } from "../../CommonComponents/CardNumber";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { addPaymentData, setClearState } from "../../../store/becomeSeller/action";
+import { addPaymentData, setClearState, clearState as becomeSellerClearState } from "../../../store/becomeSeller/action";
 import { useSelector } from "react-redux";
 import IconBack from "../../Icons/IconBack";
 import { CardExpiry } from "../../CommonComponents/CardExpiry";
 import BackButton from "../../CommonComponents/BackButton";
 import { countryListApi } from "../../../api";
+import { getCardImagesByName } from "../../helper/cardImageHelper";
+import { regex } from "../../Constants/regex";
 
 export default function PaymentDetails() {
   const router = useRouter();
@@ -21,10 +23,56 @@ export default function PaymentDetails() {
   );
   const clearState = useSelector((state) => state?.becomeSeller?.clearState)
   const [countryData, setCountryData] = useState(null);
+  const [cardNumber, setCardNumber] = useState(null);
+  const [cardType, setCardType] = useState('');
 
   useEffect(() => {
     countryListApi(setCountryData);
+    return () => {
+      dispatch(setClearState())
+  }
   },[]);
+
+  useEffect(() => {
+    if (cardNumber?.length >= 3) {
+      const [type] = getCardImagesByName(cardNumber);
+      setCardType(type);
+    } else {
+      setCardType('');
+    }
+  }, [cardNumber]);
+
+  const checkInitialPaymentDetail = (paymentDetails) => {
+    return paymentDetails?.cardNumber && paymentDetails?.expireDate && paymentDetails?.countryId
+      && paymentDetails?.paymentMethod
+  }
+
+  const initialPaymentDetailFlag = useMemo(() => checkInitialPaymentDetail(paymentDetails), [paymentDetails]);
+
+  /**
+   * @method: resetCardValues
+   * @description: when card values are prefilled and user changes card type or country
+   *               this method will reset the card values.
+   */
+  const resetCardValues = (event, formProps, field) => { 
+    if (
+      !!formProps?.initialValues?.cardNumber &&
+      !!formProps?.initialValues?.expiry &&
+      !!formProps?.initialValues?.cvv
+    ) {
+      if (!clearState) {
+        dispatch(becomeSellerClearState())
+        formProps?.setValues({
+          ...formProps.values,
+          cvv: '',
+          expiry: '',
+          cardNumber: ''
+        })
+      }
+    }
+    formProps.setFieldValue(field, event.target.value);
+  };
+
   const handleSubmit = (values) => {
     const data = {
       paymentMethod: values.paymentMethod,
@@ -35,9 +83,14 @@ export default function PaymentDetails() {
       countryId: values.country,
       lastFourDigits: values.cardNumber.slice(-4)
     };
-    dispatch(setClearState())
     dispatch(addPaymentData(data, router));
   };
+
+  const redirectToNext = () => {
+    router.push("/become-seller/shippingDetails", undefined, {
+      shallow: true,
+    })
+  }
 
   const getFormatedCardNumber = (cardNumber) => {
     const format = ('XXXXXXXXXXXX'+cardNumber)
@@ -56,10 +109,10 @@ export default function PaymentDetails() {
           cardNumber: paymentDetails?.cardNumber ? getFormatedCardNumber(paymentDetails?.lastFourDigits) : "",
           cvv: paymentDetails?.cardNumber ? "XXX" : "",
           expiry: paymentDetails?.expireDate ?? "",
-          country: paymentDetails?.country ?? "",
+          country: paymentDetails?.countryId ?? "",
           paymentMethod: paymentDetails?.paymentMethod ?? "",
         }}
-        validationSchema={paymentDetailsvalidation}
+        validationSchema={paymentDetailsvalidation(cardType)}
         onSubmit={(values) => {
           if (values) {
             handleSubmit(values);
@@ -73,6 +126,7 @@ export default function PaymentDetails() {
                 className="input-control wd48"
                 label="Select a Payment Method *"
                 name="paymentMethod"
+                onChange={(event) => resetCardValues(event, formProps, 'paymentMethod')}
               >
                 <option>Select here</option>
                 <option value="credit card">Credit Card</option>
@@ -85,8 +139,17 @@ export default function PaymentDetails() {
                 type="text"
                 placeholder="Enter here"
                 formProps={formProps}
+                onChange={(event) => {
+                  setCardNumber(event.target.value.replace(regex.onlyNumbers, ""));
+                  formProps.setFieldValue(
+                    "cardNumber",
+                    event.target.value.replace(regex.onlyNumbers, "")
+                  );
+                }}
+                maxLength={cardType === "amex" ? 18 : 19}
                 clearState={clearState}
-                dispatch={dispatch}              
+                dispatch={dispatch}
+                hideError={initialPaymentDetailFlag && !formProps.dirty}
               />
             </div>
             <div className="flex space-between">
@@ -106,9 +169,15 @@ export default function PaymentDetails() {
                 name="cvv"
                 type="password"
                 placeholder="Enter here"
-                maxLength={3}
+                maxLength={cardType === "amex" ? 4 : 3}
                 formProps={formProps}
+                onChange={(event) =>
+                  formProps.setFieldValue("cvv", event.target.value.replace(regex.onlyNumbers, ""))
+                }
                 clearState={clearState}
+                // minLength is set as 0 so that the popup error does not get displayed.
+                minLength='0'
+                hideError={initialPaymentDetailFlag && !formProps.dirty}
                 dispatch={dispatch}
               />
             </div>
@@ -117,6 +186,7 @@ export default function PaymentDetails() {
                 className="input-control wd48"
                 label="Country *"
                 name="country"
+                onChange={(event) => resetCardValues(event, formProps, 'country')}
               >
                 <option>Select here</option>
                 {countryData?.map((item, index) => {
@@ -137,9 +207,15 @@ export default function PaymentDetails() {
               <button type="reset" className="border-btn">
                 Cancel
               </button>
-              <button type="submit" className="primary-btn">
-                Save & Next
-              </button>
+              {initialPaymentDetailFlag && !formProps.dirty ?
+                <button onClick={redirectToNext} className="primary-btn">
+                  Save & Next
+                </button>
+                :
+                <button type="submit" className="primary-btn">
+                  Save & Next
+                </button>
+              }
             </div>
           </Form>
         )}

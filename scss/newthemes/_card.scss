@@ -12,6 +12,9 @@
 }
 .card-inner{
     padding-bottom: 40px;
+    .overflow-wrap{
+        overflow: scroll;
+    }
 }
 .card-wrap,.Category-list-wrap{
     flex-wrap: nowrap;
@@ -42,6 +45,15 @@
 .card-list{
     padding: 0 6px;
     flex:0 0 172px;
+}
+.top-left-4 {
+    top: 4px;
+}
+.skeleton-profile-img {
+    width: 25px !important;
+    height: 25px;
+    border: 1px solid #fff;
+    top: -28px;
 }
 .inner-card-list{
     background-color: $white-color;
@@ -212,7 +224,7 @@
             @include pos(re);
             z-index: 5;
             span{
-                @include pos(ab,4px,null,null,9px);
+                @include pos(ab,3px,null,null,9px);
             }
         }
         .loading{
@@ -488,6 +500,12 @@
     }
     
 }
+
+.card-list:hover {
+    transform: translateY(-5px) scale(1.01) translateZ(0);
+    transition-duration: 500ms;
+  }
+
 @media all and (min-width:1600px){
     .overflow-none{
         .card-wrap {

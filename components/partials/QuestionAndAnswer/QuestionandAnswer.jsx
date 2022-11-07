@@ -49,7 +49,7 @@ function QuestionandAnswer({ productId }) {
   const handleAddItemToWishlist = (e, productId) => {
     e.preventDefault();
 
-    let AuthCheck = sessionStorage.getItem("blazingToken");
+    let AuthCheck = localStorage.getItem("blazingToken");
 
     if (AuthCheck) {
       setShowQuesModal(true);

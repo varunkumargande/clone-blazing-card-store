@@ -24,6 +24,7 @@ import { ChatUserModal } from "../../components/partials/Modal/Modal";
 import { Loader } from "../../components/reusable/Loader";
 import moment from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import BackButton from "../../components/CommonComponents/BackButton";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
@@ -88,7 +89,7 @@ function Chat({ auth }) {
     if (localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
         ?._id;
-      const token = sessionStorage.getItem("blazingToken");
+      const token = localStorage.getItem("blazingToken");
       let userId = {
         userId: user,
       };
@@ -119,7 +120,7 @@ function Chat({ auth }) {
     const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
     setCurrentSelected(index);
     setCurrentChat(contacts[index]);
-    const token = sessionStorage.getItem("blazingToken");
+    const token = localStorage.getItem("blazingToken");
     const response = await axios.post(
       recieveMessageRoute,
       {
@@ -147,7 +148,7 @@ function Chat({ auth }) {
       from: data?.user?._id,
       msg,
     });
-    const token = sessionStorage.getItem("blazingToken");
+    const token = localStorage.getItem("blazingToken");
     await axios.post(
       sendMessageRoute,
       {
@@ -226,7 +227,13 @@ function Chat({ auth }) {
 
   return (
     <>
-      {isMobile ? <MobileHeader /> : <HeaderDefault />}
+      {isMobile ? (
+        <div className="header-title flex flex-center">
+          <BackButton name={"Message"} />
+        </div>
+      ) : (
+        <HeaderDefault />
+      )}
       <div className="messages-wrapper">
         <h1>Messages</h1>
         <div className="flex space-between message-inner">

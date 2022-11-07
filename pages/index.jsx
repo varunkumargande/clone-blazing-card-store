@@ -1,44 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import MobileHeader from "../components/shared/headers/MobileHeader";
 import Category from "../components/partials/LandingPage/Category";
-import LiveScheduleCategory from "../components/partials/LandingPage/LiveScheduleCategory";
-import SeeAllList from "../components/partials/LandingPage/Layout/seeAllList";
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
 import Footer from "../components/partials/LandingPage/Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { categoryApi } from "../api/category/category";
 import CategoryStream from "../components/partials/LandingPage/Electronic";
 import LikedList from "../components/partials/LandingPage/Layout/LikedList";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import Vertical from "../components/partials/LandingPage/Layout/vertical";
 import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
-import DynamicModal from "../components/CommonComponents/ModalWithDynamicTitle";
 import { catStreamDetailApi } from "../api/stream/subStreamDetail";
 import { useIsMobile } from "../contexts/Devices/CurrentDevices";
+import { SignUPGoogle } from "../components/partials/Modal/Modal";
 
-function landingPage({ auth, category }) {
+function landingPage({ category }) {
   const { isMobile } = useIsMobile();
 
   const dispatch = useDispatch();
+  const [loader, setLoader] = useState(null);
+  const [catIds, setCatIds] = useState(null);
+  const [apiCount, setApiCount] = useState(0);
+  const [catVisible, setCatVisible] = useState(true);
+  const [data, setData] = useState({});
+  const [page, setPage] = useState(0);
+  const [catId, setCatId] = useState(null);
+  const [fetch, setFetch] = useState(true);
 
   useEffect(() => {
-    categoryApi(dispatch);
     dispatch(getBecomeSellerInfo());
   }, []);
 
   // ========================= category for home page ==============================
-  // const [activeCategoryName, setActiveCategoryName] = useState(null);
-  const [subCateId, setSubCateId] = useState("select");
   const [categories, setCategories] = useState([]);
   const [isLikedShow, setIsLikedShow] = useState(false);
-  // ===============================================================================
-  // ========================= category for live and schedule page ==============================
-  const [liveScheduleCategoryName, setLiveScheduleCategoryName] =
-    useState(null);
-  const [isLiveScheduleSeeAll, setIsLiveScheduleSeeAll] = useState(false);
-  // ============================================================================================
   const [isSeeAll, setIsSeeAll] = useState(false);
   const [isSeeAllCate, setIsSeeAllCate] = useState(true);
   const [seeAllHeading, setSeeAllHeading] = useState(null);
@@ -52,15 +48,9 @@ function landingPage({ auth, category }) {
     (state) => state?.stream?.streamdetails
   )?.length;
 
-  const [loader, setLoader] = useState(null);
-  const [catIds, setCatIds] = useState(null);
-  const [apiCount, setApiCount] = useState(0);
-  const [catVisible, setCatVisible] = useState(true);
-  const [data, setData] = useState({});
-  const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(null);
-  const [catId, setCatId] = useState(null);
-
+  /**
+   * appending category ids in object for handling home page
+   */
   useEffect(() => {
     setCategories(category?.categories);
     const catObject = {};
@@ -71,11 +61,19 @@ function landingPage({ auth, category }) {
     );
     setLoader(catObject);
     setCatIds(catListIds);
+    setApiCount(0);
+    setFetch(true);
   }, [category?.categories]);
+  /**
+   * ==================================================================================
+   */
 
+  /**
+   * fetching data from api for homepage streaming data based on categories
+   */
   useEffect(() => {
     const catLength = category?.categories?.length;
-    if (apiCount < catLength) {
+    if ((apiCount < catLength || fetch) && catLength) {
       catStreamDetailApi(
         setData,
         page,
@@ -85,11 +83,18 @@ function landingPage({ auth, category }) {
         data,
         setCategories
       );
-    } else {
-      setCatVisible(false);
+      if (fetch) {
+        setFetch(false);
+      }
     }
   }, [category?.categories, apiCount]);
+  /**
+   * ==========================================================================
+   */
 
+  /**
+   * fetching data from loaderall based on category
+   */
   useEffect(() => {
     if (!!catId) {
       catStreamDetailApi(
@@ -103,29 +108,37 @@ function landingPage({ auth, category }) {
       );
     }
   }, [page]);
+  /**
+   * ===============================================
+   */
 
+  /**
+   * showing stream data carousel based on categories
+   */
   const getAllCategoriesCard = () => {
     if (!!data && !!categories) {
-      return categories.map((elem) => {
-        return (
-          <CategoryStream
-            catData={data}
-            showLoginModal={setShowModal}
-            catName={elem?.name}
-            catSlug={elem?.categorySlug}
-            catId={elem?.categoryId}
-            loader={loader}
-            setCategories={setCategories}
-            categories={categories}
-            catVisible={catVisible}
-            setPage={setPage}
-            page={page}
-            setCatId={setCatId}
-          />
-        );
-      });
+      return categories.map((elem) => (
+        <CategoryStream
+          key={elem?.name}
+          catData={data}
+          showLoginModal={setShowModal}
+          catName={elem?.name}
+          catSlug={elem?.categorySlug}
+          catId={elem?.categoryId}
+          loader={loader}
+          setCategories={setCategories}
+          categories={categories}
+          catVisible={catVisible}
+          setPage={setPage}
+          page={page}
+          setCatId={setCatId}
+        />
+      ));
     }
   };
+  /**
+   * ==================================================
+   */
 
   const getAllLikedCard = () => {
     if (categories) {
@@ -148,9 +161,12 @@ function landingPage({ auth, category }) {
     <div className="home-container">
       {isMobile ? <MobileHeader /> : <HeaderDefault />}
       {showModal && (
-        <DynamicModal
-          title="Signup to Join Blazing Cards"
-          setShowModal={setShowModal}
+        <SignUPGoogle
+          customMsg={"Signup to Join Blazing Cards"}
+          onDismiss={(e) => {
+            e.preventDefault();
+            setShowModal(false);
+          }}
         />
       )}
       <Category
@@ -159,19 +175,15 @@ function landingPage({ auth, category }) {
       />
       <div className="card-wrapper">
         {category.categoryName == "likes" ? (
-          <>{getAllLikedCard()}</>
-        ) : (
+          getAllLikedCard()
+        ) : category.categoryName === null ? (
           <>
-            {category.categoryName === null ? (
-              <>
-                <LiveShow showLoginModal={setShowModal} />
-                <ScheduledShow showLoginModal={setShowModal} />
-                {getAllCategoriesCard()}
-              </>
-            ) : (
-              <Vertical showLoginModal={setShowModal} />
-            )}
+            <LiveShow showLoginModal={setShowModal} />
+            <ScheduledShow showLoginModal={setShowModal} />
+            {getAllCategoriesCard()}
           </>
+        ) : (
+          <Vertical showLoginModal={setShowModal} />
         )}
       </div>
       <Footer />
@@ -183,4 +195,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(landingPage);
+export default connect(mapStateToProps)(memo(landingPage));

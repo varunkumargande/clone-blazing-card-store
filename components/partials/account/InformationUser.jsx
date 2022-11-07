@@ -48,24 +48,24 @@ function InformationCustom() {
   const { t } = useTranslation("common");
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      setUserDetail(JSON.parse(sessionStorage.getItem("blazingUser")));
-      setFname(JSON.parse(sessionStorage.getItem("blazingUser")).firstName);
+    if (localStorage.getItem("blazingUser")) {
+      setUserDetail(JSON.parse(localStorage.getItem("blazingUser")));
+      setFname(JSON.parse(localStorage.getItem("blazingUser")).firstName);
       let lname =
-        JSON.parse(sessionStorage.getItem("blazingUser")).lastName === null
+        JSON.parse(localStorage.getItem("blazingUser")).lastName === null
           ? ""
-          : JSON.parse(sessionStorage.getItem("blazingUser")).lastName;
+          : JSON.parse(localStorage.getItem("blazingUser")).lastName;
 
       setLname(lname);
-      setEmail(JSON.parse(sessionStorage.getItem("blazingUser")).email);
-      setNum(JSON.parse(sessionStorage.getItem("blazingUser")).mobileNumber);
-      JSON.parse(sessionStorage.getItem("blazingUser")).avatar &&
+      setEmail(JSON.parse(localStorage.getItem("blazingUser")).email);
+      setNum(JSON.parse(localStorage.getItem("blazingUser")).mobileNumber);
+      JSON.parse(localStorage.getItem("blazingUser")).avatar &&
         setNewDp(
           imageUrl +
             "?path=" +
-            JSON.parse(sessionStorage.getItem("blazingUser")).avatarPath +
+            JSON.parse(localStorage.getItem("blazingUser")).avatarPath +
             "&name=" +
-            JSON.parse(sessionStorage.getItem("blazingUser")).avatar +
+            JSON.parse(localStorage.getItem("blazingUser")).avatar +
             "&width=500&height=500"
         );
     }

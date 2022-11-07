@@ -1,28 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
-import IconLike from "../../components/Icons/IconLike";
 import Footer from "../../components/partials/LandingPage/Footer";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import Router, { useRouter } from "next/router";
-// import all sub component from components/partials/account/myprofile
-import ProfileBanner from "../../components/partials/account/myprofile/banner";
-import ProfileCard from "../../components/partials/account/myprofile/profileCard";
-import ProfileHeader from "../../components/partials/account/myprofile/profileHeader";
 import IconShareFacebook from "../../components/Icons/IconShareFacebook";
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
 import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
-import IconBack from "../../components/Icons/IconBack";
 import StreamCard from "../../components/elements/StreamCard";
 import ProfileMethods from "../../api/profile/ProfileMethods";
 import { connect, useSelector } from "react-redux";
 import PublicProfileConstants from "../../components/Constants/publicProfile";
 import Link from "next/link";
-import { imageUrl } from "../../api/url";
 import Followers from "../../components/partials/Profile/Followers";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+
 function MyProfile(props) {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
@@ -50,7 +43,7 @@ function MyProfile(props) {
   };
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("blazingUser"));
+    const userData = JSON.parse(localStorage.getItem("blazingUser"));
     setUserId(userData.id);
     setProfile(userData);
   }, []);
@@ -345,44 +338,46 @@ function MyProfile(props) {
                   <div className="social-icons-wrapper">
                     <div className="social-border"></div>
                     <ul className="social-icons flex">
-                      {/* {profile && profile.facebookUrl && (<li><IconShareFacebook /></li>)}
-                                          {profile && profile.twitterUrl && (<li><IconShareTwitter /></li>)} */}
-                      <li>
-                        <Link href={profile?.facebookUrl || "#"}>
-                          <a
-                            target={profile?.facebookUrl ? "_blank" : "_self"}
-                            rel="noopener noreferrer"
+                      {profile?.facebookUrl && (
+                        <li>
+                          <Link href={profile?.facebookUrl}>
+                            <a
+                              target={profile?.facebookUrl ? "_blank" : "_self"}
+                              rel="noopener noreferrer"
+                            >
+                              <IconShareFacebook />
+                            </a>
+                          </Link>
+                        </li>
+                      )}
+                      {profile?.twitterUrl && (
+                        <li>
+                          <Link href={profile?.twitterUrl}>
+                            <a
+                              target={profile?.twitterUrl ? "_blank" : "_self"}
+                              rel="noopener noreferrer"
+                            >
+                              <IconShareTwitter />
+                            </a>
+                          </Link>
+                        </li>
+                      )}
+                      {profile?.mobileNumber && (
+                        <li>
+                          <Link
+                            href={`https://api.whatsapp.com/send?phone=${profile.mobileNumber}`}
                           >
-                            <IconShareFacebook />
-                          </a>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href={profile?.twitterUrl || "#"}>
-                          <a
-                            target={profile?.twitterUrl ? "_blank" : "_self"}
-                            rel="noopener noreferrer"
-                          >
-                            <IconShareTwitter />
-                          </a>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href={
-                            profile?.mobileNumber
-                              ? `https://api.whatsapp.com/send?phone=${profile.mobileNumber}`
-                              : "#"
-                          }
-                        >
-                          <a
-                            target={profile?.mobileNumber ? "_blank" : "_self"}
-                            rel="noopener noreferrer"
-                          >
-                            <IconShareWhatsup />
-                          </a>
-                        </Link>
-                      </li>
+                            <a
+                              target={
+                                profile?.mobileNumber ? "_blank" : "_self"
+                              }
+                              rel="noopener noreferrer"
+                            >
+                              <IconShareWhatsup />
+                            </a>
+                          </Link>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </div>

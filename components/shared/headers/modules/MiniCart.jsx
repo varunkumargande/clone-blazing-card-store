@@ -25,7 +25,7 @@ function MiniCart({ currency }) {
 
   useEffect(() => {
    
-    setData(JSON.parse(sessionStorage.getItem("cartItem")));
+    setData(JSON.parse(localStorage.getItem("cartItem")));
     quantityTotal();
 
   }, [reloadCart,removeFromCart]);
@@ -39,7 +39,7 @@ function MiniCart({ currency }) {
   }, [showMiniCart]);
 
   const quantityTotal = () => {
-    let locale = JSON.parse(sessionStorage.getItem("cartItem"));
+    let locale = JSON.parse(localStorage.getItem("cartItem"));
     let tempValue = 0;
     let currentValue = 0;
 

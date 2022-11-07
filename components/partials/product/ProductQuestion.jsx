@@ -31,7 +31,7 @@ function QuestionProduct({ questionInfo, productId, product, image }) {
   const handleAddItemToWishlist = (e, productId) => {
     e.preventDefault();
 
-    let AuthCheck = sessionStorage.getItem("blazingToken");
+    let AuthCheck = localStorage.getItem("blazingToken");
     if (AuthCheck) {
       setShowQuesModal(true);
     } else {

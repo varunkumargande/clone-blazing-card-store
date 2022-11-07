@@ -20,8 +20,8 @@ function ReviewProduct({ orderDetailInfo, revLoader, currency }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (sessionStorage.getItem("blazingUser")) {
-      setFname(JSON.parse(sessionStorage.getItem("blazingUser")).firstName);
+    if (localStorage.getItem("blazingUser")) {
+      setFname(JSON.parse(localStorage.getItem("blazingUser")).firstName);
     }
   }, []);
 
@@ -72,7 +72,7 @@ function ReviewProduct({ orderDetailInfo, revLoader, currency }) {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logOut());
     Router.push("/account/login");
   };

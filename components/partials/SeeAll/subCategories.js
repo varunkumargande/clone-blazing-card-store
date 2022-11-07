@@ -7,10 +7,14 @@ import {
   saveCategoryName,
 } from "../../../store/category/action";
 import { getStreamSubCategoryBasedApi } from "../../../api/stream/subStreamDetail";
+import { useCategoriesData } from "../../../contexts/Categoires/CategoriesData";
+import TabsSkeleton from "../../../skeleton/TabsSkeleton";
 
 function SeeAllSubCategories({ catIndex, category, setStreamData, setLoader }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const { isCategoriesFetched } = useCategoriesData();
+
   const [queryCategory, setQueryCategory] = useState(null);
 
   useEffect(() => {
@@ -41,7 +45,7 @@ function SeeAllSubCategories({ catIndex, category, setStreamData, setLoader }) {
   };
 
   const getAllSubCategoriesCard = () => {
-    if (!!category?.categories) {
+    if (!!category?.categories && isCategoriesFetched) {
       var index = category?.categories.map(function(e) { return e?.categorySlug; }).indexOf(category?.categoryName);
       return category?.categories[index]?.children?.map((item) => {
         return (
@@ -61,6 +65,8 @@ function SeeAllSubCategories({ catIndex, category, setStreamData, setLoader }) {
           </div>
         );
       });
+    } else if(!isCategoriesFetched) {
+      return <TabsSkeleton count={5} name={"home-tabs-section"} />;
     }
   };
 

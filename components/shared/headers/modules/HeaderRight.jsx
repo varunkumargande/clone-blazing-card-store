@@ -30,20 +30,20 @@ function HeaderRight({ auth }) {
   };
 
   useEffect(() => {
-    TokenAuth = sessionStorage.getItem("blazingToken");
-    cartLocal = JSON.parse(sessionStorage.getItem("cartItem"));
+    TokenAuth = localStorage.getItem("blazingToken");
+    cartLocal = JSON.parse(localStorage.getItem("cartItem"));
     authFunc();
   }, []);
 
   useEffect(() => {
     dispatch(addItemToWishlist(0));
-    sessionStorage.getItem("blazingToken") &&
+    localStorage.getItem("blazingToken") &&
       wishListApi(setWishListApi, dispatch, setDummy);
   }, [reloadCart]);
 
   useEffect(() => {
     dispatch(getCompareList(0));
-    setCompareCount(JSON.parse(sessionStorage.getItem("compareId")));
+    setCompareCount(JSON.parse(localStorage.getItem("compareId")));
   }, [compareSet]);
 
   return (

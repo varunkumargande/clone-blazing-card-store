@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import Router, { useRouter } from "next/router";
-import Header from "../../components/partials/LandingPage/Header";
-import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
-import IconLike from "../../components/Icons/IconLike";
-import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
 import IconShareFacebook from "../../components/Icons/IconShareFacebook";
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
@@ -14,12 +11,12 @@ import PublicProfileConstants from "../../components/Constants/publicProfile";
 import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
 import DefaultServices from "../../components/Services/DefaultServices";
-import DynamicModal from "../../components/CommonComponents/ModalWithDynamicTitle";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
-import { UnfollowModal } from "../../components/partials/Modal/Modal";
+import { SignUPGoogle, UnfollowModal } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import { chatLogin } from "../../api";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -43,13 +40,15 @@ export default function PublicProfile() {
 
   const getSessionUser = () => {
     if (typeof window !== "undefined") {
-      if (window && window.sessionStorage.getItem("blazingUser")) {
-        let user = JSON.parse(sessionStorage.getItem("blazingUser"));
+      if (window && window.localStorage.getItem("blazingUser")) {
+        let user = JSON.parse(localStorage.getItem("blazingUser"));
         return user;
       }
     }
     return false;
   };
+
+  const user = getSessionUser();
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -86,7 +85,6 @@ export default function PublicProfile() {
 
   useEffect(() => {
     if (userId) {
-      let user = getSessionUser();
       ProfileMethods.GetPublicProfile(userId, setProfile, user.id);
     }
   }, [userId, key]);
@@ -277,12 +275,12 @@ export default function PublicProfile() {
   };
 
   const handleFollow = () => {
-    if (sessionStorage.getItem("blazingUser")) {
-      let user = JSON.parse(sessionStorage.getItem("blazingUser"));
+    if (localStorage.getItem("blazingUser")) {
+      let user = JSON.parse(localStorage.getItem("blazingUser"));
       if (profile?.isFollow) {
         setIsOpenFollowUnfollow(true);
       }
-      if(!profile?.isFollow){
+      if (!profile?.isFollow) {
         ProfileMethods.UserFollowUser(user.id, profile.id, setKey);
       }
     } else {
@@ -290,7 +288,6 @@ export default function PublicProfile() {
     }
   };
   const handleFollowButtonText = () => {
-    let user = getSessionUser();
     if (user) {
       if (profile?.isFollow) {
         return "Following";
@@ -299,10 +296,17 @@ export default function PublicProfile() {
     }
     return "Follow";
   };
+
   return (
     <div className="home-container profile-container-wrap">
       {showModal && (
-        <DynamicModal title="SJoin Blazing Cards" setShowModal={setShowModal} />
+        <SignUPGoogle
+          customMsg={"Signup to Join Blazing Cards"}
+          onDismiss={(e) => {
+            e.preventDefault();
+            setShowModal(false);
+          }}
+        />
       )}
       {isMobile ? (
         <div className="profile-title flex flex-center">
@@ -346,7 +350,13 @@ export default function PublicProfile() {
                     >
                       {handleFollowButtonText()}
                     </button>
-                    <button className="border-btn edit-profile-btn">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        user ? chatLogin() : setShowModal(true);
+                      }}
+                      className="border-btn edit-profile-btn"
+                    >
                       Message
                     </button>
                   </div>
@@ -356,18 +366,36 @@ export default function PublicProfile() {
                   <div className="social-icons-wrapper">
                     <div className="social-border"></div>
                     <ul className="social-icons flex">
-                      {profile && profile.facebookUrl && (
+                      {profile?.facebookUrl && (
                         <li
                           onClick={() => handleSocialLinks(profile.facebookUrl)}
                         >
                           <IconShareFacebook />
                         </li>
                       )}
-                      {profile && profile.twitterUrl && (
+                      {profile?.twitterUrl && (
                         <li
                           onClick={() => handleSocialLinks(profile.twitterUrl)}
                         >
                           <IconShareTwitter />
+                        </li>
+                      )}
+                      {profile?.mobileNumber && (
+                        <li>
+                          <Link
+                            href={`https://api.whatsapp.com/send?phone=${
+                              profile.mobileNumber
+                            }&text=Hi ${renderProfileName()}!`}
+                          >
+                            <a
+                              target={
+                                profile?.mobileNumber ? "_blank" : "_self"
+                              }
+                              rel="noopener noreferrer"
+                            >
+                              <IconShareWhatsup />
+                            </a>
+                          </Link>
                         </li>
                       )}
                     </ul>

@@ -12,7 +12,7 @@ export function cartAdd(payload, quantity, availValue) {
         product.price = priceHelpFunc(product.price, product.taxType, product.taxValue, "")
     }
 
-    const localCart = JSON.parse(sessionStorage.getItem('cartItem'))
+    const localCart = JSON.parse(localStorage.getItem('cartItem'))
     // .cart;
     
     let currentCart = localCart;
@@ -255,12 +255,12 @@ export function cartAdd(payload, quantity, availValue) {
     }
    
   
-    return sessionStorage.setItem("cartItem", JSON.stringify(currentCart))
+    return localStorage.setItem("cartItem", JSON.stringify(currentCart))
 }
 
 export function cartRemove(payload){
     const  product  = payload;
-    let localCart = JSON.parse(sessionStorage.getItem('cartItem'))
+    let localCart = JSON.parse(localStorage.getItem('cartItem'))
 
 
 if(product && product.optionName && product.optionName.length!==0){
@@ -299,7 +299,7 @@ else{
 }
 
 
-    return sessionStorage.setItem("cartItem",JSON.stringify(localCart))
+    return localStorage.setItem("cartItem",JSON.stringify(localCart))
 }
 
 export function incrementQuantity(payload){
@@ -309,7 +309,7 @@ export function incrementQuantity(payload){
       };
     
     const product = payload;
-        let localCart = JSON.parse(sessionStorage.getItem('cartItem'))
+        let localCart = JSON.parse(localStorage.getItem('cartItem'))
         let selectedItem = localCart.find(
             (item) => item.skuName === product.skuName
         );
@@ -388,13 +388,13 @@ export function incrementQuantity(payload){
 
         }
         
-        return sessionStorage.setItem("cartItem",JSON.stringify(localCart))
+        return localStorage.setItem("cartItem",JSON.stringify(localCart))
 }
 
 export function decrementQuantity(payload){
    
     const  product  = payload;
-    const localCart =JSON.parse(sessionStorage.getItem('cartItem'));
+    const localCart =JSON.parse(localStorage.getItem('cartItem'));
     let selectedItem = localCart.find(
         (item) => item.skuName === product.skuName
     );
@@ -503,7 +503,7 @@ export function decrementQuantity(payload){
     }
 
     
-    return sessionStorage.setItem("cartItem",JSON.stringify(localCart))
+    return localStorage.setItem("cartItem",JSON.stringify(localCart))
 
 }
 

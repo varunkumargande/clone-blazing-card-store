@@ -1,5 +1,5 @@
 export function colorThemeShow() {
-  let currentTheme = sessionStorage.getItem("colorThemeBlazing");
+  let currentTheme = localStorage.getItem("colorThemeBlazing");
 
   if (currentTheme) {
     return currentTheme;

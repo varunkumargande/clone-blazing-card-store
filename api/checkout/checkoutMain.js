@@ -41,13 +41,13 @@ export async function checkOutApi(fname,lname,address,num,city,postCode,email,pr
     //     if(json.status===1){
             
     //         Router.push('/checkout-success/[cid]','/checkout-success/'+json.data.orderPrefixId)
-    //         sessionStorage.setItem("cartItem",JSON.stringify([]))
+    //         localStorage.setItem("cartItem",JSON.stringify([]))
     //         modalSuccess('success',json.message)
     //         setButtonLoader(false)
     //     }
     //     if(json.status===3){
     //             window.open(json.data, '_self');
-    //             sessionStorage.setItem("cartItem",JSON.stringify([]))
+    //             localStorage.setItem("cartItem",JSON.stringify([]))
     //     }
     //     if(json.status===0){
     //         modalWarning("error",json.message)
@@ -93,13 +93,13 @@ const result =await APIServices.create('orders/customer-checkout',data)
 if(result&&result.data&&result.data.status===1){
             
     Router.push('/checkout-success/[cid]','/checkout-success/'+result.data.data.orderPrefixId)
-    sessionStorage.setItem("cartItem",JSON.stringify([]))
+    localStorage.setItem("cartItem",JSON.stringify([]))
     modalSuccess('success',result.data.message)
    
 }
 if(result&&result.data&&result.data.status===3){
         window.open(result.data.data, '_self');
-        sessionStorage.setItem("cartItem",JSON.stringify([]))
+        localStorage.setItem("cartItem",JSON.stringify([]))
 }
 if(result&&result.data&&result.data.status===0){
    // 

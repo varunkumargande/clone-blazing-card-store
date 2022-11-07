@@ -156,7 +156,7 @@ function InformationDefault({
   }, []);
 
   useEffect(() => {
-    setCartData(JSON.parse(sessionStorage.getItem("cartItem")));
+    setCartData(JSON.parse(localStorage.getItem("cartItem")));
   }, [reloadCart, removeFromCart]);
 
   useEffect(() => {
@@ -669,7 +669,7 @@ function InformationDefault({
     productUpdated.quantityUpdated = quantity;
     product.productOptions = optionStateArray;
 
-    sessionStorage.setItem("backOrderLocal", JSON.stringify(productUpdated));
+    localStorage.setItem("backOrderLocal", JSON.stringify(productUpdated));
     Router.push("/account/stock-checkout");
   };
 

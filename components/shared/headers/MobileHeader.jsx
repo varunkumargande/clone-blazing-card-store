@@ -4,25 +4,20 @@ import Logo from "../../Icons/Logo";
 import IconSearch from "../../Icons/IconSearch";
 import IconMenu from "../../Icons/IconMenu";
 import IconClose from "../../Icons/IconClose";
-import IconCategoryDrop from "../../Icons/IconCategoryDrop";
 import IconProfile from "../../Icons/IconProfile";
 import IconMyOrders from "../../Icons/IconMyOrders";
-import IconSettings from "../../Icons/IconSettings";
 import IconMessageMobile from "../../Icons/IconMessageMobile";
 import IconLogoutMobile from "../../Icons/IconLogoutMobile";
 import IconNotificationMobile from "../../Icons/IconNotificationMobile";
 import { useTranslation } from "../../../i18n";
-import { categoryListApi } from "../../../api";
-import { useRouter } from "next/router";
 import { login } from "../../../store/auth/action";
 import { connect } from "react-redux";
 import Router from "next/router";
 import { modalSuccess } from "../../../api/intercept";
 import { logOut } from "../../../store/auth/action";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
-import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { vendorAuth } from "../../../store/vendorAuth/action";
 
 function MobileHeader({ auth }) {
@@ -34,7 +29,7 @@ function MobileHeader({ auth }) {
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const authFunc = () => {
-    if (sessionStorage.getItem("blazingToken") !== null) {
+    if (localStorage.getItem("blazingToken") !== null) {
       dispatch(login());
     }
   };
@@ -50,14 +45,12 @@ function MobileHeader({ auth }) {
   }, [toggle]);
 
   useEffect(() => {
-    categoryListApi(dispatch);
     authFunc();
-    // getServiceApi(dispatch);
   }, []);
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("blazingUser");
+      let profileData = localStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);
@@ -86,7 +79,7 @@ function MobileHeader({ auth }) {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear();
+    localStorage.clear();
     dispatch(logOut());
     Router.push("/");
     modalSuccess("success", "successfully logged out");
@@ -94,7 +87,7 @@ function MobileHeader({ auth }) {
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
-      let profileData = sessionStorage.getItem("blazingUser");
+      let profileData = localStorage.getItem("blazingUser");
       if (profileData) {
         profileData = JSON.parse(profileData);
         setProfile(profileData);
@@ -308,7 +301,7 @@ function MobileHeader({ auth }) {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/">
+                    <Link href="/chat">
                       <a className="message">
                         <IconMessageMobile />
                         <span>Message</span>
@@ -316,7 +309,7 @@ function MobileHeader({ auth }) {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/">
+                    <Link href="/notifications">
                       <a className="notification">
                         <IconNotificationMobile />
                         <span>Notification</span>
