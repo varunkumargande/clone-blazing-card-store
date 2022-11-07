@@ -1,4 +1,5 @@
 import React, { useState, useEffect, memo } from "react";
+import Skeleton from "react-loading-skeleton";
 import IconChat from "../../Icons/IconChat";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
@@ -43,7 +44,10 @@ function RightDiv({ streamData, channel, client }) {
   // }, [count])
 
   const sendAndUpdateMessage = async (initialMessage = null) => {
-    if (!streamData?.streamPageDteails.isLoggedIn && initialMessage !== "JOINED 👋") {
+    if (
+      !streamData?.streamPageDteails.isLoggedIn &&
+      initialMessage !== "JOINED 👋"
+    ) {
       setShowLoginModal(true);
       setInputValue("");
     } else if (initialMessage || inputValue) {
@@ -75,40 +79,69 @@ function RightDiv({ streamData, channel, client }) {
     }
   };
 
-  const getMessages = () => {
+  const showMessages = () => {
+    if (!channel) {
+      return (
+        <div className="chat-inner-wrap flex column justify-right">
+          {new Array(5).fill(0).map((_, index) => (
+            <div key={`dummy-msg-${index}`} className="flex flex-center chat">
+              <Skeleton
+                className="chat-img br50"
+                circle
+                baseColor="#dddbdb66"
+                highlightColor="#cdcccc"
+              />
+              <div className="chat-text-wrap">
+                <div className="name">
+                  <Skeleton
+                    baseColor="#dddbdb66"
+                    highlightColor="#cdcccc"
+                    width={
+                      index % 2 === 0
+                        ? `50%`
+                        : (index % 3 === 0 && `70%`) || `30%`
+                    }
+                  />
+                </div>
+                <div className="chat">
+                  <Skeleton
+                    baseColor="#dddbdb66"
+                    highlightColor="#cdcccc"
+                    width={
+                      index % 2 === 0
+                        ? `40%`
+                        : (index % 3 === 0 && `70%`) || `100%`
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
     if (!messages) return <></>;
     return (
-      <>
-        <div className="chat-inner-wrap flex column justify-right">
-          {messages?.map(({ message, userId, profileUrl }) => {
-            return (
-              <>
-                <div className="flex flex-center chat">
-                  <div className="chat-img br50">
-                    <CloudinaryImage
-                      imageUrl={profileUrl}
-                      keyId={`chatBox${userId}`}
-                      transformation={ImageTransformation.streamChatProfile}
-                      alternative="profile"
-                    />
-
-                    {/* // ToDo: Need to remove commented code. Keeping it for refrence for now. */}
-                    {/* <img
-                      src={streamData?.streamPageDteails?.avatarImage}
-                      alt="profile"
-                      key={`chatBox${userId}`}
-                    /> */}
-                  </div>
-                  <div className="chat-text-wrap">
-                    <div className="name">{userId.replace(/\d+/g, "")}</div>
-                    <div className="chat">{message}</div>
-                  </div>
-                </div>
-              </>
-            );
-          })}
-        </div>
-      </>
+      <div className="chat-inner-wrap flex column justify-right">
+        {messages?.map(({ message, userId, profileUrl }) => {
+          return (
+            <div className="flex flex-center chat">
+              <div className="chat-img br50">
+                <CloudinaryImage
+                  imageUrl={profileUrl}
+                  keyId={`chatBox${userId}`}
+                  transformation={ImageTransformation.streamChatProfile}
+                  alternative="profile"
+                />
+              </div>
+              <div className="chat-text-wrap">
+                <div className="name">{userId.replace(/\d+/g, "")}</div>
+                <div className="chat">{message}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     );
   };
 
@@ -126,27 +159,38 @@ function RightDiv({ streamData, channel, client }) {
             }}
           />
         )}
-        <div className="chat-wrap">{getMessages()}</div>
+        <div className="chat-wrap">{showMessages()}</div>
         <div className="input-chat">
-          <input
-            type="text"
-            placeholder="Please type here..."
-            value={inputValue}
-            onChange={(e) => inputChange(e)}
-            onKeyDown={(e) => onKeyEnter(e)}
-          />
-          <button
-            className="chat-btn flex flex-center justify-center br50"
-            onClick={() => sendAndUpdateMessage()}
-          >
-            <IconChat />
-          </button>
+          {channel ? (
+            <>
+              <input
+                type="text"
+                placeholder="Please type here..."
+                value={inputValue}
+                onChange={(e) => inputChange(e)}
+                onKeyDown={(e) => onKeyEnter(e)}
+              />
+              <button
+                className="chat-btn flex flex-center justify-center br50"
+                onClick={() => sendAndUpdateMessage()}
+              >
+                <IconChat />
+              </button>
+            </>
+          ) : (
+            <Skeleton
+              baseColor="#dddbdb66"
+              highlightColor="#cdcccc"
+              width={`100%`}
+              height={`35px`}
+            />
+          )}
         </div>
       </div>
     </>
 
     // <div className="streaming-div-right">
-    //   {getMessages()}
+    //   {showMessages()}
     //   <div className="streaming-chat-box">
     //     <Input
     //       style={{ width: "calc(100% - 200px)" }}

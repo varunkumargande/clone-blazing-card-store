@@ -11,8 +11,9 @@ import useEventSocket from "../../../hooks/useEventSocket";
 import { useCallback } from "react";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
+import { Loader } from "../../reusable/Loader";
 
-function Index() {
+function Streaming() {
   const { isMobile } = useIsMobile();
 
   const [open, setOpen] = useState(false);
@@ -50,7 +51,6 @@ function Index() {
   useEffect(() => {
     setFetch(true);
     dispatch(streamData(uuid));
-
     return () => {
       dispatch(clearState());
     };
@@ -60,80 +60,80 @@ function Index() {
   const handleLeftDiv = useCallback((toggle) => {
     setLeftDivOpen(toggle);
   }, []);
-  
+
   const notificationData = {
-    bid: bid?.data, 
+    bid: bid?.data,
     auction: auction?.data,
     win: win?.data,
   };
 
-
   return (
     <>
-      {streamingDetails?.uuid ? (
-        <>
-          {showLoginModal && (
-            <SignUPGoogle
-              customMsg={"Signup to Join Blazing Cards"}
-              onDismiss={(e) => {
-                e.preventDefault();
-                setShowLoginModal(false);
-              }}
-            />
-          )}
-          <div
-            className="streaming-page flex space-between"
-            onClick={(e) => {
-              e.preventDefault();
-              isMobile && handleLeftDiv(false);
-            }}
-          >
-            <LeftDiv
-              setShowLoginModal={setShowLoginModal}
-              auctionNotification={auction?.data}
-              open={open}
-              productDetail={setProductDetail}
-              openPayment={setOpenPayment}
-              setOpen={setOpen}
-              addShippInfo={addShippInfo}
-              addPayInfo={addPayInfo}
-              setCustomerId={setCustomerId}
-              streamingDetails={streamingDetails}
-              handleLeftDiv={handleLeftDiv}
-              isLeftDivOpen={isLeftDivOpen}
-              setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
-              auctionCallBack={setLiveAuctionDetails}
-            />
-            <CenterDiv
-              open={open}
-              productDetail={productDetail}
-              isPayment={openPayment}
-              openPayment={setOpenPayment}
-              setOpen={setOpen}
-              setAddShippInfo={setAddShippInfo}
-              setAddPayInfo={setAddPayInfo}
-              customerId={customerId}
-              streamDetails={selectedStream}
-              streamingDetails={streamingDetails}
-              handleLeftDiv={handleLeftDiv}
-              setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
-              isBuyNowPaymentModal={isBuyNowPaymentModal}
-              setShowLoginModal={setShowLoginModal}
-              userCount={count}
-              streamNotification={notificationData}
-              liveAuctionDetails={liveAuctionDetails}
-            />
-            <RightDiv
-              streamingDetails={streamingDetails}
-              streamData={streamPageData}
-              channel={channel}
-              client={client}
-            />
+      {showLoginModal && (
+        <SignUPGoogle
+          customMsg={"Signup to Join Blazing Cards"}
+          onDismiss={(e) => {
+            e.preventDefault();
+            setShowLoginModal(false);
+          }}
+        />
+      )}
+      <div
+        className="streaming-page flex space-between"
+        onClick={(e) => {
+          e.preventDefault();
+          isMobile && handleLeftDiv(false);
+        }}
+      >
+        {!streamingDetails?.uuid && (
+          <div className="text-center w-100 position-absolute z-index-1">
+            <Loader />
           </div>
-        </>
-      ) : null}
+        )}
+        <LeftDiv
+          setShowLoginModal={setShowLoginModal}
+          auctionNotification={auction?.data}
+          open={open}
+          productDetail={setProductDetail}
+          openPayment={setOpenPayment}
+          setOpen={setOpen}
+          addShippInfo={addShippInfo}
+          addPayInfo={addPayInfo}
+          setCustomerId={setCustomerId}
+          streamingDetails={streamingDetails}
+          handleLeftDiv={handleLeftDiv}
+          isLeftDivOpen={isLeftDivOpen}
+          setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
+          auctionCallBack={setLiveAuctionDetails}
+        />
+        <CenterDiv
+          open={open}
+          productDetail={productDetail}
+          isPayment={openPayment}
+          openPayment={setOpenPayment}
+          setOpen={setOpen}
+          setAddShippInfo={setAddShippInfo}
+          setAddPayInfo={setAddPayInfo}
+          customerId={customerId}
+          streamDetails={selectedStream}
+          streamingDetails={streamingDetails}
+          handleLeftDiv={handleLeftDiv}
+          setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
+          isBuyNowPaymentModal={isBuyNowPaymentModal}
+          setShowLoginModal={setShowLoginModal}
+          userCount={count}
+          streamNotification={notificationData}
+          liveAuctionDetails={liveAuctionDetails}
+        />
+        <RightDiv
+          streamingDetails={streamingDetails}
+          streamData={streamPageData}
+          channel={channel}
+          client={client}
+        />
+      </div>
     </>
   );
 }
 
-export default memo(Index);
+export default memo(Streaming);

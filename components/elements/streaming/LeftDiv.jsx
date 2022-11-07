@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Skeleton from "react-loading-skeleton";
 import {
   getProducts,
   userFollowUnfollow,
@@ -22,7 +23,7 @@ function LeftDiv({
   handleLeftDiv,
   isLeftDivOpen,
   setIsBuyNowPaymentModal,
-  auctionCallBack
+  auctionCallBack,
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -47,9 +48,7 @@ function LeftDiv({
     setToggleState(index);
   };
   // const dispatch = useDispatch();
-  const [followed, setFollowed] = useState(
-    streamingDetails.isFollow ? streamingDetails.isFollow : false
-  );
+  const [followed, setFollowed] = useState(!!streamingDetails?.isFollow);
   const [filterKeyword, setFilterKeyword] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
@@ -66,7 +65,8 @@ function LeftDiv({
     sold: [],
     purchased: [],
   };
-  const [streamProducts, setStreamProduct] = useState(initialStreamingData);
+  const [streamProducts, setStreamProducts] = useState(initialStreamingData);
+  const [streamProductsFetched, setStreamProductsFetched] = useState(false);
 
   const { isMobile } = useIsMobile();
 
@@ -104,9 +104,10 @@ function LeftDiv({
         // dispatch(addStreamProducts(result))
         const datum = { ...streamProducts };
         datum[toggleState] = result;
-        setStreamProduct(datum);
-        if(toggleState == TOGGLE_STATES.AUCTION) {
-          auctionCallBack(datum[toggleState]?.AuctionDetails)
+        setStreamProducts(datum);
+        setStreamProductsFetched(true);
+        if (toggleState == TOGGLE_STATES.AUCTION) {
+          auctionCallBack(datum[toggleState]?.AuctionDetails);
         }
       }
       setFilterKeyword("");
@@ -127,7 +128,7 @@ function LeftDiv({
    * @param {*} element
    */
   const updateCurrentToggleValue = (element) => {
-    // setStreamProduct([]);
+    // setStreamProducts([]);
     // dispatch(addStreamProducts({}));
     toggleTab(TOGGLE_STATES[element.split(" ").join("").toUpperCase()]);
     setFilterKeyword("");
@@ -200,11 +201,25 @@ function LeftDiv({
     }
   }, [filteredProducts?.length, streamProducts[toggleState]?.products?.length]);
 
+  const showProductListSkimmer = () => {
+    return new Array(4).fill(0).map((_, index) => (
+      <li key={`dummy-${index}`}>
+        <strong>
+          <Skeleton
+            baseColor="#dddbdb66"
+            highlightColor="#cdcccc"
+            width={`100%`}
+          />
+        </strong>
+      </li>
+    ));
+  };
+
   /**
    * Method will render all product listing
    * @returns JSX
    */
-  const getProductList = () => {
+  const showProductList = () => {
     let productList = [];
     if (streamProducts && streamProducts[toggleState]?.products?.length) {
       productList = [...streamProducts[toggleState]?.products];
@@ -272,7 +287,7 @@ function LeftDiv({
                 <span>
                   Purchased from{" "}
                   <Link href="/">
-                    <a>phatdawg</a>
+                    <a></a>
                   </Link>
                 </span>
               </div>
@@ -316,7 +331,6 @@ function LeftDiv({
 
   const UnfollowModal = () => {
     const vendorDetails = stream?.streamData?.vendorDetails;
-    const vendorName = vendorDetails?.username;
     return (
       <div className="modalOverlay flex justify-center flex-center">
         <div className="modal">
@@ -339,7 +353,9 @@ function LeftDiv({
                 <img src="/static/images/profile-large.svg" alt="" />
               )}
             </div>
-            <div className="profile-id">Want to unfollow @{vendorName}?</div>
+            <div className="profile-id">
+              Want to unfollow @{vendorDetails?.username}?
+            </div>
             <div className="btn-wrap follow-btn-wrap flex justify-center">
               <button
                 className="border-btn"
@@ -397,18 +413,29 @@ function LeftDiv({
       {showUnFollowModal && UnfollowModal()}
       <div className="flex profile-wrapper">
         <div className="image">
-          <CloudinaryImage
-            imageUrl={DefaultServices?.GetFullImageURL(
-              stream?.streamData?.vendorDetails,
-              "vendor"
-            )}
-            keyId={DefaultServices?.GetFullImageURL(
-              stream?.streamData?.vendorDetails,
-              "vendor"
-            )}
-            transformation={ImageTransformation.streamPageProfile}
-            alternative={"Card"}
-          />
+          {stream?.streamData?.vendorDetails ? (
+            <CloudinaryImage
+              imageUrl={DefaultServices?.GetFullImageURL(
+                stream?.streamData?.vendorDetails,
+                "vendor"
+              )}
+              keyId={DefaultServices?.GetFullImageURL(
+                stream?.streamData?.vendorDetails,
+                "vendor"
+              )}
+              transformation={ImageTransformation.streamPageProfile}
+              alternative={"Card"}
+            />
+          ) : (
+            <Skeleton
+              className="border"
+              circle
+              width={32}
+              height={32}
+              baseColor="#dddbdb66"
+              highlightColor="#cdcccc"
+            />
+          )}
         </div>
         <div
           className="profile-wrap"
@@ -417,7 +444,17 @@ function LeftDiv({
             handleProfileClick();
           }}
         >
-          <div className="name">{vendorName}</div>
+          <div className="name">
+            {streamingDetails?.vendorDetails ? (
+              vendorName
+            ) : (
+              <Skeleton
+                baseColor="#dddbdb66"
+                highlightColor="#cdcccc"
+                width={`150px`}
+              />
+            )}
+          </div>
           <div className="followrs-count">{noOfFollower} Followers</div>
         </div>
         <div className="btn-wrap">
@@ -452,7 +489,15 @@ function LeftDiv({
             e.stopPropagation();
           }}
         >
-          <h3 className="title">{streamTitle}</h3>
+          <h3 className="title">
+            {streamTitle || (
+              <Skeleton
+                baseColor="#dddbdb66"
+                highlightColor="#cdcccc"
+                width={`100px`}
+              />
+            )}
+          </h3>
           <div className="tab-wrapper flex">{getToggles()}</div>
           <div className="search">
             <input
@@ -463,8 +508,24 @@ function LeftDiv({
             />
           </div>
           <div className={`${toggleState}-list leftdata-list`}>
-            <div className="product-count">{ handleProductCount <= 1 ? `${handleProductCount} Product` : `${handleProductCount} Products`}</div>
-            <ul className="product-list">{getProductList()}</ul>
+            <div className="product-count">
+              {!streamProductsFetched ? (
+                <Skeleton
+                  baseColor="#dddbdb66"
+                  highlightColor="#cdcccc"
+                  width={`100px`}
+                />
+              ) : handleProductCount <= 1 ? (
+                `${handleProductCount} Product`
+              ) : (
+                `${handleProductCount} Products`
+              )}
+            </div>
+            <ul className="product-list">
+              {streamProductsFetched
+                ? showProductList()
+                : showProductListSkimmer()}
+            </ul>
           </div>
         </div>
       ) : (

@@ -4,7 +4,6 @@ import NavigationList from "../../components/shared/navigation/NavigationList";
 import ThemeChanger from "../../components/elements/color/themeControl";
 import useNetwork from "../../components/reusable/NetworkCheck";
 import Router, { useRouter } from "next/router";
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import Footer from "../../components/partials/LandingPage/Footer";
 import IconBack from "../../components/Icons/IconBack";
@@ -16,7 +15,6 @@ const StreamingPage = (props, dispatch) => {
     () => import("../../components/elements/streaming"),
     { ssr: false }
   );
-  const [blogList, setBlogList] = useState([]);
   const { isMobile } = useIsMobile();
   const router = useRouter();
 
