@@ -33,7 +33,7 @@ const StreamCardSkeleton = ({ count = 1, name = "" }) => {
             </span>
           </button>
         </div>
-        <div className="text" style={{ height: `40px` }}>
+        <div className="text" style={{ height: isMobile ? `104px` : `40px` }}>
           <h5 className="title position-absolute">
             <Skeleton
               className="skeleton-profile-img"
