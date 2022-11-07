@@ -326,9 +326,7 @@ function StreamingBase({
               Custom Bid
             </button>
             <button
-              className={
-                disableBid ? "primary-btn disable-opacity" : "primary-btn"
-              }
+              className={`primary-btn ${disableBid && "disable-opacity"}`}
               disabled={disableBid}
               onClick={(e) => {
                 e.preventDefault();
