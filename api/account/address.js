@@ -23,5 +23,5 @@ export async function UserAddAddress(
   if (resp) {
     addressList();
   }
-  setAddressLoader(false)
+  setAddressLoader(false);
 }

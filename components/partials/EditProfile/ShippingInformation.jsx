@@ -9,6 +9,8 @@ import { countryListApi, editAddressApi, UserAddAddress } from "../../../api";
 import Router from "next/router";
 import { Loader } from "../../reusable/Loader";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { getStateList } from "../../../api/common/common";
+import { US_CODE } from "../../Constants";
 
 export default function ShippingDetails() {
   const dispatch = useDispatch();
@@ -16,6 +18,7 @@ export default function ShippingDetails() {
   const [addressLoader, setAddressLoader] = useState(false);
   const [delStatus, setDelStatus] = useState(0);
   const [countryData, setCountryData] = useState([]);
+  const [stateList, setStateList] = useState([]);
 
   useEffect(() => {
     setDelStatus(0);
@@ -28,6 +31,7 @@ export default function ShippingDetails() {
   };
   const apiCallFunc = () => {
     countryListApi(setCountryData);
+    getStateList(setStateList)
   };
 
   const initialShippingValues = {
@@ -36,7 +40,7 @@ export default function ShippingDetails() {
     city: addressData?.length != 0 ? addressData[0]?.city : "",
     state: addressData?.length != 0 ? addressData[0]?.state : "",
     postcode: addressData?.length != 0 ? addressData[0]?.postcode : "",
-    countryId: addressData?.length != 0 ? addressData[0]?.countryId : "",
+    countryId: addressData?.length != 0 ? addressData[0]?.countryId : US_CODE,
     addressType: addressData?.length != 0 ? addressData[0]?.addressType : "",
     company: addressData?.length != 0 ? addressData[0]?.company : "",
   };
@@ -46,7 +50,7 @@ export default function ShippingDetails() {
     // address2: Yup.string().required("Required"),
     city: Yup.string().required("Required"),
     state: Yup.string().required("Required"),
-    postcode: Yup.string().required("Required").max(6, "postcode is invalid !"),
+    postcode: Yup.number().required("Required").typeError('Please enter digits only'),
     countryId: Yup.string().required("Required"),
     company: Yup.string().required("Required"),
   });
@@ -151,8 +155,10 @@ export default function ShippingDetails() {
                             name="countryId"
                             onChange={handleChange}
                             value={values.countryId}
+                            disabled={true}
                           >
-                            <option>Select</option>
+                            {/* <option>Select</option> */}
+                            <option>United States</option>
                             {countryData.map((item, index) => {
                               return (
                                 <>
@@ -200,14 +206,31 @@ export default function ShippingDetails() {
                         </div>
                         <div className="input-control wd50">
                           <label htmlFor="usr">State *</label>
-                          <input
+                          {/* <input
                             name="state"
                             placeholder={"Enter here"}
                             id="usr"
                             className="grey-bg"
                             onChange={handleChange}
                             value={values.state}
-                          />
+                          /> */}
+                          <select
+                            className="grey-bg"
+                            name="state"
+                            onChange={handleChange}
+                            value={values.state}
+                          >
+                            <option>Select</option>
+                            {stateList.map((item, index) => {
+                              return (
+                                <>
+                                  <option value={item.name}>
+                                    {item.name}
+                                  </option>
+                                </>
+                              );
+                            })}
+                          </select>
                           <ErrorMessage
                             errors={errors.state}
                             touched={touched.state}
