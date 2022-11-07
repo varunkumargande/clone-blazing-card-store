@@ -73,7 +73,9 @@ function Category({ seeAllHeading, auth, category }) {
         )}
         <div className="category-list">
           <button
-            className={!!category.categoryName ? "title" : "title active"}
+            className={`text-capitalize title  ${
+              !category.categoryName && "active"
+            }`}
             onClick={(e) => {
               e.preventDefault();
               handleAllCategory();
@@ -93,11 +95,9 @@ function Category({ seeAllHeading, auth, category }) {
               key={res.categoryId || `${index}-category`}
             >
               <button
-                className={
-                  category.categoryName === res?.categorySlug
-                    ? "title active"
-                    : "title"
-                }
+                className={`title text-capitalize ${
+                  category.categoryName === res?.categorySlug && "active"
+                }`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleActiveCategory(
@@ -143,8 +143,8 @@ function Category({ seeAllHeading, auth, category }) {
           >
             <IconBack />
           </div>
-          &nbsp;&nbsp;&nbsp;
-          <h3 className="title">{stringFormatter(seeAllHeading)}</h3>
+          &emsp;&nbsp;
+          <h3 className="title text-capitalize">{stringFormatter(seeAllHeading)}</h3>
         </>
       );
     } else {

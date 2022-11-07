@@ -78,11 +78,9 @@ function SeeAllSubCategories({
         return (
           <div className="category-list">
             <button
-              className={
-                category?.subCategoryName === item.categorySlug
-                  ? "title active"
-                  : "title"
-              }
+              className={`text-capitalize title ${
+                category?.subCategoryName === item.categorySlug && "active"
+              }`}
               onClick={() =>
                 handleSubCategorySelect(item.categorySlug, item.categoryId)
               }
