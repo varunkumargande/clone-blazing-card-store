@@ -1,26 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
-import Footer from "../../components/partials/LandingPage/Footer";
-import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import Router, { useRouter } from "next/router";
+import Header from "../../components/partials/LandingPage/Header";
+import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
+import HeaderDefault from "../../components/shared/headers/HeaderDefault";
+import IconLike from "../../components/Icons/IconLike";
+import IconBack from "../../components/Icons/IconBack";
+import Footer from "../../components/partials/LandingPage/Footer";
 import IconShareFacebook from "../../components/Icons/IconShareFacebook";
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
 import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
-import StreamCard from "../../components/elements/StreamCard";
 import ProfileMethods from "../../api/profile/ProfileMethods";
-import { connect, useSelector } from "react-redux";
 import PublicProfileConstants from "../../components/Constants/publicProfile";
-import Link from "next/link";
+import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
-import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../components/Constants/imageTransformation";
-import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 
-function MyProfile(props) {
+export default function categoryStream() {
   const router = useRouter();
-  const [loader, setLoader] = useState(false);
+  const { isMobile } = useIsMobile();
   const [active, setActive] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(router.query.userId);
   const [profile, setProfile] = useState(null);
   const [upcomingShows, setUpcomingShows] = useState([]);
   const [previousShows, setPreviousShows] = useState([]);
@@ -31,60 +30,28 @@ function MyProfile(props) {
   const [activeTab, setActiveTab] = useState(
     tabs && tabs.length > 0 ? tabs[0].key : ""
   );
+
   const wrapperRef = useRef(null);
-  const dislikedStreams = useSelector(
-    (state) => state?.likeDislikeStream?.dislikedData
-  );
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       setActive(false);
     }
   };
-  const [isOpenFollowUnfollow, setIsOpenFollowUnfollow] = useState(false);
-
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("blazingUser"));
-    setUserId(userData.id);
-    setProfile(userData);
-  }, []);
-
-  useEffect(() => {
-    let currentLikedShows = likedShows;
-    dislikedStreams.map((streamID) => {
-      currentLikedShows = currentLikedShows.filter(
-        (show) => show.uuid !== streamID
-      );
-    });
-    setLikedShows(currentLikedShows);
-  }, [dislikedStreams]);
-
-  const getSessionUser = () => {
-    const user = JSON.parse(localStorage.getItem("blazingUser"));
-    return user;
-  };
 
   const getAllBuyerDetails = () => {
-    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetLikedStreams(userId, setLikedShows);
-    ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
-    ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
+    ProfileMethods.GetUserFollowers(userId, setFollowers);
+    ProfileMethods.GetUserFollowings(userId, setFollowing);
   };
 
   const getAllVendorDetails = () => {
-    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
     ProfileMethods.GetLikedStreams(userId, setLikedShows);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
-    ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
-    ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
+    ProfileMethods.GetUserFollowers(userId, setFollowers);
+    ProfileMethods.GetUserFollowings(userId, setFollowing);
   };
-
-  useEffect(() => {
-    if (router.query.userId) {
-      setUserId(router.query.userId);
-    }
-  }, [router.query]);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, false);
@@ -116,8 +83,6 @@ function MyProfile(props) {
       setActiveTab(tabs[0].key);
     }
   }, [tabs]);
-
-  const { isMobile } = useIsMobile();
 
   const UpcomingShowsComponent = () => {
     if (upcomingShows) {
@@ -160,7 +125,13 @@ function MyProfile(props) {
   const LikedShowsComponent = () => {
     if (likedShows) {
       if (likedShows.length > 0) {
-        return likedShows.map((show) => <StreamCard detail={show} />);
+        return (
+          <>
+            {likedShows.map((show, index) => (
+              <StreamCard detail={show} />
+            ))}
+          </>
+        );
       } else {
         return (
           <div className="no-record flex justify-center">No Data found</div>
@@ -172,18 +143,13 @@ function MyProfile(props) {
 
   const ProfileComponent = (isForFollower) => {
     if (isForFollower) {
+      console.log("155555555555")
       if (followers) {
         if (followers.length > 0) {
           return (
             <>
               {followers.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowers}
-                  following={followers}
-                />
+                <Followers person={details} isFollower={isForFollower} />
               ))}
             </>
           );
@@ -199,13 +165,7 @@ function MyProfile(props) {
           return (
             <>
               {following.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowing}
-                  following={following}
-                />
+                <Followers person={details} isFollower={isForFollower} />
               ))}
             </>
           );
@@ -220,26 +180,11 @@ function MyProfile(props) {
   };
 
   const renderTab = (tab, key) => {
-    const loggedInUserId = getSessionUser().id;
     return (
       <div className="category-list" key={key}>
         <button
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() => {
             setActiveTab(tab.key);
-            if (tab.key === "followers") {
-              ProfileMethods.GetUserFollowers(
-                userId,
-                setFollowers,
-                loggedInUserId
-              );
-            } else if (tab.key === "following") {
-              ProfileMethods.GetUserFollowings(
-                userId,
-                setFollowing,
-                loggedInUserId
-              );
-            }
           }}
           className={`title ${activeTab === tab.key && "active"}`}
         >
@@ -299,48 +244,14 @@ function MyProfile(props) {
     return null;
   };
 
-  const handleRoutingToEditProfile = () => {
-    Router.push("/account/editprofile");
-  };
-
-  const handleProfileImage = () => {
-    if (!!profile?.avatarPath && !!profile?.avatar) {
-      return (
-        <>
-          <CloudinaryImage
-            imageUrl={`${profile.avatarPath}/${profile.avatar}`}
-            keyId={`${profile.avatarPath}/${profile.avatar}`}
-            transformation={ImageTransformation.profilePageImage}
-            alternative="profileImg"
-          />
-
-          {/* ToDo: Need to remove old image code. Keeping it right now for reference  */}
-          {/* <img
-            style={{ borderRadius: "50%" }}
-            width="123"
-            height="123"
-            src={
-              imageUrl +
-              "?path=" +
-              profile.avatarPath +
-              "&name=/" +
-              profile.avatar +
-              "&width=500&height=500"
-            }
-            alt="profileImg"
-          /> */}
-        </>
-      );
-    } else {
-      return <img src="/static/images/profileImg.png" alt="profileImg" />;
-    }
-  };
-
   return (
     <div className="home-container profile-container-wrap">
       {isMobile ? (
         <div className="profile-title flex flex-center">
-          <BackButton name={"Profile"} />
+          <div className="edit-back">
+            <IconBack />
+          </div>
+          Profile
         </div>
       ) : (
         <HeaderDefault />
@@ -354,65 +265,40 @@ function MyProfile(props) {
             <div className="aside-content-wrap profile-wrapper flex flex-start space-between">
               <aside className="aside-wrapper profile-aside">
                 <div className="aside-container profile-container">
-                  <div className="profile-icon">{handleProfileImage()}</div>
+                  <div className="profile-icon">
+                    <img
+                      src="/static/images/profile-large.svg"
+                      alt="profileImg"
+                    />
+                  </div>
                   <div className="title flex column">
                     {renderProfileName()}
-                    <span>@{profile && profile?.username}</span>
+                    <span>@{profile && profile.username}</span>
                   </div>
                   <div className="flex justify-center">
-                    <button
-                      className="border-btn edit-profile-btn"
-                      onClick={() => handleRoutingToEditProfile()}
-                    >
-                      Edit Profile
+                    <button className="primary-btn follow-btn">Follow</button>
+                    <button className="border-btn edit-profile-btn">
+                      Message
                     </button>
                   </div>
-                  {profile && profile?.bio && (
-                    <p className="description">{profile?.bio}</p>
+                  {profile && profile.bio && (
+                    <p className="description">{profile.bio}</p>
                   )}
                   <div className="social-icons-wrapper">
                     <div className="social-border"></div>
                     <ul className="social-icons flex">
-                      {profile?.facebookUrl && (
-                        <li>
-                          <Link href={profile?.facebookUrl}>
-                            <a
-                              target={profile?.facebookUrl ? "_blank" : "_self"}
-                              rel="noopener noreferrer"
-                            >
-                              <IconShareFacebook />
-                            </a>
-                          </Link>
-                        </li>
-                      )}
-                      {profile?.twitterUrl && (
-                        <li>
-                          <Link href={profile?.twitterUrl}>
-                            <a
-                              target={profile?.twitterUrl ? "_blank" : "_self"}
-                              rel="noopener noreferrer"
-                            >
-                              <IconShareTwitter />
-                            </a>
-                          </Link>
-                        </li>
-                      )}
-                      {profile?.mobileNumber && (
-                        <li>
-                          <Link
-                            href={`https://api.whatsapp.com/send?phone=${profile.mobileNumber}`}
-                          >
-                            <a
-                              target={
-                                profile?.mobileNumber ? "_blank" : "_self"
-                              }
-                              rel="noopener noreferrer"
-                            >
-                              <IconShareWhatsup />
-                            </a>
-                          </Link>
-                        </li>
-                      )}
+                      {/* {profile && profile.facebookUrl && (<li><IconShareFacebook /></li>)}
+                                            {profile && profile.twitterUrl && (<li><IconShareTwitter /></li>)} */}
+                      <li>
+                        <IconShareFacebook />
+                      </li>
+                      <li>
+                        <IconShareTwitter />
+                      </li>
+                      <li>
+                        {" "}
+                        <IconShareWhatsup />
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -437,9 +323,3 @@ function MyProfile(props) {
     </div>
   );
 }
-
-const mapStateToProps = (state) => {
-  return state;
-};
-
-export default connect(mapStateToProps)(MyProfile);

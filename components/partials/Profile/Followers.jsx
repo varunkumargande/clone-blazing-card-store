@@ -1,10 +1,28 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import ProfileMethods from "../../../api/profile/ProfileMethods";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
+import { UnfollowModal, UnfollowModalMultiple } from "../Modal/Modal";
 
 export default function Followers(props) {
-  const { person, isFollower } = props;
+  const { person, isFollower, setFollowing, setFollower, following, follower } =
+    props;
+  const [key, setKey] = useState(1);
+  const router = useRouter();
+  const [profile, setProfile] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isOpenFollowUnfollow, setIsOpenFollowUnfollow] = useState(false);
+
+  const getSessionUser = () => {
+    const user = JSON.parse(localStorage.getItem("blazingUser"));
+    return user;
+  };
+  const getPathname = () => {
+    return router?.pathname;
+  };
   const renderProfileName = () => {
     if (person) {
       let name = "";
@@ -27,19 +45,37 @@ export default function Followers(props) {
     }
     return null;
   };
+  const handleFollowUnfollow = (profileId, isFollowed) => {
+    const userId = getSessionUser().id;
+    const pathname = getPathname();
+    if (pathname && !!router?.query?.userId) {
+      pathname = "/profile";
+    } else if (router?.pathname === "/account/myprofile") {
+      pathname = "/account/myprofile";
+    }
+    if (!!userId) {
+      if (isFollowed) {
+        setIsOpenFollowUnfollow(true);
+      } else {
+        ProfileMethods.FollowUser(
+          userId,
+          profileId,
+          setFollowing,
+          following,
+          setIsOpenFollowUnfollow,
+          pathname
+        );
+      }
+    }
+  };
+
   return (
     <>
       <div className="card-list flex flex-center">
         <div className="profile text-center">
           <CloudinaryImage
-            imageUrl={DefaultServices?.GetFullImageURL(
-              person,
-              "vendor",
-            )}
-            keyId={DefaultServices?.GetFullImageURL(
-              person,
-              "vendor",
-            )}
+            imageUrl={DefaultServices?.GetFullImageURL(person, "vendor")}
+            keyId={DefaultServices?.GetFullImageURL(person, "vendor")}
             transformation={ImageTransformation.followersCard}
             alternative={"Card"}
           />
@@ -53,10 +89,37 @@ export default function Followers(props) {
                 : person.following_username)}
           </div>
           <div className="follow-button-wrapper">
-            <button className="primary-btn">Follow</button>
+            <button
+              className={
+                !!person?.is_user_followed &&
+                !!person?.f_id &&
+                getPathname() === "/account/myprofile"
+                  ? "disable primary-btn"
+                  : "primary-btn"
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                handleFollowUnfollow(
+                  person?.following_id ?? person?.f_follower_id,
+                  person?.is_user_followed
+                );
+              }}
+            >
+              {person?.is_user_followed === 1 ? "Following" : "Follow"}
+            </button>
           </div>
         </div>
       </div>
+      {isOpenFollowUnfollow && (
+        <UnfollowModalMultiple
+          profile={person}
+          setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+          profileMethods={ProfileMethods}
+          following={following}
+          setFollowing={setFollowing}
+          pathname={getPathname()}
+        />
+      )}
       {/* <div className="card-list flex flex-center">
                 <div className="profile text-center">
                     <img src="/static/images/profile-large.svg" alt="Card" />

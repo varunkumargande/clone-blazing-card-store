@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import Router from "next/router";
 import { stringFormatter } from "../../../utilities/utils";
 import { useRouter } from "next/router";
@@ -14,6 +14,8 @@ function SeeAllParentCategories({
   setCatIndex,
   setStreamData,
   setLoader,
+  offset,
+  setOffset
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
@@ -30,6 +32,8 @@ function SeeAllParentCategories({
         subCategory: "all",
       },
     });
+    setStreamData([])
+    setOffset(0);
   };
 
   useEffect(() => {
@@ -44,13 +48,7 @@ function SeeAllParentCategories({
           subCategory: category?.subCategoryName,
         },
       });
-      getStreamCategoryBasedApi(
-        category?.categories[0]?.categorySlug,
-        category?.subCategoryName,
-        query?.page,
-        setStreamData,
-        setLoader
-      );
+      setStreamData([])
     }
   }, [query]);
 
@@ -83,4 +81,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(SeeAllParentCategories);
+export default connect(mapStateToProps)(memo(SeeAllParentCategories));

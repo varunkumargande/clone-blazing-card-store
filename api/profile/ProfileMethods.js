@@ -34,7 +34,7 @@ let GetPreviousStreams = async (userId, callback) => {
     })
 }
 
-let GetLikedStreams = (userId, callback) => {
+let GetLikedStreams = (userId, callback,setSeeMoreLoader) => {
     http.get(`/stream/liked-streams?user_id=${userId}`)
     .then((res) => {
         functionCallbackSetter(res, callback);
@@ -42,29 +42,32 @@ let GetLikedStreams = (userId, callback) => {
     .catch((e) => {
         
     })
+   setSeeMoreLoader(false)
 }
 
-let GetUserFollowers = async (userId, callback) => {
-    http.get(`/follow/get_follower?user_id=${userId}`)
-    .then((res) => {
-        functionCallbackSetter(res, callback);
-    })
-    .catch((e) => {
-        
-    })
+const GetUserFollowers = async (userId,callback, loggedInUserId) => {
+        http.get(`/follow/get_follower?user_id=${userId}&own_id=${loggedInUserId}`)
+        .then((res) => {
+            functionCallbackSetter(res, callback);
+        })
+        .catch((e) => {
+            
+        })
+    
 }
 
-let GetUserFollowings = async (userId, callback) => {
-    http.get(`/follow/get_following?user_id=${userId}`)
-    .then((res) => {
-        functionCallbackSetter(res, callback);
+const GetUserFollowings = async (userId,callback, loggedInUserId) => {
+    if(!!loggedInUserId){
+        http.get(`/follow/get_following?user_id=${userId}&own_id=${loggedInUserId}`)
+        .then((res) => {
+            functionCallbackSetter(res, callback);
+        })
+        .catch((e) => {  
     })
-    .catch((e) => {
-        
-    })
+    }
 }
 
-let UserFollowUser = (userId, followerId,callback, setIsOpenFollowUnfollow) => {
+const UserFollowUser = (userId, followerId,callback, setIsOpenFollowUnfollow) => {
     http.post('follow/follow_unfollow', {
         "following_id" : followerId,
         "follower_id" : userId
@@ -74,6 +77,39 @@ let UserFollowUser = (userId, followerId,callback, setIsOpenFollowUnfollow) => {
            setIsOpenFollowUnfollow(false) 
         }
         callback(Math.floor((Math.random() * 100) + 1));
+    })
+    .catch((error) => {
+    })
+}
+
+const FollowUser = (userId, followerId, setFollowing, following, setIsOpenFollowUnfollow, pathname) => {
+    http.post('follow/follow_unfollow', {
+        "following_id" : followerId,
+        "follower_id" : userId
+    })
+    .then((res) => {
+         if(res?.status === 200){
+            if(res?.data?.data?.isFollow === false){
+                const followingReplica = [...following];
+                if(pathname === "/account/myprofile"){
+                    const index = followingReplica.findIndex((element) => (element.following_id ?? element.f_follower_id)===followerId )
+                    followingReplica.splice(index, 1)
+                    setFollowing(followingReplica)
+                    setIsOpenFollowUnfollow(false) 
+                }else if(pathname === "/profile"){
+                    const index = followingReplica.findIndex((element) => (element.following_id ?? element.f_follower_id)===followerId )
+                    followingReplica[index].is_user_followed=0
+                    setFollowing(followingReplica)
+                    setIsOpenFollowUnfollow(false) 
+                }  
+             }
+             if(res?.data?.data?.isFollow === true){
+                const followingReplica = [...following];
+                const index = followingReplica.findIndex((element) => (element.following_id ?? element.f_follower_id)===followerId )
+                followingReplica[index].is_user_followed=1
+                setFollowing(followingReplica)
+             }
+        } 
     })
     .catch((error) => {
         
@@ -97,7 +133,8 @@ const ProfileMethods = {
     GetLikedStreams,
     GetUserFollowers,
     GetUserFollowings,
-    UserFollowUser
+    UserFollowUser,
+    FollowUser
 }
 
 export default ProfileMethods;

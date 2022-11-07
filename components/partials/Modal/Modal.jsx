@@ -970,16 +970,28 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   );
 }
 
-export function UnfollowModal(props) {
-  const { profile, setIsOpenFollowUnfollow, profileMethods, setKey } = props;
+export function UnfollowModalMultiple(props) {
+  const {
+    profile,
+    setIsOpenFollowUnfollow,
+    profileMethods,
+    following,
+    setFollowing,
+    pathname,
+  } = props;
   const userDetail = JSON.parse(localStorage.getItem("blazingUser"));
   const handleUnfollowClick = () => {
-    profileMethods.UserFollowUser(
-      userDetail.id,
-      profile.id,
-      setKey,
-      setIsOpenFollowUnfollow
-    );
+    const personToFollow = profile?.following_id ?? profile?.f_follower_id;
+    if (!!personToFollow) {
+      profileMethods.FollowUser(
+        userDetail.id,
+        personToFollow,
+        setFollowing,
+        following,
+        setIsOpenFollowUnfollow,
+        pathname
+      );
+    }
   };
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -995,7 +1007,68 @@ export function UnfollowModal(props) {
               />
             )}
           </div>
-          <div className="profile-id">Want to follow @{profile?.username}</div>
+          <div className="profile-id">
+            Want to unfollow @
+            {profile?.follower_username ?? profile?.following_username}
+          </div>
+          <div className="btn-wrap follow-btn-wrap flex justify-center">
+            <button
+              className="border-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpenFollowUnfollow(false);
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="primary-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                handleUnfollowClick();
+              }}
+            >
+              Unfollow
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function UnfollowModal(props) {
+  const { profile, setIsOpenFollowUnfollow, profileMethods, setKey, pathname } =
+    props;
+  const userDetail = JSON.parse(localStorage.getItem("blazingUser"));
+  const handleUnfollowClick = () => {
+    if (profile?.id) {
+      profileMethods.UserFollowUser(
+        userDetail.id,
+        profile.id,
+        setKey,
+        setIsOpenFollowUnfollow,
+        pathname
+      );
+    }
+  };
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal">
+        <div className="modal-body text-center">
+          <div className="profile-icon">
+            {!!profile && (
+              <CloudinaryImage
+                imageUrl={DefaultServices?.GetFullImageURL(profile, "profile")}
+                keyId={DefaultServices?.GetFullImageURL(profile, "profile")}
+                transformation={ImageTransformation.streamPageProfile}
+                alternative={"profileImg"}
+              />
+            )}
+          </div>
+          <div className="profile-id">
+            Want to unfollow @{profile?.username}
+          </div>
           <div className="btn-wrap follow-btn-wrap flex justify-center">
             <button
               className="border-btn"

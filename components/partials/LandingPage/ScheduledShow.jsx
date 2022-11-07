@@ -13,9 +13,11 @@ function LiveShow({ showLoginModal }) {
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(null);
   const [loader, setLoader] = useState(true);
+  const [seeMoreLoader,setSeeMoreLoader] = useState(true);
 
   useEffect(() => {
-    streamDetailApi(setData, page, setTotal, setLoader);
+   setSeeMoreLoader(true);
+    streamDetailApi(setData, page, setTotal, setLoader,setSeeMoreLoader);
   }, [page]);
 
   const getStreamCards = () => {
@@ -71,7 +73,11 @@ function LiveShow({ showLoginModal }) {
             <div className="flex inner-container">
               <div className="card-wrap flex">
                 {getStreamCards()}
-                {handleCardVisisble()}
+                {seeMoreLoader ? (
+                  <StreamCardSkeleton count={3} name={"home-scheduled-shows"} />
+                ) : (
+                  handleCardVisisble()
+                )}
               </div>
             </div>
           </div>
@@ -102,4 +108,4 @@ function LiveShow({ showLoginModal }) {
   return <>{showSheduledComponent()}</>;
 }
 
-export default memo(LiveShow)
+export default memo(LiveShow);

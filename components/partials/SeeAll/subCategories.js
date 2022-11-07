@@ -10,7 +10,16 @@ import { getStreamSubCategoryBasedApi } from "../../../api/stream/subStreamDetai
 import { useCategoriesData } from "../../../contexts/Categoires/CategoriesData";
 import TabsSkeleton from "../../../skeleton/TabsSkeleton";
 
-function SeeAllSubCategories({ catIndex, category, setStreamData, setLoader }) {
+function SeeAllSubCategories({
+  catIndex,
+  category,
+  setStreamData,
+  setLoader,
+  offset,
+  streamData,
+  setOffset,
+  setSeeMoreLoader,
+}) {
   const dispatch = useDispatch();
   const { query } = useRouter();
   const { isCategoriesFetched } = useCategoriesData();
@@ -19,34 +28,52 @@ function SeeAllSubCategories({ catIndex, category, setStreamData, setLoader }) {
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
-      setQueryCategory(query);
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-      getStreamSubCategoryBasedApi(
-        query?.page,
-        query?.category,
-        query?.subCategory,
-        setStreamData,
-        setLoader
-      );
     }
   }, [query]);
+
+  useEffect(() => {
+    if (!!category?.categoryName && !!category?.subCategoryName) {
+      if (streamData.length) {
+        setSeeMoreLoader(true);
+      } else {
+        setLoader(true);
+      }
+
+      getStreamSubCategoryBasedApi(
+        query?.page,
+        category?.categoryName,
+        category?.subCategoryName,
+        setStreamData,
+        setLoader,
+        offset,
+        setSeeMoreLoader
+      );
+    }
+  }, [category?.categoryName, category?.subCategoryName, offset]);
 
   const handleSubCategorySelect = (name, id) => {
     dispatch(saveSubCategoryName(name));
     Router.push({
       pathname: "/see-all",
       query: {
-        page: queryCategory?.page,
+        page: query?.page,
         category: category?.categoryName,
         subCategory: name,
       },
     });
+    setStreamData([]);
+    setOffset(0);
   };
 
   const getAllSubCategoriesCard = () => {
     if (!!category?.categories && isCategoriesFetched) {
-      var index = category?.categories.map(function(e) { return e?.categorySlug; }).indexOf(category?.categoryName);
+      const index = category?.categories
+        .map(function (e) {
+          return e?.categorySlug;
+        })
+        .indexOf(category?.categoryName);
       return category?.categories[index]?.children?.map((item) => {
         return (
           <div className="category-list">
@@ -65,7 +92,7 @@ function SeeAllSubCategories({ catIndex, category, setStreamData, setLoader }) {
           </div>
         );
       });
-    } else if(!isCategoriesFetched) {
+    } else if (!isCategoriesFetched) {
       return <TabsSkeleton count={5} name={"home-tabs-section"} />;
     }
   };
