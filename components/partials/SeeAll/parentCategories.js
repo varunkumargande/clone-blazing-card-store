@@ -9,7 +9,12 @@ import {
 } from "../../../store/category/action";
 import { getStreamCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 
-function SeeAllParentCategories({ category, setCatIndex, setStreamData, setLoader }) {
+function SeeAllParentCategories({
+  category,
+  setCatIndex,
+  setStreamData,
+  setLoader,
+}) {
   const dispatch = useDispatch();
   const { query } = useRouter();
 
@@ -39,8 +44,14 @@ function SeeAllParentCategories({ category, setCatIndex, setStreamData, setLoade
           subCategory: category?.subCategoryName,
         },
       });
-      getStreamCategoryBasedApi(category?.categories[0]?.categorySlug, category?.subCategoryName, query?.page, setStreamData, setLoader)
-    } 
+      getStreamCategoryBasedApi(
+        category?.categories[0]?.categorySlug,
+        category?.subCategoryName,
+        query?.page,
+        setStreamData,
+        setLoader
+      );
+    }
   }, [query]);
 
   const getAllCategoriesCard = () => {
@@ -49,7 +60,9 @@ function SeeAllParentCategories({ category, setCatIndex, setStreamData, setLoade
         return (
           <li
             key={element?.categorySlug}
-            className={category?.categoryName === element?.categorySlug ? "active" : ""}
+            className={
+              category?.categoryName === element?.categorySlug ? "active" : ""
+            }
             onClick={() => handleSelectCategory(element?.categorySlug, index)}
           >
             {stringFormatter(element?.name)}
@@ -60,14 +73,9 @@ function SeeAllParentCategories({ category, setCatIndex, setStreamData, setLoade
   };
 
   return (
-    <>
-      <aside className="aside-wrapper">
-        <ul className="aside-container">
-        
-          {getAllCategoriesCard()}
-        </ul>
-      </aside>
-    </>
+    <aside className="aside-wrapper">
+      <ul className="aside-container">{getAllCategoriesCard()}</ul>
+    </aside>
   );
 }
 
