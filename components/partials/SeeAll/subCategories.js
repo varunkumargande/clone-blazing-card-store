@@ -5,6 +5,7 @@ import Router from "next/router";
 import {
   saveSubCategoryName,
   saveCategoryName,
+  savePageType,
 } from "../../../store/category/action";
 import { getStreamSubCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 import { useCategoriesData } from "../../../contexts/Categoires/CategoriesData";
@@ -22,14 +23,13 @@ function SeeAllSubCategories({
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
-  const [pageType, setPageType] = useState(null);
   const { isCategoriesFetched } = useCategoriesData();
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-      setPageType(query?.page);
+      dispatch(savePageType(query?.page));
     }
   }, [query]);
 
@@ -41,7 +41,7 @@ function SeeAllSubCategories({
         setLoader(true);
       }
       getStreamSubCategoryBasedApi(
-        pageType,
+        category?.type,
         category?.categoryName,
         category?.subCategoryName,
         setStreamData,
