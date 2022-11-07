@@ -36,7 +36,7 @@ function StreamingBase({
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
   const [bidAmount, setBidAmount] = useState(null);
-  const [amountToBid, setAmountToBid] = useState(bidAmount + 2);
+  const [amountToBid, setAmountToBid] = useState(+bidAmount + 2);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [disableBid, setDisableBid] = useState(false);
@@ -110,8 +110,8 @@ function StreamingBase({
         liveAuctionDetails.latestAuction !== {}
       ) {
         const amount = getBidAmount || 0;
-        setBidAmount(amount);
-        setAmountToBid(amount + 1);
+        setBidAmount(+amount);
+        setAmountToBid(+amount + 1);
       }
     }
   }, [bidNotification, auctionNotification, liveAuctionDetails, stream]);
@@ -275,14 +275,14 @@ function StreamingBase({
    * Method will set bidding amount
    */
   const checkBidAmount = () => {
-    if (amountToBid > bidAmount) setAmountToBid(amountToBid - 1);
+    if (amountToBid > bidAmount) setAmountToBid(+amountToBid - 1);
   };
 
   /**
    * Method to increase bid amount by 1
    */
   const increaseBidAmount = () => {
-    setAmountToBid(Number(amountToBid) + 1);
+    setAmountToBid(+amountToBid + 1);
   };
 
   /**
