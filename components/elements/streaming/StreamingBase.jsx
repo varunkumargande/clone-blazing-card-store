@@ -473,7 +473,7 @@ function StreamingBase({
               <div className="pf br50">
                 <img src="/static/images/profile.png" alt="" />
               </div>
-              {winnerNotification?.name} <span> &nbsp; is winner 🎉</span>
+              <div className="winner-name">{winnerNotification?.name}<span>&nbsp; is winner 🎉</span></div>
             </div>
           ) : null}
           {bidNotification ? (

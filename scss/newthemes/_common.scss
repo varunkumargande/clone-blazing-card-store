@@ -686,6 +686,9 @@ label{
 .home-container .card-wrapper,.steps-wrapper,.edit-inner-container,.myorder-wrapper,.layout--default .notification-wrapper{
   min-height: 61.25vh;
 }
+.blue{
+  color: $blue-color;
+}
 @media all and (min-width:320px) and (max-width:1024px){
   .category-banner{
     .cover-wrap{

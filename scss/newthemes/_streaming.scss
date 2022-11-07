@@ -387,12 +387,16 @@
     .winner-profile{
         @include pos(ab,null,null,98px,16px);
         min-width: 205px;
-        max-width: 215px;
+        max-width: calc(100% - 98px);
         background-color: rgba($white-color,.2);
-        height: 42px;
+        min-height: 42px;
         border-radius: 21px;
         padding: 0 3px;
         font-weight: 700;
+        flex-wrap: nowrap;
+        .winner-name{
+            line-height: 16px;
+        }
         span{
             color: $success-color;
             font-weight: 400;
@@ -400,6 +404,7 @@
         .pf{
             width: 36px;
             height: 36px;
+            min-width: 36px;
             border:3px solid $white-color;
             margin-right: 4px;
         }

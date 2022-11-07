@@ -228,25 +228,25 @@ function MobileHeader({ auth }) {
           )}
         </div>
       </div>
-      <div className="search-wrap flex space-between flex-top">
+      {/* <div className="search-wrap flex space-between flex-top">
         <div className="Search">
           <input type="search" id="search" name="search" />
           <button className="search-btn">
             <IconSearch />
           </button>
         </div>
-        {/* <div className="category-btn-wrap">
-                    <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
-                    <div className={active ? "dropDown active" : "dropDown"}>
-                        <h4>Sort By</h4>
-                        <ul>
-                            <li className="active">Creator</li>
-                            <li>Athelete</li>
-                            <li>Artist</li>
-                        </ul>
-                    </div>
-                </div> */}
-      </div>
+        <div className="category-btn-wrap">
+            <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
+            <div className={active ? "dropDown active" : "dropDown"}>
+                <h4>Sort By</h4>
+                <ul>
+                    <li className="active">Creator</li>
+                    <li>Athelete</li>
+                    <li>Artist</li>
+                </ul>
+            </div>
+        </div>
+      </div> */}
 
       {/* Menu open html */}
       <div className={mobActive ? "menu-open active" : "menu-open"}>
