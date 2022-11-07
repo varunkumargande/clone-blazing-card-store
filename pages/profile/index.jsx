@@ -14,7 +14,10 @@ import DefaultServices from "../../components/Services/DefaultServices";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
-import { SignUPGoogle, UnfollowModal } from "../../components/partials/Modal/Modal";
+import {
+  SignUPGoogle,
+  UnfollowModal,
+} from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
 
@@ -57,17 +60,19 @@ export default function PublicProfile() {
   };
 
   const getAllBuyerDetails = () => {
+    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetLikedStreams(userId, setLikedShows);
-    ProfileMethods.GetUserFollowers(userId, setFollowers);
-    ProfileMethods.GetUserFollowings(userId, setFollowing);
+    ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
+    ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
   };
 
   const getAllVendorDetails = () => {
+    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
     ProfileMethods.GetLikedStreams(userId, setLikedShows);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
-    ProfileMethods.GetUserFollowers(userId, setFollowers);
-    ProfileMethods.GetUserFollowings(userId, setFollowing);
+    ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
+    ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
   };
 
   useEffect(() => {
@@ -171,7 +176,13 @@ export default function PublicProfile() {
           return (
             <>
               {followers.map((details, index) => (
-                <Followers person={details} isFollower={isForFollower} />
+                <Followers
+                  person={details}
+                  isFollower={isForFollower}
+                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                  setFollowing={setFollowers}
+                  following={followers}
+                />
               ))}
             </>
           );
@@ -187,7 +198,13 @@ export default function PublicProfile() {
           return (
             <>
               {following.map((details, index) => (
-                <Followers person={details} isFollower={isForFollower} />
+                <Followers
+                  person={details}
+                  isFollower={isForFollower}
+                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                  setFollowing={setFollowing}
+                  following={following}
+                />
               ))}
             </>
           );
@@ -202,11 +219,26 @@ export default function PublicProfile() {
   };
 
   const renderTab = (tab, key) => {
+    const loggedInUserId = getSessionUser().id;
     return (
       <div className="category-list" key={key}>
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             setActiveTab(tab.key);
+            if (tab.key === "followers") {
+              ProfileMethods.GetUserFollowers(
+                userId,
+                setFollowers,
+                loggedInUserId
+              );
+            } else if (tab.key === "following") {
+              ProfileMethods.GetUserFollowings(
+                userId,
+                setFollowing,
+                loggedInUserId
+              );
+            }
           }}
           className={`title ${activeTab === tab.key && "active"}`}
         >
