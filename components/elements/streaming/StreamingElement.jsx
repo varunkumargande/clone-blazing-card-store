@@ -9,11 +9,12 @@ const StreamingElement = ({ volume, isMute }) => {
   const streamData = useSelector((state) => state?.stream?.streamData);
   const rtc = useRef({});
   const [remoteUser, setRemoteUser] = useState(null);
+  const [remoteAudioTrack, setRemoteAudioTrack] = useState(null)
 
   useEffect(() => {
     const volumeLevel = !!isMute ? 0 : volume;
-    if (!!remoteUser?.audioTrack) {
-      remoteUser?.audioTrack?.setVolume(volumeLevel);
+    if (!!remoteAudioTrack?.audioTrack) {
+      remoteAudioTrack?.audioTrack?.setVolume(volumeLevel);
     }
   }, [isMute, volume]);
   
@@ -59,6 +60,7 @@ const StreamingElement = ({ volume, isMute }) => {
         if (mediaType === "audio") {
           // Get `RemoteAudioTrack` in the `user` object.
           const remoteAudioTrack = user.audioTrack;
+          setRemoteAudioTrack(user.audioTrack);
           // Play the audio track. No need to pass any DOM element.
           remoteAudioTrack.play();
         }

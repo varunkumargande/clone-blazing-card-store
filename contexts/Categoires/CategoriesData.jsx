@@ -17,7 +17,7 @@ export function CategoriesDataProvider(props) {
 
   const fetchCategories = async () => {
     const response = await categoryApi(dispatch);
-    if (response.status) {
+    if (response?.status) {
       setIsCategoriesFetched(true);
     }
   };

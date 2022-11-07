@@ -31,12 +31,12 @@ function StreamingBase({
   setShowLoginModal,
   userCount,
   streamNotification,
-  liveAuctionDetails
+  liveAuctionDetails,
 }) {
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
   const [bidAmount, setBidAmount] = useState(null);
-  const [amountToBid, setAmountToBid] = useState(bidAmount + 2);
+  const [amountToBid, setAmountToBid] = useState(+bidAmount + 2);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [disableBid, setDisableBid] = useState(false);
@@ -56,9 +56,11 @@ function StreamingBase({
   const [liked, setLiked] = useState(
     stream?.streamData?.isLike ? stream?.streamData?.isLike : false
   );
+  const [onPageLanding,  setOnPageLanding] = useState(true);
+  const [currentAuctionName, setCurrentAuctionName] = useState(null);
+
 
   const { isMobile } = useIsMobile();
-  const [currentAuctionName, setCurrentAuctionName] = useState(null);
 
   /**
    * Will Subscribe to all Notofication type channels
@@ -90,9 +92,9 @@ function StreamingBase({
     if (
       !!auctionNotification ||
       !!bidNotification ||
-      stream?.streamProducts?.AuctionDetails?.latestAuction !== {}
+      liveAuctionDetails?.latestAuction !== {}
     ) {
-      getTimeDifference(getTime());
+      getTimeDifference(getTime, getCurrentTime);
       if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
         setDisableBid(false);
       }
@@ -101,21 +103,22 @@ function StreamingBase({
         !!bidNotification?.auctionId ||
         !!liveAuctionDetails?.latestAuction?.auctionId
       ) {
-        setAuctionId(getAuctionId());
+        setAuctionId(getAuctionId);
       }
       if (
         bidNotification ||
+        auctionNotification ||
         liveAuctionDetails?.latestBidding !== {} ||
         liveAuctionDetails.latestAuction !== {}
       ) {
-        const amount = getBidAmount || 0;
-        setBidAmount(amount);
-        setAmountToBid(amount + 1);
+        const amount = (getBidAmount && minutes && seconds) && getBidAmount || 0;
+        setBidAmount(+amount);
+        setAmountToBid(+amount + 1);
       }
     }
-  }, [bidNotification, auctionNotification, liveAuctionDetails]);
+  }, [bidNotification, auctionNotification, liveAuctionDetails, stream]);
 
-  const getTime = () => {
+  const getTime = useMemo(() => {
     return bidNotification?.endTime
       ? bidNotification?.endTime
       : auctionNotification?.auction?.endTime
@@ -123,20 +126,19 @@ function StreamingBase({
       : liveAuctionDetails?.latestAuction?.endTime
       ? liveAuctionDetails?.latestAuction?.endTime
       : null;
-  };
+  }, [liveAuctionDetails, auctionNotification, bidNotification]);
 
-  // Code is commented for testing only DO NOT REMOVE
-  // const getCurrentTime = () => {
-  //   return bidNotification?.currentTime
-  //     ? bidNotification?.currentTime
-  //     : auctionNotification?.auction?.currentTime
-  //     ? auctionNotification?.auction?.currentTime
-  //     : liveAuctionDetails?.latestAuction?.currentTime
-  //     ? liveAuctionDetails?.latestAuction?.currentTime
-  //     : null;
-  // };
+  const getCurrentTime = useMemo(() => {
+    return bidNotification?.currentTime
+      ? bidNotification?.currentTime
+      : auctionNotification?.auction?.currentTime
+      ? auctionNotification?.auction?.currentTime
+      : liveAuctionDetails?.latestAuction?.currentTime
+      ? liveAuctionDetails?.latestAuction?.currentTime
+      : null;
+  }, [liveAuctionDetails, auctionNotification, bidNotification]);
 
-  const getAuctionId = () => {
+  const getAuctionId = useMemo(() => {
     return auctionNotification?.auction?.id
       ? auctionNotification?.auction?.id
       : bidNotification?.auctionId
@@ -144,10 +146,10 @@ function StreamingBase({
       : liveAuctionDetails?.latestAuction?.auctionId
       ? liveAuctionDetails?.latestAuction?.auctionId
       : null;
-  };
+  }, [liveAuctionDetails, auctionNotification, bidNotification]);
 
   const getBidAmount = useMemo(() => {
-    const data =  bidNotification?.bidAmount
+    const data = bidNotification?.bidAmount
       ? bidNotification?.bidAmount
       : auctionNotification?.auction?.bidAmount
       ? auctionNotification?.auction?.bidAmount
@@ -155,31 +157,28 @@ function StreamingBase({
       ? liveAuctionDetails?.latestBidding?.bidAmount
       : liveAuctionDetails?.latestAuction?.bidAmount
       ? liveAuctionDetails?.latestAuction?.bidAmount
-      : null;
-    return data
-  }, [liveAuctionDetails, streamNotification]);
+      : 0;
+    return data;
+  }, [liveAuctionDetails, auctionNotification, bidNotification]);
 
   /**
    * Method will calculate Live Auction endtime
    * @param {*} endTime
    */
 
-  const getTimeDifference = (endTime) => {
-    if (!endTime) return;
+  const getTimeDifference = (endTime, currentTime) => {
+    if (endTime) {
+      let [date, time] = endTime.split(" ");
+      const convertedEndTime = moment(date.replaceAll("-", "/") + " " + time);
+      const duration = moment.duration(convertedEndTime.diff(currentTime));
 
-    let [date, time] = endTime.split(" ");
-    const endTime = moment(date.replaceAll("-", "/") + " " + time);
-
-    const currentTime = moment(moment.utc().format("YYYY/MM/DD, HH:mm:ss"));
-
-    const duration = moment.duration(endTime.diff(currentTime));
-
-    let minutes = Math.floor(duration.asSeconds() / 60);
-    let seconds = Math.ceil(duration.asSeconds() % 60);
-    minutes = minutes < 0 ? 0 : minutes;
-    seconds = seconds < 0 ? 0 : seconds;
-    setMinutes(minutes, "");
-    setSeconds(seconds);
+      let minutes = Math.floor(duration.asSeconds() / 60);
+      let seconds = Math.ceil(duration.asSeconds() % 60);
+      minutes = minutes < 0 ? 0 : minutes;
+      seconds = seconds < 0 ? 0 : seconds;
+      setMinutes(minutes);
+      setSeconds(seconds);
+    }
   };
 
   /**
@@ -188,6 +187,7 @@ function StreamingBase({
   const handleConfirmBid = async () => {
     if (!!cardDetail && !!addressList) {
       if (amountToBid > bidAmount) {
+        setDisableBid(true);
         setOpen(false);
         const res = await createBid(
           Number(auctionId),
@@ -195,6 +195,7 @@ function StreamingBase({
           Number(amountToBid)
         );
         if (res?.status === 200) {
+          setDisableBid(false);
           increaseBidAmount();
           setIsBidResponseModal(!isBidResponseModal);
         }
@@ -243,6 +244,7 @@ function StreamingBase({
         setBidAmount(null);
       }
       if (seconds > 0) {
+        setOnPageLanding(false)
         setSeconds(seconds - 1);
       }
       if (seconds === 0) {
@@ -278,14 +280,14 @@ function StreamingBase({
    * Method will set bidding amount
    */
   const checkBidAmount = () => {
-    if (amountToBid > bidAmount) setAmountToBid(amountToBid - 1);
+    if (amountToBid > bidAmount) setAmountToBid(+amountToBid - 1);
   };
 
   /**
    * Method to increase bid amount by 1
    */
   const increaseBidAmount = () => {
-    setAmountToBid(Number(amountToBid) + 1);
+    setAmountToBid(+amountToBid + 1);
   };
 
   /**
@@ -300,17 +302,17 @@ function StreamingBase({
    * Method will return AUction area on stream
    * @returns JSX
    */
-  const getAuctionArea = () => {
+  const getAuctionArea = useMemo(() => {
     return (
       <>
-        {minutes == 0 && seconds == 0 ? (
+        {minutes == 0 && seconds == 0 ? ( !onPageLanding ? 
           <div className="auction-end">
             <button className="primary-btn disable">Auction Ended</button>
           </div>
-        ) : (
+        : null)  : (
           <div className="btn-wrap flex space-between">
             <button
-              className={disableBid ? "border-btn disable" : "border-btn"}
+              className={disableBid ? "border-btn disable-opacity" : "border-btn"}
               disabled={disableBid}
               onClick={(e) => {
                 e.preventDefault();
@@ -320,7 +322,7 @@ function StreamingBase({
               Custom Bid
             </button>
             <button
-              className={disableBid ? "primary-btn disable" : "primary-btn"}
+              className={disableBid ? "primary-btn disable-opacity" : "primary-btn"}
               disabled={disableBid}
               onClick={(e) => {
                 e.preventDefault();
@@ -333,13 +335,13 @@ function StreamingBase({
         )}
       </>
     );
-  };
+  }, [minutes, seconds, amountToBid, disableBid]);
 
   /**
    * Method to identify name of stream
    * @returns string || null
    */
-  const liveAuctionName = () => {
+  const liveAuctionName = useMemo(() => {
     if (stream?.streamProducts?.AuctionDetails) {
       return (
         stream?.streamProducts?.AuctionDetails?.latestAuction?.productName ??
@@ -347,7 +349,7 @@ function StreamingBase({
       );
     }
     return auctionNotification?.product?.name ?? currentAuctionName;
-  };
+  }, [stream, auctionNotification, currentAuctionName]);
 
   const handleLikeUnlike = async () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -363,12 +365,12 @@ function StreamingBase({
       setShowLoginModal(true);
     }
   };
-  const getlikeClass = () => {
+  const getlikeClass = useMemo(() => {
     if (liked) {
       return "like flex flex-center justify-center br50 liked";
     }
     return "like flex flex-center justify-center br50";
-  };
+  }, [liked]);
 
   const handleDollarClick = () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -378,179 +380,167 @@ function StreamingBase({
       setShowLoginModal(true);
     }
   };
+
   return (
-    <>
-      <div className="stream-wrapper">
-        <div className="overlay-sighin"></div>
-        <div className="stream-image-video">
-          {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
-          <StreamingElement volume={volumeLevel} isMute={isMute} />
-        </div>
-        <div className="inner-wrapper">
-          <div className="stream-header flex space-between">
-            {stream?.streamPageData?.streamPageDteails?.isLoggedIn ? (
-              <div className="head-title">{liveAuctionName()}</div>
-            ) : (
-              <div className="head-title">Please login to participate</div>
-            )}
-            <div className="tme-wrap flex flex-center justify-center live">
-              <span>{userCount}</span> <button className="live"></button>
-            </div>
-            {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
+    <div className="stream-wrapper">
+      <div className="overlay-sighin"></div>
+      <div className="stream-image-video">
+        {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
+        <StreamingElement volume={volumeLevel} isMute={isMute} />
+      </div>
+      <div className="inner-wrapper">
+        <div className="stream-header flex space-between">
+          {stream?.streamPageData?.streamPageDteails?.isLoggedIn ? (
+            <div className="head-title">{liveAuctionName}</div>
+          ) : (
+            <div className="head-title">Please login to participate</div>
+          )}
+          <div className="tme-wrap flex flex-center justify-center live">
+            <span>{userCount}</span> <button className="live"></button>
           </div>
-          <div className="video-icon">
-            {isMobile ? (
-              <button
-                className="flex flex-center justify-center br50 shops"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleLeftDiv(true);
-                }}
-              >
-                <IconShops />
-              </button>
-            ) : (
-              ""
-            )}
+          {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
+        </div>
+        <div className="video-icon">
+          {isMobile ? (
             <button
+              className="flex flex-center justify-center br50 shops"
               onClick={(e) => {
-                e.preventDefault();
-                handleMuteButton(e);
+                e.stopPropagation();
+                handleLeftDiv(true);
               }}
-              className="flex flex-center justify-center br50 valum"
-              id="mute"
             >
-              {isMute ? <IconSpeakerMute /> : <IconSpeaker />}
-              <span className="range flex flex-center">
-                <input
-                  type="range"
-                  id="vol"
-                  name="vol"
-                  min="0"
-                  max="100"
-                  onChange={(e) => changeVolumeLevel(e)}
-                  value={volumeLevel}
-                  className="slider"
-                />
-              </span>
+              <IconShops />
             </button>
-            {/* <button
+          ) : (
+            ""
+          )}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleMuteButton(e);
+            }}
+            className="flex flex-center justify-center br50 valum "
+            id="mute"
+          >
+            {isMute ? <IconSpeakerMute /> : <IconSpeaker />}
+            <span className="range flex flex-center">
+              <input
+                type="range"
+                id="vol"
+                name="vol"
+                min="0"
+                max="100"
+                onChange={(e) => changeVolumeLevel(e)}
+                value={volumeLevel}
+                className="slider"
+              />
+            </span>
+          </button>
+          {/* <button
               className="flex flex-center justify-center br50"
               disabled={isMute}
             >
               <IconSpeaker />
             </button> */}
-            <button
-              className="flex flex-center justify-center br50"
-              onClick={(e) => {
-                e.preventDefault();
-                handleShareButton();
-              }}
-            >
-              <IconShare />
-            </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                handleLikeUnlike();
-              }}
-              className={getlikeClass()}
-            >
-              <IconLikeWhite />
-            </button>
-            <button
-              className="flex flex-center justify-center br50"
-              onClick={(e) => {
-                e.preventDefault();
-                handleDollarClick();
-              }}
-            >
-              <IconAdd />
-            </button>
-          </div>
-          {winnerNotification ? (
-            <div className="winner-profile flex flex-center">
-              <div className="pf br50">
-                <img src="/static/images/profile.png" alt="" />
-              </div>
-              {winnerNotification?.name} <span> &nbsp; is winner 🎉</span>
-            </div>
-          ) : null}
-          {bidNotification ? (
-            <div className="winner-profile flex flex-center">
-              <div className="pf br50">
-                <img src="/static/images/profile.png" alt="" />
-              </div>
-              {bidNotification?.customer?.firstName}{" "}
-              <span> &nbsp; is winning 🎉</span>
-            </div>
-          ) : null}
-
-          <div className="stream-footer flex flex-center space-between">
-            <div className="left">
-              <div className="time-left">
-                {(minutes !== 0 || seconds !== 0) && (
-                  <>
-                    Time left - <Timer minutes={minutes} seconds={seconds} />
-                  </>
-                )}
-              </div>
-              <div className="bid-status flex flex-center">
-                {winnerNotification?.bidAmount ? (
-                  <>
-                    Selling Bid - ${winnerNotification?.bidAmount} + Ship/Tax{" "}
-                  </>
-                ) : (
-                  <>Current Bid - ${bidAmount} + Ship/Tax </>
-                )}
-                <span
-                  className="flex flex-center justify-center br50"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleShipModal();
-                  }}
-                >
-                  i
-                </span>
-              </div>
-            </div>
-            {getAuctionArea()}
-          </div>
+          <button
+            className="flex flex-center justify-center br50"
+            onClick={(e) => {
+              e.preventDefault();
+              handleShareButton();
+            }}
+          >
+            <IconShare />
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleLikeUnlike();
+            }}
+            className={getlikeClass}
+          >
+            <IconLikeWhite />
+          </button>
+          <button
+            className="flex flex-center justify-center br50"
+            onClick={(e) => {
+              e.preventDefault();
+              handleDollarClick();
+            }}
+          >
+            <IconAdd />
+          </button>
         </div>
+        {winnerNotification ? (
+          <div className="winner-profile flex flex-center">
+            <div className="pf br50">
+              <img src="/static/images/profile.png" alt="" />
+            </div>
+            {winnerNotification?.name} <span> &nbsp; is winner 🎉</span>
+          </div>
+        ) : bidNotification ? (
+          <div className="winner-profile flex flex-center">
+            <div className="pf br50">
+              <img src="/static/images/profile.png" alt="" />
+            </div>
+            {bidNotification?.customer?.firstName}{" "}
+            <span> &nbsp; is winning 🎉</span>
+          </div>
+        ) : null}
 
-        {open ? (
-          <CustomBidModal
-            setOpen={setOpen}
-            minutes={minutes}
-            seconds={seconds}
-            bidAmount={bidAmount}
-            increaseBidAmount={increaseBidAmount}
-            amountToBid={amountToBid}
-            handleConfirmBid={handleConfirmBid}
-            checkBidAmount={checkBidAmount}
-            setAmountToBid={setAmountToBid}
-          />
-        ) : (
-          <></>
-        )}
-
-        {openShipPayDetails ? (
-          <ShippingTaxesModal setOpenShipPayDetails={setOpenShipPayDetails} />
-        ) : (
-          <></>
-        )}
-        {isShareModalOpen ? (
-          <ShareModalModal setIsShareModalOpen={setIsShareModalOpen} />
-        ) : (
-          <></>
-        )}
-        {isBidResponseModal ? (
-          <BidCreatedModal setIsBidResponseModal={setIsBidResponseModal} />
-        ) : (
-          <></>
-        )}
+        <div className="stream-footer flex flex-center space-between">
+          <div className="left">
+            <div className="time-left">
+              {(minutes !== 0 || seconds !== 0) && (
+                <>
+                  Time left - <Timer minutes={minutes} seconds={seconds} />
+                </>
+              )}
+            </div>
+            <div className="bid-status flex flex-center">
+              {winnerNotification?.bidAmount ? (
+                <>Selling Bid - ${winnerNotification?.bidAmount} + Ship/Tax </>
+              ) : (
+                <>Current Bid - ${bidAmount > 0 ? bidAmount : null} + Ship/Tax </>
+              )}
+              <span
+                className="flex flex-center justify-center br50"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleShipModal();
+                }}
+              >
+                i
+              </span>
+            </div>
+          </div>
+          {getAuctionArea}
+        </div>
       </div>
-    </>
+
+      {open && (
+        <CustomBidModal
+          setOpen={setOpen}
+          minutes={minutes}
+          seconds={seconds}
+          bidAmount={bidAmount}
+          increaseBidAmount={increaseBidAmount}
+          amountToBid={amountToBid}
+          handleConfirmBid={handleConfirmBid}
+          checkBidAmount={checkBidAmount}
+          setAmountToBid={setAmountToBid}
+        />
+      )}
+
+      {openShipPayDetails && (
+        <ShippingTaxesModal setOpenShipPayDetails={setOpenShipPayDetails} />
+      )}
+      {isShareModalOpen && (
+        <ShareModalModal setIsShareModalOpen={setIsShareModalOpen} />
+      )}
+      {isBidResponseModal && (
+        <BidCreatedModal setIsBidResponseModal={setIsBidResponseModal} />
+      )}
+    </div>
   );
 }
 export default memo(StreamingBase);

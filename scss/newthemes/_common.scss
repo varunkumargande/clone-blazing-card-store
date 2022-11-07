@@ -475,6 +475,8 @@ label{
   transition: all .2s;
   &.disable{
     opacity: .6;
+    pointer-events: all;
+    cursor: not-allowed !important;
   }
   &:hover{
     color: $white-color;
@@ -686,6 +688,9 @@ label{
 .home-container .card-wrapper,.steps-wrapper,.edit-inner-container,.myorder-wrapper,.layout--default .notification-wrapper{
   min-height: 61.25vh;
 }
+.blue{
+  color: $blue-color;
+}
 @media all and (min-width:320px) and (max-width:1024px){
   .category-banner{
     .cover-wrap{
@@ -740,4 +745,8 @@ label{
 }
 .disable-opacity {
   opacity: 0.5;
+  pointer-events: all;
+  cursor: not-allowed !important;
 }
+
+
