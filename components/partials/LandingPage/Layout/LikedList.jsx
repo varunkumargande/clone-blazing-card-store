@@ -8,43 +8,39 @@ import StreamCard from "../../../elements/StreamCard";
 import { useSelector } from "react-redux";
 import { streamDetailApi } from "../../../../api/stream/streamDetail";
 import ProfileMethods from "../../../../api/profile/ProfileMethods";
+import StreamCardSkeleton from "../../../../skeleton/StreamCardSkeleton";
 
-export default function LikedList({
-  categoriesData,
-  setIsSeeAllCate,
-  isSeeAll,
-  setIsSeeAll,
-  setSeeAllHeading,
-  setIsLikedShow,
-  isLikedShow,
-}) {
-  const dispatch = useDispatch();
-
+export default function LikedList({ setIsSeeAll, setSeeAllHeading }) {
   const streamDetail = useSelector(
     (state) => state?.stream?.streamdetails?.stream
   );
 
-  const dislikedStreams = useSelector((state) => state?.likeDislikeStream?.dislikedData);
+  const dislikedStreams = useSelector(
+    (state) => state?.likeDislikeStream?.dislikedData
+  );
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [likedShows, setLikedShows] = useState([]);
+  const [seeMoreLoader,setSeeMoreLoader] = useState(true);
 
   useEffect(() => {
+   setSeeMoreLoader(true);
     const userData = JSON.parse(localStorage.getItem("blazingUser"));
-    ProfileMethods.GetLikedStreams(userData?.id, setLikedShows);
+    ProfileMethods.GetLikedStreams(
+      userData?.id,
+      setLikedShows,
+     setSeeMoreLoader
+    );
     setUserId(userData.id);
     setProfile(userData);
   }, []);
 
-  const handleSeeAll = (name) => {
-    setIsSeeAll(true);
-    setIsLiveScheduleSeeAll(true);
-    setSeeAllHeading(name);
-  };
-
   const getStreamCards = () => {
     return likedShows?.map((detail) => {
-      if (detail?.islike && !dislikedStreams.find(streamId => streamId === detail?.uuid)) {
+      if (
+        detail?.islike &&
+        !dislikedStreams.find((streamId) => streamId === detail?.uuid)
+      ) {
         return <StreamCard isLive={false} detail={detail} />;
       }
     });
@@ -60,7 +56,11 @@ export default function LikedList({
         </div>
         <div className="overflow-none">
           <div className="card-wrap flex inner-container">
-            {getStreamCards()}
+            {seeMoreLoader ? (
+              <StreamCardSkeleton count={7} name={"home-live-shows"} />
+            ) : (
+              getStreamCards()
+            )}
           </div>
         </div>
       </div>

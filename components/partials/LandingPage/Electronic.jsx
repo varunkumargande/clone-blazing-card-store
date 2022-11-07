@@ -7,6 +7,8 @@ import { limit } from "../../Constants";
 import { showCatCardLoader } from "../../../api/utils/showCatCardLoader";
 import ShowViewAll from "../../reusable/viewAll";
 import StreamCardSkeleton from "../../../skeleton/StreamCardSkeleton";
+import { saveSubCategoryName } from "../../../store/category/action";
+import { useDispatch } from "react-redux";
 
 function CategoryStream({
   showLoginModal,
@@ -19,7 +21,9 @@ function CategoryStream({
   page,
   setCatId,
   category,
+  seeMoreLoader,
 }) {
+  const disptach = useDispatch();
 
   /**
    * showing streamcard data
@@ -49,9 +53,9 @@ function CategoryStream({
   };
   // =========================================================================
 
-  
   const handleGoToSeeAll = () => {
-    if (!!category?.categoryName) {
+    if (!!category?.categoryName && !!category?.subCategoryName) {
+      disptach(saveSubCategoryName(catSlug));
       Router.push({
         pathname: "/see-all",
         query: {
@@ -93,7 +97,11 @@ function CategoryStream({
           <div className="flex inner-container">
             <div className="card-wrap flex">
               {getStreamCards}
-              {handleCatCardVisisble()}
+              {/* {seeMoreLoader ? (
+                <StreamLoadSkeleton count={3} name={`home-intrenal-page`} />
+              ) : ( */}
+                {handleCatCardVisisble()}
+              {/* )} */}
             </div>
           </div>
         ) : (
