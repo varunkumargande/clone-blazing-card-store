@@ -18,6 +18,7 @@ import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 export default function categoryStream() {
   const router = useRouter();
   const { isMobile } = useIsMobile();
+  const [loader, setLoader] = useState(false);
   const [active, setActive] = useState(false);
   const [userId, setUserId] = useState(router.query.userId);
   const [profile, setProfile] = useState(null);
@@ -40,14 +41,14 @@ export default function categoryStream() {
   };
 
   const getAllBuyerDetails = () => {
-    ProfileMethods.GetLikedStreams(userId, setLikedShows);
+    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetUserFollowers(userId, setFollowers);
     ProfileMethods.GetUserFollowings(userId, setFollowing);
   };
 
   const getAllVendorDetails = () => {
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
-    ProfileMethods.GetLikedStreams(userId, setLikedShows);
+    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
     ProfileMethods.GetUserFollowers(userId, setFollowers);
     ProfileMethods.GetUserFollowings(userId, setFollowing);
@@ -143,7 +144,7 @@ export default function categoryStream() {
 
   const ProfileComponent = (isForFollower) => {
     if (isForFollower) {
-      console.log("155555555555")
+      setSeeMoreLoader
       if (followers) {
         if (followers.length > 0) {
           return (

@@ -28,6 +28,7 @@ function MyProfile(props) {
   const [following, setFollowing] = useState([]);
   const [likedShows, setLikedShows] = useState([]);
   const [tabs, setTabs] = useState(null);
+
   const [activeTab, setActiveTab] = useState(
     tabs && tabs.length > 0 ? tabs[0].key : ""
   );
@@ -66,7 +67,7 @@ function MyProfile(props) {
 
   const getAllBuyerDetails = () => {
     const loggedInUserId = getSessionUser().id;
-    ProfileMethods.GetLikedStreams(userId, setLikedShows);
+    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);  
     ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
     ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
   };
@@ -74,7 +75,7 @@ function MyProfile(props) {
   const getAllVendorDetails = () => {
     const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
-    ProfileMethods.GetLikedStreams(userId, setLikedShows);
+    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
     ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
     ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
