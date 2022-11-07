@@ -72,7 +72,7 @@ function SeeAllParentCategories({
 
   return (
     <aside className="aside-wrapper">
-      <ul className="aside-container">{getAllCategoriesCard()}</ul>
+      <ul className="aside-container text-capitalize">{getAllCategoriesCard()}</ul>
     </aside>
   );
 }

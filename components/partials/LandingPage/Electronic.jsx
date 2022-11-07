@@ -81,7 +81,7 @@ function CategoryStream({
       <div className="inner-container">
         <div className="title-wrap flex space-between flex-center">
           <div className="flex flex-center">
-            <h3 className="title">{stringFormatter(catName)}</h3>
+            <h3 className="title text-capitalize">{stringFormatter(catName)}</h3>
           </div>
           {!!catData[catId] && (
             <ShowViewAll
