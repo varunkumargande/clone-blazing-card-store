@@ -19,6 +19,7 @@ export async function editProfileApi(
     twitterUrl: values.twitterUrl,
     facebookUrl: values.facebookUrl,
     path: DefaultConstants.CommonConstants.IMAGE_UPLOAD_PATH,
+    username: values.userName
   });
 
   const result = await APIServices.create("customer/edit-profile", data);

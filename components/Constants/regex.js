@@ -4,6 +4,8 @@ export const regex = {
   onlyAlphabetsBothCases: /^[A-Za-z ]+$/,
   onlyAlphabetsWithSpaces: /[^a-z ]/gi,
   nameToSlug: / [`~!@#,$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi,
+  phoneNumber: /^([+]1){0,1}[1-9]\d{9}$/,
+  excludePlusAndNumber: /[^+^\d]/,
 };
 
 export const cardRegex = {
