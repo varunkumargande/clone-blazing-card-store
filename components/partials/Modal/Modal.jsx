@@ -711,7 +711,9 @@ export function AddAddressModal(props) {
                     {stateList?.map((item) => {
                       return (
                         <>
-                          <option value={item.name}>{item.name}</option>
+                          <option value={item.code}>
+                            {getStateName(stateList, item.code)}
+                          </option>
                         </>
                       );
                     })}

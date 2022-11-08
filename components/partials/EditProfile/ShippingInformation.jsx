@@ -9,6 +9,7 @@ import { Loader } from "../../reusable/Loader";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
+import { getStateName } from "../../../utilities/utils";
 
 function ShippingDetails() {
   const dispatch = useDispatch();
@@ -215,9 +216,9 @@ function ShippingDetails() {
                         <option>Select</option>
                         {stateList.map((item, index) => {
                           return (
-                            <>
-                              <option value={item.name}>{item.name}</option>
-                            </>
+                            <option value={item.code}>
+                              {getStateName(stateList, item.code)}
+                            </option>
                           );
                         })}
                       </select>
