@@ -198,6 +198,8 @@ function StreamingBase({
           setDisableBid(false);
           increaseBidAmount();
           setIsBidResponseModal(!isBidResponseModal);
+        } else {
+          setDisableBid(false);
         }
       }
     } else {
