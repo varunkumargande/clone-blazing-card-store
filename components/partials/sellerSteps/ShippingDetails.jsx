@@ -3,7 +3,7 @@ import MySelect from "../../CommonComponents/MySelect";
 import { Formik, Form } from "formik";
 import { TextInput } from "../../CommonComponents/TextInput";
 import { shippingDetailsvalidation } from "../../../utilities/validations/shippingDetails";
-import IconBack from '../../Icons/IconBack';
+import IconBack from "../../Icons/IconBack";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -22,14 +22,13 @@ export default function ShippingDetails() {
   const shippingDetails = useSelector(
     (state) => state?.becomeSeller?.shippingDetails
   );
-  
+
   useEffect(() => {
     countryListApi(setCountryData);
-    getStateList(setStateList)
-  },[]);
+    getStateList(setStateList);
+  }, []);
 
   const handleSubmit = (values) => {
-
     const data = {
       shipFromName: values?.fullName,
       addressLine1: values?.addressLine1,
@@ -61,9 +60,8 @@ export default function ShippingDetails() {
         }}
         validationSchema={shippingDetailsvalidation}
         onSubmit={(values) => {
-
           if (values) {
-            handleSubmit(values)
+            handleSubmit(values);
           }
         }}
       >
@@ -147,7 +145,9 @@ export default function ShippingDetails() {
                 {stateList?.map((item, index) => {
                   return (
                     <>
-                      <option value={item.name}>{getStateName(stateList, item.code)}</option>
+                      <option value={item.code}>
+                        {getStateName(stateList, item.code)}
+                      </option>
                     </>
                   );
                 })}
@@ -155,7 +155,9 @@ export default function ShippingDetails() {
             </div>
 
             <div className="submit-wrapper flex space-between conform">
-              <button type="reset" className="border-btn">Cancel</button>
+              <button type="reset" className="border-btn">
+                Cancel
+              </button>
               <button type="submit" className="primary-btn">
                 Confirm Shipping Details
               </button>

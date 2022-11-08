@@ -33,7 +33,6 @@ import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
-import { getStateName } from "../../../utilities/utils";
 
 const responseGoogle = (response) => {
   GoogleLoginApi(
@@ -712,7 +711,9 @@ export function AddAddressModal(props) {
                     {stateList?.map((item) => {
                       return (
                         <>
-                          <option value={item.name}>{item.name}</option>
+                          <option value={item.code}>
+                            {getStateName(stateList, item.code)}
+                          </option>
                         </>
                       );
                     })}
@@ -733,7 +734,7 @@ export function AddAddressModal(props) {
                     {countryData?.map((item) => {
                       return (
                         <>
-                          <option value={item.countryId}>{getStateName(stateList, item.code)}</option>
+                          <option value={item.countryId}>{item.name}</option>
                         </>
                       );
                     })}
