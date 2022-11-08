@@ -47,8 +47,7 @@ function LeftDiv({
   const toggleTab = (index) => {
     setToggleState(index);
   };
-  // const dispatch = useDispatch();
-  const [followed, setFollowed] = useState(!!streamingDetails?.isFollow);
+  const [followed, setFollowed] = useState(false);
   const [filterKeyword, setFilterKeyword] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
@@ -78,6 +77,10 @@ function LeftDiv({
       handleLeftDiv(true);
     }
   }, [isMobile]);
+
+  useEffect(() => {
+    setFollowed(!!streamingDetails?.isFollow)
+  }, [streamingDetails?.isFollow])
 
   /**
    * Method to get All products of a stream
