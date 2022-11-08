@@ -12,6 +12,7 @@ import BackButton from "../../CommonComponents/BackButton";
 import { countryListApi } from "../../../api";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
+import { getStateName } from "../../../utilities/utils";
 
 export default function ShippingDetails() {
   const router = useRouter();
@@ -146,7 +147,7 @@ export default function ShippingDetails() {
                 {stateList?.map((item, index) => {
                   return (
                     <>
-                      <option value={item.name}>{item.name}</option>
+                      <option value={item.name}>{getStateName(stateList, item.code)}</option>
                     </>
                   );
                 })}

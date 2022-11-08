@@ -57,3 +57,17 @@ export const getStreamScheduleDate = (date, time) => {
       return `After ${difference} days`
   }
 }
+
+/**
+ * Method to get statename using StateCode
+ * @param {*} stateCode 
+ * @returns 
+ */
+export const getStateName = (stateList,stateCode) => {
+  if(!stateList && !stateName) {
+    return ;
+  }
+  let stateName = [{name : ''}];
+  stateName = stateList.filter((element) => element?.code === stateCode)
+  return stateName[0].name;
+}
