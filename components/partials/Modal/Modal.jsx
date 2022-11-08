@@ -33,6 +33,7 @@ import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
+import { getStateName } from "../../../utilities/utils";
 
 const responseGoogle = (response) => {
   GoogleLoginApi(
