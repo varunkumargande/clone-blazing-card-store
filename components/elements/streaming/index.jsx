@@ -5,7 +5,7 @@ import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { clearState, streamData } from "../../../store/stream/action";
-import { notificationBaseUrl } from "../../../api/url";
+import { apiUrl, notificationBaseUrl } from "../../../api/url";
 import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 import useEventSocket from "../../../hooks/useEventSocket";
 import { useCallback } from "react";
@@ -31,6 +31,7 @@ function Streaming() {
   const [liveAuctionDetails, setLiveAuctionDetails] = useState({});
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
+  const [notificationData, setNotificationData] = useState(null);
 
   const stream = useSelector((state) => {
     return state?.stream;
@@ -49,6 +50,24 @@ function Streaming() {
   const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, fetch);
 
   useEffect(() => {
+    if(auction?.data) {
+      setNotificationData(auction?.data);
+    }
+  }, [auction]);
+
+  useEffect(() => {
+    if(bid?.data) {
+      setNotificationData(bid?.data);
+    }
+  }, [bid]);
+
+  useEffect(() => {
+    if(win?.data) {
+      setNotificationData(win?.data);
+    }
+  }, [win]);
+
+  useEffect(() => {
     setFetch(true);
     dispatch(streamData(uuid));
     return () => {
@@ -61,11 +80,11 @@ function Streaming() {
     setLeftDivOpen(toggle);
   }, []);
 
-  const notificationData = {
-    bid: bid?.data,
-    auction: auction?.data,
-    win: win?.data,
-  };
+  // const notificationData = {
+  //   bid: bid?.data,
+  //   auction: auction?.data,
+  //   win: win?.data,
+  // };
 
   return (
     <div className="streaming-page-wrapper">

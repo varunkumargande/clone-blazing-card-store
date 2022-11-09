@@ -48,9 +48,13 @@ function StreamingBase({
   const [isMute, setIsMute] = useState(false);
   const [openShipPayDetails, setOpenShipPayDetails] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [auctionNotification, setAuctionNotification] = useState(null);
-  const [bidNotification, setBidNotification] = useState(null);
-  const [winnerNotification, setWinnerNotification] = useState(null);
+
+  // const [auctionNotification, setAuctionNotification] = useState(null);
+  // const [bidNotification, setBidNotification] = useState(null);
+  // const [winnerNotification, setWinnerNotification] = useState(null);
+
+  const streamNotificationData = stopTimer && !streamNotification?.auction ? null : streamNotification
+
   const [auctionId, setAuctionId] = useState(null);
   const router = useRouter();
   const uuid = router.query["uuid"];
@@ -65,49 +69,53 @@ function StreamingBase({
   /**
    * Will Subscribe to all Notofication type channels
    */
-  useEffect(() => {
-    setAuctionNotification(streamNotification?.auction);
-    setBidNotification(streamNotification?.bid);
-    // setAuctionId(
-    //   streamNotification?.bid?.auctionId ??
-    //     streamNotification?.auction?.auction?.id
-    // );
-    setWinnerNotification(streamNotification?.win);
-    if (!!streamNotification?.auction) {
-      setCurrentAuctionName(streamNotification?.auction?.product?.name);
-    }
-    if (!!streamNotification?.win) {
-      setCurrentAuctionName(null);
-    }
-  }, [streamNotification]);
 
+  console.log(streamNotificationData, "streamNotificationData", stopTimer);
   useEffect(() => {
-    setBidAmount(null);
-  }, [winnerNotification]);
+    if (streamNotificationData) {
+      if (streamNotificationData?.product?.name !== currentAuctionName) {
+        setCurrentAuctionName(streamNotificationData?.product?.name);
+      } else {
+        setCurrentAuctionName(null);
+      }
+      console.log("streamNotificationData called 3", streamNotificationData);
+
+      if (streamNotificationData?.name) {
+        setBidAmount(null);
+        if (!stopTimer) {
+          setStopTimer(true);
+          // if (!streamNotificationData?.name) {
+          //   if (streamNotificationData) {
+          //     setNotificationData(null);
+          //   }
+          // }
+        }
+      } else {
+        if (stopTimer) {
+          setStopTimer(false);
+        }
+      }
+    }
+  }, [streamNotificationData]);
 
   /**
    * This useEffect will calculate time and set bid amount on changes of notification
    */
   useEffect(() => {
-    if (
-      !!auctionNotification ||
-      !!bidNotification ||
-      liveAuctionDetails?.latestAuction !== {}
-    ) {
+    if (!!streamNotificationData || liveAuctionDetails?.latestAuction !== {}) {
       getTimeDifference(getTime, getCurrentTime);
       if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
         setDisableBid(false);
       }
       if (
-        !!auctionNotification?.auction?.id ||
-        !!bidNotification?.auctionId ||
+        !!streamNotificationData?.auction?.id ||
+        !!streamNotificationData?.auctionId ||
         !!liveAuctionDetails?.latestAuction?.auctionId
       ) {
         setAuctionId(getAuctionId);
       }
       if (
-        bidNotification ||
-        auctionNotification ||
+        streamNotificationData ||
         liveAuctionDetails?.latestBidding?.bidAmount ||
         liveAuctionDetails?.latestAuction?.bidAmount
       ) {
@@ -117,48 +125,39 @@ function StreamingBase({
         setAmountToBid(+amount + 1);
       }
     }
-  }, [
-    bidNotification,
-    auctionNotification,
-    liveAuctionDetails,
-    stream,
-    stopTimer,
-  ]);
+  }, [streamNotificationData, liveAuctionDetails, stream, stopTimer]);
 
   const getTime = useMemo(() => {
-    return bidNotification?.endTime
-      ? bidNotification?.endTime
-      : auctionNotification?.auction?.endTime
-      ? auctionNotification?.auction?.endTime
-      : liveAuctionDetails?.latestAuction?.endTime
-      ? liveAuctionDetails?.latestAuction?.endTime
-      : null;
-  }, [liveAuctionDetails, auctionNotification, bidNotification]);
+    return (
+      streamNotificationData?.endTime ||
+      streamNotificationData?.auction?.endTime ||
+      liveAuctionDetails?.latestAuction?.endTime ||
+      null
+    );
+  }, [liveAuctionDetails, streamNotificationData]);
 
   const getCurrentTime = useMemo(() => {
-    return bidNotification?.currentTime
-      ? bidNotification?.currentTime
-      : auctionNotification?.auction?.currentTime
-      ? auctionNotification?.auction?.currentTime
-      : liveAuctionDetails?.latestAuction?.currentTime
-      ? liveAuctionDetails?.latestAuction?.currentTime
-      : null;
-  }, [liveAuctionDetails, auctionNotification, bidNotification]);
+    return (
+      streamNotificationData?.currentTime ||
+      streamNotificationData?.auction?.currentTime ||
+      liveAuctionDetails?.latestAuction?.currentTime ||
+      null
+    );
+  }, [liveAuctionDetails, streamNotificationData]);
 
   const getAuctionId = useMemo(() => {
-    return auctionNotification?.auction?.id
-      ? auctionNotification?.auction?.id
-      : bidNotification?.auctionId
-      ? bidNotification?.auctionId
-      : liveAuctionDetails?.latestAuction?.auctionId
-      ? liveAuctionDetails?.latestAuction?.auctionId
-      : null;
-  }, [liveAuctionDetails, auctionNotification, bidNotification]);
+    return (
+      streamNotificationData?.auction?.id ||
+      streamNotificationData?.auctionId ||
+      liveAuctionDetails?.latestAuction?.auctionId ||
+      null
+    );
+  }, [liveAuctionDetails, streamNotificationData]);
 
   const getBidAmount = useMemo(() => {
     const data =
-      bidNotification?.bidAmount ||
-      auctionNotification?.auction?.bidAmount ||
+      streamNotificationData?.bidAmount ||
+      streamNotificationData?.auction?.bidAmount ||
       liveAuctionDetails?.latestBidding?.bidAmount ||
       liveAuctionDetails?.latestAuction?.bidAmount ||
       0;
@@ -166,8 +165,7 @@ function StreamingBase({
   }, [
     liveAuctionDetails?.latestAuction?.bidAmount,
     liveAuctionDetails?.latestBidding?.bidAmount,
-    auctionNotification?.auction?.bidAmount,
-    bidNotification?.bidAmount,
+    streamNotificationData,
   ]);
 
   /**
@@ -258,10 +256,14 @@ function StreamingBase({
           clearInterval(myInterval);
           setDisableBid(true);
           setCurrentAuctionName(null);
-          setStopTimer(true);
-        } else {
-          if (stopTimer) {
-            setStopTimer(false);
+          if (!stopTimer) {
+            setStopTimer(true);
+            console.log(streamNotificationData, "streamNotificationData came iniside");
+            // if (!streamNotificationData?.name) {
+            //   if (streamNotificationData) {
+            //     setNotificationData(null);
+            //   }
+            // }
           }
         }
         if (seconds > 0) {
@@ -367,8 +369,8 @@ function StreamingBase({
         null
       );
     }
-    return auctionNotification?.product?.name ?? currentAuctionName;
-  }, [stream, auctionNotification, currentAuctionName]);
+    return streamNotificationData?.product?.name ?? currentAuctionName;
+  }, [stream, streamNotificationData, currentAuctionName]);
 
   const handleLikeUnlike = async () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -492,19 +494,19 @@ function StreamingBase({
             <IconAdd />
           </button>
         </div>
-        {winnerNotification ? (
+        {streamNotificationData?.name ? (
           <div className="winner-profile flex flex-center">
             <div className="pf br50">
               <img src="/static/images/profile.png" alt="" />
             </div>
-            {winnerNotification?.name} <span> &nbsp; is winner 🎉</span>
+            {streamNotificationData?.name} <span> &nbsp; is winner 🎉</span>
           </div>
-        ) : bidNotification ? (
+        ) : streamNotificationData?.customer?.firstName ? (
           <div className="winner-profile flex flex-center">
             <div className="pf br50">
               <img src="/static/images/profile.png" alt="" />
             </div>
-            {bidNotification?.customer?.firstName}{" "}
+            {streamNotificationData?.customer?.firstName}{" "}
             <span> &nbsp; is winning 🎉</span>
           </div>
         ) : null}
@@ -519,8 +521,8 @@ function StreamingBase({
               )}
             </div>
             <div className="bid-status flex flex-center">
-              {winnerNotification?.bidAmount ? (
-                <>Selling Bid - ${winnerNotification?.bidAmount} + Ship/Tax </>
+              {streamNotificationData?.bidAmount ? (
+                <>Selling Bid - ${streamNotificationData?.bidAmount} + Ship/Tax </>
               ) : (
                 <>
                   Current Bid - ${bidAmount > 0 ? bidAmount : null} + Ship/Tax{" "}
