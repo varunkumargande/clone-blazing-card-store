@@ -778,8 +778,9 @@ export function DeletAccountModal({ setIsOpen, userName }) {
       password: "",
     },
     validateOnMount: true,
-    onSubmit: (values) => {
-      deleteAccountApi(values, dispatch);
+    onSubmit: async (values) =>  {
+      await deleteAccountApi(values, dispatch);
+      setIsOpen(false);
     },
     validationSchema: () => deleteSchema,
   });
