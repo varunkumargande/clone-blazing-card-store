@@ -85,6 +85,12 @@ function StreamingBase({
     setBidAmount(null);
   }, [winnerNotification]);
 
+  useEffect(() => {
+    if(stopTimer) {
+      setStopTimer(false);
+    }
+  }, [auctionNotification, bidNotification])
+
   /**
    * This useEffect will calculate time and set bid amount on changes of notification
    */
@@ -123,6 +129,8 @@ function StreamingBase({
     stream,
     stopTimer,
   ]);
+
+
 
   const getTime = useMemo(() => {
     return bidNotification?.endTime
@@ -205,6 +213,7 @@ function StreamingBase({
         if (res?.status === 200) {
           setDisableBid(false);
           increaseBidAmount();
+          console.log(isBidResponseModal, !isBidResponseModal)
           setIsBidResponseModal(!isBidResponseModal);
         } else {
           setDisableBid(false);
