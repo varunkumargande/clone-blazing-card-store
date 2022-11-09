@@ -861,13 +861,12 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
   // handle username and search frend
   const handleUsername = async (e) => {
-    if (e.target.value != "") {
-      searchUser(setUserData, setUserDataLoader, e.target.value);
-    }
+    e.preventDefault();
+    searchUser(setUserData, setUserDataLoader, e.target.value);
   };
   // ====================================================================
 
-  // handle add user id and username for save information
+  // handle add user id for pass information
   const handleAddUserForChat = (id, name) => {
     setUserId(id);
   };
@@ -880,44 +879,42 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   // =============================================================
 
   const showUserList = () => {
-    if (!!userData) {
-      return (
-        <>
-          {userData.map((item, index) => {
-            return (
-              <>
-                <div
-                  className={
-                    !!userId
-                      ? "profile-chat-list flex space-between active-user"
-                      : "profile-chat-list flex space-between"
-                  }
-                  onClick={() => handleAddUserForChat(item._id, item.username)}
-                >
-                  <div className="profile-image-title flex flex-center">
-                    <div className="image br50">
-                      <img
-                        src={
-                          item?.avatarImage == ""
-                            ? "/static/img/no-image.png"
-                            : item?.avatarImage
-                        }
-                        alt=""
-                      />
-                    </div>
-                    <div className="profile-text">
-                      <div className="name">
-                        {item.username} <span className="new"></span>
-                      </div>
+    return (
+      <>
+        {userData.map((item, index) => {
+          return (
+            <>
+              <div
+                className={
+                  !!userId
+                    ? "profile-chat-list flex space-between active-user"
+                    : "profile-chat-list flex space-between"
+                }
+                onClick={() => handleAddUserForChat(item._id, item.username)}
+              >
+                <div className="profile-image-title flex flex-center">
+                  <div className="image br50">
+                    <img
+                      src={
+                        item?.avatarImage == ""
+                          ? "/static/img/no-image.png"
+                          : item?.avatarImage
+                      }
+                      alt=""
+                    />
+                  </div>
+                  <div className="profile-text">
+                    <div className="name">
+                      {item.username} <span className="new"></span>
                     </div>
                   </div>
                 </div>
-              </>
-            );
-          })}
-        </>
-      );
-    }
+              </div>
+            </>
+          );
+        })}
+      </>
+    );
   };
 
   return (
