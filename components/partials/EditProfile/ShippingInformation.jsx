@@ -78,7 +78,7 @@ function ShippingDetails() {
                 dispatch
               );
             } else {
-              UserAddAddress(values, dispatch, setAddressLoader, addressList);
+              UserAddAddress(values, setAddressLoader, addressList, dispatch);
             }
           }}
         >

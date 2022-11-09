@@ -26,7 +26,7 @@ const StreamingElement = ({ volume, isMute }) => {
         await rtc?.current?.client.leave();
       }
     };
-  }, []);
+  }, [options]);
 
   const joinChannelAsAudience = async () => {
     if (options && options.userType) {
