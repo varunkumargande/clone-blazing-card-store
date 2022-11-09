@@ -84,7 +84,7 @@ function RightDiv({ streamData, channel, client }) {
       return (
         <div className="chat-inner-wrap flex column justify-right">
           {new Array(5).fill(0).map((_, index) => (
-            <div key={`dummy-msg-${index}`} className="flex flex-center chat">
+            <div key={`dummy-msg-${index}`} className="flex chat">
               <Skeleton
                 className="chat-img br50"
                 circle

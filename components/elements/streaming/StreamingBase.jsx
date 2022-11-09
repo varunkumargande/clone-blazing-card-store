@@ -85,6 +85,12 @@ function StreamingBase({
     setBidAmount(null);
   }, [winnerNotification]);
 
+  useEffect(() => {
+    if(stopTimer) {
+      setStopTimer(false);
+    }
+  }, [auctionNotification, bidNotification])
+
   /**
    * This useEffect will calculate time and set bid amount on changes of notification
    */
@@ -112,7 +118,6 @@ function StreamingBase({
         liveAuctionDetails?.latestAuction?.bidAmount
       ) {
         const amount = getBidAmount && !stopTimer ? getBidAmount : 0;
-
         setBidAmount(+amount);
         setAmountToBid(+amount + 1);
       }
@@ -124,6 +129,8 @@ function StreamingBase({
     stream,
     stopTimer,
   ]);
+
+
 
   const getTime = useMemo(() => {
     return bidNotification?.endTime
@@ -176,7 +183,7 @@ function StreamingBase({
    */
 
   const getTimeDifference = (endTime, currentTime) => {
-    if (endTime) {
+    if (endTime && currentTime && !stopTimer) {
       let [date, time] = endTime.split(" ");
       const convertedEndTime = moment(date.replaceAll("-", "/") + " " + time);
       const duration = moment.duration(convertedEndTime.diff(currentTime));
@@ -206,6 +213,7 @@ function StreamingBase({
         if (res?.status === 200) {
           setDisableBid(false);
           increaseBidAmount();
+          console.log(isBidResponseModal, !isBidResponseModal)
           setIsBidResponseModal(!isBidResponseModal);
         } else {
           setDisableBid(false);

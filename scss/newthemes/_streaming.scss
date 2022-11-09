@@ -1,3 +1,7 @@
+.streaming-page-wrapper{
+    min-height: calc(100vh - 177px);
+    width: 100%;
+}
 .streaming-page{
     background-color: $stream-bg;
     color: $white-color;
@@ -8,7 +12,7 @@
             font-size: 14px;
             background: none;
             border:1px solid rgba($border-color,.2);
-            padding: 0 35px 0 15px;
+            padding: 0 43px 0 15px;
             border-radius: 24px;
             color:$search-color;
             width:100%;
@@ -514,6 +518,7 @@
             font-size: 14px;
             line-height: 17px;
             font-weight: 500;
+            word-break: break-all;
         }
     }
     .input-chat{
@@ -687,6 +692,9 @@
 
 
 @media all and (min-width:1025px){
+    .streaming-page-wrapper{
+        min-height: calc(100vh - 80px);
+    }
     .streaming-page{
         min-height: calc(100vh - 80px);
     }

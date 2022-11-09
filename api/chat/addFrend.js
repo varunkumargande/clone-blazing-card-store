@@ -7,14 +7,12 @@ import Router from "next/router";
 
 export async function addChatFrend(friendId, fetchUserData, setIsOpen, socket) {
   socket.current.emit("add-friend", {
-    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
-      ?._id,
+    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
     friendId: friendId,
   });
 
   const jsonData = {
-    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
-      ?._id,
+    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
     friendId: friendId,
   };
 
