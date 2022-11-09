@@ -1,5 +1,6 @@
 import APIServices from "../../services";
 import { show } from "../../store/toast/action";
+import { getErrorMessage } from "../../utilities/common-helpers";
 export async function changePasswordApi(values, setPassLoader, dispatch) {
   const data = JSON.stringify({
     oldPassword: values.currentPassword,
@@ -7,13 +8,13 @@ export async function changePasswordApi(values, setPassLoader, dispatch) {
   });
   const result = await APIServices.create("customer/change-password", data);
 
-  if (result && result.data) {
+  if (result) {
     setPassLoader(false);
-
-    if (result && result.data && result.data.status === 1) {
+    if (result?.data.status === 1) {
       dispatch(show({ message: result.data.message, type: "success" }));
     } else {
-      dispatch(show({ message: result.data.message, type: "error" }));
+      const errorMessage = getErrorMessage(result);
+      dispatch(show({ message: errorMessage, type: "error" }));
     }
     return result.data; 
   }
