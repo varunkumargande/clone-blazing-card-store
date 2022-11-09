@@ -68,7 +68,7 @@ function Streaming() {
   };
 
   return (
-    <>
+    <div className="streaming-page-wrapper">
       {showLoginModal && (
         <SignUPGoogle
           customMsg={"Signup to Join Blazing Cards"}
@@ -132,7 +132,7 @@ function Streaming() {
           client={client}
         />
       </div>
-    </>
+    </div>
   );
 }
 
