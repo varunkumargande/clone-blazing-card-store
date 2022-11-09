@@ -13,8 +13,8 @@ const StreamingElement = ({ volume, isMute }) => {
 
   useEffect(() => {
     const volumeLevel = !!isMute ? 0 : volume;
-    if (!!remoteAudioTrack?.audioTrack) {
-      remoteAudioTrack?.audioTrack?.setVolume(volumeLevel);
+    if (!!remoteAudioTrack) {
+      remoteAudioTrack?.setVolume(volumeLevel);
     }
   }, [isMute, volume]);
   
