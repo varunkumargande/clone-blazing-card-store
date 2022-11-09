@@ -95,7 +95,7 @@ function Signup(auth) {
         registerConstant.form.firstNameField.regexMessage
       )
       .max(20)
-      .required(registerConstant.form.required),
+      .required(registerConstant.form.firstNameField.required),
 
     lastname: Yup.string()
       .matches(
@@ -107,7 +107,7 @@ function Signup(auth) {
 
     email: Yup.string()
       .email(registerConstant.form.emailField.valid)
-      .required("Required"),
+      .required(registerConstant.form.emailField.required),
 
     number: Yup.string()
       .matches(
@@ -302,12 +302,13 @@ function Signup(auth) {
                   onChange={handleChange}
                   ref={usernameInput}
                   onBlur={handleOnBlur}
+                  onBlurCapture={handleBlur}
                 />
                 <div className="errorText">
-                  {errors.username ? errors.username : null}
+                  {errors.username && touched.username ? errors.username : null}
                 </div>
                 {usernameAvailable === false && usernameAvailable !== null ? (
-                  <div className="errorText">Username already taken</div>
+                  <div className="errorText">Username already exist</div>
                 ) : null}
               </div>
               <div className="input-control">
