@@ -110,8 +110,7 @@ function StreamingBase({
         liveAuctionDetails?.latestBidding !== {} ||
         liveAuctionDetails.latestAuction !== {}
       ) {
-        const amount =
-          (getBidAmount && minutes && seconds && getBidAmount) || 0;
+        const amount = getBidAmount && !stopTimer ? getBidAmount : 0;
         setBidAmount(+amount);
         setAmountToBid(+amount + 1);
       }
@@ -167,7 +166,7 @@ function StreamingBase({
    */
 
   const getTimeDifference = (endTime, currentTime) => {
-    if (endTime) {
+    if (endTime && currentTime && !stopTimer) {
       let [date, time] = endTime.split(" ");
       const convertedEndTime = moment(date.replaceAll("-", "/") + " " + time);
       const duration = moment.duration(convertedEndTime.diff(currentTime));
