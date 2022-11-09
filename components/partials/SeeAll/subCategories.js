@@ -27,30 +27,22 @@ function SeeAllSubCategories({
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
-      dispatch(saveCategoryName(query?.category));
-      dispatch(saveSubCategoryName(query?.subCategory));
-      dispatch(savePageType(query?.page));
-    }
-  }, [query]);
-
-  useEffect(() => {
-    if (!!category?.categoryName && !!category?.subCategoryName) {
       if (streamData.length) {
         setSeeMoreLoader(true);
       } else {
         setLoader(true);
       }
       getStreamSubCategoryBasedApi(
-        category?.type,
-        category?.categoryName,
-        category?.subCategoryName,
+        query?.page,
+        query?.category,
+        query?.subCategory,
         setStreamData,
         setLoader,
         offset,
         setSeeMoreLoader
       );
     }
-  }, [category?.categoryName, category?.subCategoryName, offset]);
+  }, [query, offset]);
 
   const handleSubCategorySelect = (name, id) => {
     dispatch(saveSubCategoryName(name));

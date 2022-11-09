@@ -40,13 +40,8 @@ function HeaderDefault({ auth }) {
   const [notificationDropdownActive, setNotificationDropdownActive] =
     useState(false);
   const [profile, setProfile] = useState(false);
-  let category = useSelector((s) => s.product);
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
-  let currentColor = useSelector((s) => s.palette.currentColor);
-  const [fname, setFname] = useState("");
-  const [aimg, setAimg] = useState("");
-  const [email, setEmail] = useState("");
   const [toggle, setToggle] = useState(false);
 
   let { pageName } = router.query;
@@ -55,9 +50,6 @@ function HeaderDefault({ auth }) {
 
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
-  // ================= user data ===================
-  const userData = useSessionstorage();
-  // ===============================================
 
   const authFunc = () => {
     if (localStorage.getItem("blazingToken") !== null) {
@@ -65,10 +57,6 @@ function HeaderDefault({ auth }) {
     }
   };
 
-  const stage = useSelector((state) => state?.becomeSeller?.currentState) ?? 0;
-  const submittedDetails = useSelector(
-    (state) => state?.becomeSeller?.submittedDetails
-  );
   const toast = useSelector((state) => state?.toast?.toast);
 
   const handleOnClick = () => {
@@ -168,7 +156,8 @@ function HeaderDefault({ auth }) {
   };
 
   const handeGoToChat = () => {
-    chatLogin();
+    // chatLogin();
+    Router.push("/chat");
   };
 
   // =================== handle check user login toggle buttun ====================

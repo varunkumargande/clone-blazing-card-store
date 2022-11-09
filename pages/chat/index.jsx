@@ -50,22 +50,17 @@ function Chat({ auth }) {
   const { isMobile } = useIsMobile();
 
   useEffect(() => {
-    if (!localStorage.getItem("chat-app-current-user") || !auth?.isLoggedIn) {
-      Router.push("/");
-    }
-  }, []);
-
-  useEffect(() => {
     if (!!localStorage.getItem("chat-app-current-user")) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
       socket.current = io(host);
-      socket.current.emit("add-user", user?.user?._id);
+      socket.current.emit("add-user", user?._id);
     }
   }, []);
   useEffect(() => {
     if (socket.current) {
-      socket.current.on("msg-recieve", (msg) => {
-        setArrivalMessage({ fromSelf: false, message: msg });
+      socket.current.on("msg-recieve", (msg, time) => {
+        setSeeMoreLoader;
+        setArrivalMessage({ fromSelf: false, message: msg, time: time });
       });
     }
   }, []);
@@ -76,8 +71,7 @@ function Chat({ auth }) {
 
   const chatSocketInitializer = async () => {
     socket.current.on(`fetch-friend`, async (data) => {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
-        ?._id;
+      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
       if (data?.friendId == user) {
         await fetchUserData();
       }
@@ -87,8 +81,7 @@ function Chat({ auth }) {
   // ============================== fetch frend list ===================================
   const fetchUserData = async () => {
     if (localStorage.getItem("chat-app-current-user")) {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?.user
-        ?._id;
+      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
       const token = localStorage.getItem("blazingToken");
       let userId = {
         userId: user,
@@ -124,7 +117,7 @@ function Chat({ auth }) {
     const response = await axios.post(
       recieveMessageRoute,
       {
-        from: data?.user?._id,
+        from: data?._id,
         to: contacts[index]._id,
       },
       {
@@ -145,14 +138,14 @@ function Chat({ auth }) {
     );
     socket.current.emit("send-msg", {
       to: currentChat._id,
-      from: data?.user?._id,
+      from: data?._id,
       msg,
     });
     const token = localStorage.getItem("blazingToken");
     await axios.post(
       sendMessageRoute,
       {
-        from: data?.user?._id,
+        from: data?._id,
         to: currentChat._id,
         message: msg,
       },
@@ -192,7 +185,6 @@ function Chat({ auth }) {
 
   // ======================= profile panel view ========================
   const handleProfilePanel = () => {
-    // if (contacts) {
     return (
       <>
         <ProfilePannel
@@ -203,7 +195,6 @@ function Chat({ auth }) {
         />
       </>
     );
-    // }
   };
   // ===================================================================
 

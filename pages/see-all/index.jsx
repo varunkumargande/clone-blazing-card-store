@@ -13,6 +13,7 @@ import { stringFormatter } from "../../utilities/utils";
 import {
   saveCategoryName,
   saveSubCategoryName,
+  savePageType,
 } from "../../store/category/action";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
@@ -48,10 +49,12 @@ function categoryStream({ auth, category }) {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
+      dispatch(savePageType(query?.page));
     } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
+        dispatch(savePageType("allCategory"));
       }
     }
   }, [query]);

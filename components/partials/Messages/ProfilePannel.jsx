@@ -1,12 +1,13 @@
 import React from "react";
 import IconAddChat from "../../Icons/IconAddChat";
+import { imageUrl } from "../../../api/url";
+
 export default function ProfilePannel({
   contacts,
   changeCurrentChat,
   setIsOpen,
-    userCount
+  userCount,
 }) {
-    
   return (
     <div className="profile-wrapper">
       {/* <div className=" static-content flex justify-center flex-center column">
@@ -34,13 +35,18 @@ export default function ProfilePannel({
                 <div className="profile-image-title flex flex-center">
                   <div className="image br50">
                     <img
-                      src={item?.avatarImage == "" ? "/static/img/no-image.png" : item?.avatarImage}
+                      src={
+                        item?.avatarImage == ""
+                          ? "/static/img/no-image.png"
+                          : item?.avatarImage
+                      }
                       alt=""
                     />
                   </div>
                   <div className="profile-text">
                     <div className="name">
-                        {item?.firstName} {item?.lastName} <span className="new"></span>
+                      {item?.firstName} {item?.lastName}{" "}
+                      <span className="new"></span>
                     </div>
                     <div className="time">@{item?.username}</div>
                   </div>

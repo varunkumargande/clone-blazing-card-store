@@ -22,7 +22,10 @@ export async function UserLogin(
 
   if (result && result?.data && result?.data?.status === 1) {
     localStorage.setItem("blazingToken", result.data.data.token);
-    localStorage.setItem("userPass", password);
+    localStorage.setItem(
+      "chat-app-current-user",
+      JSON.stringify(result.data.data.chatUser)
+    );
     getProfileApi();
     dispatch(show({ message: result.data.message, type: "success" }));
     Router.push("/");
