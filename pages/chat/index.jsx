@@ -59,7 +59,7 @@ function Chat({ auth }) {
   useEffect(() => {
     if (socket.current) {
       socket.current.on("msg-recieve", (msg, time) => {
-        console.log(msg);
+        setSeeMoreLoader;
         setArrivalMessage({ fromSelf: false, message: msg, time: time });
       });
     }
