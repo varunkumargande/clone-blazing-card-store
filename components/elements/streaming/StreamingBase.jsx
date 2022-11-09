@@ -36,9 +36,10 @@ function StreamingBase({
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
   const [bidAmount, setBidAmount] = useState(null);
-  const [amountToBid, setAmountToBid] = useState(+bidAmount + 2);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [amountToBid, setAmountToBid] = useState(+bidAmount + 1);
+  const [minutes, setMinutes] = useState(null);
+  const [seconds, setSeconds] = useState(null);
+  const [stopTimer, setStopTimer] = useState(false);
   const [disableBid, setDisableBid] = useState(false);
   const [isBidResponseModal, setIsBidResponseModal] = useState(false);
   /*****For notifications *****/
@@ -107,16 +108,22 @@ function StreamingBase({
       if (
         bidNotification ||
         auctionNotification ||
-        liveAuctionDetails?.latestBidding !== {} ||
-        liveAuctionDetails.latestAuction !== {}
+        liveAuctionDetails?.latestBidding?.bidAmount ||
+        liveAuctionDetails?.latestAuction?.bidAmount
       ) {
-        const amount =
-          (getBidAmount && minutes && seconds && getBidAmount) || 0;
+        const amount = getBidAmount && !stopTimer ? getBidAmount : 0;
+
         setBidAmount(+amount);
         setAmountToBid(+amount + 1);
       }
     }
-  }, [bidNotification, auctionNotification, liveAuctionDetails, stream]);
+  }, [
+    bidNotification,
+    auctionNotification,
+    liveAuctionDetails,
+    stream,
+    stopTimer,
+  ]);
 
   const getTime = useMemo(() => {
     return bidNotification?.endTime
@@ -149,17 +156,19 @@ function StreamingBase({
   }, [liveAuctionDetails, auctionNotification, bidNotification]);
 
   const getBidAmount = useMemo(() => {
-    const data = bidNotification?.bidAmount
-      ? bidNotification?.bidAmount
-      : auctionNotification?.auction?.bidAmount
-      ? auctionNotification?.auction?.bidAmount
-      : liveAuctionDetails?.latestBidding?.bidAmount
-      ? liveAuctionDetails?.latestBidding?.bidAmount
-      : liveAuctionDetails?.latestAuction?.bidAmount
-      ? liveAuctionDetails?.latestAuction?.bidAmount
-      : 0;
+    const data =
+      bidNotification?.bidAmount ||
+      auctionNotification?.auction?.bidAmount ||
+      liveAuctionDetails?.latestBidding?.bidAmount ||
+      liveAuctionDetails?.latestAuction?.bidAmount ||
+      0;
     return data;
-  }, [liveAuctionDetails, auctionNotification, bidNotification]);
+  }, [
+    liveAuctionDetails?.latestAuction?.bidAmount,
+    liveAuctionDetails?.latestBidding?.bidAmount,
+    auctionNotification?.auction?.bidAmount,
+    bidNotification?.bidAmount,
+  ]);
 
   /**
    * Method will calculate Live Auction endtime
@@ -239,31 +248,35 @@ function StreamingBase({
    * This useEffect will start countdown till 0
    */
   useEffect(() => {
-    let myInterval = setInterval(() => {
-      if (seconds < 0 && minutes < 0) {
-        setMinutes(0);
-        setSeconds(0);
-        setBidAmount(null);
-      }
-      if (seconds > 0) {
-        setOnPageLanding(false);
-        setSeconds(seconds - 1);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
+    if (minutes !== null && seconds !== null) {
+      const myInterval = setInterval(() => {
+        if (seconds <= 0 && minutes <= 0) {
+          setMinutes(0);
+          setSeconds(0);
           setBidAmount(null);
+
           clearInterval(myInterval);
           setDisableBid(true);
           setCurrentAuctionName(null);
-        } else if (seconds < 60) {
+          setStopTimer(true);
+        } else {
+          if (stopTimer) {
+            setStopTimer(false);
+          }
+        }
+        if (seconds > 0) {
+          setOnPageLanding(false);
+          setSeconds(seconds - 1);
+        }
+        if (seconds === 0 && minutes !== 0 && seconds < 60) {
           setMinutes(minutes - 1);
           setSeconds(59);
         }
-      }
-    }, 1000);
-    return () => {
-      clearInterval(myInterval);
-    };
+      }, 1000);
+      return () => {
+        clearInterval(myInterval);
+      };
+    }
   });
 
   /**
@@ -307,7 +320,7 @@ function StreamingBase({
   const getAuctionArea = useMemo(() => {
     return (
       <>
-        {minutes == 0 && seconds == 0 ? (
+        {!minutes && !seconds ? (
           !onPageLanding ? (
             <div className="auction-end">
               <button className="primary-btn disable">Auction Ended</button>
@@ -495,7 +508,7 @@ function StreamingBase({
             <span> &nbsp; is winning 🎉</span>
           </div>
         ) : null}
-
+        {/* do not remove {minutes && seconds &&} */}
         <div className="stream-footer flex flex-center space-between">
           <div className="left">
             <div className="time-left">
