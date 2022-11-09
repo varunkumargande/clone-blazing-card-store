@@ -2,7 +2,7 @@ import { message } from "antd";
 import React, { useRef, useEffect } from "react";
 import IconChat from "../../Icons/IconChat";
 import IconGallery from "../../Icons/IconGallery";
-import moment from 'moment'
+import moment from "moment";
 
 export default function ChatPannel({
   messages,
@@ -11,9 +11,7 @@ export default function ChatPannel({
   msg,
   handleSendMsg,
 }) {
-
   const divRef = useRef(null);
-  
 
   useEffect(() => {
     if (divRef.current != null) {
@@ -57,9 +55,10 @@ export default function ChatPannel({
               </div>
               <div className="profile-text">
                 <div className="name">
-                    {contactDetail?.firstName} {contactDetail?.lastName} <span className="new"></span>
+                  {contactDetail?.firstName} {contactDetail?.lastName}{" "}
+                  <span className="new"></span>
                 </div>
-                  <div className="time">{contactDetail?.username}</div>
+                <div className="time">{contactDetail?.username}</div>
               </div>
             </div>
             <div className="chat-box-wrap">
@@ -70,7 +69,7 @@ export default function ChatPannel({
                       <>
                         <div className="chat-wrap right">
                           <div className="chat">{item?.message}</div>
-                            <div className="time">{item?.time}</div>
+                          <div className="time">{item?.time}</div>
                         </div>
                       </>
                     );
@@ -79,7 +78,7 @@ export default function ChatPannel({
                       <>
                         <div className="chat-wrap left">
                           <div className="chat">{item?.message}</div>
-                            <div className="time">{item?.time}</div>
+                          <div className="time">{item?.time}</div>
                         </div>
                       </>
                     );
