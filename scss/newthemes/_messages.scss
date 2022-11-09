@@ -48,6 +48,9 @@
             font-size: 14px;
             line-height: 16px;
             margin-bottom: 4px;
+            &.active{
+                font-weight: 500;
+            }
             .new{
                 width:6px;
                 height: 6px;
