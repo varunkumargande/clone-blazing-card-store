@@ -58,13 +58,15 @@ export const addPaymentData =  (payLoad, router) => {
 export const addShippingData =  (payLoad, router) => {
   return async dispatch => {
     const result = await shippingDetails(payLoad)
-    if(result) {
+    if (result && result?.data?.status === 1) {
       dispatch(addShippingDetails(payLoad))
       router.push("/become-seller/submitted", undefined, {
         shallow: true,
       })
+    } else {
+      const message = getErrorMessage(result);
+      dispatch(show({ message, type: "error" }));
     }
-    
   };
 };
 
