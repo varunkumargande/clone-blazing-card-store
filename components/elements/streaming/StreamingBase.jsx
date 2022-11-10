@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { streamLikeDislike } from "../../../api/stream/streams_api";
 import IconSpeakerMute from "../../Icons/IconSpeakerMute";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
@@ -155,7 +156,10 @@ function StreamingBase({
         liveAuctionDetails?.latestBidding?.bidAmount ||
         liveAuctionDetails?.latestAuction?.bidAmount
       ) {
-        const amount = getBidAmount &&( !stopTimer.current || getBidAmount > 1)? getBidAmount : 0;
+        const amount =
+          getBidAmount && (!stopTimer.current || getBidAmount > 1)
+            ? getBidAmount
+            : 0;
 
         setBidAmount(+amount);
         setAmountToBid(+amount + 1);
@@ -401,12 +405,18 @@ function StreamingBase({
 
   const renderUserAvatar = (profile) => {
     return (
-      <CloudinaryImage
-        imageUrl={`${profile?.avatar || `logo/user-fill.png`}`}
-        keyId={`${profile?.avatar || "avatar"}`}
-        alternative={profile?.firstName?.[0] || "P"}
-        transformation={ImageTransformation.profileImageCard}
-      />
+      <>
+        {profile?.avatar ? (
+          <CloudinaryImage
+            imageUrl={`${profile?.avatar || `logo/user-fill.png`}`}
+            keyId={`${profile?.avatar || "avatar"}`}
+            alternative={profile?.firstName?.[0] || "P"}
+            transformation={ImageTransformation.profileImageCard}
+          />
+        ) : (
+          <img src={DefaultImagePath.defaultProfileImage} alt="" />
+        )}
+      </>
     );
   };
 
@@ -522,7 +532,7 @@ function StreamingBase({
             <div className="pf br50">
               {renderUserAvatar(streamNotification?.customer)}
             </div>
-            {streamNotification?.customer?.firstName}{" "}
+            {streamNotification?.customer?.username}
             <span> &nbsp; is winning 🎉</span>
           </div>
         ) : null}
@@ -530,7 +540,7 @@ function StreamingBase({
         <div className="stream-footer flex flex-center space-between">
           <div className="left">
             <div className="time-left">
-              {(minutes > 0 || seconds > 0 && !stopTimer.current) ? (
+              {(minutes > 0 || seconds > 0) && !stopTimer.current ? (
                 <>
                   Time left - <Timer minutes={minutes} seconds={seconds} />
                 </>
@@ -542,7 +552,8 @@ function StreamingBase({
               ) : (
                 <>
                   Current Bid - $
-                  {bidAmount > 0 && !stopTimer.current ? bidAmount : null} + Ship/Tax
+                  {bidAmount > 0 && !stopTimer.current ? bidAmount : null} +
+                  Ship/Tax
                 </>
               )}
               <span

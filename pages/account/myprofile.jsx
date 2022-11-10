@@ -15,6 +15,7 @@ import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import { DefaultImagePath } from "../../components/Constants/defaultImage";
 
 function MyProfile(props) {
   const router = useRouter();
@@ -46,7 +47,7 @@ function MyProfile(props) {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("blazingUser"));
-    setUserId(userData.id);
+    setUserId(userData?.id);
     setProfile(userData);
   }, []);
 
@@ -333,7 +334,17 @@ function MyProfile(props) {
         </>
       );
     } else {
-      return <img src="/static/images/profileImg.png" alt="profileImg" />;
+      return (
+        <img
+          onError={() => {
+            currentTarget.onerror = null;
+            currentTarget.src = "/static/images/profileImg.png";
+          }}
+          src={DefaultImagePath.defaultProfileImage}
+          alt="Profile"
+          className="error"
+        />
+      )
     }
   };
 

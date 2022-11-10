@@ -16,6 +16,7 @@ import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 export default function ProfileInformation() {
   const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB
@@ -165,11 +166,14 @@ export default function ProfileInformation() {
                           />
                         ) : (
                           <img
-                            style={{ borderRadius: "50%" }}
-                            width={"172"}
-                            height={"172"}
-                            src={"/static/images/profileImg.png"}
-                            alt="Profile"
+                           onError={() => {
+                            currentTarget.onerror = null;
+                            currentTarget.src = "/static/images/profileImg.png";
+                           }}
+                           height={172}
+                           width={131}
+                           src={DefaultImagePath.defaultProfileImage}
+                           alt="Profile"
                           />
                         )}
                       </>
