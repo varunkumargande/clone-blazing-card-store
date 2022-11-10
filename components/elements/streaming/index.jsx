@@ -32,6 +32,7 @@ function Streaming() {
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
   const [notificationData, setNotificationData] = useState(null);
+  const [notificationDataUpdated, setNotificationDataUpdated] = useState(false);
 
   const stream = useSelector((state) => {
     return state?.stream;
@@ -50,22 +51,22 @@ function Streaming() {
   const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, fetch);
 
   useEffect(() => {
-    if(auction?.data) {
+    if (auction?.data) {
       setNotificationData(auction?.data);
     }
-  }, [auction]);
+  }, [auction?.data]);
 
   useEffect(() => {
-    if(bid?.data) {
+    if (bid?.data) {
       setNotificationData(bid?.data);
     }
-  }, [bid]);
+  }, [bid?.data]);
 
   useEffect(() => {
-    if(win?.data) {
+    if (win?.data) {
       setNotificationData(win?.data);
     }
-  }, [win]);
+  }, [win?.data]);
 
   useEffect(() => {
     setFetch(true);
