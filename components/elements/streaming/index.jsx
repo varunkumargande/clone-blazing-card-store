@@ -31,6 +31,7 @@ function Streaming() {
   const [liveAuctionDetails, setLiveAuctionDetails] = useState({});
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
+  const [notificationData, setNotificationData] = useState(null);
 
   const stream = useSelector((state) => {
     return state?.stream;
@@ -49,6 +50,24 @@ function Streaming() {
   const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, fetch);
 
   useEffect(() => {
+    if (auction?.data) {
+      setNotificationData(auction?.data);
+    }
+  }, [auction?.data]);
+
+  useEffect(() => {
+    if (bid?.data) {
+      setNotificationData(bid?.data);
+    }
+  }, [bid?.data]);
+
+  useEffect(() => {
+    if (win?.data) {
+      setNotificationData(win?.data);
+    }
+  }, [win?.data]);
+
+  useEffect(() => {
     setFetch(true);
     dispatch(streamData(uuid));
     return () => {
@@ -61,11 +80,11 @@ function Streaming() {
     setLeftDivOpen(toggle);
   }, []);
 
-  const notificationData = {
-    bid: bid?.data,
-    auction: auction?.data,
-    win: win?.data,
-  };
+  // const notificationData = {
+  //   bid: bid?.data,
+  //   auction: auction?.data,
+  //   win: win?.data,
+  // };
 
   return (
     <div className="streaming-page-wrapper">
