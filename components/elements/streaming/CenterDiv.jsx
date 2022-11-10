@@ -29,7 +29,7 @@ function CenterDiv({
   setShowLoginModal,
   userCount,
   streamNotification,
-  liveAuctionDetails
+  liveAuctionDetails,
 }) {
   const dispatch = useDispatch();
 

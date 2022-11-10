@@ -131,13 +131,14 @@ function RightDiv({ streamData, channel, client }) {
               className="flex flex-center chat"
             >
               <div className="chat-img br50">
-                {profileUrl ?
+                {profileUrl ? (
                   <CloudinaryImage
                     imageUrl={profileUrl}
                     keyId={`chatBox${userId}`}
                     transformation={ImageTransformation.streamChatProfile}
                     alternative="profile"
-                  /> :
+                  />
+                ) : (
                   <img
                     onError={() => {
                       currentTarget.onerror = null;
@@ -148,8 +149,7 @@ function RightDiv({ streamData, channel, client }) {
                     src={DefaultImagePath.defaultProfileImage}
                     alt="Profile"
                   />
-                }
-
+                )}
               </div>
               <div className="chat-text-wrap">
                 <div className="name">{userId.replace(/\d+/g, "")}</div>

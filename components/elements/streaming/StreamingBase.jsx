@@ -406,15 +406,16 @@ function StreamingBase({
   const renderUserAvatar = (profile) => {
     return (
       <>
-        {profile?.avatar ?
+        {profile?.avatar ? (
           <CloudinaryImage
             imageUrl={`${profile?.avatar || `logo/user-fill.png`}`}
             keyId={`${profile?.avatar || "avatar"}`}
             alternative={profile?.firstName?.[0] || "P"}
             transformation={ImageTransformation.profileImageCard}
-          /> :
+          />
+        ) : (
           <img src={DefaultImagePath.defaultProfileImage} alt="" />
-        }
+        )}
       </>
     );
   };

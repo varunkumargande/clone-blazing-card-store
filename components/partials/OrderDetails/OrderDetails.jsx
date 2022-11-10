@@ -6,8 +6,11 @@ import { getCardImagesByName } from "../../helper/cardImageHelper";
 
 export default function OrderDetails() {
   const orderDetail = useSelector((state) => state?.order?.orderDetail);
-  const { cardDetails, productData, deliveryStatus, shippingDetails } = orderDetail ?? "";
-  const [_type, CardImage] = orderDetail ? getCardImagesByName('', cardDetails?.card?.brand) : "";
+  const { cardDetails, productData, deliveryStatus, shippingDetails } =
+    orderDetail ?? "";
+  const [_type, CardImage] = orderDetail
+    ? getCardImagesByName("", cardDetails?.card?.brand)
+    : "";
   return (
     <>
       {orderDetail ? (
@@ -45,7 +48,7 @@ export default function OrderDetails() {
               </div>
             </div>
             <div className="billing-shipping-wrap flex space-between">
-            <div className="billing-shipping wd50 box">
+              <div className="billing-shipping wd50 box">
                 <div className="heading">Shipping Information</div>
                 <div className="body">
                   <div className="bodyText flex flex-center">
@@ -66,15 +69,12 @@ export default function OrderDetails() {
                 <div className="body">
                   <h5>Credit Card</h5>
                   <div className="bodyText flex flex-center">
-                    <span className="mastr">
-                    {CardImage}
-                    </span>{" "}
+                    <span className="mastr">{CardImage}</span>{" "}
                     {cardDetails?.card?.brand} ending with{" "}
                     {cardDetails?.card?.last4}
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
           <div className="order-summery-wrap">
@@ -86,7 +86,10 @@ export default function OrderDetails() {
                   <div className="value">${productData?.subTotal}</div>
                 </div>
                 <div className="flex space-between amount">
-                  <div className="label">Tax ({productData?.taxType}%)</div>
+                  <div className="label">
+                    Tax
+                    {/* ({productData?.taxType}%) */}
+                  </div>
                   <div className="value">${productData?.tax}</div>
                 </div>
                 <div className="flex space-between amount">
@@ -99,20 +102,20 @@ export default function OrderDetails() {
                 <div className="value">${productData.total}</div>
               </div>
             </div>
-            <a
-              href={shippingDetails?.trackingUrl}
-              target="_blank"
-            >
+            <a href={shippingDetails?.trackingUrl} target="_blank">
               <div className="download-wrap flex space-between flex-center">
-
-                <button className={`border-btn flex flex-center justify-center ${(!shippingDetails?.trackingUrl)  && 'disable-opacity'}`} disabled={!shippingDetails?.trackingUrl}>
+                <button
+                  className={`border-btn flex flex-center justify-center ${
+                    !shippingDetails?.trackingUrl && "disable-opacity"
+                  }`}
+                  disabled={!shippingDetails?.trackingUrl}
+                >
                   {/* ToDo: Keeping this IconTrack code for now if we need to use the icon in future. Can be removed in not needed. */}
                   {/* <IconTrack /> */}
                   Track Package
                 </button>
               </div>
             </a>
-
           </div>
         </>
       ) : (
