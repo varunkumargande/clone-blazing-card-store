@@ -22,7 +22,7 @@ import ProfilePannel from "../../components/partials/Messages/ProfilePannel";
 import ChatPannel from "../../components/partials/Messages/ChatPannel";
 import { ChatUserModal } from "../../components/partials/Modal/Modal";
 import { Loader } from "../../components/reusable/Loader";
-import moment from "moment";
+import moment, { utc } from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 
@@ -43,6 +43,7 @@ function Chat({ auth }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loader, setLoader] = useState(false);
   const [userCount, setUserCount] = useState(null);
+  const [isChatPanelVisible, setChatPanelVisible] = useState(false);
 
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -59,8 +60,11 @@ function Chat({ auth }) {
   useEffect(() => {
     if (socket.current) {
       socket.current.on("msg-recieve", (msg, time) => {
-        setSeeMoreLoader;
-        setArrivalMessage({ fromSelf: false, message: msg, time: time });
+        setArrivalMessage({
+          fromSelf: false,
+          message: msg,
+          time: moment().utc(time).local().format("HH:mm"),
+        });
       });
     }
   }, []);
@@ -133,6 +137,7 @@ function Chat({ auth }) {
 
   // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
+    const messageTime = moment().utc().format("HH:mm");
     const data = await JSON.parse(
       localStorage.getItem("chat-app-current-user")
     );
@@ -140,6 +145,7 @@ function Chat({ auth }) {
       to: currentChat._id,
       from: data?._id,
       msg,
+      messageTime,
     });
     const token = localStorage.getItem("blazingToken");
     await axios.post(
@@ -148,6 +154,7 @@ function Chat({ auth }) {
         from: data?._id,
         to: currentChat._id,
         message: msg,
+        messageTime: messageTime,
       },
       {
         headers: {
@@ -192,6 +199,7 @@ function Chat({ auth }) {
           changeCurrentChat={changeCurrentChat}
           setIsOpen={setIsOpen}
           userCount={userCount}
+          setChatPanelVisible={setChatPanelVisible}
         />
       </>
     );
@@ -219,17 +227,33 @@ function Chat({ auth }) {
   return (
     <>
       {isMobile ? (
-        <div className="header-title flex flex-center">
-          <BackButton name={"Message"} />
-        </div>
+        <>
+          {isChatPanelVisible ? (
+            <div
+              className="header-title flex flex-center"
+              onClick={() => setChatPanelVisible(false)}
+            >
+              <BackButton name={"Message"} />
+            </div>
+          ) : (
+            <div className="header-title flex flex-center">
+              <BackButton name={"Message"} />
+            </div>
+          )}
+        </>
       ) : (
         <HeaderDefault />
       )}
       <div className="messages-wrapper">
         <h1>Messages</h1>
         <div className="flex space-between message-inner">
-          {handleProfilePanel()}
-          {handleChatPanel()}
+          {isMobile ? (
+            <>{isChatPanelVisible ? handleChatPanel() : handleProfilePanel()}</>
+          ) : (
+            <>
+              {handleProfilePanel()} {handleChatPanel()}
+            </>
+          )}
           {chatUserFind()}
         </div>
       </div>

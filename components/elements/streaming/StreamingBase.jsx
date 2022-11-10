@@ -139,6 +139,12 @@ function StreamingBase({
     }
   }, [stream]);
 
+  useEffect(() => {
+    if (stopTimer) {
+      setStopTimer(false);
+    }
+  }, [auctionNotification, bidNotification]);
+
   /**
    * This useEffect will calculate time and set bid amount on changes of notification
    */
@@ -212,7 +218,7 @@ function StreamingBase({
    */
 
   const getTimeDifference = (endTime, currentTime) => {
-    if (endTime) {
+    if (endTime && currentTime && !stopTimer) {
       let [date, time] = endTime.split(" ");
       const convertedEndTime = moment(date.replaceAll("-", "/") + " " + time);
       const duration = moment.duration(convertedEndTime.diff(currentTime));
