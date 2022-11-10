@@ -144,11 +144,7 @@ function HeaderDefault({ auth }) {
       })
     );
     Router.push("/");
-    window.location.href = "/";
-  };
-
-  const handleChangePageToHome = () => {
-    window.location.href = "/";
+    window.location.reload();
   };
 
   const handleSearchValue = (e) => {
@@ -244,11 +240,15 @@ function HeaderDefault({ auth }) {
       <div className="inner-container flex flex-wrap flex-center space-between">
         <div className="left flex flex-wrap flex-center">
           <div className="logo">
-            <a onClick={handleChangePageToHome}>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                Router.push("/");
+              }}
+            >
               <Logo />
             </a>
           </div>
-
           {/* <div className="Search">
             <input
               type="search"
