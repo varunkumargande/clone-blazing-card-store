@@ -144,7 +144,10 @@ function HeaderDefault({ auth }) {
       })
     );
     Router.push("/");
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 200)
+    
   };
 
   const handleSearchValue = (e) => {
