@@ -162,9 +162,20 @@
         }
     }
     .prifile-image{
-        max-width: 172px;
-        max-height: 172px;
+        width: 172px;
+        height: 172px;
         margin-right: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background-color: #E6E6E6;
+        img{
+            max-width: 100%;
+            &[src*="defaultProfile"]{
+                max-width: 90px;
+            }
+        }
     }
     .upload-btn{
         background-color: $border2-color;

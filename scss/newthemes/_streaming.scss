@@ -50,9 +50,16 @@
         }
         .image{
             margin-right: 7px;
+            width: 32px;
+            height: 32px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #E6E6E6;
+            border-radius: 50%;
             img{
                 max-width: 32px;
-                border-radius: 50%;
             }
         }
         .name{
@@ -416,6 +423,13 @@
             min-width: 36px;
             border:3px solid $white-color;
             margin-right: 4px;
+            background-color: #E6E6E6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img[src*="defaultProfile"]{
+                max-width: 14px;
+            }
         }
     }
     .tme-wrap{
@@ -504,6 +518,10 @@
             border:3px solid $white-color;
             margin-right: 5px;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #E6E6E6;
         }
         .chat-text-wrap{
             width:calc(100% - 42px);
@@ -598,7 +616,6 @@
                 z-index: 4;
                 max-width: calc(100% - 80px);
                 @include pos(ab,24px,null,null,16px,4);
-
             }
             .leftdata-wrapper{
                 width: 100%;

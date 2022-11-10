@@ -6,6 +6,7 @@ import DefaultServices from "../../Services/DefaultServices";
 import { connect } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 
 function StreamCard({ detail, showLoginModal, auth }) {
   const handleRouting = (id) => {
@@ -53,14 +54,31 @@ function StreamCard({ detail, showLoginModal, auth }) {
             className="title flex flex-center"
             onClick={() => handleRouting(detail.user_id)}
           >
-            <CloudinaryImage
-              imageUrl={
-                DefaultServices?.GetFullImageURL(detail, "vendor")
-              }
-              keyId={DefaultServices?.GetFullImageURL(detail, "vendor")}
-              transformation={ImageTransformation.profileImageCard}
-              alternative={""}
-            />
+            {
+              DefaultServices?.GetFullImageURL(detail, "vendor") !== DefaultImagePath.defaultImage ?
+                <CloudinaryImage
+                  imageUrl={
+                    DefaultServices?.GetFullImageURL(detail, "vendor")
+                  }
+                  keyId={DefaultServices?.GetFullImageURL(detail, "vendor")}
+                  transformation={ImageTransformation.profileImageCard}
+                  alternative={""}
+                /> :
+                <span className="profile">
+                <img
+                  onError={() => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = "/static/images/profileImg.png";
+                  }}
+                  height={10}
+                  width={7}
+                  src={DefaultImagePath.defaultProfileImage}
+                  alt="Profile"
+                />
+              </span>
+            }
+            
+
 
             {/* ToDo: Need to remove old image code. Keeping it right now for reference */}
             {/* <img

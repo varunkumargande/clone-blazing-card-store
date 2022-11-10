@@ -4,6 +4,7 @@ import IconChat from "../../Icons/IconChat";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 
 // import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
 // import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
@@ -130,12 +131,25 @@ function RightDiv({ streamData, channel, client }) {
               className="flex flex-center chat"
             >
               <div className="chat-img br50">
-                <CloudinaryImage
-                  imageUrl={profileUrl}
-                  keyId={`chatBox${userId}`}
-                  transformation={ImageTransformation.streamChatProfile}
-                  alternative="profile"
-                />
+                {profileUrl ?
+                  <CloudinaryImage
+                    imageUrl={profileUrl}
+                    keyId={`chatBox${userId}`}
+                    transformation={ImageTransformation.streamChatProfile}
+                    alternative="profile"
+                  /> :
+                  <img
+                    onError={() => {
+                      currentTarget.onerror = null;
+                      currentTarget.src = "/static/images/profileImg.png";
+                    }}
+                    height={16}
+                    width={12}
+                    src={DefaultImagePath.defaultProfileImage}
+                    alt="Profile"
+                  />
+                }
+
               </div>
               <div className="chat-text-wrap">
                 <div className="name">{userId.replace(/\d+/g, "")}</div>

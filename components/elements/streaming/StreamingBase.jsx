@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { streamLikeDislike } from "../../../api/stream/streams_api";
 import IconSpeakerMute from "../../Icons/IconSpeakerMute";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
@@ -401,12 +402,17 @@ function StreamingBase({
 
   const renderUserAvatar = (profile) => {
     return (
-      <CloudinaryImage
-        imageUrl={`${profile?.avatar || `logo/user-fill.png`}`}
-        keyId={`${profile?.avatar || "avatar"}`}
-        alternative={profile?.firstName?.[0] || "P"}
-        transformation={ImageTransformation.profileImageCard}
-      />
+      <>
+        {profile?.avatar ?
+          <CloudinaryImage
+            imageUrl={`${profile?.avatar || `logo/user-fill.png`}`}
+            keyId={`${profile?.avatar || "avatar"}`}
+            alternative={profile?.firstName?.[0] || "P"}
+            transformation={ImageTransformation.profileImageCard}
+          /> :
+          <img src={DefaultImagePath.defaultProfileImage} alt="" />
+        }
+      </>
     );
   };
 

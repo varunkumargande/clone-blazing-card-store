@@ -13,6 +13,7 @@ import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 
 function LeftDiv({
   setShowLoginModal,
@@ -422,18 +423,29 @@ function LeftDiv({
       <div className="flex profile-wrapper">
         <div className="image">
           {stream?.streamData?.vendorDetails ? (
-            <CloudinaryImage
-              imageUrl={DefaultServices?.GetFullImageURL(
-                stream?.streamData?.vendorDetails,
-                "vendor"
-              )}
-              keyId={DefaultServices?.GetFullImageURL(
-                stream?.streamData?.vendorDetails,
-                "vendor"
-              )}
-              transformation={ImageTransformation.streamPageProfile}
-              alternative={"Card"}
-            />
+            DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor") !== DefaultImagePath.defaultImage ?
+              <CloudinaryImage
+                imageUrl={DefaultServices?.GetFullImageURL(
+                  stream?.streamData?.vendorDetails,
+                  "vendor"
+                )}
+                keyId={DefaultServices?.GetFullImageURL(
+                  stream?.streamData?.vendorDetails,
+                  "vendor"
+                )}
+                transformation={ImageTransformation.streamPageProfile}
+                alternative={"Card"}
+              /> :
+              <img
+                onError={() => {
+                  currentTarget.onerror = null;
+                  currentTarget.src = "/static/images/profileImg.png";
+                }}
+                height={20}
+                width={14}
+                src={DefaultImagePath.defaultProfileImage}
+                alt="Profile"
+              />
           ) : (
             <Skeleton
               className="border"
