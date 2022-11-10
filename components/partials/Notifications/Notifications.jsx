@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Router from "next/router";
 import IconNoNotifications from "../../Icons/IconNoNotifications";
-import { getInTime } from "../../../utilities/time";
 import NotificationMethods from "../../../api/notification/NotificationMethods";
 import moment from "moment/moment";
 
