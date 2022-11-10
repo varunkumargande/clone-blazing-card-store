@@ -139,12 +139,6 @@ function StreamingBase({
     }
   }, [stream]);
 
-  useEffect(() => {
-    if (stopTimer) {
-      setStopTimer(false);
-    }
-  }, [auctionNotification, bidNotification]);
-
   /**
    * This useEffect will calculate time and set bid amount on changes of notification
    */
