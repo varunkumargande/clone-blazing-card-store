@@ -76,16 +76,16 @@ function LeftDiv({
   }, [isMobile]);
 
   useEffect(() => {
-    if(!!streamingDetails?.isFollow){
-      setFollowed(!!streamingDetails?.isFollow)
+    if (!!streamingDetails?.isFollow) {
+      setFollowed(!!streamingDetails?.isFollow);
     }
-  }, [streamingDetails?.isFollow])
+  }, [streamingDetails?.isFollow]);
 
   useEffect(() => {
-    if(!!stream?.streamData?.vendorDetails?.follower_count){
-      setNoOfFollower(stream?.streamData?.vendorDetails?.follower_count)
+    if (!!stream?.streamData?.vendorDetails?.follower_count) {
+      setNoOfFollower(stream?.streamData?.vendorDetails?.follower_count);
     }
-  }, [stream?.streamData?.vendorDetails?.follower_count])
+  }, [stream?.streamData?.vendorDetails?.follower_count]);
 
   /**
    * Method to get All products of a stream
@@ -497,7 +497,7 @@ function LeftDiv({
             e.stopPropagation();
           }}
         >
-          <h3 className="title">
+          <h3 className="title text-capitalize">
             {streamTitle || (
               <Skeleton
                 baseColor="#dddbdb66"
