@@ -30,9 +30,10 @@ export async function GoogleLoginApi(
   const result = await axios.post(`${apiBaseUrl}/gmail-login`, data);
   if (result && result.data && result.data.status === 1) {
     localStorage.setItem("blazingToken", result.data.data.token);
+    localStorage.setItem("blazingUser", JSON.stringify(result.data.data.user));
     localStorage.setItem(
-      "blazingUser",
-      JSON.stringify(result.data.data.user)
+      "chat-app-current-user",
+      JSON.stringify(result.data.data.chatUser)
     );
     getProfile(JSON.stringify(result.data.data.user));
     modalSuccess("success", result.data.message);

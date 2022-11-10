@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Router from "next/router";
 import IconNoNotifications from "../../Icons/IconNoNotifications";
-import { getInTime } from "../../../utilities/time";
 import NotificationMethods from "../../../api/notification/NotificationMethods";
+import moment from "moment/moment";
 
 const Notifications = (props) => {
   const { notifications, handleNotifications, setNotificationsUnreadCount } =
@@ -54,6 +54,15 @@ const Notifications = (props) => {
     Router.push(notification.notify_url || "/");
   };
 
+  const getTime = (dateTime) => {
+    const currentTime = moment.utc(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
+    const createdTime = moment.utc(dateTime);
+    const difference = moment.duration(currentTime.diff(createdTime));
+    if(difference.days() > '2'){
+      return createdTime.format("MMM D, YYYY, hh:mm:ss a");
+    }
+    return createdTime.fromNow();
+  }
   const renderNotifications = () => {
     if (notifications && notifications.length > 0) {
       return notifications.map((notification, index) => (
@@ -71,7 +80,7 @@ const Notifications = (props) => {
             <div className="text">{notification.notify_notification}</div>
             <span className="time flex flex-center">
               <img src="/static/images/time.svg" alt="bought" />
-              {getInTime(notification.notify_created_date)}
+              {getTime(notification.notify_created_date)}
             </span>
           </div>
         </div>

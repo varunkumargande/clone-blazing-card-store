@@ -7,7 +7,13 @@ export default function ProfilePannel({
   changeCurrentChat,
   setIsOpen,
   userCount,
+  setChatPanelVisible,
 }) {
+  const handleSelectChatUser = (index) => {
+    changeCurrentChat(index);
+    setChatPanelVisible(true);
+  };
+
   return (
     <div className="profile-wrapper">
       {/* <div className=" static-content flex justify-center flex-center column">
@@ -30,7 +36,7 @@ export default function ProfilePannel({
             <>
               <div
                 className="profile-chat-list flex space-between"
-                onClick={() => changeCurrentChat(index)}
+                onClick={() => handleSelectChatUser(index)}
               >
                 <div className="profile-image-title flex flex-center">
                   <div className="image br50">

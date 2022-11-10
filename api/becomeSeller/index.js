@@ -14,10 +14,7 @@ export async function paymentDetailsApi(payLoad) {
 }
 
 export async function shippingDetails(payLoad) {
-  const result = await APIServices.create('vendor-store/shipping-details', payLoad)
-  if (result && result.data && result.data.data) {
-    return result.data.data;
-  }
+  return await APIServices.create('vendor-store/shipping-details', payLoad)
 }
 
 export async function getDetails() {

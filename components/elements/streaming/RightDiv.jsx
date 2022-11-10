@@ -123,9 +123,12 @@ function RightDiv({ streamData, channel, client }) {
     if (!messages) return <></>;
     return (
       <div className="chat-inner-wrap flex column justify-right">
-        {messages?.map(({ message, userId, profileUrl }) => {
+        {messages?.map(({ message, userId, profileUrl, index }) => {
           return (
-            <div className="flex flex-center chat">
+            <div
+              key={`message-${message}-${userId}-${index}`}
+              className="flex flex-center chat"
+            >
               <div className="chat-img br50">
                 <CloudinaryImage
                   imageUrl={profileUrl}

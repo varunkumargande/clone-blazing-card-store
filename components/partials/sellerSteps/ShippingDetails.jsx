@@ -33,7 +33,7 @@ export default function ShippingDetails() {
       shipFromName: values?.fullName,
       addressLine1: values?.addressLine1,
       addressLine2: values?.addressLine2,
-      country: values?.country,
+      countryId: Number(values?.country),
       postalCode: values?.postalCode,
       city: values?.city,
       state: values?.state,
