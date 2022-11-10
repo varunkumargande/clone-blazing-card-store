@@ -95,6 +95,7 @@ function StreamingBase({
 
         setDisableBid(true);
         setCurrentAuctionDetails(null);
+        // console.log("timer out notification true")
         if (!stopTimer.current) {
           stopTimer.current = true;
         }
@@ -121,10 +122,12 @@ function StreamingBase({
 
       if (streamNotification?.name) {
         setBidAmount(null);
+        // console.log("win notification true")
         if (!stopTimer.current) {
           stopTimer.current = true;
         }
       } else {
+        // console.log("other notification false")
         if (stopTimer.current) {
           stopTimer.current = false;
           setDisableBid(false);
@@ -157,7 +160,7 @@ function StreamingBase({
         liveAuctionDetails?.latestBidding?.bidAmount ||
         liveAuctionDetails?.latestAuction?.bidAmount
       ) {
-        const amount = getBidAmount && !stopTimer.current ? getBidAmount : 0;
+        const amount = getBidAmount &&( !stopTimer.current || getBidAmount > 1)? getBidAmount : 0;
 
         setBidAmount(+amount);
         setAmountToBid(+amount + 1);
@@ -364,10 +367,11 @@ function StreamingBase({
    * @returns string || null
    */
   const currentAuctionDetail = useMemo(() => {
-    if (liveAuctionDetails?.latestAuction) {
-      return liveAuctionDetails?.latestAuction ?? null;
-    }
-    return streamNotification?.product ?? currentAuctionDetails;
+    return (
+      currentAuctionDetails ||
+      streamNotification?.product ||
+      liveAuctionDetails?.latestAuction
+    );
   }, [liveAuctionDetails, streamNotification, currentAuctionDetails]);
 
   const handleLikeUnlike = async () => {
@@ -403,9 +407,9 @@ function StreamingBase({
   const renderUserAvatar = (profile) => {
     return (
       <CloudinaryImage
-        imageUrl={`${profile.avatar || `logo/user-fill.png`}`}
-        keyId={`${profile.avatar || 'avatar'}`}
-        alternative={profile?.firstName?.[0] || 'P'}
+        imageUrl={`${profile?.avatar || `logo/user-fill.png`}`}
+        keyId={`${profile?.avatar || "avatar"}`}
+        alternative={profile?.firstName?.[0] || "P"}
         transformation={ImageTransformation.profileImageCard}
       />
     );
@@ -514,14 +518,14 @@ function StreamingBase({
         {streamNotification?.name ? (
           <div className="winner-profile flex flex-center">
             <div className="pf br50">
-            {renderUserAvatar(streamNotification?.customer)}
+              {renderUserAvatar(streamNotification?.customer)}
             </div>
             {streamNotification?.name} <span> &nbsp; is winner 🎉</span>
           </div>
         ) : streamNotification?.customer?.firstName ? (
           <div className="winner-profile flex flex-center">
             <div className="pf br50">
-            {renderUserAvatar(streamNotification?.customer)}
+              {renderUserAvatar(streamNotification?.customer)}
             </div>
             {streamNotification?.customer?.firstName}{" "}
             <span> &nbsp; is winning 🎉</span>
@@ -538,12 +542,13 @@ function StreamingBase({
               ) : null}
             </div>
             <div className="bid-status flex flex-center">
+            {/* {console.log(bidAmount, !stopTimer, "stopTimer")} */}
               {streamNotification?.bidAmount ? (
                 <>Selling Bid - ${streamNotification?.bidAmount} + Ship/Tax </>
               ) : (
                 <>
                   Current Bid - $
-                  {bidAmount > 0 && !stopTimer ? bidAmount : null} + Ship/Tax{" "}
+                  {bidAmount > 0 && !stopTimer ? bidAmount : null} + Ship/Tax
                 </>
               )}
               <span
