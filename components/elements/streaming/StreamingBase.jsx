@@ -398,6 +398,16 @@ function StreamingBase({
     }
   };
 
+  const renderUserAvatar = (profile) => {
+    return (
+      <CloudinaryImage
+        imageUrl={`${profile.avatar || `logo/user-fill.png`}`}
+        keyId={`${profile.avatar || 'avatar'}`}
+        alternative="profileImg"
+      />
+    );
+  };
+
   return (
     <div className="stream-wrapper">
       <div className="overlay-sighin"></div>
@@ -501,14 +511,14 @@ function StreamingBase({
         {streamNotification?.name ? (
           <div className="winner-profile flex flex-center">
             <div className="pf br50">
-              <img src="/static/images/profile.png" alt="" />
+            {renderUserAvatar(streamNotification?.customer)}
             </div>
             {streamNotification?.name} <span> &nbsp; is winner 🎉</span>
           </div>
         ) : streamNotification?.customer?.firstName ? (
           <div className="winner-profile flex flex-center">
             <div className="pf br50">
-              <img src="/static/images/profile.png" alt="" />
+            {renderUserAvatar(streamNotification?.customer)}
             </div>
             {streamNotification?.customer?.firstName}{" "}
             <span> &nbsp; is winning 🎉</span>
