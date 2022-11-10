@@ -9,7 +9,7 @@ const StreamingElement = ({ volume, isMute }) => {
   const streamData = useSelector((state) => state?.stream?.streamData);
   const rtc = useRef({});
   const [remoteUser, setRemoteUser] = useState(null);
-  const [remoteAudioTrack, setRemoteAudioTrack] = useState(null)
+  const [remoteAudioTrack, setRemoteAudioTrack] = useState(null);
 
   useEffect(() => {
     const volumeLevel = !!isMute ? 0 : volume;
@@ -17,7 +17,7 @@ const StreamingElement = ({ volume, isMute }) => {
       remoteAudioTrack?.setVolume(volumeLevel);
     }
   }, [isMute, volume]);
-  
+
   useEffect(() => {
     rtc.current.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
     joinChannelAsAudience();
@@ -84,7 +84,6 @@ const StreamingElement = ({ volume, isMute }) => {
 
   return (
     <>
-      {" "}
       {remoteUser ? (
         <div
           id="local_stream"
@@ -94,14 +93,16 @@ const StreamingElement = ({ volume, isMute }) => {
       ) : !!streamData ? (
         streamData?.preview_image_path && streamData?.preview_image ? (
           <CloudinaryImage
-            imageUrl={streamData?.preview_image_path+"/"+streamData?.preview_image}
+            imageUrl={
+              streamData?.preview_image_path + "/" + streamData?.preview_image
+            }
             keyId={`streamID${streamData?.uuid}`}
             transformation={ImageTransformation.streamThumnail}
             alternative="stream Image"
           />
         ) : (
           <>
-          <CloudinaryImage imageUrl="defaultCard.png" />
+            <CloudinaryImage imageUrl="defaultCard.png" />
           </>
         )
       ) : (

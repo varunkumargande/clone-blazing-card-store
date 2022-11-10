@@ -5,7 +5,7 @@ import CenterDiv from "./CenterDiv";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { clearState, streamData } from "../../../store/stream/action";
-import { apiUrl, notificationBaseUrl } from "../../../api/url";
+import { notificationBaseUrl } from "../../../api/url";
 import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
 import useEventSocket from "../../../hooks/useEventSocket";
 import { useCallback } from "react";
@@ -32,7 +32,6 @@ function Streaming() {
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
   const [notificationData, setNotificationData] = useState(null);
-  const [notificationDataUpdated, setNotificationDataUpdated] = useState(false);
 
   const stream = useSelector((state) => {
     return state?.stream;
