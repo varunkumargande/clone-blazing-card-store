@@ -10,7 +10,7 @@ const SeeMoreLoader = ({ setOffset, offset }) => {
 
   return (
     <div className="flex flex-center">
-      <button className="title active" onClick={handleCallApi}>
+      <button className="seeAll" onClick={handleCallApi}>
         See More
       </button>
     </div>

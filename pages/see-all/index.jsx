@@ -18,6 +18,7 @@ import {
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
 import SeeMoreLoader from "../../components/reusable/SeeMoreLoader";
+import { limit } from "../../components/Constants";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -162,7 +163,9 @@ function categoryStream({ auth, category }) {
                   )}
                 </div>
                 <div>
-                  <SeeMoreLoader setOffset={setOffset} offset={offset} />
+                  {streamData?.length >= limit && (
+                    <SeeMoreLoader setOffset={setOffset} offset={offset} />
+                  )}
                 </div>
               </div>
             </div>
