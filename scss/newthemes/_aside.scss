@@ -75,13 +75,22 @@
             padding: 24px 16px 35px 16px;
 
             .profile-icon {
-                width: 124px;
+                width: 132px;
                 margin: 0 auto;
-
+                height: 132px;
+                background-color: #E6E6E6;
+                border-radius: 50%;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 img {
                     width: 100%;
                     overflow: hidden;
                     object-fit: cover;
+                    &.error{
+                        max-width: 62px;
+                    }
                 }
             }
 

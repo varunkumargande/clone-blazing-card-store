@@ -20,6 +20,7 @@ import {
 } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
+import { DefaultImagePath } from "../../components/Constants/defaultImage";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -358,18 +359,29 @@ export default function PublicProfile() {
               <aside className="aside-wrapper profile-aside">
                 <div className="aside-container profile-container">
                   <div className="profile-icon">
-                    <CloudinaryImage
-                      imageUrl={DefaultServices?.GetFullImageURL(
-                        profile,
-                        "profile"
-                      )}
-                      keyId={DefaultServices?.GetFullImageURL(
-                        profile,
-                        "profile"
-                      )}
-                      transformation={ImageTransformation.ProfileImage}
-                      alternative={"profileImg"}
-                    />
+                    {DefaultServices?.GetFullImageURL(profile, "profile") !== DefaultImagePath.defaultImage ?
+                      <CloudinaryImage
+                        imageUrl={DefaultServices?.GetFullImageURL(
+                          profile,
+                          "profile"
+                        )}
+                        keyId={DefaultServices?.GetFullImageURL(
+                          profile,
+                          "profile"
+                        )}
+                        transformation={ImageTransformation.ProfileImage}
+                        alternative={"profileImg"}
+                      /> :
+                      <img
+                        onError={() => {
+                          currentTarget.onerror = null;
+                          currentTarget.src = "/static/images/profileImg.png";
+                        }}
+                        src={DefaultImagePath.defaultProfileImage}
+                        alt="Profile"
+                        className="error"
+                      />
+                    }
                     {/* <img width="124" height="124" style={{ borderRadius:"50%" }} src={DefaultServices.GetFullImageURL(profile, "vendor", "124", "124")} alt="profileImg" /> */}
                   </div>
                   <div className="title flex column">
