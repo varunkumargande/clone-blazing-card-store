@@ -32,7 +32,6 @@ function Streaming() {
   // const [userCount, setUserCount] = useState(null);
   const [channel, setChannel] = useState(null);
   const [notificationData, setNotificationData] = useState(null);
-  const [notificationDataUpdated, setNotificationDataUpdated] = useState(false);
 
   const stream = useSelector((state) => {
     return state?.stream;

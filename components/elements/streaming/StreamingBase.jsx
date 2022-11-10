@@ -212,7 +212,7 @@ function StreamingBase({
    */
 
   const getTimeDifference = (endTime, currentTime) => {
-    if (endTime && currentTime && !stopTimer) {
+    if (endTime) {
       let [date, time] = endTime.split(" ");
       const convertedEndTime = moment(date.replaceAll("-", "/") + " " + time);
       const duration = moment.duration(convertedEndTime.diff(currentTime));
