@@ -21,6 +21,7 @@ import IconSpeakerMute from "../../Icons/IconSpeakerMute";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { ImageTransformation } from "../../Constants/imageTransformation";
 
 function StreamingBase({
   cardDetail,
@@ -402,9 +403,10 @@ function StreamingBase({
   const renderUserAvatar = (profile) => {
     return (
       <CloudinaryImage
-        imageUrl={`${profile.avatar || `defaultCard.png` || `logo/user-fill.png`}`}
+        imageUrl={`${profile.avatar || `logo/user-fill.png`}`}
         keyId={`${profile.avatar || 'avatar'}`}
         alternative={profile?.firstName?.[0] || 'P'}
+        transformation={ImageTransformation.profileImageCard}
       />
     );
   };
