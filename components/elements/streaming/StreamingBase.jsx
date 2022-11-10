@@ -404,7 +404,7 @@ function StreamingBase({
       <CloudinaryImage
         imageUrl={`${profile.avatar || `logo/user-fill.png`}`}
         keyId={`${profile.avatar || 'avatar'}`}
-        alternative="profileImg"
+        alternative={profile?.firstName?.[0] || 'P'}
       />
     );
   };
