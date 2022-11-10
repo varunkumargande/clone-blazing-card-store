@@ -20,6 +20,7 @@ import { streamLikeDislike } from "../../../api/stream/streams_api";
 import IconSpeakerMute from "../../Icons/IconSpeakerMute";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 import { useRef } from "react";
+import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 
 function StreamingBase({
   cardDetail,
