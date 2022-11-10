@@ -423,7 +423,10 @@ function LeftDiv({
       <div className="flex profile-wrapper">
         <div className="image">
           {stream?.streamData?.vendorDetails ? (
-            DefaultServices?.GetFullImageURL(stream?.streamData?.vendorDetails, "vendor") !== DefaultImagePath.defaultImage ?
+            DefaultServices?.GetFullImageURL(
+              stream?.streamData?.vendorDetails,
+              "vendor"
+            ) !== DefaultImagePath.defaultImage ? (
               <CloudinaryImage
                 imageUrl={DefaultServices?.GetFullImageURL(
                   stream?.streamData?.vendorDetails,
@@ -435,7 +438,8 @@ function LeftDiv({
                 )}
                 transformation={ImageTransformation.streamPageProfile}
                 alternative={"Card"}
-              /> :
+              />
+            ) : (
               <img
                 onError={() => {
                   currentTarget.onerror = null;
@@ -446,6 +450,7 @@ function LeftDiv({
                 src={DefaultImagePath.defaultProfileImage}
                 alt="Profile"
               />
+            )
           ) : (
             <Skeleton
               className="border"
