@@ -40,7 +40,6 @@ function StreamingBase({
   const [amountToBid, setAmountToBid] = useState(+bidAmount + 1);
   const [minutes, setMinutes] = useState(null);
   const [seconds, setSeconds] = useState(null);
-  // const [stopTimer, setStopTimer] = useState(false);
   const [disableBid, setDisableBid] = useState(false);
   const [isBidResponseModal, setIsBidResponseModal] = useState(false);
   /*****For notifications *****/
@@ -86,7 +85,6 @@ function StreamingBase({
 
     if (minutes !== null && seconds !== null && !stopTimer.current) {
       handleTimer();
-      // }
 
       if (seconds <= 0 && minutes <= 0) {
         setMinutes(0);
@@ -95,7 +93,6 @@ function StreamingBase({
 
         setDisableBid(true);
         setCurrentAuctionDetails(null);
-        // console.log("timer out notification true")
         if (!stopTimer.current) {
           stopTimer.current = true;
         }
@@ -122,12 +119,10 @@ function StreamingBase({
 
       if (streamNotification?.name) {
         setBidAmount(null);
-        // console.log("win notification true")
         if (!stopTimer.current) {
           stopTimer.current = true;
         }
       } else {
-        // console.log("other notification false")
         if (stopTimer.current) {
           stopTimer.current = false;
           setDisableBid(false);
@@ -535,20 +530,19 @@ function StreamingBase({
         <div className="stream-footer flex flex-center space-between">
           <div className="left">
             <div className="time-left">
-              {minutes > 0 || seconds > 0 ? (
+              {(minutes > 0 || seconds > 0 && !stopTimer.current) ? (
                 <>
                   Time left - <Timer minutes={minutes} seconds={seconds} />
                 </>
               ) : null}
             </div>
             <div className="bid-status flex flex-center">
-            {/* {console.log(bidAmount, !stopTimer, "stopTimer")} */}
               {streamNotification?.bidAmount ? (
                 <>Selling Bid - ${streamNotification?.bidAmount} + Ship/Tax </>
               ) : (
                 <>
                   Current Bid - $
-                  {bidAmount > 0 && !stopTimer ? bidAmount : null} + Ship/Tax
+                  {bidAmount > 0 && !stopTimer.current ? bidAmount : null} + Ship/Tax
                 </>
               )}
               <span
