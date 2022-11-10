@@ -31,10 +31,11 @@ function LeftDiv({
     SOLD: "sold",
     PURCHASED: "purchased",
   };
+  const router = useRouter();
+  const { isMobile } = useIsMobile();
 
   const TOGGLES = ["Auction", "Buy Now", "Sold", "Purchased"];
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
-  const router = useRouter();
   const streamUuid = router.query["uuid"];
   const stream = useSelector((state) => state.stream);
   const isLoggedIn = stream?.streamPageData?.streamPageDteails?.isLoggedIn;
@@ -51,9 +52,7 @@ function LeftDiv({
   const [filterKeyword, setFilterKeyword] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
-  const [noOfFollower, setNoOfFollower] = useState(
-    stream?.streamData?.vendorDetails?.follower_count ?? 0
-  );
+  const [noOfFollower, setNoOfFollower] = useState(0);
   //to handle width of the screen and call methods accordingly
 
   const [showLogin, setShowLogin] = useState(false);
@@ -67,8 +66,6 @@ function LeftDiv({
   const [streamProducts, setStreamProducts] = useState(initialStreamingData);
   const [streamProductsFetched, setStreamProductsFetched] = useState(false);
 
-  const { isMobile } = useIsMobile();
-
   // to initially show left div on desktop and hide on mobile screen
   useEffect(() => {
     if (isMobile && isLeftDivOpen) {
@@ -79,8 +76,16 @@ function LeftDiv({
   }, [isMobile]);
 
   useEffect(() => {
-    setFollowed(!!streamingDetails?.isFollow)
+    if(!!streamingDetails?.isFollow){
+      setFollowed(!!streamingDetails?.isFollow)
+    }
   }, [streamingDetails?.isFollow])
+
+  useEffect(() => {
+    if(!!stream?.streamData?.vendorDetails?.follower_count){
+      setNoOfFollower(stream?.streamData?.vendorDetails?.follower_count)
+    }
+  }, [stream?.streamData?.vendorDetails?.follower_count])
 
   /**
    * Method to get All products of a stream
