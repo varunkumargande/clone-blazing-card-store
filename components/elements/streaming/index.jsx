@@ -50,6 +50,12 @@ function Streaming() {
   const win = useEventSocket(`${notificationBaseUrl}${uuid}-win`, fetch);
 
   useEffect(() => {
+    if (isMobile) {
+      setLeftDivOpen(false);
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
     if (auction?.data) {
       setNotificationData(auction?.data);
     }
