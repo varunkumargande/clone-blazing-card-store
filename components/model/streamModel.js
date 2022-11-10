@@ -36,7 +36,7 @@ class StreamDetailModel {
       isLoggedIn: false,
       avatarImage: userDetails?.avatar
         ? userDetails?.avatarPath + "/" + userDetails?.avatar
-        : DefaultImagePath.defaultImage,
+        : null,
 
       // ToDo: Need to remove commented code. Keeping it for refrence for now.
       // avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"

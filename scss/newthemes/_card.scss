@@ -190,9 +190,29 @@
                 border-radius: 50%;
                 margin-right: 5px;
                 object-fit: cover;
-                border:1px solid$white-color;
+                border:1px solid $white-color;
                 border-radius:50%;
                 background-color: #E6E6E6;
+            }
+            .profile{
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                margin-right: 5px;
+                overflow: hidden;
+                border:1px solid $white-color;
+                background-color: #E6E6E6;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0;
+                img{
+                    max-width: 13px;
+                    border-radius: 0;
+                    height: auto;
+                    border: none;
+                    margin:0;
+                }
             }
         }
         .disc{
@@ -446,6 +466,12 @@
              @include pos(re);
             img{
                 @include pos(ab,-28px,null,null,0);
+            }
+            .profile{
+                @include pos(ab,-28px,null,null,0);
+                img{
+                    position:static;
+                }
             }
         }
         .disc{

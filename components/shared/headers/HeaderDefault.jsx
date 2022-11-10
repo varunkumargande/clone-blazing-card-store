@@ -33,6 +33,7 @@ import { useNotifications } from "../../../contexts/Notifications/Notifications"
 import { vendorAuth } from "../../../store/vendorAuth/action";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
 import { show } from "../../../store/toast/action";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -121,13 +122,16 @@ function HeaderDefault({ auth }) {
       );
     } else {
       return (
-        <img
-          onError={({ currentTarget }) => {
+        <img 
+          onError={() => {
             currentTarget.onerror = null;
             currentTarget.src = "/static/images/profileImg.png";
           }}
-          src={"/static/img/no-image-new.svg"}
+          height={20}
+          width={15}
+          src={DefaultImagePath.defaultProfileImage}
           alt="Profile"
+          className="error"
         />
       );
     }
@@ -318,7 +322,7 @@ function HeaderDefault({ auth }) {
                   onClick={handleOnClick}
                 >
                   <span>
-                    <span className="profileImage">{handleProfileImage()}</span>
+                    <span className="profileImage flex justify-center flex-center">{handleProfileImage()}</span>
                     <IconDropdown />
                   </span>
 
