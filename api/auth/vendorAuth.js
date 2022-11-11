@@ -1,5 +1,5 @@
 import APIServices from "../../services";
-import { apiConstant } from "../../components/Constants/apis";
+import { apiConstant } from "../../components/Constants";
 
 /**
  * vendor login feature from store
