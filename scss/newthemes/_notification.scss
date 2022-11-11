@@ -38,6 +38,8 @@
         }
     }
     .cart-description{
+        width:calc(100% - 67px);
+        text-align: left;
         .time{
             margin-top: 8px;
             font-size: 12px;
