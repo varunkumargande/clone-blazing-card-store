@@ -120,7 +120,7 @@ export default function PublicProfile() {
         return (
           <>
             {upcomingShows.map((show, index) => (
-              <React.Fragment key={`public-profile-upcoming-${index}`}>
+              <React.Fragment key={`public-profile-upcoming-${show?.id}`}>
                 <StreamCard detail={show} showLoginModal={setShowModal} />
               </React.Fragment>
             ))}
@@ -141,7 +141,7 @@ export default function PublicProfile() {
         return (
           <>
             {previousShows.map((show, index) => (
-              <React.Fragment key={`public-profile-upcoming-${index}`}>
+              <React.Fragment key={`public-profile-previous-${show?.id}`}>
                 <StreamCard detail={show} showLoginModal={setShowModal} />
               </React.Fragment>
             ))}
@@ -182,7 +182,7 @@ export default function PublicProfile() {
           return (
             <>
               {followers.map((details, index) => (
-                <React.Fragment key={`public-profile-followers-${index}`}>
+                <React.Fragment key={`public-profile-followers-${details?.id}`}>
                   <Followers
                     person={details}
                     isFollower={isForFollower}
@@ -206,7 +206,7 @@ export default function PublicProfile() {
           return (
             <>
               {following.map((details, index) => (
-                <React.Fragment key={`public-profile-following-${index}`}>
+                <React.Fragment key={`public-profile-following-${details?.id}`}>
                   <Followers
                     person={details}
                     isFollower={isForFollower}
