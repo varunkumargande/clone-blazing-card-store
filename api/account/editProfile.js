@@ -32,17 +32,19 @@ export async function editProfileApi(
   const JSONdata = JSON.stringify(data);
   const result = await APIServices.create("customer/edit-profile", JSONdata);
   if (result && result.data && result.data.status === 1) {
-    let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
     const token = localStorage.getItem("blazingToken");
     const chatHeader = {
       Authorization: `Bearer ${token}`,
     };
-    await axios
-      .post(`${setAvatarRoute}/${user}`, chatData, {
-        headers: chatHeader,
-      })
-      .then((res) => {})
-      .catch((err) => {});
+    if (localStorage.getItem("chat-app-current-user")) {
+      const user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+      await axios
+        .post(`${setAvatarRoute}/${user}`, chatData, {
+          headers: chatHeader,
+        })
+        .then((res) => {})
+        .catch((err) => {});
+    }
     localStorage.setItem("blazingUser", JSON.stringify(result.data.data));
     dispatch(show({ message: result.data.message, type: "success" }));
     setLoader(false);
