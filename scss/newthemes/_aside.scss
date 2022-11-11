@@ -164,6 +164,23 @@
                 border-radius: 50%;
                 object-fit: cover;
             }
+            .Image{
+                max-width: 98px;
+                height: 98px;
+                width: 100%;
+                border-radius: 50%;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto;
+                background-color: #E6E6E6;
+                img{
+                    max-width: 30px;
+                    height: auto;
+                    border-radius: 0;
+                }
+            }
             .f-title{
                 font-size: 18px;
                 line-height: 24px;
