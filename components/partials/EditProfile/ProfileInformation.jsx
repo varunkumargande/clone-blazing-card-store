@@ -16,7 +16,7 @@ import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import { DefaultImagePath } from "../../Constants/imageTransformation";
 export default function ProfileInformation() {
   const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB

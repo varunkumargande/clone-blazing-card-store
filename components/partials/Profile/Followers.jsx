@@ -2,8 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import ProfileMethods from "../../../api/profile/ProfileMethods";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { DefaultImagePath } from "../../Constants/defaultImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
 import { UnfollowModal, UnfollowModalMultiple } from "../Modal/Modal";
 

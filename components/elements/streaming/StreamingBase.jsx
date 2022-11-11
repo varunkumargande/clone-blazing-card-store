@@ -19,10 +19,9 @@ import { useRouter } from "next/router";
 import { streamLikeDislike } from "../../../api/stream/streams_api";
 import IconSpeakerMute from "../../Icons/IconSpeakerMute";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import { ImageTransformation,DefaultImagePath } from "../../Constants/imageTransformation";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
 
 function StreamingBase({
   cardDetail,

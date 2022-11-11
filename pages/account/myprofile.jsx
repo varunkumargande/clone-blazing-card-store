@@ -12,10 +12,10 @@ import PublicProfileConstants from "../../components/Constants/publicProfile";
 import Link from "next/link";
 import Followers from "../../components/partials/Profile/Followers";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../components/Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
-import { DefaultImagePath } from "../../components/Constants/defaultImage";
+
 
 function MyProfile(props) {
   const router = useRouter();

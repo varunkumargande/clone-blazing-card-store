@@ -1,6 +1,5 @@
 import React from "react";
 import * as cryptoJs from "crypto-js";
-import { DefaultImagePath } from "../Constants/defaultImage";
 
 class StreamDetailModel {
   constructor(streamData) {

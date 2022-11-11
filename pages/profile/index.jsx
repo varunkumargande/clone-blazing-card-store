@@ -12,7 +12,7 @@ import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
 import DefaultServices from "../../components/Services/DefaultServices";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../components/Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../components/Constants/imageTransformation";
 import BackButton from "../../components/CommonComponents/BackButton";
 import {
   SignUPGoogle,
@@ -20,7 +20,6 @@ import {
 } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
-import { DefaultImagePath } from "../../components/Constants/defaultImage";
 
 export default function PublicProfile() {
   const router = useRouter();

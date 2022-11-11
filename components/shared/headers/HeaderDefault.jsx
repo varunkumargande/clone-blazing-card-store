@@ -22,18 +22,17 @@ import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
 import { imageUrl } from "../../../api/url";
 import MessageButton from "../../elements/MessageButton";
-import { stepState } from "../../Constants/becomeSeller";
+import { stepState } from "../../Constants";
 import { chatLogin } from "../../../api";
 import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageTransformation";
 import useSessionstorage from "../../elements/sessionStorageHook/useSessionstorage";
 import Notifications from "../../partials/Notifications/Notifications";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { vendorAuth } from "../../../store/vendorAuth/action";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
 import { show } from "../../../store/toast/action";
-import { DefaultImagePath } from "../../Constants/defaultImage";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
