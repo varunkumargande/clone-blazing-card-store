@@ -508,6 +508,7 @@
         }
         .chat-inner-wrap{ 
             min-height: 100%;
+            flex-wrap: nowrap;
             > .chat{
                 margin-top: 24px;
             }
