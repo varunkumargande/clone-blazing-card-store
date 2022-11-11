@@ -28,6 +28,7 @@ export default function MyOrders() {
       ) : (
         <>
           {orders?.map((order) => (
+            <React.Fragment key={order?.orderId+"myorders"}>
             <div className="order-list mb12">
               <div className="order-header flex flex-center space-between">
                 <div className="order-head">
@@ -84,6 +85,7 @@ export default function MyOrders() {
                 </div>
               </div>
             </div>
+            </React.Fragment>
           ))}
         </>
       )}
