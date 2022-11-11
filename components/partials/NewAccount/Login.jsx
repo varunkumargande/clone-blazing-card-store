@@ -9,7 +9,7 @@ import { connect, useDispatch } from "react-redux";
 import Router from "next/router";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { loginConstant } from "../../Constants/login";
+import { loginConstant } from "../../Constants/auth";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";

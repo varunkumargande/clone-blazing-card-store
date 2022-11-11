@@ -15,7 +15,7 @@ import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { modalSuccess, modalWarning } from "../../../api/intercept";
-import { registerConstant } from "../../Constants/register";
+import { registerConstant } from "../../Constants/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";

@@ -1,6 +1,7 @@
 export const limit = 10;
 export const US_CODE = "223";
 
+// Become a seller constants
 export const stepState = [
     "guidelines",
     "basicDetails",
@@ -9,6 +10,7 @@ export const stepState = [
     "submitted"
   ];
 
+  //Api constants
   export const apiConstant = {
     vendor: {
       VENDOR_AUTH_TYPE: "vendl",
@@ -18,6 +20,7 @@ export const stepState = [
     },
   };
   
+  //category constants
   export const categoryConstant = {
     "homeTag": "Explore",
     "headingTag": "Categories",
@@ -41,4 +44,58 @@ export const stepState = [
     "SUB_CATEGORY_DATA":{
         "type": 4
     },
+}
+
+//chat constants
+export const chatConstant = {
+    "localStorageKey": "chat-app-current-user",
+}
+
+//Public profile constants
+const VendorTabs = [
+    {
+        "title": "Upcoming Shows",
+        "key": "upcoming-shows"
+    },
+    {
+        "title": "Previous Shows",
+        "key": "previous-shows"
+    },
+    {
+        "title": "Followers",
+        "key": "followers"
+    },
+    {
+        "title": "Following",
+        "key": "following"
+    }
+];
+
+const BuyerTabs = [
+    {
+        "title": "Liked Shows",
+        "key": "liked-shows"
+    },
+    {
+        "title": "Following",
+        "key": "following"
+    },
+    {
+        "title": "Followers",
+        "key": "followers"
+    }
+];
+
+const PublicProfileConstants = {
+    VendorTabs,
+    BuyerTabs
+};
+
+export default PublicProfileConstants;
+
+// Social media links
+export const SocialMediaShareLink = {
+    whatsapp: 'https://wa.me/?text=',
+    twitter: 'https://twitter.com/home?status=',
+    facebook: 'https://www.facebook.com/sharer/sharer.php?u='
 }

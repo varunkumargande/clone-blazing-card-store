@@ -20,7 +20,7 @@ import { getCardImagesByName } from "../../helper/cardImageHelper";
 import { addChatFrend, searchUser } from "../../../api/chat";
 import { regex } from "../../Constants/regex";
 import { apiUrl } from "../../../api/url";
-import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
+import { SocialMediaShareLink } from "../../Constants";
 import { io } from "socket.io-client";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
