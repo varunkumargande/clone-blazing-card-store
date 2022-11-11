@@ -52,7 +52,7 @@ export default function Myorders() {
   const dropDownFilter = () => {
     return Object.entries(DROPDOWN_FILTERS).map((index) => {
       return (
-        <React.Fragment key ={index[0]+"dropDown"}>
+        <React.Fragment key ={`${index[0]}-my-orders-dropDown`}>
           <li onClick={(e) => handleFilter(index)}>{index[0]}</li>
         </React.Fragment>
       );

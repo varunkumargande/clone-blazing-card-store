@@ -120,7 +120,9 @@ export default function PublicProfile() {
         return (
           <>
             {upcomingShows.map((show, index) => (
-              <StreamCard detail={show} showLoginModal={setShowModal} />
+              <React.Fragment key={`public-profile-upcoming-${index}`}>
+                <StreamCard detail={show} showLoginModal={setShowModal} />
+              </React.Fragment>
             ))}
           </>
         );
@@ -139,7 +141,9 @@ export default function PublicProfile() {
         return (
           <>
             {previousShows.map((show, index) => (
-              <StreamCard detail={show} showLoginModal={setShowModal} />
+              <React.Fragment key={`public-profile-upcoming-${index}`}>
+                <StreamCard detail={show} showLoginModal={setShowModal} />
+              </React.Fragment>
             ))}
           </>
         );
@@ -178,13 +182,15 @@ export default function PublicProfile() {
           return (
             <>
               {followers.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowers}
-                  following={followers}
-                />
+                <React.Fragment key={`public-profile-followers-${index}`}>
+                  <Followers
+                    person={details}
+                    isFollower={isForFollower}
+                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                    setFollowing={setFollowers}
+                    following={followers}
+                  />
+                </React.Fragment>
               ))}
             </>
           );
@@ -200,13 +206,15 @@ export default function PublicProfile() {
           return (
             <>
               {following.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowing}
-                  following={following}
-                />
+                <React.Fragment key={`public-profile-following-${index}`}>
+                  <Followers
+                    person={details}
+                    isFollower={isForFollower}
+                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                    setFollowing={setFollowing}
+                    following={following}
+                  />
+                </React.Fragment>
               ))}
             </>
           );
@@ -359,7 +367,8 @@ export default function PublicProfile() {
               <aside className="aside-wrapper profile-aside">
                 <div className="aside-container profile-container">
                   <div className="profile-icon">
-                    {DefaultServices?.GetFullImageURL(profile, "profile") !== DefaultImagePath.defaultImage ?
+                    {DefaultServices?.GetFullImageURL(profile, "profile") !==
+                    DefaultImagePath.defaultImage ? (
                       <CloudinaryImage
                         imageUrl={DefaultServices?.GetFullImageURL(
                           profile,
@@ -371,7 +380,8 @@ export default function PublicProfile() {
                         )}
                         transformation={ImageTransformation.ProfileImage}
                         alternative={"profileImg"}
-                      /> :
+                      />
+                    ) : (
                       <img
                         onError={() => {
                           currentTarget.onerror = null;
@@ -381,7 +391,7 @@ export default function PublicProfile() {
                         alt="Profile"
                         className="error"
                       />
-                    }
+                    )}
                     {/* <img width="124" height="124" style={{ borderRadius:"50%" }} src={DefaultServices.GetFullImageURL(profile, "vendor", "124", "124")} alt="profileImg" /> */}
                   </div>
                   <div className="title flex column">

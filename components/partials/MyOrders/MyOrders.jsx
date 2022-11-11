@@ -28,7 +28,7 @@ export default function MyOrders() {
       ) : (
         <>
           {orders?.map((order) => (
-            <React.Fragment key={order?.orderId+"myorders"}>
+            <React.Fragment key={`${order?.orderId}-my-orders`}>
             <div className="order-list mb12">
               <div className="order-header flex flex-center space-between">
                 <div className="order-head">
