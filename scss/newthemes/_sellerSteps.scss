@@ -221,6 +221,15 @@
             }
         }
     }
+    .submit-wrapper{
+        &.conform{
+            max-width: 330px;
+            .primary-btn{
+                max-width: 215px;
+            }
+        }
+    }
+
 }
 @media all and (min-width:1025px){
     .step-container{
