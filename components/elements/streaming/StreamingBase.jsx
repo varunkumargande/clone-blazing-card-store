@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, memo } from "react";
 import StreamingElement from "./StreamingElement";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
@@ -78,8 +78,8 @@ function StreamingBase({
           setSeconds(seconds - 1);
         }
         if (seconds === 0 && minutes !== 0 && seconds < 60) {
-          setMinutes(minutes - 1);
           setSeconds(59);
+          setMinutes(minutes - 1);
         }
       }, 1000);
     }
@@ -597,4 +597,4 @@ function StreamingBase({
     </div>
   );
 }
-export default StreamingBase;
+export default memo(StreamingBase);
