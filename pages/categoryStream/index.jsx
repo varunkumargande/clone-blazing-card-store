@@ -43,29 +43,31 @@ export default function categoryStream() {
   const getStreamCards = () => {
     return streamDetail?.scheduled?.map((detail) => {
       return (
-        <div className="card-list flex flex-center">
-          <div className="inner-card-list">
-            <a href={`/streaming?stream=${detail.id}&uuid=${detail.uuid}`}>
-              <div className="image">
-                <img src="/static/images/card.png" alt="Card" />
-                <div className="tme-wrap flex flex-center justify-center live">
-                  <span>1.2K</span> <button className="live"></button>
+        <React.Fragment key={`category-stream-${detail?.id}`}>
+          <div className="card-list flex flex-center">
+            <div className="inner-card-list">
+              <a href={`/streaming?stream=${detail.id}&uuid=${detail.uuid}`}>
+                <div className="image">
+                  <img src="/static/images/card.png" alt="Card" />
+                  <div className="tme-wrap flex flex-center justify-center live">
+                    <span>1.2K</span> <button className="live"></button>
+                  </div>
+                  <button className="like flex flex-center justify-center">
+                    <IconLike />
+                  </button>
                 </div>
-                <button className="like flex flex-center justify-center">
-                  <IconLike />
-                </button>
+              </a>
+              <div className="text">
+                <h3 className="title flex flex-center">
+                  <img src="/static/images/profile.png" alt="Card" />{" "}
+                  {detail.title}
+                </h3>
+                <div className="disc">{detail.description}</div>
+                <button className="cate-btn">{detail.category_name}</button>
               </div>
-            </a>
-            <div className="text">
-              <h3 className="title flex flex-center">
-                <img src="/static/images/profile.png" alt="Card" />{" "}
-                {detail.title}
-              </h3>
-              <div className="disc">{detail.description}</div>
-              <button className="cate-btn">{detail.category_name}</button>
             </div>
           </div>
-        </div>
+        </React.Fragment>
       );
     });
   };

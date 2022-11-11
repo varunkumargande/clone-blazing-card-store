@@ -63,7 +63,11 @@ function categoryStream({ auth, category }) {
   const getStreamCards = () => {
     if (streamData.length) {
       return streamData.map((item) => {
-        return <StreamCard detail={item} showLoginModal={setShowModal} />;
+        return (
+          <React.Fragment key={`see-all-stream-card-${item?.id}`}>
+            <StreamCard detail={item} showLoginModal={setShowModal} />;
+          </React.Fragment>
+        );
       });
     }
   };
