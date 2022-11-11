@@ -68,7 +68,7 @@ function MyProfile(props) {
 
   const getAllBuyerDetails = () => {
     const loggedInUserId = getSessionUser().id;
-    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);  
+    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
     ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
   };
@@ -127,7 +127,9 @@ function MyProfile(props) {
         return (
           <>
             {upcomingShows.map((show, index) => (
-              <StreamCard detail={show} />
+              <React.Fragment key={`upcoming-myprofile-${index}`}>
+                <StreamCard detail={show} />
+              </React.Fragment>
             ))}
           </>
         );
@@ -146,7 +148,9 @@ function MyProfile(props) {
         return (
           <>
             {previousShows.map((show, index) => (
-              <StreamCard detail={show} />
+              <React.Fragment key={`previousshows-myprofile-${index}`}>
+                <StreamCard detail={show} />
+              </React.Fragment>
             ))}
           </>
         );
@@ -179,13 +183,17 @@ function MyProfile(props) {
           return (
             <>
               {followers.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowers}
-                  following={followers}
-                />
+                <React.Fragment
+                  key={`follower-myprofile-${index}-${details?.id}`}
+                >
+                  <Followers
+                    person={details}
+                    isFollower={isForFollower}
+                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                    setFollowing={setFollowers}
+                    following={followers}
+                  />
+                </React.Fragment>
               ))}
             </>
           );
@@ -201,13 +209,17 @@ function MyProfile(props) {
           return (
             <>
               {following.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowing}
-                  following={following}
-                />
+                <React.Fragment
+                  key={`following-myprofile-${index}-${details?.id}`}
+                >
+                  <Followers
+                    person={details}
+                    isFollower={isForFollower}
+                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                    setFollowing={setFollowing}
+                    following={following}
+                  />
+                </React.Fragment>
               ))}
             </>
           );
@@ -344,7 +356,7 @@ function MyProfile(props) {
           alt="Profile"
           className="error"
         />
-      )
+      );
     }
   };
 
