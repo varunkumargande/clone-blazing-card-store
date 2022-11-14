@@ -147,6 +147,7 @@ export default function PublicProfile() {
                 detail={show}
                 showLoginModal={setShowModal}
                 key={`public-profile-previous-${show?.id}`}
+                isDate={true}
               />
             ))}
           </>
