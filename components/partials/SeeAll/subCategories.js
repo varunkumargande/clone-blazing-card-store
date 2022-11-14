@@ -10,6 +10,8 @@ import {
 import { getStreamSubCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 import { useCategoriesData } from "../../../contexts/Categoires/CategoriesData";
 import TabsSkeleton from "../../../skeleton/TabsSkeleton";
+import { stringFormatter } from "../../helper/cardImageHelper";
+import { camelCase } from "../../../utilities/utils";
 
 function SeeAllSubCategories({
   catIndex,
@@ -33,7 +35,7 @@ function SeeAllSubCategories({
         setLoader(true);
       }
       getStreamSubCategoryBasedApi(
-        query?.page,
+        camelCase(query?.page),
         query?.category,
         query?.subCategory,
         setStreamData,

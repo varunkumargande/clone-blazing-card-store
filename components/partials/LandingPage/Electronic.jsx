@@ -7,7 +7,10 @@ import { limit } from "../../Constants";
 import { showCatCardLoader } from "../../../api/utils/showCatCardLoader";
 import ShowViewAll from "../../reusable/viewAll";
 import StreamCardSkeleton from "../../../skeleton/StreamCardSkeleton";
-import { saveSubCategoryName } from "../../../store/category/action";
+import {
+  saveSubCategoryName,
+  saveCategoryName,
+} from "../../../store/category/action";
 import { useDispatch } from "react-redux";
 
 function CategoryStream({
@@ -59,17 +62,18 @@ function CategoryStream({
       Router.push({
         pathname: "/see-all",
         query: {
-          page: "allCategory",
+          page: "all category",
           category: category?.categoryName,
           subCategory: catSlug,
         },
       });
     } else {
+      disptach(saveCategoryName(catSlug));
       Router.push({
         pathname: "/see-all",
         query: {
-          page: "allCategory",
-          category: category?.categoryName,
+          page: "all category",
+          category: catSlug,
           subCategory: "all",
         },
       });

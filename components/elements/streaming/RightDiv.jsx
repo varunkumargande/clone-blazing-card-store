@@ -66,6 +66,9 @@ function RightDiv({ streamData, channel, client }) {
         type: "text",
       });
       setInputValue("");
+      // Below line to scroll to bottom
+      document.getElementsByClassName('chat-wrap')[0].scrollTop = document.getElementsByClassName('chat-wrap')[0].scrollHeight;
+
     }
   };
 
@@ -79,6 +82,7 @@ function RightDiv({ streamData, channel, client }) {
       sendAndUpdateMessage();
     }
   };
+
 
   const showMessages = () => {
     if (!channel) {
