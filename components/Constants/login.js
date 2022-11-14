@@ -5,7 +5,7 @@ export const loginConstant = {
   form: {
     emailField: {
       emailName: "email",
-      emailLabel: "Email Address *",
+      emailLabel: "Email Address*",
       emailPlaceholder: "Enter email address",
       validateEmail: "Invalid email address",
       requiredEmail: "Email is required",
@@ -13,7 +13,7 @@ export const loginConstant = {
     passwordField: {
       passwordName: "password",
       passwordLabel: "Password *",
-      passwordPlaceholder: "Enter password address",
+      passwordPlaceholder: "Enter password",
       requiredPassword: "Password is required",
       validatePassword:
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character",

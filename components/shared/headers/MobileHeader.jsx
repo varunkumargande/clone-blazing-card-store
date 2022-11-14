@@ -149,7 +149,7 @@ function MobileHeader({ auth }) {
     if (profile?.isVendor && auth?.isLoggedIn) {
       return (
         <>
-          <div className="text-center become-seller">
+          <div className="text-center become-seller flex flex-center justify-center become-toggle">
             <label className="switch toggle-switch darkBlue">
               <input
                 type="checkbox"
@@ -268,17 +268,17 @@ function MobileHeader({ auth }) {
           </div>
         </div>
         <div className="menu-overflow">
-          <div className="search-wrap flex space-between flex-top">
+          {/* <div className="search-wrap flex space-between flex-top">
             <div className="Search">
               <input type="search" id="search" name="search" />
               <button className="search-btn">
                 <IconSearch />
               </button>
             </div>
-            {/* <div className="category-btn-wrap">
-                            <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
-                        </div> */}
-          </div>
+            <div className="category-btn-wrap">
+                <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
+            </div>
+          </div> */}
 
           {auth.isLoggedIn ? (
             <>
