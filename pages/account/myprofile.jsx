@@ -127,9 +127,7 @@ function MyProfile(props) {
         return (
           <>
             {upcomingShows.map((show, index) => (
-              <React.Fragment key={`upcoming-myprofile-${index}`}>
-                <StreamCard detail={show} />
-              </React.Fragment>
+                <StreamCard detail={show} key={`upcoming-myprofile-${show?.id}`}/>
             ))}
           </>
         );
@@ -148,9 +146,7 @@ function MyProfile(props) {
         return (
           <>
             {previousShows.map((show, index) => (
-              <React.Fragment key={`previousshows-myprofile-${index}`}>
-                <StreamCard detail={show} />
-              </React.Fragment>
+                <StreamCard detail={show} key={`previousshows-myprofile-${show?.id}`}/>
             ))}
           </>
         );

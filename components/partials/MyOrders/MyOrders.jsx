@@ -17,8 +17,8 @@ export default function MyOrders() {
   }, []);
 
   const handleOrderDetails = (id) => {
-    Router.push(`/order-details?id=${id}`)
-  }
+    Router.push(`/order-details?id=${id}`);
+  };
   return (
     <>
       {orders && orders?.length === 0 ? (
@@ -28,23 +28,25 @@ export default function MyOrders() {
       ) : (
         <>
           {orders?.map((order) => (
-            <React.Fragment key={`${order?.orderId}-my-orders`}>
-            <div className="order-list mb12">
+            <div
+              className="order-list mb12"
+              key={`${order?.orderId}-my-orders`}
+            >
               <div className="order-header flex flex-center space-between">
                 <div className="order-head">
                   <strong>Order ID: {order.orderProductPrefixId}</strong>
                   <span className="divide">|</span>
                   <span className="placed">
-                    Order Placed: { moment(order.createdDate).format("MMMM DD, YYYY")}
+                    Order Placed:{" "}
+                    {moment(order.createdDate).format("MMMM DD, YYYY")}
                   </span>
                 </div>
                 <div className="btn-wrap">
-                  <a
-                    href={order?.trackingUrl}
-                    target="_blank"
-                  >
+                  <a href={order?.trackingUrl} target="_blank">
                     <button
-                      className={`primary-btn ${(!order?.trackingUrl) && 'disable-opacity'}`}
+                      className={`primary-btn ${
+                        !order?.trackingUrl && "disable-opacity"
+                      }`}
                       disabled={!order?.trackingUrl}
                     >
                       Track Now
@@ -67,7 +69,9 @@ export default function MyOrders() {
                     <div className="qty-bought-wrap flex">
                       <div className="qty">Qty: {order.quantity}</div>
                       <span className="divide">|</span>
-                      <div className="bought">Bought By: {order.productSellType}</div>
+                      <div className="bought">
+                        Bought By: {order.productSellType}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -80,16 +84,18 @@ export default function MyOrders() {
                   Return Order */}
                 </div>
                 <div className="order-detail link">
-                <button onClick={e => handleOrderDetails(order.orderProductId)}>Order Details</button>
+                  <button
+                    onClick={(e) => handleOrderDetails(order.orderProductId)}
+                  >
+                    Order Details
+                  </button>
                   <IconRiightAngle />
                 </div>
               </div>
             </div>
-            </React.Fragment>
           ))}
         </>
       )}
     </>
   );
 }
-

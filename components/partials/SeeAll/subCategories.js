@@ -67,20 +67,21 @@ function SeeAllSubCategories({
         .indexOf(category?.categoryName);
       return category?.categories[index]?.children?.map((item) => {
         return (
-          <React.Fragment key={`see-all-subcategories-${item.categoryId}`}>
-            <div className="category-list">
-              <button
-                className={`text-capitalize title ${
-                  category?.subCategoryName === item.categorySlug && "active"
-                }`}
-                onClick={() =>
-                  handleSubCategorySelect(item.categorySlug, item.categoryId)
-                }
-              >
-                {item.name}
-              </button>
-            </div>
-          </React.Fragment>
+          <div
+            className="category-list"
+            key={`see-all-subcategories-${item.categoryId}`}
+          >
+            <button
+              className={`text-capitalize title ${
+                category?.subCategoryName === item.categorySlug && "active"
+              }`}
+              onClick={() =>
+                handleSubCategorySelect(item.categorySlug, item.categoryId)
+              }
+            >
+              {item.name}
+            </button>
+          </div>
         );
       });
     } else if (!isCategoriesFetched) {

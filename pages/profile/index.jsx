@@ -120,9 +120,11 @@ export default function PublicProfile() {
         return (
           <>
             {upcomingShows.map((show, index) => (
-              <React.Fragment key={`public-profile-upcoming-${show?.id}`}>
-                <StreamCard detail={show} showLoginModal={setShowModal} />
-              </React.Fragment>
+              <StreamCard
+                detail={show}
+                showLoginModal={setShowModal}
+                key={`public-profile-upcoming-${show?.id}`}
+              />
             ))}
           </>
         );
@@ -141,9 +143,11 @@ export default function PublicProfile() {
         return (
           <>
             {previousShows.map((show, index) => (
-              <React.Fragment key={`public-profile-previous-${show?.id}`}>
-                <StreamCard detail={show} showLoginModal={setShowModal} />
-              </React.Fragment>
+              <StreamCard
+                detail={show}
+                showLoginModal={setShowModal}
+                key={`public-profile-previous-${show?.id}`}
+              />
             ))}
           </>
         );
@@ -182,15 +186,14 @@ export default function PublicProfile() {
           return (
             <>
               {followers.map((details, index) => (
-                <React.Fragment key={`public-profile-followers-${details?.id}`}>
-                  <Followers
-                    person={details}
-                    isFollower={isForFollower}
-                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                    setFollowing={setFollowers}
-                    following={followers}
-                  />
-                </React.Fragment>
+                <Followers
+                  person={details}
+                  isFollower={isForFollower}
+                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                  setFollowing={setFollowers}
+                  following={followers}
+                  key={`public-profile-followers-${details?.f_id}`}
+                />
               ))}
             </>
           );
