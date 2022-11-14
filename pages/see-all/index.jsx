@@ -50,12 +50,12 @@ function categoryStream({ auth, category }) {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-      dispatch(savePageType(query?.page));
+      dispatch(savePageType(query?.page.replace(/\s/g, "")));
     } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
-        dispatch(savePageType("allCategory"));
+        dispatch(savePageType("all category"));
       }
     }
   }, [query]);
@@ -118,7 +118,9 @@ function categoryStream({ auth, category }) {
           <div className="inner-container">
             <ul className="breadcrumbs flex flex-center">
               <li onClick={() => handleToGoHome()}>Home</li>/
-              <li className="current">{stringFormatter(query?.page)}</li>
+              <li className="current">
+                {stringFormatter(query?.page.replace(/\s/g, ""))}
+              </li>
             </ul>
           </div>
         </section>

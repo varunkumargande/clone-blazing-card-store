@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from "react";
 import IconChat from "../../Icons/IconChat";
 import IconGallery from "../../Icons/IconGallery";
 import moment from "moment";
+import Router from "next/router";
 
 export default function ChatPannel({
   messages,
@@ -31,6 +32,19 @@ export default function ChatPannel({
     if (event.key == "Enter") {
       sendChat(event);
     }
+  };
+
+  /**
+   * this function is using for going to profile information page
+   */
+
+  const handleToProfileInfo = () => {
+    Router.push({
+      pathname: "/profile",
+      query: {
+        userId: "",
+      },
+    });
   };
 
   return (
