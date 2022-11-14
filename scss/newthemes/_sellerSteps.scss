@@ -229,7 +229,21 @@
             }
         }
     }
-
+}
+@media all and (min-width:320px) and (max-width:480px){
+    .step-container{ 
+        .submit-wrapper{
+            &.conform{
+                max-width: 314px;
+                .primary-btn{
+                    max-width: 212px;
+                }
+                .border-btn{
+                    max-width: 85px;
+                }
+            }
+        }
+    }
 }
 @media all and (min-width:1025px){
     .step-container{
