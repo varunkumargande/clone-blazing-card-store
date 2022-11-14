@@ -11,7 +11,7 @@ import { getStreamSubCategoryBasedApi } from "../../../api/stream/subStreamDetai
 import { useCategoriesData } from "../../../contexts/Categoires/CategoriesData";
 import TabsSkeleton from "../../../skeleton/TabsSkeleton";
 import { stringFormatter } from "../../helper/cardImageHelper";
-import { camelCase } from "../../../utilities/camelCase-helper";
+import { camelCase } from "../../../utilities/utils";
 
 function SeeAllSubCategories({
   catIndex,
