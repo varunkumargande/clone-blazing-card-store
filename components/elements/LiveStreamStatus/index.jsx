@@ -21,6 +21,7 @@ function LiveStreamStatus({
   likeDislikeStream,
   showLoginModal,
   auth,
+  isDate
 }) {
   const [likedStream, setLikedStream] = useState([]);
   const dispatch = useDispatch();
@@ -117,7 +118,8 @@ function LiveStreamStatus({
             <span>
               {getStreamScheduleDate(
                 detail?.scheduleDate,
-                detail?.scheduletime
+                detail?.scheduletime,
+                isDate
               )}
             </span>
           </div>

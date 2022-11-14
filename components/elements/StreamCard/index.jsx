@@ -8,7 +8,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import { DefaultImagePath } from "../../Constants/defaultImage";
 
-function StreamCard({ detail, showLoginModal, auth }) {
+function StreamCard({ detail, showLoginModal, auth , isDate}) {
   const handleRouting = (id) => {
     Router.push("/profile?userId=" + id);
   };
@@ -47,6 +47,7 @@ function StreamCard({ detail, showLoginModal, auth }) {
             uuid={detail?.uuid}
             detail={detail}
             showLoginModal={showLoginModal}
+            isDate={isDate}
           />
         </div>
         <div className="text">
