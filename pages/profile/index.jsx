@@ -139,7 +139,7 @@ export default function PublicProfile() {
         return (
           <>
             {previousShows.map((show, index) => (
-              <StreamCard detail={show} showLoginModal={setShowModal} />
+              <StreamCard detail={show} showLoginModal={setShowModal} isDate={true}/>
             ))}
           </>
         );
