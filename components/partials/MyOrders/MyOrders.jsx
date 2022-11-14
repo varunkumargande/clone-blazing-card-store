@@ -31,7 +31,7 @@ export default function MyOrders() {
             <div className="order-list mb12">
               <div className="order-header flex flex-center space-between">
                 <div className="order-head">
-                  <strong>Order ID: {order.orderProductPrefixId}</strong>
+                  <strong>Order ID: {order?.orderId}</strong>
                   <span className="divide">|</span>
                   <span className="placed">
                     Order Placed: { moment(order.createdDate).format("MMMM DD, YYYY")}
