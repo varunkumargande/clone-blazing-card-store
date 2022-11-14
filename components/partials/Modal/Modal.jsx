@@ -1174,7 +1174,7 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
               }}
             />
           </GoogleOAuthProvider>
-          <div class="or mb26 flex flex-center justify-center">
+          <div className="or mb26 flex flex-center justify-center">
             <span>Or</span>
           </div>
           <div className="signin-signup">
