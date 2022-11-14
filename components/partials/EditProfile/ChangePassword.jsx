@@ -59,7 +59,7 @@ export default function ChangePassword() {
                   <div className="box">
                     <div className="inner-box">
                       <div className="input-control wd50">
-                        <label>Current Password *</label>
+                        <label>Current Password*</label>
                         <input
                           name="currentPassword"
                           placeholder={"Enter here"}
@@ -73,7 +73,7 @@ export default function ChangePassword() {
                         </span>
                       </div>
                       <div className="input-control wd50">
-                        <label htmlFor="usr">New Password *</label>
+                        <label htmlFor="usr">New Password*</label>
                         <input
                           name="newPassword"
                           placeholder={"Enter here"}
@@ -88,7 +88,7 @@ export default function ChangePassword() {
                         </span>
                       </div>
                       <div className="input-control wd50">
-                        <label htmlFor="usr">Retype New Password *</label>
+                        <label htmlFor="usr">Retype New Password*</label>
                         <input
                           name="retypeNewPassword"
                           placeholder={"Enter here"}
