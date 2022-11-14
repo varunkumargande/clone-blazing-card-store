@@ -15,7 +15,7 @@ function SeeAllParentCategories({
   setStreamData,
   setLoader,
   offset,
-  setOffset
+  setOffset,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
@@ -32,7 +32,7 @@ function SeeAllParentCategories({
         subCategory: "all",
       },
     });
-    setStreamData([])
+    setStreamData([]);
     setOffset(0);
   };
 
@@ -48,7 +48,7 @@ function SeeAllParentCategories({
           subCategory: category?.subCategoryName,
         },
       });
-      setStreamData([])
+      setStreamData([]);
     }
   }, [query]);
 
@@ -72,7 +72,9 @@ function SeeAllParentCategories({
 
   return (
     <aside className="aside-wrapper">
-      <ul className="aside-container text-capitalize">{getAllCategoriesCard()}</ul>
+      <ul className="aside-container text-capitalize">
+        {getAllCategoriesCard()}
+      </ul>
     </aside>
   );
 }

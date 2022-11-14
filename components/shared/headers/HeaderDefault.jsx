@@ -34,6 +34,10 @@ import { vendorAuth } from "../../../store/vendorAuth/action";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
 import { show } from "../../../store/toast/action";
 import { DefaultImagePath } from "../../Constants/defaultImage";
+import {
+  saveCategoryName,
+  saveSubCategoryName,
+} from "../../../store/category/action";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -122,7 +126,7 @@ function HeaderDefault({ auth }) {
       );
     } else {
       return (
-        <img 
+        <img
           onError={() => {
             currentTarget.onerror = null;
             currentTarget.src = "/static/images/profileImg.png";
@@ -150,8 +154,7 @@ function HeaderDefault({ auth }) {
     Router.push("/");
     setTimeout(() => {
       window.location.reload();
-    }, 200)
-    
+    }, 200);
   };
 
   const handleSearchValue = (e) => {
@@ -242,17 +245,23 @@ function HeaderDefault({ auth }) {
     };
   }, []);
 
+  /**
+   * go to home page
+   */
+
+  const handleGoToHomePage = (e) => {
+    e.preventDefault();
+    dispatch(saveCategoryName(null));
+    dispatch(saveSubCategoryName(null));
+    Router.push("/");
+  };
+
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
         <div className="left flex flex-wrap flex-center">
           <div className="logo">
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                Router.push("/");
-              }}
-            >
+            <a onClick={(e) => handleGoToHomePage(e)}>
               <Logo />
             </a>
           </div>
@@ -322,7 +331,9 @@ function HeaderDefault({ auth }) {
                   onClick={handleOnClick}
                 >
                   <span>
-                    <span className="profileImage flex justify-center flex-center">{handleProfileImage()}</span>
+                    <span className="profileImage flex justify-center flex-center">
+                      {handleProfileImage()}
+                    </span>
                     <IconDropdown />
                   </span>
 
