@@ -78,14 +78,14 @@ export default function landingpage() {
           </div>{" "}
           FAQs
         </h1>
-        <section class="category-wrapper cotegories-border mb35">
-          <div class="overflow-wrap">
-            <div class="Category-list-wrap inner-container flex">
-              <div class="category-list">
-                <button class="title active">Buyer</button>
+        <section className="category-wrapper cotegories-border mb35">
+          <div className="overflow-wrap">
+            <div className="Category-list-wrap inner-container flex">
+              <div className="category-list">
+                <button className="title active">Buyer</button>
               </div>
-              <div class="category-list">
-                <button class="title false">Seller</button>
+              <div className="category-list">
+                <button className="title false">Seller</button>
               </div>
             </div>
           </div>

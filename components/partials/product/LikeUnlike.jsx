@@ -141,7 +141,7 @@ function LikeQues({
       {likeAnimate === true ? (
         <div className="like-button-question">
           <i
-            class="fa fa-thumbs-up fa-2x"
+            className="fa fa-thumbs-up fa-2x"
             aria-hidden="true"
             style={{ color: "blue", cursor: "pointer" }}
             //   onClick={(e) => likeHandler("likeClick")}
@@ -152,7 +152,7 @@ function LikeQues({
       ) : (
         <div className="like-button-question">
           <i
-            class="fa fa-thumbs-up fa-2x"
+            className="fa fa-thumbs-up fa-2x"
             aria-hidden="true"
             style={{ color: "#d1d1d1", cursor: "pointer" }}
             onClick={(e) => likeHandler(e, "likeClick")}
@@ -164,7 +164,7 @@ function LikeQues({
       {dislikeAnimate === true ? (
         <div className="unlike-button-question">
           <i
-            class="fa fa-thumbs-down fa-2x"
+            className="fa fa-thumbs-down fa-2x"
             aria-hidden="true"
             style={{ color: "blue", cursor: "pointer" }}
             //   onClick={(e) => likeHandler("unlikeClick")}
@@ -178,7 +178,7 @@ function LikeQues({
       ) : (
         <div className="unlike-button-question">
           <i
-            class="fa fa-thumbs-down fa-2x"
+            className="fa fa-thumbs-down fa-2x"
             aria-hidden="true"
             style={{ color: "#d1d1d1", cursor: "pointer" }}
             onClick={(e) => likeHandler(e, "unlikeClick")}
