@@ -352,6 +352,19 @@
             .modal-header{
                 background-color: $white-color;
                 border-bottom: 1px solid $border2-color;
+                padding-top: 30px;
+                .close{
+                    span{
+                        display: none
+                    }
+                    width: 70px;
+                    height: 4px;
+                    background-color: $border2-color;
+                    position: absolute;
+                    top:10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
             }
             .modal-footer{
                 padding: 24px 16px;

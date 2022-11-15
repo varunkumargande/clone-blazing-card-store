@@ -12,12 +12,15 @@ import {
 import { handleClientScriptLoad } from "next/script";
 import Router,{ useRouter } from "next/router";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { TostMessage } from "../ToastMessage/ToastMessage";
 
 export default function SentMail() {
   var router = useRouter();
+  const toast = useSelector((state) => state?.toast?.toast);
+  const dispatch = useDispatch();
   const [conpassShow, setConPassShow] = useState(false);
   const [passShow, setPassShow] = useState(false);
-  const [error, setError] = useState(false);
   const [pageTrue, setPageTrue] = useState(false);
 
   useEffect(() => {
@@ -45,7 +48,7 @@ export default function SentMail() {
             initialValues={{ oldPass: "", newPass: "" }}
             validationSchema={loginSchema}
             onSubmit={(values) => {
-              resetPassApi(router.query.auth, values.newPass, Router, setError);
+              resetPassApi(router.query.auth, values.newPass, Router, dispatch);
             }}
           >
             {({
@@ -148,6 +151,7 @@ export default function SentMail() {
           <a>Sign In</a>
         </Link>
       </div>
+      {!!toast.message && <TostMessage data={toast}></TostMessage>}
     </div>
   );
 }

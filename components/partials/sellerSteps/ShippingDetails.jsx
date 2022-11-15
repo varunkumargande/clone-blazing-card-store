@@ -70,7 +70,7 @@ export default function ShippingDetails() {
             <div className="flex space-between">
               <TextInput
                 className="input-control wd48"
-                label="Full Name *"
+                label="Full Name*"
                 name="fullName"
                 type="text"
                 placeholder="Enter here"
@@ -80,14 +80,14 @@ export default function ShippingDetails() {
             <div className="flex space-between">
               <TextInput
                 className="input-control wd48"
-                label="Address Line 1 *"
+                label="Address Line 1*"
                 name="addressLine1"
                 type="text"
                 placeholder="Enter here"
               />
               <TextInput
                 className="input-control wd48"
-                label="Address Line 2 *"
+                label="Address Line 2*"
                 name="addressLine2"
                 type="text"
                 placeholder="Enter here"
@@ -96,7 +96,7 @@ export default function ShippingDetails() {
             <div className="flex space-between ">
               <MySelect
                 className="input-control wd48"
-                label="Country *"
+                label="Country*"
                 name="country"
                 disabled={true}
               >
@@ -112,7 +112,7 @@ export default function ShippingDetails() {
 
               <TextInput
                 className="input-control wd48"
-                label="Postal Code *"
+                label="Postal Code*"
                 name="postalCode"
                 type="text"
                 placeholder="Enter here"
@@ -121,7 +121,7 @@ export default function ShippingDetails() {
             <div className="flex space-between">
               {/* <MySelect
                 className="input-control wd48"
-                label="City *"
+                label="City*"
                 name="city"
               >
                 <option>Select here</option>
@@ -131,14 +131,14 @@ export default function ShippingDetails() {
               </MySelect> */}
               <TextInput
                 className="input-control wd48"
-                label="City *"
+                label="City*"
                 name="city"
                 type="text"
                 placeholder="Enter here"
               />
               <MySelect
                 className="input-control wd48"
-                label="State *"
+                label="State*"
                 name="state"
               >
                 <option>Select here</option>

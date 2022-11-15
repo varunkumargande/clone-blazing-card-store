@@ -396,7 +396,7 @@ function Signup(auth) {
               <div className="checkbox-wrap mb32">
                 <label className="checkbox">
                   <input type="checkbox" onClick={() => handlePolicyCheck()} />
-                  <span class="checkmark"></span>
+                  <span className="checkmark"></span>
                   I’ve read and agree with{" "}
                   <Link href="/terms-conditions">
                     <a>Terms of Service</a>

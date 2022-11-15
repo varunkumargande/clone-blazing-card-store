@@ -19,7 +19,7 @@ export default function OrderDetails() {
             <div className="order-list mb16">
               <div className="order-header flex flex-center space-between">
                 <div className="order-head">
-                  <strong>Order ID: {productData.orderProductPrefixId}</strong>
+                  <strong>Order ID: {productData?.orderId}</strong>
                 </div>
               </div>
               <div className="order-body-wrapper">
