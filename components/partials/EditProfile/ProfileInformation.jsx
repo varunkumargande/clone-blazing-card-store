@@ -349,6 +349,7 @@ export default function ProfileInformation() {
                               }
                               value={values.phoneNumber}
                               maxLength={12}
+                              type="tel"
                             />
                             <ErrorMessage
                               errors={errors.phoneNumber}
