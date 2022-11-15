@@ -18,6 +18,7 @@
         .title{
             font-size: 16px;
             line-height: 20px;
+            font-weight: 500;
             span{
                 margin-right: 5px;
             }
@@ -25,7 +26,7 @@
         .btn-chat{
             width:32px;
             height: 32px;
-            background-color: $search-bg;
+            background-color: $blue-color;
         }
     }
     .profile-chat-list-wrap{
@@ -35,6 +36,10 @@
     .profile-chat-list{
         padding: 16px;
         border-bottom: 1px solid $border2-color;
+        cursor: pointer;
+        &.active{
+            background-color: $modal-header-bg;
+        }
         .image{
             max-width: 40px;
             height: 40px;
@@ -48,9 +53,6 @@
             font-size: 14px;
             line-height: 16px;
             margin-bottom: 4px;
-            &.active{
-                font-weight: 500;
-            }
             .new{
                 width:6px;
                 height: 6px;
@@ -181,6 +183,8 @@
             font-size: 14px;
             line-height: 16px;
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
             .new{
                 width:6px;
                 height: 6px;

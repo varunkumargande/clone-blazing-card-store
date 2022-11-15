@@ -245,7 +245,7 @@ function Chat({ auth }) {
         <HeaderDefault />
       )}
       <div className="messages-wrapper">
-        <h1>Messages</h1>
+        {!isMobile ? <h1>Messages</h1>: ""}
         <div className="flex space-between message-inner">
           {isMobile ? (
             <>{isChatPanelVisible ? handleChatPanel() : handleProfilePanel()}</>
