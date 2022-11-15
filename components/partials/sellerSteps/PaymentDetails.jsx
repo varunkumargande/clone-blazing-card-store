@@ -124,7 +124,7 @@ export default function PaymentDetails() {
             <div className="flex space-between">
               <MySelect
                 className="input-control wd48"
-                label="Select a Payment Method *"
+                label="Select a Payment Method*"
                 name="paymentMethod"
                 onChange={(event) => resetCardValues(event, formProps, 'paymentMethod')}
               >
@@ -134,7 +134,7 @@ export default function PaymentDetails() {
               </MySelect>
               <CardNumber
                 className="input-control wd48"
-                label="Card Number *"
+                label="Card Number*"
                 name="cardNumber"
                 type="text"
                 placeholder="Enter here"
@@ -155,7 +155,7 @@ export default function PaymentDetails() {
             <div className="flex space-between">
               <CardExpiry
                 className="input-control wd48"
-                label="Expiry *"
+                label="Expiry*"
                 name="expiry"
                 type="text"
                 placeholder="Enter here (MM/YY)"
@@ -165,7 +165,7 @@ export default function PaymentDetails() {
               />
               <TextInput
                 className="input-control wd48"
-                label="CVV *"
+                label="CVV*"
                 name="cvv"
                 type="password"
                 placeholder="Enter here"
@@ -184,7 +184,7 @@ export default function PaymentDetails() {
             <div className="flex space-between">
               <MySelect
                 className="input-control wd48"
-                label="Country *"
+                label="Country*"
                 name="country"
                 onChange={(event) => resetCardValues(event, formProps, 'country')}
               >

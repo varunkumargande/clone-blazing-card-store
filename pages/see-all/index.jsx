@@ -50,12 +50,12 @@ function categoryStream({ auth, category }) {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-      dispatch(savePageType(query?.page));
+      dispatch(savePageType(query?.page.replace(/\s/g, "")));
     } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
-        dispatch(savePageType("allCategory"));
+        dispatch(savePageType("all category"));
       }
     }
   }, [query]);
@@ -108,6 +108,20 @@ function categoryStream({ auth, category }) {
     });
   };
 
+  /**
+   *
+   * @returns showing header title of pages
+   */
+  const showHeader = () => {
+    if (query?.page == "scheduled") {
+      return "Scheduled Shows";
+    } else if (query?.page == "live") {
+      return "Live Shows";
+    } else {
+      return <> {stringFormatter(query?.page)} </>;
+    }
+  };
+
   return (
     <div className="home-container">
       {isMobile ? "" : <HeaderDefault />}
@@ -118,7 +132,7 @@ function categoryStream({ auth, category }) {
           <div className="inner-container">
             <ul className="breadcrumbs flex flex-center">
               <li onClick={() => handleToGoHome()}>Home</li>/
-              <li className="current">{stringFormatter(query?.page)}</li>
+              <li className="current">{showHeader()}</li>
             </ul>
           </div>
         </section>
@@ -132,7 +146,7 @@ function categoryStream({ auth, category }) {
               </div>
               &nbsp;&nbsp;&nbsp;{" "}
               <h3 className="title">
-                {stringFormatter(query?.page)}
+                {showHeader()}
                 {/* All Categories */}
               </h3>
             </div>

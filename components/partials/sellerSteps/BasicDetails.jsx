@@ -103,7 +103,7 @@ export default function BasicDetails() {
             <div className="flex space-between">
               <TextInput
                 className="input-control wd48"
-                label="Full Name *"
+                label="Full Name*"
                 name="fullName"
                 type="text"
                 placeholder="Enter here"
@@ -112,7 +112,7 @@ export default function BasicDetails() {
 
               <TextInput
                 className="input-control wd48"
-                label="Unique Id *"
+                label="Unique Id*"
                 name="uniqueId"
                 type="text"
                 value={formProps.values.uniqueId}
@@ -128,7 +128,7 @@ export default function BasicDetails() {
             <div className="flex space-between">
               <FileUpload
                 className="input-control uplaoad-wrapper wd48"
-                label="Upload Doc *"
+                label="Upload Doc*"
                 name="upload"
                 type="file"
                 id="upload"

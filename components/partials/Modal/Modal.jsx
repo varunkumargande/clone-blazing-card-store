@@ -778,7 +778,7 @@ export function DeletAccountModal({ setIsOpen, userName }) {
       password: "",
     },
     validateOnMount: true,
-    onSubmit: async (values) =>  {
+    onSubmit: async (values) => {
       await deleteAccountApi(values, dispatch);
       setIsOpen(false);
     },
@@ -885,11 +885,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
           return (
             <>
               <div
-                className={
-                  !!userId
-                    ? "profile-chat-list flex space-between active-user"
-                    : "profile-chat-list flex space-between"
-                }
+                className="profile-chat-list flex space-between"
                 onClick={() => handleAddUserForChat(item._id, item.username)}
               >
                 <div className="profile-image-title flex flex-center">
@@ -904,7 +900,9 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
                     />
                   </div>
                   <div className="profile-text">
-                    <div className="name">
+                    <div
+                      className={userId == item?._id ? "name active" : "name"}
+                    >
                       {item.username} <span className="new"></span>
                     </div>
                   </div>
@@ -1174,7 +1172,7 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
               }}
             />
           </GoogleOAuthProvider>
-          <div class="or mb26 flex flex-center justify-center">
+          <div className="or mb26 flex flex-center justify-center">
             <span>Or</span>
           </div>
           <div className="signin-signup">

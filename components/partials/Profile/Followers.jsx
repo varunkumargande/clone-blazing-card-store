@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import ProfileMethods from "../../../api/profile/ProfileMethods";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import DefaultServices from "../../Services/DefaultServices";
 import { UnfollowModal, UnfollowModalMultiple } from "../Modal/Modal";
@@ -73,12 +74,25 @@ export default function Followers(props) {
     <>
       <div className="card-list flex flex-center">
         <div className="profile text-center">
-          <CloudinaryImage
-            imageUrl={DefaultServices?.GetFullImageURL(person, "vendor")}
-            keyId={DefaultServices?.GetFullImageURL(person, "vendor")}
-            transformation={ImageTransformation.followersCard}
-            alternative={"Card"}
-          />
+          {DefaultServices?.GetFullImageURL(person, "vendor") !== DefaultImagePath.defaultImage ?
+            <CloudinaryImage
+              imageUrl={DefaultServices?.GetFullImageURL(person, "vendor")}
+              keyId={DefaultServices?.GetFullImageURL(person, "vendor")}
+              transformation={ImageTransformation.followersCard}
+              alternative={"Card"}
+            /> :
+            <span className="Image">
+              <img
+                onError={() => {
+                  currentTarget.onerror = null;
+                  currentTarget.src = "/static/images/profileImg.png";
+                }}
+                src={DefaultImagePath.defaultProfileImage}
+                alt="Profile"
+                className="error"
+              />
+            </span>
+          }
           {/* <img style={{ borderRadius:"50%" }} width="115" height="115" src={DefaultServices.GetFullImageURL(person, "vendor", "115", "115")} alt="Card" /> */}
           <div className="f-title">{renderProfileName()}</div>
           <div className="f-digi">
