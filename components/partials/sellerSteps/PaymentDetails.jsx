@@ -207,7 +207,7 @@ export default function PaymentDetails() {
               <button type="reset" className="border-btn">
                 Cancel
               </button>
-              {!formProps.dirty ?
+              {initialPaymentDetailFlag && !formProps.dirty ?
                 <button onClick={redirectToNext} className="primary-btn">
                   Save & Next
                 </button>
