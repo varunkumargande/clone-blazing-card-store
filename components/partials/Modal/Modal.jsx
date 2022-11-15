@@ -885,7 +885,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
           return (
             <>
               <div
-                className="profile-chat-list flex space-between"
+                className={userId == item?._id ? "profile-chat-list flex space-between active" : "profile-chat-list flex space-between"}
                 onClick={() => handleAddUserForChat(item._id, item.username)}
               >
                 <div className="profile-image-title flex flex-center">
@@ -901,7 +901,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
                   </div>
                   <div className="profile-text">
                     <div
-                      className={userId == item?._id ? "name active" : "name"}
+                      className="name"
                     >
                       {item.username} <span className="new"></span>
                     </div>
@@ -934,10 +934,9 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
         </div>
 
         <div className="modal-body">
-          <div className="input-control">
-            <label>User Name</label>
+          <div className="input-control search">
             <input
-              type="text"
+              type="search"
               name="username"
               placeholder={"Enter Username"}
               onChange={(e) => handleUsername(e)}
