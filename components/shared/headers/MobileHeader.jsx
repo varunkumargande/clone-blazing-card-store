@@ -302,10 +302,13 @@ function MobileHeader({ auth }) {
                     </Link>
                   </li>
                   <li>
-                    <a className="message" onClick={(event) => {
-                      event.preventDefault();
-                      chatLogin();
-                    }}>
+                    <a
+                      className="message"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        Router.push("/chat");
+                      }}
+                    >
                       <IconMessageMobile />
                       <span>Message</span>
                     </a>
