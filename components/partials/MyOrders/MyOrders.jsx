@@ -54,7 +54,7 @@ export default function MyOrders() {
               <div className="order-body flex space-between">
                 <div className="order-text flex">
                   <div className="order-details">
-                    <div className="flex mb12">
+                    <div className="flex mb12 product-name-wrap">
                       <div className="order-title">{order.productName}</div>
                       <button className="status shipped">
                         {order.orderStatusName}
