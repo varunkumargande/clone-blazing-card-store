@@ -38,6 +38,7 @@ import {
   saveCategoryName,
   saveSubCategoryName,
 } from "../../../store/category/action";
+import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -85,7 +86,7 @@ function HeaderDefault({ auth }) {
 
   useEffect(() => {
     if (profile) {
-      handleProfileImage();
+      renderProfileImage();
     }
   }, [profile]);
 
@@ -95,7 +96,7 @@ function HeaderDefault({ auth }) {
     }
   }, [toggle]);
 
-  const handleProfileImage = () => {
+  const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
@@ -177,6 +178,8 @@ function HeaderDefault({ auth }) {
               onChange={(e) => {
                 setToggle((prev) => !prev);
               }}
+              className={toggle && 'checked'}
+              value={toggle}
               id="togBtn"
             />
             <span className="toogle-slide round">
@@ -221,8 +224,9 @@ function HeaderDefault({ auth }) {
   // ==============================================================================
 
   // ======================= handle check vendor and store ========================
-  const handleStoreAndVendorToggle = () => {
-    dispatch(vendorAuth());
+  const handleStoreAndVendorToggle = async () => {
+    await vendorAuthApi(dispatch);
+    setToggle(false);
   };
   // ==============================================================================
   // ======================= Onclick outside dropdown close ========================
@@ -332,7 +336,7 @@ function HeaderDefault({ auth }) {
                 >
                   <span>
                     <span className="profileImage flex justify-center flex-center">
-                      {handleProfileImage()}
+                      {renderProfileImage()}
                     </span>
                     <IconDropdown />
                   </span>

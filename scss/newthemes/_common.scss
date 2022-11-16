@@ -526,7 +526,7 @@ label{
 	display: flex;
 	input {
 		display: none;
-		&:checked {
+		 &.checked {
 			+ .toogle-slide {
 				&:after {
 					left: 0;
@@ -705,6 +705,16 @@ label{
   .edit-back,.back{
     .icon{
       fill:$primary-color;
+    }
+  }
+  .header-title{
+    background-color: $white-color;
+    padding: 40px 15px 32px;
+    > .flex{
+      margin: 0;
+    }
+    .edit-back{
+        margin-right: 12px;
     }
   }
 }

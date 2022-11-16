@@ -48,6 +48,6 @@ export default function useEventSocket(resourceUrl, global = false) {
   }, [isLoggedIn, isStatus, global]);
 
   return {
-    data
+    data,
   };
 }

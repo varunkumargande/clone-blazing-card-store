@@ -31,13 +31,19 @@
                 width: 96px;
             }
             .profileImage{
-                max-width: 30px;
-                max-width: 30px;
+                width: 30px;
+                height: 30px;
                 border-radius: 50%;
                 padding: 0;
+                border: 1px solid #EBECED;
+                border-radius: 50%;
                 img{
                     max-width: 100%;
                     object-fit: cover;
+                    &.error{
+                        max-width: 12px;
+                        height: auto;
+                    }
                 }
             }
         }
