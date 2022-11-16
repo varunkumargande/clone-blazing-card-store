@@ -526,7 +526,7 @@ label{
 	display: flex;
 	input {
 		display: none;
-		&:checked {
+		 &.checked {
 			+ .toogle-slide {
 				&:after {
 					left: 0;
