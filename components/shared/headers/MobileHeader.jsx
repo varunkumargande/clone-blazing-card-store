@@ -20,6 +20,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import { vendorAuth } from "../../../store/vendorAuth/action";
 import { chatLogin } from "../../../api";
+import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function MobileHeader({ auth }) {
   const [active, setActive] = useState(false);
@@ -35,8 +36,9 @@ function MobileHeader({ auth }) {
     }
   };
 
-  const handleStoreAndVendorToggle = () => {
-    dispatch(vendorAuth());
+  const handleStoreAndVendorToggle = async () => {
+    await vendorAuthApi();
+    setToggle(false);
   };
 
   useEffect(() => {
@@ -156,6 +158,8 @@ function MobileHeader({ auth }) {
                 onChange={(e) => {
                   setToggle((prev) => !prev);
                 }}
+                className={toggle && 'checked'}
+                value={toggle}
                 id="togBtn"
               />
               <span className="toogle-slide round">

@@ -38,6 +38,7 @@ import {
   saveCategoryName,
   saveSubCategoryName,
 } from "../../../store/category/action";
+import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -177,6 +178,8 @@ function HeaderDefault({ auth }) {
               onChange={(e) => {
                 setToggle((prev) => !prev);
               }}
+              className={toggle && 'checked'}
+              value={toggle}
               id="togBtn"
             />
             <span className="toogle-slide round">
@@ -221,8 +224,9 @@ function HeaderDefault({ auth }) {
   // ==============================================================================
 
   // ======================= handle check vendor and store ========================
-  const handleStoreAndVendorToggle = () => {
-    dispatch(vendorAuth());
+  const handleStoreAndVendorToggle = async () => {
+    await vendorAuthApi(dispatch);
+    setToggle(false);
   };
   // ==============================================================================
   // ======================= Onclick outside dropdown close ========================
