@@ -20,6 +20,8 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import { vendorAuth } from "../../../store/vendorAuth/action";
 import { chatLogin } from "../../../api";
+import { DefaultImagePath } from "../../Constants/defaultImage";
+import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function MobileHeader({ auth }) {
   const [active, setActive] = useState(false);
@@ -35,8 +37,9 @@ function MobileHeader({ auth }) {
     }
   };
 
-  const handleStoreAndVendorToggle = () => {
-    dispatch(vendorAuth());
+  const handleStoreAndVendorToggle = async () => {
+    await vendorAuthApi();
+    setToggle(false);
   };
 
   useEffect(() => {
@@ -98,10 +101,10 @@ function MobileHeader({ auth }) {
   }, []);
   useEffect(() => {
     if (profile) {
-      handleProfileImage();
+      renderProfileImage();
     }
   }, [profile]);
-  const handleProfileImage = () => {
+  const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
@@ -137,8 +140,11 @@ function MobileHeader({ auth }) {
             currentTarget.onerror = null;
             currentTarget.src = "/static/images/profileImg.png";
           }}
-          src={"/static/img/no-image-new.svg"}
+          height={20}
+          width={15}
+          src={DefaultImagePath.defaultProfileImage}
           alt="Profile"
+          className="error"
         />
       );
     }
@@ -156,6 +162,8 @@ function MobileHeader({ auth }) {
                 onChange={(e) => {
                   setToggle((prev) => !prev);
                 }}
+                className={toggle && 'checked'}
+                value={toggle}
                 id="togBtn"
               />
               <span className="toogle-slide round">
@@ -216,7 +224,7 @@ function MobileHeader({ auth }) {
         <div className="right flex flex-wrap flex-center">
           {auth.isLoggedIn ? (
             <Link href="/account/myprofile">
-              <button className="profileImage">{handleProfileImage()}</button>
+              <button className="profileImage flex justify-center flex-center">{renderProfileImage()}</button>
             </Link>
           ) : (
             <>
@@ -302,10 +310,13 @@ function MobileHeader({ auth }) {
                     </Link>
                   </li>
                   <li>
-                    <a className="message" onClick={(event) => {
-                      event.preventDefault();
-                      chatLogin();
-                    }}>
+                    <a
+                      className="message"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        Router.push("/chat");
+                      }}
+                    >
                       <IconMessageMobile />
                       <span>Message</span>
                     </a>

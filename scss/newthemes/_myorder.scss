@@ -369,9 +369,18 @@
             }
         }
         .order-body{
-            padding: 16px 115px 16px 16px;
+            padding: 16px 0 16px 16px;
             @include pos(re);
             width: 100%;
+            .order-text{
+                width: 100%;
+                .order-details{
+                    width: 100%;
+                    > .product-name-wrap{
+                        max-width: calc(100% - 130px);
+                    }
+                }
+            }
             .amount{
                 @include pos(ab,20px,16px,null,null);
             }

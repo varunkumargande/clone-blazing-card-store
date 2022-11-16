@@ -34,6 +34,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
 import { getStateName } from "../../../utilities/utils";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 
 const responseGoogle = (response) => {
   GoogleLoginApi(
@@ -858,11 +859,18 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
+  const dispatch = useDispatch();
 
   // handle username and search frend
   const handleUsername = async (e) => {
     e.preventDefault();
-    searchUser(setUserData, setUserDataLoader, e.target.value);
+    searchUser(
+      setUserData,
+      setUserDataLoader,
+      e.target.value,
+      dispatch,
+      setIsOpen
+    );
   };
   // ====================================================================
 
@@ -874,7 +882,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
   // handle for submit for add frend
   const handleSubmitUser = () => {
-    addChatFrend(userId, fetchUserData, setIsOpen, socket);
+    addChatFrend(userId, fetchUserData, setIsOpen, socket, dispatch);
   };
   // =============================================================
 
@@ -885,26 +893,33 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
           return (
             <>
               <div
-                className="profile-chat-list flex space-between"
-                onClick={() => handleAddUserForChat(item._id, item.username)}
+                className={`profile-chat-list flex space-between ${
+                  userId == item?._id && `active`
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAddUserForChat(item._id, item.username);
+                }}
+                key={`${item.username}-chat-panel`}
               >
                 <div className="profile-image-title flex flex-center">
                   <div className="image br50">
                     <img
                       src={
                         item?.avatarImage == ""
-                          ? "/static/img/no-image.png"
-                          : item?.avatarImage
+                          ? DefaultImagePath.defaultProfileImage
+                          : `${process.env.NEXT_PUBLIC_CLOUD_IMAGE_URL}${process.env.NEXT_PUBLIC_CHAT_PROFILE_IMAGE_SIZE}${item?.avatarImage}`
                       }
+                      width="40"
+                      height="40"
                       alt=""
                     />
                   </div>
                   <div className="profile-text">
-                    <div
-                      className={userId == item?._id ? "name active" : "name"}
-                    >
+                    <div className="name">
                       {item.username} <span className="new"></span>
                     </div>
+                    <div className="time">@{item?.username}</div>
                   </div>
                 </div>
               </div>
@@ -934,10 +949,9 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
         </div>
 
         <div className="modal-body">
-          <div className="input-control">
-            <label>User Name</label>
+          <div className="input-control search">
             <input
-              type="text"
+              type="search"
               name="username"
               placeholder={"Enter Username"}
               onChange={(e) => handleUsername(e)}
@@ -958,7 +972,10 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
             <button
               className="primary-btn"
               type="submit"
-              onClick={() => handleSubmitUser()}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmitUser();
+              }}
             >
               Next
             </button>

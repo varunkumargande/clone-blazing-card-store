@@ -4,6 +4,7 @@ import IconChat from "../../Icons/IconChat";
 import IconGallery from "../../Icons/IconGallery";
 import moment from "moment";
 import Router from "next/router";
+import { DefaultImagePath } from "../../Constants/defaultImage";
 
 export default function ChatPannel({
   messages,
@@ -11,6 +12,7 @@ export default function ChatPannel({
   setMsg,
   msg,
   handleSendMsg,
+  setIsOpen,
 }) {
   const divRef = useRef(null);
 
@@ -38,13 +40,8 @@ export default function ChatPannel({
    * this function is using for going to profile information page
    */
 
-  const handleToProfileInfo = () => {
-    Router.push({
-      pathname: "/profile",
-      query: {
-        userId: "",
-      },
-    });
+  const navigateToProfileInfo = (userId) => {
+    Router.push(`/profile?userId=${userId}`);
   };
 
   return (
@@ -52,18 +49,22 @@ export default function ChatPannel({
       {!!contactDetail ? (
         <>
           <div className="right-pannel">
-            {/* <div className=" static-content flex justify-center flex-center column">
-                <p>No message found</p>
-                <button className="primary-btn">New Message</button>
-            </div> */}
-            <div className="profile-header-title flex flex-center">
+            <div
+              className="profile-header-title flex flex-center"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateToProfileInfo(contactDetail?.userId);
+              }}
+            >
               <div className="image">
                 <img
                   src={
                     contactDetail?.avatarImage == ""
-                      ? "/static/img/no-image.png"
-                      : contactDetail.avatarImage
+                      ? DefaultImagePath.defaultProfileImage
+                      : `${process.env.NEXT_PUBLIC_CLOUD_IMAGE_URL}${process.env.NEXT_PUBLIC_CHAT_PROFILE_IMAGE_SIZE}${contactDetail.avatarImage}`
                   }
+                  width="40"
+                  height="40"
                   alt=""
                 />
               </div>
@@ -72,7 +73,7 @@ export default function ChatPannel({
                   {contactDetail?.firstName} {contactDetail?.lastName}{" "}
                   <span className="new"></span>
                 </div>
-                <div className="time">{contactDetail?.username}</div>
+                <div className="time">@{contactDetail?.username}</div>
               </div>
             </div>
             <div className="chat-box-wrap">
@@ -81,7 +82,10 @@ export default function ChatPannel({
                   if (item.fromSelf) {
                     return (
                       <>
-                        <div className="chat-wrap right">
+                        <div
+                          className="chat-wrap right"
+                          key={`${item.time}-chat-panel-sender`}
+                        >
                           <div className="chat">{item?.message}</div>
                           <div className="time">{item?.time}</div>
                         </div>
@@ -90,7 +94,10 @@ export default function ChatPannel({
                   } else {
                     return (
                       <>
-                        <div className="chat-wrap left">
+                        <div
+                          className="chat-wrap left"
+                          key={`${item.time}-chat-panel-receiver`}
+                        >
                           <div className="chat">{item?.message}</div>
                           <div className="time">{item?.time}</div>
                         </div>
@@ -123,9 +130,20 @@ export default function ChatPannel({
           </div>
         </>
       ) : (
-        <>
-          <div className="right-pannel"></div>
-        </>
+        <div className="right-pannel">
+          <div className="static-content flex justify-center flex-center column">
+            <p>No message found</p>
+            <button
+              className="primary-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpen(true);
+              }}
+            >
+              New Message
+            </button>
+          </div>
+        </div>
       )}
     </>
   );
