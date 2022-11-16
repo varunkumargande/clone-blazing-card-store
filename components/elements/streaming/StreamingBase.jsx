@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, memo } from "react";
 import StreamingElement from "./StreamingElement";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IconSpeaker from "../../Icons/IconSpeaker";
 import IconShare from "../../Icons/IconShare";
 import IconLikeWhite from "../../Icons/IconLikeWhite";
@@ -23,6 +23,7 @@ import { DefaultImagePath } from "../../Constants/defaultImage";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
+import { dislikedRequest, likedRequest, removeLikedRequest } from "../../../store/likedStream/action";
 
 function StreamingBase({
   cardDetail,
@@ -58,6 +59,7 @@ function StreamingBase({
   const [liked, setLiked] = useState(
     stream?.streamData?.isLike ? stream?.streamData?.isLike : false
   );
+
   const [onPageLanding, setOnPageLanding] = useState(true);
   const [currentAuctionDetails, setCurrentAuctionDetails] = useState(null);
 
@@ -66,6 +68,14 @@ function StreamingBase({
   const myInterval = useRef(null);
 
   const stopTimer = useRef(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (stream?.streamData?.isLike) {
+      setLiked(true);
+    }
+  }, [stream?.streamData?.isLike])
 
   /**
    * This useEffect will start countdown till 0
@@ -380,8 +390,14 @@ function StreamingBase({
         user_id: stream?.streamPageData?.streamPageDteails?.loggedInUserId,
       };
       const response = await streamLikeDislike(data);
-      if (response.status) {
-        setLiked(!liked);
+      if (response?.status) {
+        if (response?.data?.is_like) {
+          dispatch(likedRequest(uuid));
+        } else {
+          dispatch(removeLikedRequest(uuid));
+          dispatch(dislikedRequest(uuid));
+        }
+        setLiked(response?.data?.is_like);
       }
     } else {
       setShowLoginModal(true);

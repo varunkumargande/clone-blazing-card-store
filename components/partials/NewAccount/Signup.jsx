@@ -320,6 +320,7 @@ function Signup(auth) {
                   onChange={handleChange}
                   maxlength="12"
                   onBlur={handleBlur}
+                  type="tel"
                 />
                 <div className="errorText">
                   {errors.number && touched.number ? errors.number : null}

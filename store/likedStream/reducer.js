@@ -12,6 +12,7 @@ function reducer(state = initState, action) {
       return {
         ...state,
         likedData:[...state.likedData, action.payload],
+        dislikedData:[...state.dislikedData.filter((item) => item !== action.payload)],
       };
       case actionTypes.REMOVE_LIKED_REQUEST:
       return {
