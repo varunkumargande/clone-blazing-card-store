@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import styled from "styled-components";
 // import { allUsersRoute, host } from "../../api/utils/APIRoutes";
 // import { v4 as uuidv4 } from "uuid";
+import IconBack from "../../components/Icons/IconBack";
 import {
   sendMessageRoute,
   recieveMessageRoute,
@@ -25,10 +26,12 @@ import { Loader } from "../../components/reusable/Loader";
 import moment, { utc } from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
+import { show } from "../../store/toast/action";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
   var router = useRouter();
+  const dispatch = useDispatch();
   const socket = useRef();
 
   const [contacts, setContacts] = useState([]);
@@ -55,6 +58,8 @@ function Chat({ auth }) {
       let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
       socket.current = io(host);
       socket.current.emit("add-user", user?._id);
+    } else {
+      Router.push("/");
     }
   }, []);
   useEffect(() => {
@@ -101,7 +106,14 @@ function Chat({ auth }) {
           setContacts(res?.data?.response?.data);
           setUserCount(res?.data?.response?.userCount);
         })
-        .catch((err) => {});
+        .catch((err) => {
+          dispatch(
+            show({
+              message: err.response?.data?.message,
+              type: "error",
+            })
+          );
+        });
     }
   };
 
@@ -131,7 +143,6 @@ function Chat({ auth }) {
       }
     );
     setMessages(response.data.response);
-    Router.push("/chat?userId=" + index);
   };
   // // =================================================================
 
@@ -200,6 +211,8 @@ function Chat({ auth }) {
           setIsOpen={setIsOpen}
           userCount={userCount}
           setChatPanelVisible={setChatPanelVisible}
+          setCurrentUser={setCurrentUser}
+          currentUser={currentUser}
         />
       </>
     );
@@ -217,6 +230,7 @@ function Chat({ auth }) {
             messages={messages}
             setMsg={setMsg}
             contactDetail={contacts[currentSelected]}
+            setIsOpen={setIsOpen}
           />
         </>
       );
@@ -229,11 +243,19 @@ function Chat({ auth }) {
       {isMobile ? (
         <>
           {isChatPanelVisible ? (
-            <div
-              className="header-title flex flex-center"
-              onClick={() => setChatPanelVisible(false)}
-            >
-              <BackButton name={"Message"} />
+            <div className="header-title flex flex-center">
+              <h3 className="flex flex-center">
+                <div
+                  className="edit-back"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setChatPanelVisible(false);
+                  }}
+                >
+                  <IconBack />
+                </div>
+                Message
+              </h3>
             </div>
           ) : (
             <div className="header-title flex flex-center">
@@ -245,7 +267,7 @@ function Chat({ auth }) {
         <HeaderDefault />
       )}
       <div className="messages-wrapper">
-        {!isMobile ? <h1>Messages</h1>: ""}
+        {!isMobile ? <h1>Messages</h1> : ""}
         <div className="flex space-between message-inner">
           {isMobile ? (
             <>{isChatPanelVisible ? handleChatPanel() : handleProfilePanel()}</>
