@@ -86,7 +86,7 @@ function HeaderDefault({ auth }) {
 
   useEffect(() => {
     if (profile) {
-      handleProfileImage();
+      renderProfileImage();
     }
   }, [profile]);
 
@@ -96,7 +96,7 @@ function HeaderDefault({ auth }) {
     }
   }, [toggle]);
 
-  const handleProfileImage = () => {
+  const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
@@ -336,7 +336,7 @@ function HeaderDefault({ auth }) {
                 >
                   <span>
                     <span className="profileImage flex justify-center flex-center">
-                      {handleProfileImage()}
+                      {renderProfileImage()}
                     </span>
                     <IconDropdown />
                   </span>
