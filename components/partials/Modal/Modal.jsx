@@ -412,7 +412,7 @@ export function AddNewCardModal(props) {
       .min(15, "Card Number is invalid !"),
     cvc: Yup.string().min(2, "Too Short!").required("Required"),
     expireDate: Yup.string().required("Required"),
-    // countryId: Yup.string().required("Required"),
+    termCheckbox: Yup.bool().oneOf([true], 'Please accept terms & conditions').required('Please accept terms & conditions')
   });
 
   const formik = useFormik({
@@ -426,12 +426,14 @@ export function AddNewCardModal(props) {
             "/" +
             payDetail[0]?.card?.exp_year.toString().slice(-2)
           : "",
+      termCheckbox: !!payDetail[0]?.termCheckBox,
     },
     onSubmit: (values) => {
       const jsonData = JSON.stringify({
         cardNumber: values.cardNumber,
         expireDate: values.expireDate,
         cvc: values.cvc,
+        termCheckBox: values.termCheckbox,
       });
 
       if (payDetail == false) {
@@ -522,7 +524,7 @@ export function AddNewCardModal(props) {
               <span className="card-icon">
                 {formik?.values?.cardNumber >= 3 ? CardImage : ""}
               </span>
-              <ErrorMessage errors={formik.errors.cardNumber} />
+              <ErrorMessage errors={formik.errors.cardNumber} touched={formik.touched.cardNumber}/>
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
@@ -538,8 +540,8 @@ export function AddNewCardModal(props) {
                   value={handleExpDate(formik.values)}
                   maxLength={5}
                 />
-                <ErrorMessage errors={formik.errors.expireDate} />
-                {expValid == false ? "Expiary date is invalide" : ""}
+                <ErrorMessage errors={formik.errors.expireDate} touched={formik.touched.expireDate}/>
+                {!!expValid == false && "Expiry date is invalid"}
               </div>
               <div className="input-control wd50">
                 <label>CVV</label>
@@ -557,13 +559,37 @@ export function AddNewCardModal(props) {
                   }}
                   maxLength={type === "amex" ? 4 : 3}
                 />
-                <ErrorMessage errors={formik.errors.cvc} />{" "}
+                <ErrorMessage errors={formik.errors.cvc} touched={formik.touched.cvc}/>
               </div>
             </div>
-            <div className="infotext">
-              By providing your card information, you allow Blazing Cards to
-              charge your card for future payments in accordance with their
-              terms.
+            <div className="checkbox-wrap mb32">
+              <label className="checkbox">
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    formik.setFieldValue(
+                      "termCheckbox",
+                      !formik.values.termCheckbox
+                    );
+                  }}
+                >
+                  <input
+                    name="termCheckbox"
+                    type="checkbox"
+                    checked={formik.values.termCheckbox}
+                    onChange={(e) => {
+                    }
+                    }
+                  />
+                  <span className="checkmark"></span>
+                </div>
+                <div className="discriptionlg">
+                  By providing your card information, you allow BLAZING CARDS to
+                  charge your card for future payments in accordance with their
+                  terms.
+                </div>
+              </label>
+              <ErrorMessage errors={formik.errors.termCheckbox} touched={formik.touched.termCheckbox}/>
             </div>
           </div>
           <div className="modal-footer">
