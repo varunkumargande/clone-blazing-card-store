@@ -424,10 +424,10 @@ function StreamingBase({
       <>
         {profile?.avatar ? (
           <CloudinaryImage
-            imageUrl={`${profile?.avatar || `logo/user-fill.png`}`}
+            imageUrl={`${profile?.avatar }`}
             keyId={`${profile?.avatar || "avatar"}`}
             alternative={profile?.firstName?.[0] || "P"}
-            transformation={ImageTransformation.profileImageCard}
+            transformation={ImageTransformation.streamChatProfile}
           />
         ) : (
           <img src={DefaultImagePath.defaultProfileImage} alt="" />
@@ -539,7 +539,7 @@ function StreamingBase({
         {streamNotification?.name ? (
           <div className="winner-profile flex flex-center">
             <div className="pf br50">
-              {renderUserAvatar(streamNotification?.customer)}
+              {renderUserAvatar(streamNotification)}
             </div>
             {streamNotification?.name} <span> &nbsp; is winner 🎉</span>
           </div>
