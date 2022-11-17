@@ -51,7 +51,7 @@ function QuestionAllProduct({
 
         <div className="ps-product-ques-search">
           <button>
-            <i class="fa fa-search" aria-hidden="true" />
+            <i className="fa fa-search" aria-hidden="true" />
           </button>
           <input
             placeholder="Have question ? search for an answer"

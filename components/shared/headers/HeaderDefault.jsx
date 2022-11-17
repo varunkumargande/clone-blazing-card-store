@@ -25,6 +25,11 @@ import { TostMessage } from "../../../components/partials/ToastMessage/ToastMess
 import { show } from "../../../store/toast/action";
 import { DefaultImagePath } from "../../Constants/defaultImage";
 import { setCurrentUrlInLocal } from "../../../utilities/utils";
+import {
+  saveCategoryName,
+  saveSubCategoryName,
+} from "../../../store/category/action";
+import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -61,18 +66,12 @@ function HeaderDefault({ auth }) {
   }, []);
 
   useEffect(() => {
-    if (profile) {
-      handleProfileImage();
-    }
-  }, [profile]);
-
-  useEffect(() => {
     if (toggle) {
       handleStoreAndVendorToggle("seller");
     }
   }, [toggle]);
 
-  const handleProfileImage = () => {
+  const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
@@ -151,6 +150,8 @@ function HeaderDefault({ auth }) {
               onChange={(e) => {
                 setToggle((prev) => !prev);
               }}
+              className={toggle && 'checked'}
+              value={toggle}
               id="togBtn"
             />
             <span className="toogle-slide round">
@@ -195,8 +196,9 @@ function HeaderDefault({ auth }) {
   // ==============================================================================
 
   // ======================= handle check vendor and store ========================
-  const handleStoreAndVendorToggle = () => {
-    dispatch(vendorAuth());
+  const handleStoreAndVendorToggle = async () => {
+    await vendorAuthApi(dispatch);
+    setToggle(false);
   };
   // ==============================================================================
   // ======================= Onclick outside dropdown close ========================
@@ -219,17 +221,23 @@ function HeaderDefault({ auth }) {
     };
   }, []);
 
+  /**
+   * go to home page
+   */
+
+  const handleGoToHomePage = (e) => {
+    e.preventDefault();
+    dispatch(saveCategoryName(null));
+    dispatch(saveSubCategoryName(null));
+    Router.push("/");
+  };
+
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
         <div className="left flex flex-wrap flex-center">
           <div className="logo">
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                Router.push("/");
-              }}
-            >
+            <a onClick={(e) => handleGoToHomePage(e)}>
               <Logo />
             </a>
           </div>
@@ -300,7 +308,7 @@ function HeaderDefault({ auth }) {
                 >
                   <span>
                     <span className="profileImage flex justify-center flex-center">
-                      {handleProfileImage()}
+                      {renderProfileImage()}
                     </span>
                     <IconDropdown />
                   </span>

@@ -507,8 +507,8 @@ function LeftDiv({
         </div>
       </div>
       {isLeftDivOpen ? (
-        <div
-          className="leftdata-wrapper"
+        <div  className="leftdata-wrapper">
+        <div className="leftdata-inner"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -551,6 +551,7 @@ function LeftDiv({
                 ? showProductList()
                 : showProductListSkimmer()}
             </ul>
+          </div>
           </div>
         </div>
       ) : (

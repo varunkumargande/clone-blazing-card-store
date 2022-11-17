@@ -101,7 +101,7 @@ function ShippingDetails() {
                   </div>
                   <div className="flex space-between">
                     <div className="input-control">
-                      <label>Full Name *</label>
+                      <label>Full Name*</label>
                       <input
                         name="company"
                         placeholder={"Enter here"}
@@ -116,7 +116,7 @@ function ShippingDetails() {
                       />
                     </div>
                     <div className="input-control wd50">
-                      <label>Address Line 1 *</label>
+                      <label>Address Line 1*</label>
                       <input
                         name="address1"
                         placeholder={"Enter here"}
@@ -142,7 +142,7 @@ function ShippingDetails() {
                       {/* <span className="errorMessage">{errors.address2}</span> */}
                     </div>
                     <div className="input-control wd50">
-                      <label htmlFor="usr">Country *</label>
+                      <label htmlFor="usr">Country*</label>
                       <select
                         className="grey-bg"
                         name="countryId"
@@ -168,7 +168,7 @@ function ShippingDetails() {
                       />
                     </div>
                     <div className="input-control wd50">
-                      <label htmlFor="usr">Postal Code *</label>
+                      <label htmlFor="usr">Postal Code*</label>
                       <input
                         name="postcode"
                         placeholder={"Enter here"}
@@ -183,7 +183,7 @@ function ShippingDetails() {
                       />
                     </div>
                     <div className="input-control wd50">
-                      <label htmlFor="usr">City *</label>
+                      <label htmlFor="usr">City*</label>
                       <input
                         name="city"
                         placeholder={"Enter here"}
@@ -198,7 +198,7 @@ function ShippingDetails() {
                       />
                     </div>
                     <div className="input-control wd50">
-                      <label htmlFor="usr">State *</label>
+                      <label htmlFor="usr">State*</label>
                       {/* <input
                             name="state"
                             placeholder={"Enter here"}

@@ -12,6 +12,7 @@ export const paymentDetailsvalidation = (cardType) => {
     .min(cardType === 'amex' ? 4 : 3, "Invalid cvv")
     .max(cardType === 'amex' ? 4 : 3, "Invalid cvv"),
     country: yup.string().required('Required'),  
+    termCheckBox: yup.bool().oneOf([true], 'Please accept terms & conditions').required('Please accept terms & conditions')
   }
 
   return yup.object().shape(schema);
