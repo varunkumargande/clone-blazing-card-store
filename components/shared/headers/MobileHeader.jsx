@@ -10,7 +10,6 @@ import IconMessageMobile from "../../Icons/IconMessageMobile";
 import IconLogoutMobile from "../../Icons/IconLogoutMobile";
 import IconNotificationMobile from "../../Icons/IconNotificationMobile";
 import { useTranslation } from "../../../i18n";
-import { login } from "../../../store/auth/action";
 import { connect } from "react-redux";
 import Router from "next/router";
 import { modalSuccess } from "../../../api/intercept";
@@ -20,6 +19,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import { vendorAuth } from "../../../store/vendorAuth/action";
 import { chatLogin } from "../../../api";
+import { setCurrentUrlInLocal } from "../../../utilities/utils";
 
 function MobileHeader({ auth }) {
   const [active, setActive] = useState(false);
@@ -29,11 +29,6 @@ function MobileHeader({ auth }) {
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
-  const authFunc = () => {
-    if (localStorage.getItem("blazingToken") !== null) {
-      dispatch(login());
-    }
-  };
 
   const handleStoreAndVendorToggle = () => {
     dispatch(vendorAuth());
@@ -44,10 +39,6 @@ function MobileHeader({ auth }) {
       handleStoreAndVendorToggle("seller");
     }
   }, [toggle]);
-
-  useEffect(() => {
-    authFunc();
-  }, []);
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
@@ -220,11 +211,16 @@ function MobileHeader({ auth }) {
             </Link>
           ) : (
             <>
-              <Link href="/account/login">
-                <a className="primary-btn flex flex-center justify-center ml24">
-                  Sign In
-                </a>
-              </Link>
+              <button
+                className="primary-btn flex flex-center justify-center ml24"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentUrlInLocal();
+                  Router.push("/account/login");
+                }}
+              >
+                <a>Sign In</a>
+              </button>
             </>
           )}
         </div>
@@ -302,10 +298,13 @@ function MobileHeader({ auth }) {
                     </Link>
                   </li>
                   <li>
-                    <a className="message" onClick={(event) => {
-                      event.preventDefault();
-                      chatLogin();
-                    }}>
+                    <a
+                      className="message"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        chatLogin();
+                      }}
+                    >
                       <IconMessageMobile />
                       <span>Message</span>
                     </a>
@@ -335,16 +334,26 @@ function MobileHeader({ auth }) {
           ) : (
             <>
               <div className="flex flex-wrap btn-wrapper column">
-                <Link href="/account/login">
-                  <a className="border-btn flex flex-center justify-center">
-                    Sign In
-                  </a>
-                </Link>
-                <Link href="/account/register">
-                  <a className="primary-btn flex flex-center justify-center">
-                    Sign up
-                  </a>
-                </Link>
+                <button
+                  className="border-btn flex flex-center justify-center"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentUrlInLocal();
+                    Router.push("/account/login");
+                  }}
+                >
+                  <a>Sign In</a>
+                </button>
+                <button
+                  className="primary-btn flex flex-center justify-center"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentUrlInLocal();
+                    Router.push("/account/register");
+                  }}
+                >
+                  <a>Sign up</a>
+                </button>
               </div>
               <div className="or flex flex-center justify-center">
                 <span>Or</span>

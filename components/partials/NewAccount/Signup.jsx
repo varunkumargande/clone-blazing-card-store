@@ -152,8 +152,8 @@ function Signup(auth) {
       "",
       "",
       response.picture,
-      Router,
-      response
+      response,
+      dispatch
     );
   };
 

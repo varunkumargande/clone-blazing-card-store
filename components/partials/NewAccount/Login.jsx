@@ -26,21 +26,9 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loginType, setLoginType] = useState("normal");
-  const [emailValid, setEmailValid] = useState("");
-  const [passValid, setPassValid] = useState("");
   const [passShow, setPassShow] = useState(false);
   const [loadImg, setLoadImg] = useState(false);
-  const [googleId, setgoogleId] = useState("");
-  const [googlePath, setgooglePath] = useState("");
-  const [conpassShow, setConPassShow] = useState(false);
-  const emailInputRef = React.useRef(null);
   const router = useRouter();
-
-  useEffect(() => {
-    if (props.isLoggedIn === true) {
-      Router.push("/");
-    }
-  }, [props]);
 
   const responseGoogle = (response, encyrpted) => {
     GoogleLoginApi(
@@ -56,8 +44,8 @@ function Login(props) {
       "",
       "",
       response.picture,
-      Router,
-      response
+      response,
+      dispatch
     );
   };
 
