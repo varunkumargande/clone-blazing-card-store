@@ -23,7 +23,12 @@ import { DefaultImagePath } from "../../Constants/defaultImage";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
-import { dislikedRequest, likedRequest, removeLikedRequest } from "../../../store/likedStream/action";
+import {
+  dislikedRequest,
+  likedRequest,
+  removeLikedRequest,
+} from "../../../store/likedStream/action";
+import Styles from "../../../modular_scss/StreamingBase.module.scss";
 
 function StreamingBase({
   cardDetail,
@@ -75,7 +80,7 @@ function StreamingBase({
     if (stream?.streamData?.isLike) {
       setLiked(true);
     }
-  }, [stream?.streamData?.isLike])
+  }, [stream?.streamData?.isLike]);
 
   /**
    * This useEffect will start countdown till 0
@@ -424,7 +429,7 @@ function StreamingBase({
       <>
         {profile?.avatar ? (
           <CloudinaryImage
-            imageUrl={`${profile?.avatar }`}
+            imageUrl={`${profile?.avatar}`}
             keyId={`${profile?.avatar || "avatar"}`}
             alternative={profile?.firstName?.[0] || "P"}
             transformation={ImageTransformation.streamChatProfile}
@@ -443,18 +448,20 @@ function StreamingBase({
         {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
         <StreamingElement volume={volumeLevel} isMute={isMute} />
       </div>
-      <div className="inner-wrapper">
+      <div className={`${Styles.overlay}`}>
         <div className="stream-header flex space-between">
-          <div className="head-title">
-            {currentAuctionDetail?.name ||
-              currentAuctionDetail?.productName ||
-              ""}
-            <p className="text-light">
-              {currentAuctionDetail?.description ||
-                currentAuctionDetail?.productDescription ||
-                ""}
-            </p>
-          </div>
+          {currentAuctionDetail?.name ||
+            (currentAuctionDetail?.productName && (
+              <div className="head-title">
+                {currentAuctionDetail?.name ||
+                  currentAuctionDetail?.productName}
+                <p className="text-light">
+                  {currentAuctionDetail?.description ||
+                    currentAuctionDetail?.productDescription ||
+                    ""}
+                </p>
+              </div>
+            ))}
           {!stream?.streamPageData?.streamPageDteails?.isLoggedIn && (
             <div className="head-title">
               {stream?.streamPageData?.streamPageDteails &&
