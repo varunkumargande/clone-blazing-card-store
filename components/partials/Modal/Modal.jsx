@@ -1128,6 +1128,15 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
     setCurrentUrlInLocal();
   }, []);
 
+  useEffect(() => {
+    if (
+      localStorage.getItem("blazingUser") &&
+      document.getElementById("signup-modal-close")
+    ) {
+      document.getElementById("signup-modal-close").click();
+    }
+  }, [localStorage.getItem("blazingUser")]);
+
   const responseGoogle = (response) => {
     GoogleLoginApi(
       response.given_name,
@@ -1153,6 +1162,7 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
           <h5 className="modal-title"></h5>
           <button
             type="button"
+            id="signup-modal-close"
             className="close"
             data-dismiss="modal"
             aria-label="Close"
