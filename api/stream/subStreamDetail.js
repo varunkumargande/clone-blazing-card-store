@@ -1,7 +1,6 @@
-import { getStreamDetails, getLiveDetails } from "../../store/stream/action";
+import { getStreamDetails } from "../../store/stream/action";
 import APIServices from "../../services";
 import { categoryConstant } from "../../components/Constants";
-import Router from "next/router";
 import { limit } from "../../components/Constants";
 
 export async function substreamDetailApi(

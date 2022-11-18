@@ -1,6 +1,6 @@
 import React from "react";
 import IconAddChat from "../../Icons/IconAddChat";
-import { DefaultImagePath } from "../../Constants";
+import { DefaultImagePath } from "../../Constants/imageConstants";
 
 export default function ProfilePannel({
   contacts,

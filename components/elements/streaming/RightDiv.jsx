@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import Skeleton from "react-loading-skeleton";
 import IconChat from "../../Icons/IconChat";
-import { ImageTransformation, DefaultImagePath } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 

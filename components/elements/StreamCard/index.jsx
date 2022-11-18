@@ -5,7 +5,7 @@ import Router from "next/router";
 import DefaultServices from "../../Services/DefaultServices";
 import { connect } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation, DefaultImagePath } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
 
 function StreamCard({ detail, showLoginModal, auth, isDate }) {
   const handleRouting = (id) => {

@@ -1,11 +1,6 @@
-import React, { useRef } from "react";
 import { addFriend } from "../../chatService";
 import axios from "axios";
-import { chatConstant } from "../../components/Constants";
-import { modalSuccess, modalWarning } from "../intercept";
-import Router from "next/router";
 import { show } from "../../store/toast/action";
-import { logOut } from "../../store/auth/action";
 
 export async function addChatFrend(
   friendId,

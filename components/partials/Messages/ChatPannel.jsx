@@ -1,10 +1,7 @@
-import { message } from "antd";
 import React, { useRef, useEffect } from "react";
 import IconChat from "../../Icons/IconChat";
-import IconGallery from "../../Icons/IconGallery";
-import moment from "moment";
 import Router from "next/router";
-import { DefaultImagePath } from "../../Constants";
+import { DefaultImagePath } from "../../Constants/imageConstants";
 
 export default function ChatPannel({
   messages,

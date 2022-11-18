@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useField, Field } from "formik";
 import IconUpload from "../Icons/IconUpload";
-import IconChecked from "../Icons/IconChecked";
 import IconClose from "../Icons/IconClose";
-import { uploadImageToServer } from "../../utilities/common-helpers";
-import DefaultConstants from "../../utilities/constants";
-import useSelection from "antd/lib/table/hooks/useSelection";
 import { useSelector } from "react-redux";
-import { ImageTransformation } from "../Constants/imageTransformation";
+import { ImageTransformation } from "../Constants/imageConstants";
 import CloudinaryImage from "./CloudinaryImage";
 
 export default function FileUpload({ label, ...props }) {

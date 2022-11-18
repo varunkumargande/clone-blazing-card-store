@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { agoraGettToken } from "../../../api/stream/agora";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation } from "../../Constants/imageConstants";
 const StreamingElement = ({ volume, isMute }) => {
   const options = useSelector((state) => state?.stream?.streamPageData?.option);
   const streamData = useSelector((state) => state?.stream?.streamData);

@@ -16,7 +16,7 @@ import { modalSuccess } from "../../../api/intercept";
 import { logOut } from "../../../store/auth/action";
 import { useDispatch } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { DefaultImagePath, ImageTransformation} from "../../Constants/imageTransformation";
+import { DefaultImagePath, ImageTransformation} from "../../Constants/imageConstants";
 import { setCurrentUrlInLocal } from "../../../utilities/utils";
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 

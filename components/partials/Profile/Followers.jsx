@@ -1,10 +1,13 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ProfileMethods from "../../../api/profile/ProfileMethods";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation, DefaultImagePath } from "../../Constants/imageTransformation";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
-import { UnfollowModal, UnfollowModalMultiple } from "../Modal/Modal";
+import { UnfollowModalMultiple } from "../Modal/Modal";
 
 export default function Followers(props) {
   const { person, isFollower, setFollowing, setFollower, following, follower } =
@@ -73,13 +76,15 @@ export default function Followers(props) {
     <>
       <div className="card-list flex flex-center">
         <div className="profile text-center">
-          {DefaultServices?.GetFullImageURL(person, "vendor") !== DefaultImagePath.defaultImage ?
+          {DefaultServices?.GetFullImageURL(person, "vendor") !==
+          DefaultImagePath.defaultImage ? (
             <CloudinaryImage
               imageUrl={DefaultServices?.GetFullImageURL(person, "vendor")}
               keyId={DefaultServices?.GetFullImageURL(person, "vendor")}
               transformation={ImageTransformation.followersCard}
               alternative={"Card"}
-            /> :
+            />
+          ) : (
             <span className="Image">
               <img
                 onError={() => {
@@ -91,7 +96,7 @@ export default function Followers(props) {
                 className="error"
               />
             </span>
-          }
+          )}
           {/* <img style={{ borderRadius:"50%" }} width="115" height="115" src={DefaultServices.GetFullImageURL(person, "vendor", "115", "115")} alt="Card" /> */}
           <div className="f-title">{renderProfileName()}</div>
           <div className="f-digi">
