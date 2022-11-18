@@ -40,6 +40,8 @@ function StreamingBase({
   userCount,
   streamNotification,
   liveAuctionDetails,
+  setCurrentAuctionDetails,
+  currentAuctionDetails,
 }) {
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
@@ -66,7 +68,6 @@ function StreamingBase({
   );
 
   const [onPageLanding, setOnPageLanding] = useState(true);
-  const [currentAuctionDetails, setCurrentAuctionDetails] = useState(null);
 
   const { isMobile } = useIsMobile();
 
@@ -127,10 +128,11 @@ function StreamingBase({
 
   useEffect(() => {
     if (streamNotification) {
-      if (streamNotification?.product?.name !== currentAuctionDetails?.name) {
+      if (
+        streamNotification?.product &&
+        streamNotification?.product?.name !== currentAuctionDetails?.name
+      ) {
         setCurrentAuctionDetails(streamNotification?.product);
-      } else {
-        setCurrentAuctionDetails(null);
       }
 
       if (streamNotification?.name) {
@@ -380,13 +382,9 @@ function StreamingBase({
    * Method to identify name of stream
    * @returns string || null
    */
-  const currentAuctionDetail = useMemo(() => {
-    return (
-      currentAuctionDetails ||
-      streamNotification?.product ||
-      liveAuctionDetails?.latestAuction
-    );
-  }, [liveAuctionDetails, streamNotification, currentAuctionDetails]);
+  const renderCurrentAuctionDetail = useMemo(() => {
+    return currentAuctionDetails || liveAuctionDetails?.latestAuction;
+  }, [liveAuctionDetails, currentAuctionDetails]);
 
   const handleLikeUnlike = async () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -450,18 +448,18 @@ function StreamingBase({
       </div>
       <div className={`${Styles.overlay}`}>
         <div className="stream-header flex space-between">
-          {currentAuctionDetail?.name ||
-            (currentAuctionDetail?.productName && (
-              <div className="head-title">
-                {currentAuctionDetail?.name ||
-                  currentAuctionDetail?.productName}
-                <p className="text-light">
-                  {currentAuctionDetail?.description ||
-                    currentAuctionDetail?.productDescription ||
-                    ""}
-                </p>
-              </div>
-            ))}
+          {(renderCurrentAuctionDetail?.name ||
+            renderCurrentAuctionDetail?.productName) && (
+            <div className="head-title">
+              {renderCurrentAuctionDetail?.name ||
+                renderCurrentAuctionDetail?.productName}
+              <p className="text-light">
+                {renderCurrentAuctionDetail?.description ||
+                  renderCurrentAuctionDetail?.productDescription ||
+                  ""}
+              </p>
+            </div>
+          )}
           {!stream?.streamPageData?.streamPageDteails?.isLoggedIn && (
             <div className="head-title">
               {stream?.streamPageData?.streamPageDteails &&
