@@ -79,7 +79,7 @@ function Streaming() {
     return () => {
       dispatch(clearState());
     };
-  }, []);
+  }, [localStorage.getItem("blazingUser")]);
 
   //Method to show and hide left div
   const handleLeftDiv = useCallback((toggle) => {

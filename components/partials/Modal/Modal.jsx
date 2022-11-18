@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
 import IconShareTwitter from "../../Icons/IconShareTwitter";
@@ -8,20 +7,13 @@ import IconGoogle from "../../Icons/IconGoogle";
 import Timer from "../../elements/streaming/Timer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { array, element } from "prop-types";
-import { addCardDetail } from "../../../api/stream/payment";
 import { deleteAccountApi } from "../../../api/account/deleteAccount";
-import axios from "axios";
-import { searchUsers } from "../../../chatService";
-import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
 import { addChatFrend, searchUser } from "../../../api/chat";
 import { regex } from "../../Constants/regex";
-import { apiUrl } from "../../../api/url";
 import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
-import { io } from "socket.io-client";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
@@ -33,27 +25,8 @@ import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
-import { getStateName } from "../../../utilities/utils";
+import { getStateName, setCurrentUrlInLocal } from "../../../utilities/utils";
 import { DefaultImagePath } from "../../Constants/defaultImage";
-
-const responseGoogle = (response) => {
-  GoogleLoginApi(
-    response.given_name,
-    response.family_name,
-    response.email,
-    "",
-    "",
-    response.email.split("@")[0],
-    "gmail",
-    "",
-    "",
-    "",
-    "",
-    response.picture,
-    Router,
-    response
-  );
-};
 
 const responseGoogleFailure = (response) => {
   console.error("Failure response", response);
@@ -1175,6 +1148,39 @@ export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
 }
 
 export function SignUPGoogle({ onDismiss, customMsg }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setCurrentUrlInLocal();
+  }, []);
+
+  useEffect(() => {
+    if (
+      localStorage.getItem("blazingUser") &&
+      document.getElementById("signup-modal-close")
+    ) {
+      document.getElementById("signup-modal-close").click();
+    }
+  }, [localStorage.getItem("blazingUser")]);
+
+  const responseGoogle = (response) => {
+    GoogleLoginApi(
+      response.given_name,
+      response.family_name,
+      response.email,
+      "",
+      "",
+      response.email.split("@")[0],
+      "gmail",
+      "",
+      "",
+      "",
+      "",
+      response.picture,
+      response,
+      dispatch
+    );
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal signup">
@@ -1182,6 +1188,7 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
           <h5 className="modal-title"></h5>
           <button
             type="button"
+            id="signup-modal-close"
             className="close"
             data-dismiss="modal"
             aria-label="Close"
@@ -1219,14 +1226,26 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
             <span>Or</span>
           </div>
           <div className="signin-signup">
-            <Link href="/account/register">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setCurrentUrlInLocal();
+                Router.push("/account/register");
+              }}
+            >
               <a>Sign Up</a>
-            </Link>
+            </button>
             /
-            <Link href="/account/login">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setCurrentUrlInLocal();
+                Router.push("/account/login");
+              }}
+            >
               <a>Sign In</a>
-            </Link>{" "}
-            on Blazing Cards
+            </button>
+            &nbsp; on Blazing Cards
           </div>
         </div>
       </div>

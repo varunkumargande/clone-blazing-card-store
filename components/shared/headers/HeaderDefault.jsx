@@ -6,34 +6,25 @@ import IconNotification from "../../Icons/IconNotification";
 import IconDropdown from "../../Icons/IconDropdown";
 import IconProfile from "../../Icons/IconProfile";
 import IconMyOrders from "../../Icons/IconMyOrders";
-import IconSettings from "../../Icons/IconSettings";
 import IconLogout from "../../Icons/IconLogout";
-import IconSearch from "../../Icons/IconSearch";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "../../../i18n";
-import { categoryListApi } from "../../../api";
 import { useRouter } from "next/router";
-import { login } from "../../../store/auth/action";
 import { connect } from "react-redux";
 import Router from "next/router";
-import { modalSuccess } from "../../../api/intercept";
 import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
-import { imageUrl } from "../../../api/url";
-import MessageButton from "../../elements/MessageButton";
 import { stepState } from "../../Constants/becomeSeller";
-import { chatLogin } from "../../../api";
-import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
-import useSessionstorage from "../../elements/sessionStorageHook/useSessionstorage";
 import Notifications from "../../partials/Notifications/Notifications";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { vendorAuth } from "../../../store/vendorAuth/action";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
 import { show } from "../../../store/toast/action";
 import { DefaultImagePath } from "../../Constants/defaultImage";
+import { setCurrentUrlInLocal } from "../../../utilities/utils";
 import {
   saveCategoryName,
   saveSubCategoryName,
@@ -61,21 +52,11 @@ function HeaderDefault({ auth }) {
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
 
-  const authFunc = () => {
-    if (localStorage.getItem("blazingToken") !== null) {
-      dispatch(login());
-    }
-  };
-
   const toast = useSelector((state) => state?.toast?.toast);
 
   const handleOnClick = () => {
     setActive(!active);
   };
-
-  useEffect(() => {
-    authFunc();
-  }, []);
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
@@ -87,12 +68,6 @@ function HeaderDefault({ auth }) {
       }
     }, 10);
   }, []);
-
-  useEffect(() => {
-    if (profile) {
-      renderProfileImage();
-    }
-  }, [profile]);
 
   useEffect(() => {
     if (toggle) {
@@ -157,9 +132,6 @@ function HeaderDefault({ auth }) {
       })
     );
     Router.push("/");
-    setTimeout(() => {
-      window.location.reload();
-    }, 200);
   };
 
   const handleSearchValue = (e) => {
@@ -388,16 +360,26 @@ function HeaderDefault({ auth }) {
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
 
-                <Link href="account/login">
-                  <a className="primary-btn flex flex-center justify-center ml24">
-                    Sign In
-                  </a>
-                </Link>
-                <Link href="account/register">
-                  <a className="border-btn flex flex-center justify-center ml24">
-                    Sign up
-                  </a>
-                </Link>
+                <button
+                  className="primary-btn flex flex-center justify-center ml24"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentUrlInLocal();
+                    Router.push("/account/login");
+                  }}
+                >
+                  <a>Sign In</a>
+                </button>
+                <button
+                  className="border-btn flex flex-center justify-center ml24"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentUrlInLocal();
+                    Router.push("/account/register");
+                  }}
+                >
+                  <a>Sign up</a>
+                </button>
                 {/* </div> */}
               </>
             )}
