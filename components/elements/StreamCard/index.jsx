@@ -8,7 +8,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
 import { DefaultImagePath } from "../../Constants/defaultImage";
 
-function StreamCard({ detail, showLoginModal, auth , isDate}) {
+function StreamCard({ detail, showLoginModal, auth, isDate }) {
   const handleRouting = (id) => {
     Router.push("/profile?userId=" + id);
   };
@@ -21,17 +21,20 @@ function StreamCard({ detail, showLoginModal, auth , isDate}) {
     <div className="card-list flex flex-center">
       <div className="inner-card-list">
         <div className="image">
-          <div className="innerImage" onClick={() => handleStreamingLink(detail)}>
+          <div
+            className="innerImage"
+            onClick={(e) => {
+              e.preventDefault();
+              handleStreamingLink(detail);
+            }}
+          >
             <CloudinaryImage
-              imageUrl={
-                DefaultServices?.GetFullImageURL(detail, "profile")
-              }
+              imageUrl={DefaultServices?.GetFullImageURL(detail, "profile")}
               keyId={DefaultServices?.GetFullImageURL(detail, "profile")}
               transformation={ImageTransformation.card}
               alternative={""}
             />
           </div>
-
           {/* ToDo: Need to remove old image code. Keeping it right now for reference */}
           {/* <img
               onError={({ currentTarget }) => {
@@ -53,19 +56,21 @@ function StreamCard({ detail, showLoginModal, auth , isDate}) {
         <div className="text">
           <h3
             className="title flex flex-center"
-            onClick={() => handleRouting(detail.user_id)}
+            onClick={(e) => {
+              e.preventDefault();
+              handleRouting(detail.user_id);
+            }}
           >
-            {
-              DefaultServices?.GetFullImageURL(detail, "vendor") !== DefaultImagePath.defaultImage ?
-                <CloudinaryImage
-                  imageUrl={
-                    DefaultServices?.GetFullImageURL(detail, "vendor")
-                  }
-                  keyId={DefaultServices?.GetFullImageURL(detail, "vendor")}
-                  transformation={ImageTransformation.profileImageCard}
-                  alternative={""}
-                /> :
-                <span className="profile">
+            {DefaultServices?.GetFullImageURL(detail, "vendor") !==
+            DefaultImagePath.defaultImage ? (
+              <CloudinaryImage
+                imageUrl={DefaultServices?.GetFullImageURL(detail, "vendor")}
+                keyId={DefaultServices?.GetFullImageURL(detail, "vendor")}
+                transformation={ImageTransformation.profileImageCard}
+                alternative={""}
+              />
+            ) : (
+              <span className="profile">
                 <img
                   onError={() => {
                     currentTarget.onerror = null;
@@ -77,10 +82,7 @@ function StreamCard({ detail, showLoginModal, auth , isDate}) {
                   alt="Profile"
                 />
               </span>
-            }
-            
-
-
+            )}
             {/* ToDo: Need to remove old image code. Keeping it right now for reference */}
             {/* <img
               onError={({ currentTarget }) => {
@@ -90,12 +92,9 @@ function StreamCard({ detail, showLoginModal, auth , isDate}) {
               src={DefaultServices?.GetFullImageURL(detail, "vendor", "25", "25", false)}
               alt="Card"
             /> */}
-
             {stringFormatter(detail?.username)}
           </h3>
-          <div className="disc">
-            {detail?.title?.substring(0, 25) + "..."}
-          </div>
+          <div className="disc">{detail?.title?.substring(0, 25) + "..."}</div>
           <button className="cate-btn text-capitalize">
             {stringFormatter(detail?.subCategory_name)}
           </button>

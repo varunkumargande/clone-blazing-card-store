@@ -19,6 +19,7 @@ import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
 import SeeMoreLoader from "../../components/reusable/SeeMoreLoader";
 import { limit } from "../../components/Constants";
+import { SignUPGoogle } from "../../components/partials/Modal/Modal";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -124,6 +125,15 @@ function categoryStream({ auth, category }) {
 
   return (
     <div className="home-container">
+      {showModal && (
+        <SignUPGoogle
+          customMsg={"Signup to Join Blazing Cards"}
+          onDismiss={(e) => {
+            e.preventDefault();
+            setShowModal(false);
+          }}
+        />
+      )}
       {isMobile ? "" : <HeaderDefault />}
       {isMobile ? (
         ""
@@ -131,8 +141,15 @@ function categoryStream({ auth, category }) {
         <section className="breadcrumbs-wrapper">
           <div className="inner-container">
             <ul className="breadcrumbs flex flex-center">
-              <li onClick={() => handleToGoHome()}>Home</li>/
-              <li className="current">{showHeader()}</li>
+              <li
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToGoHome();
+                }}
+              >
+                Home
+              </li>
+              /<li className="current">{showHeader()}</li>
             </ul>
           </div>
         </section>
@@ -141,7 +158,13 @@ function categoryStream({ auth, category }) {
         <div className="inner-container">
           <div className="title-wrap see-all-back flex space-between flex-center">
             <div className="flex flex-center">
-              <div className="edit-back" onClick={() => handleToGoHome()}>
+              <div
+                className="edit-back"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToGoHome();
+                }}
+              >
                 <IconBack />
               </div>
               &nbsp;&nbsp;&nbsp;{" "}
