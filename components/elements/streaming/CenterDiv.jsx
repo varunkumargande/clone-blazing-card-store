@@ -30,6 +30,8 @@ function CenterDiv({
   userCount,
   streamNotification,
   liveAuctionDetails,
+  setCurrentAuctionDetails,
+  currentAuctionDetails,
 }) {
   const dispatch = useDispatch();
 
@@ -133,6 +135,8 @@ function CenterDiv({
         userCount={userCount}
         streamNotification={streamNotification}
         liveAuctionDetails={liveAuctionDetails}
+        setCurrentAuctionDetails={setCurrentAuctionDetails}
+        currentAuctionDetails={currentAuctionDetails}
       />
       {paymentSuccessful && (
         <OrderSuccessful
