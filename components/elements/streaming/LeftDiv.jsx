@@ -425,10 +425,7 @@ function LeftDiv({
           customMsg={
             "In order to buy a product in the stream, you need to sign up or log in."
           }
-          onDismiss={(e) => {
-            e.preventDefault();
-            setShowLogin(false);
-          }}
+          onDismiss={setShowLogin}
         />
       )}
       {showUnFollowModal && UnfollowModal()}
