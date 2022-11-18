@@ -1226,7 +1226,7 @@ export function UnfollowModal(props) {
   );
 }
 
-export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
+export function SuccessMessageModal({ message, subMessage, setPaymentSuccessful }) {
   return (
     <div
       className="modalOverlay flex justify-center flex-center"

@@ -7,14 +7,15 @@ export async function handleCardApi(
   isEdit,
   cardListApi,
   setCardLoader,
-  dispatch
+  dispatch,
+  setShowModal=null
 ) {
   if (isEdit) {
     const result = await APIServices.create(
       "customer-card-details/updateCard",
       data
     );
-    const resp = apiValidation(result, dispatch);
+    const resp = apiValidation(result, dispatch, setShowModal);
     if (resp) {
       cardListApi();
     }
@@ -24,7 +25,7 @@ export async function handleCardApi(
       "customer-card-details/addCardInProfile",
       data
     );
-    const resp = apiValidation(result, dispatch);
+    const resp = apiValidation(result, dispatch, setShowModal);
     if (resp) {
       cardListApi();
     }
