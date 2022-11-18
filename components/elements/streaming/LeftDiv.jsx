@@ -14,6 +14,7 @@ import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 import Styles from "../../../modular_scss/LeftDiv.module.scss";
+import { handleModalClick } from "../../../utilities/utils";
 
 function LeftDiv({
   setShowLoginModal,
@@ -348,8 +349,11 @@ function LeftDiv({
   const UnfollowModal = () => {
     const vendorDetails = stream?.streamData?.vendorDetails;
     return (
-      <div className="modalOverlay flex justify-center flex-center">
-        <div className="modal">
+      <div
+        className="modalOverlay flex justify-center flex-center"
+        onClick={(event) => { handleModalClick(event, setShowUnFollowModal) }}
+      >
+        <div className="modal" onClick={(event) => { handleModalClick(event) }}>
           <div className="modal-body text-center">
             <div className="profile-icon">
               {stream?.streamData?.vendorDetails ? (

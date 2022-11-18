@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
 import IconShareTwitter from "../../Icons/IconShareTwitter";
@@ -22,30 +21,11 @@ import jwt_decode from "jwt-decode";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import Router from "next/router";
 import DefaultServices from "../../Services/DefaultServices";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
-import { getStateName } from "../../../utilities/utils";
-
-const responseGoogle = (response) => {
-  GoogleLoginApi(
-    response.given_name,
-    response.family_name,
-    response.email,
-    "",
-    "",
-    response.email.split("@")[0],
-    "gmail",
-    "",
-    "",
-    "",
-    "",
-    response.picture,
-    Router,
-    response
-  );
-};
+import { getStateName, setCurrentUrlInLocal } from "../../../utilities/utils";
 
 const responseGoogleFailure = (response) => {
   console.error("Failure response", response);
@@ -404,7 +384,7 @@ export function AddNewCardModal(props) {
       .min(15, "Card Number is invalid !"),
     cvc: Yup.string().min(2, "Too Short!").required("Required"),
     expireDate: Yup.string().required("Required"),
-    // countryId: Yup.string().required("Required"),
+    termCheckbox: Yup.bool().oneOf([true], 'Please accept terms & conditions').required('Please accept terms & conditions')
   });
 
   const formik = useFormik({
@@ -418,12 +398,14 @@ export function AddNewCardModal(props) {
             "/" +
             payDetail[0]?.card?.exp_year.toString().slice(-2)
           : "",
+      termCheckbox: !!payDetail[0]?.termCheckBox,
     },
     onSubmit: (values) => {
       const jsonData = JSON.stringify({
         cardNumber: values.cardNumber,
         expireDate: values.expireDate,
         cvc: values.cvc,
+        termCheckBox: values.termCheckbox,
       });
 
       if (payDetail == false) {
@@ -514,7 +496,7 @@ export function AddNewCardModal(props) {
               <span className="card-icon">
                 {formik?.values?.cardNumber >= 3 ? CardImage : ""}
               </span>
-              <ErrorMessage errors={formik.errors.cardNumber} />
+              <ErrorMessage errors={formik.errors.cardNumber} touched={formik.touched.cardNumber}/>
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
@@ -530,8 +512,8 @@ export function AddNewCardModal(props) {
                   value={handleExpDate(formik.values)}
                   maxLength={5}
                 />
-                <ErrorMessage errors={formik.errors.expireDate} />
-                {expValid == false ? "Expiary date is invalide" : ""}
+                <ErrorMessage errors={formik.errors.expireDate} touched={formik.touched.expireDate}/>
+                {!!expValid == false && "Expiry date is invalid"}
               </div>
               <div className="input-control wd50">
                 <label>CVV</label>
@@ -549,13 +531,37 @@ export function AddNewCardModal(props) {
                   }}
                   maxLength={type === "amex" ? 4 : 3}
                 />
-                <ErrorMessage errors={formik.errors.cvc} />{" "}
+                <ErrorMessage errors={formik.errors.cvc} touched={formik.touched.cvc}/>
               </div>
             </div>
-            <div className="infotext">
-              By providing your card information, you allow Blazing Cards to
-              charge your card for future payments in accordance with their
-              terms.
+            <div className="checkbox-wrap mb32">
+              <label className="checkbox">
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    formik.setFieldValue(
+                      "termCheckbox",
+                      !formik.values.termCheckbox
+                    );
+                  }}
+                >
+                  <input
+                    name="termCheckbox"
+                    type="checkbox"
+                    checked={formik.values.termCheckbox}
+                    onChange={(e) => {
+                    }
+                    }
+                  />
+                  <span className="checkmark"></span>
+                </div>
+                <div className="discriptionlg">
+                  By providing your card information, you allow BLAZING CARDS to
+                  charge your card for future payments in accordance with their
+                  terms.
+                </div>
+              </label>
+              <ErrorMessage errors={formik.errors.termCheckbox} touched={formik.touched.termCheckbox}/>
             </div>
           </div>
           <div className="modal-footer">
@@ -771,7 +777,7 @@ export function DeletAccountModal({ setIsOpen, userName }) {
       password: "",
     },
     validateOnMount: true,
-    onSubmit: async (values) =>  {
+    onSubmit: async (values) => {
       await deleteAccountApi(values, dispatch);
       setIsOpen(false);
     },
@@ -851,11 +857,18 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
+  const dispatch = useDispatch();
 
   // handle username and search frend
   const handleUsername = async (e) => {
     e.preventDefault();
-    searchUser(setUserData, setUserDataLoader, e.target.value);
+    searchUser(
+      setUserData,
+      setUserDataLoader,
+      e.target.value,
+      dispatch,
+      setIsOpen
+    );
   };
   // ====================================================================
 
@@ -867,7 +880,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
   // handle for submit for add frend
   const handleSubmitUser = () => {
-    addChatFrend(userId, fetchUserData, setIsOpen, socket);
+    addChatFrend(userId, fetchUserData, setIsOpen, socket, dispatch);
   };
   // =============================================================
 
@@ -878,21 +891,25 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
           return (
             <>
               <div
-                className={
-                  !!userId
-                    ? "profile-chat-list flex space-between active-user"
-                    : "profile-chat-list flex space-between"
-                }
-                onClick={() => handleAddUserForChat(item._id, item.username)}
+                className={`profile-chat-list flex space-between ${
+                  userId == item?._id && `active`
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAddUserForChat(item._id, item.username);
+                }}
+                key={`${item.username}-chat-panel`}
               >
                 <div className="profile-image-title flex flex-center">
                   <div className="image br50">
                     <img
                       src={
                         item?.avatarImage == ""
-                          ? "/static/img/no-image.png"
-                          : item?.avatarImage
+                          ? DefaultImagePath.defaultProfileImage
+                          : `${process.env.NEXT_PUBLIC_CLOUD_IMAGE_URL}${process.env.NEXT_PUBLIC_CHAT_PROFILE_IMAGE_SIZE}${item?.avatarImage}`
                       }
+                      width="40"
+                      height="40"
                       alt=""
                     />
                   </div>
@@ -900,6 +917,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
                     <div className="name">
                       {item.username} <span className="new"></span>
                     </div>
+                    <div className="time">@{item?.username}</div>
                   </div>
                 </div>
               </div>
@@ -929,10 +947,9 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
         </div>
 
         <div className="modal-body">
-          <div className="input-control">
-            <label>User Name</label>
+          <div className="input-control search">
             <input
-              type="text"
+              type="search"
               name="username"
               placeholder={"Enter Username"}
               onChange={(e) => handleUsername(e)}
@@ -953,7 +970,10 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
             <button
               className="primary-btn"
               type="submit"
-              onClick={() => handleSubmitUser()}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmitUser();
+              }}
             >
               Next
             </button>
@@ -1127,6 +1147,39 @@ export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
 }
 
 export function SignUPGoogle({ onDismiss, customMsg }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setCurrentUrlInLocal();
+  }, []);
+
+  useEffect(() => {
+    if (
+      localStorage.getItem("blazingUser") &&
+      document.getElementById("signup-modal-close")
+    ) {
+      document.getElementById("signup-modal-close").click();
+    }
+  }, [localStorage.getItem("blazingUser")]);
+
+  const responseGoogle = (response) => {
+    GoogleLoginApi(
+      response.given_name,
+      response.family_name,
+      response.email,
+      "",
+      "",
+      response.email.split("@")[0],
+      "gmail",
+      "",
+      "",
+      "",
+      "",
+      response.picture,
+      response,
+      dispatch
+    );
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal signup">
@@ -1134,6 +1187,7 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
           <h5 className="modal-title"></h5>
           <button
             type="button"
+            id="signup-modal-close"
             className="close"
             data-dismiss="modal"
             aria-label="Close"
@@ -1167,18 +1221,30 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
               }}
             />
           </GoogleOAuthProvider>
-          <div class="or mb26 flex flex-center justify-center">
+          <div className="or mb26 flex flex-center justify-center">
             <span>Or</span>
           </div>
           <div className="signin-signup">
-            <Link href="/account/register">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setCurrentUrlInLocal();
+                Router.push("/account/register");
+              }}
+            >
               <a>Sign Up</a>
-            </Link>
+            </button>
             /
-            <Link href="/account/login">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setCurrentUrlInLocal();
+                Router.push("/account/login");
+              }}
+            >
               <a>Sign In</a>
-            </Link>{" "}
-            on Blazing Cards
+            </button>
+            &nbsp; on Blazing Cards
           </div>
         </div>
       </div>

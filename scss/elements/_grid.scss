@@ -68,3 +68,6 @@ body {
         min-width: 1230px;
     }
 }
+body:has(.modalOverlay) {
+    overflow: hidden;
+}

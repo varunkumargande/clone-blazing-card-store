@@ -29,6 +29,7 @@ function MyProfile(props) {
   const [following, setFollowing] = useState([]);
   const [likedShows, setLikedShows] = useState([]);
   const [tabs, setTabs] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
 
   const [activeTab, setActiveTab] = useState(
     tabs && tabs.length > 0 ? tabs[0].key : ""
@@ -61,20 +62,21 @@ function MyProfile(props) {
     setLikedShows(currentLikedShows);
   }, [dislikedStreams]);
 
-  const getSessionUser = () => {
-    const user = JSON.parse(localStorage.getItem("blazingUser"));
-    return user;
-  };
+  useEffect(() => {
+    if (localStorage.getItem("blazingUser")) {
+      setCurrentUser(JSON.parse(localStorage.getItem("blazingUser")));
+    }
+  }, []);
+
+  const loggedInUserId = currentUser?.id;
 
   const getAllBuyerDetails = () => {
-    const loggedInUserId = getSessionUser().id;
-    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);  
+    ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
     ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
   };
 
   const getAllVendorDetails = () => {
-    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
     ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
@@ -222,7 +224,6 @@ function MyProfile(props) {
   };
 
   const renderTab = (tab, key) => {
-    const loggedInUserId = getSessionUser().id;
     return (
       <div className="category-list" key={key}>
         <button
@@ -344,7 +345,7 @@ function MyProfile(props) {
           alt="Profile"
           className="error"
         />
-      )
+      );
     }
   };
 

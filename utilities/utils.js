@@ -101,3 +101,16 @@ export const camelCase = (str) => {
     )
     .replace(/\s+/g, "");
 };
+
+/**
+ * @method: handleModalClick
+ * @description: If user click outside the modal, the modal will be closed.
+ */
+ export const handleModalClick = (event, handleOnClose) => {
+  event.stopPropagation();
+  if (handleOnClose) {
+    // event.preventDefault can not be written outside as it will cause issues with modals that are using formik submit.
+    event.preventDefault();
+    handleOnClose(false);
+  }
+}

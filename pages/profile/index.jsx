@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
@@ -38,21 +38,19 @@ export default function PublicProfile() {
     tabs && tabs.length > 0 ? tabs[0].key : ""
   );
   const [showModal, setShowModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
   const [key, setKey] = useState(1);
   const [isOpenFollowUnfollow, setIsOpenFollowUnfollow] = useState(false);
   const wrapperRef = useRef(null);
 
-  const getSessionUser = () => {
-    if (typeof window !== "undefined") {
-      if (window && window.localStorage.getItem("blazingUser")) {
-        let user = JSON.parse(localStorage.getItem("blazingUser"));
-        return user;
-      }
+  useEffect(() => {
+    if (localStorage.getItem("blazingUser")) {
+      setCurrentUser(JSON.parse(localStorage.getItem("blazingUser")));
     }
-    return false;
-  };
+  }, []);
 
-  const user = getSessionUser();
+  const user = currentUser;
+  const loggedInUserId = currentUser?.id;
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -61,14 +59,12 @@ export default function PublicProfile() {
   };
 
   const getAllBuyerDetails = () => {
-    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
     ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
   };
 
   const getAllVendorDetails = () => {
-    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
     ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
@@ -138,7 +134,11 @@ export default function PublicProfile() {
         return (
           <>
             {previousShows.map((show, index) => (
-              <StreamCard detail={show} showLoginModal={setShowModal} isDate={true}/>
+              <StreamCard
+                detail={show}
+                showLoginModal={setShowModal}
+                isDate={true}
+              />
             ))}
           </>
         );
@@ -220,7 +220,6 @@ export default function PublicProfile() {
   };
 
   const renderTab = (tab, key) => {
-    const loggedInUserId = getSessionUser().id;
     return (
       <div className="category-list" key={key}>
         <button
@@ -358,7 +357,8 @@ export default function PublicProfile() {
               <aside className="aside-wrapper profile-aside">
                 <div className="aside-container profile-container">
                   <div className="profile-icon">
-                    {DefaultServices?.GetFullImageURL(profile, "profile") !== DefaultImagePath.defaultImage ?
+                    {DefaultServices?.GetFullImageURL(profile, "profile") !==
+                    DefaultImagePath.defaultImage ? (
                       <CloudinaryImage
                         imageUrl={DefaultServices?.GetFullImageURL(
                           profile,
@@ -370,7 +370,8 @@ export default function PublicProfile() {
                         )}
                         transformation={ImageTransformation.ProfileImage}
                         alternative={"profileImg"}
-                      /> :
+                      />
+                    ) : (
                       <img
                         onError={() => {
                           currentTarget.onerror = null;
@@ -380,7 +381,7 @@ export default function PublicProfile() {
                         alt="Profile"
                         className="error"
                       />
-                    }
+                    )}
                     {/* <img width="124" height="124" style={{ borderRadius:"50%" }} src={DefaultServices.GetFullImageURL(profile, "vendor", "124", "124")} alt="profileImg" /> */}
                   </div>
                   <div className="title flex column">
