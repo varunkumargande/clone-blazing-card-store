@@ -1,6 +1,6 @@
 import { loginRoute } from "../../chatService";
 import axios from "axios";
-import { chatConstant } from "../../components/Constants/chatLocal";
+import { chatConstant } from "../../components/Constants";
 import { modalSuccess, modalWarning } from "../intercept";
 import Router from "next/router";
 
