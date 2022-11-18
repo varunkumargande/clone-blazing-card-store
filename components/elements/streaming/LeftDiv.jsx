@@ -13,6 +13,7 @@ import { ImageTransformation, DefaultImagePath } from "../../Constants/imageTran
 import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
+import Styles from "../../../modular_scss/LeftDiv.module.scss";
 
 function LeftDiv({
   setShowLoginModal,
@@ -24,6 +25,7 @@ function LeftDiv({
   isLeftDivOpen,
   setIsBuyNowPaymentModal,
   auctionCallBack,
+  currentAuctionDetails,
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -188,11 +190,17 @@ function LeftDiv({
    */
   const getLiveAuctionClass = (productId) => {
     if (
-      productId == auctionNotification?.product?.productId ||
-      productId ==
+      +productId === currentAuctionDetails?.product?.productId ||
+      +productId === auctionNotification?.product?.productId
+    ) {
+      return Styles.pinned;
+    } else if (
+      !currentAuctionDetails?.product?.productId &&
+      !auctionNotification?.product?.productId &&
+      +productId ===
         streamProducts[toggleState]?.AuctionDetails?.latestAuction?.productId
     ) {
-      return "pinned";
+      return Styles.pinned;
     }
     return "";
   };
@@ -506,50 +514,52 @@ function LeftDiv({
         </div>
       </div>
       {isLeftDivOpen ? (
-        <div
-          className="leftdata-wrapper"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          <h3 className="title text-capitalize">
-            {streamTitle || (
-              <Skeleton
-                baseColor="#dddbdb66"
-                highlightColor="#cdcccc"
-                width={`100px`}
-              />
-            )}
-          </h3>
-          <div className="tab-wrapper flex">{getToggles()}</div>
-          <div className="search">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={filterKeyword}
-              onChange={handleSearchProduct}
-            />
-          </div>
-          <div className={`${toggleState}-list leftdata-list`}>
-            <div className="product-count">
-              {!streamProductsFetched ? (
+        <div className="leftdata-wrapper">
+          <div
+            className="leftdata-inner"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <h3 className="title text-capitalize">
+              {streamTitle || (
                 <Skeleton
                   baseColor="#dddbdb66"
                   highlightColor="#cdcccc"
                   width={`100px`}
                 />
-              ) : handleProductCount <= 1 ? (
-                `${handleProductCount} Product`
-              ) : (
-                `${handleProductCount} Products`
               )}
+            </h3>
+            <div className="tab-wrapper flex">{getToggles()}</div>
+            <div className="search">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={filterKeyword}
+                onChange={handleSearchProduct}
+              />
             </div>
-            <ul className="product-list">
-              {streamProductsFetched
-                ? showProductList()
-                : showProductListSkimmer()}
-            </ul>
+            <div className={`${toggleState}-list leftdata-list`}>
+              <div className="product-count">
+                {!streamProductsFetched ? (
+                  <Skeleton
+                    baseColor="#dddbdb66"
+                    highlightColor="#cdcccc"
+                    width={`100px`}
+                  />
+                ) : handleProductCount <= 1 ? (
+                  `${handleProductCount} Product`
+                ) : (
+                  `${handleProductCount} Products`
+                )}
+              </div>
+              <ul className="product-list">
+                {streamProductsFetched
+                  ? showProductList()
+                  : showProductListSkimmer()}
+              </ul>
+            </div>
           </div>
         </div>
       ) : (

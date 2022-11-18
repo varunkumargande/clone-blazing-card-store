@@ -270,7 +270,7 @@ export default function ProfileInformation() {
                       <div className="inner-box">
                         <div className="flex space-between">
                           <div className="input-control wd50">
-                            <label>First Name *</label>
+                            <label>First Name*</label>
                             <input
                               placeholder={"Enter here"}
                               className="grey-bg"
@@ -294,7 +294,7 @@ export default function ProfileInformation() {
                             />
                           </div>
                           <div className="input-control wd50">
-                            <label>Last Name *</label>
+                            <label>Last Name*</label>
                             <input
                               name="lastName"
                               placeholder={"Enter here"}
@@ -320,7 +320,7 @@ export default function ProfileInformation() {
                         <div className="flex space-between">
                           <div className="input-control wd50">
                             <div className="flex space-between flex-center">
-                              <label htmlFor="usr">Username *</label>
+                              <label htmlFor="usr">Username*</label>
                             </div>
                             <input
                               name="text"
@@ -332,7 +332,7 @@ export default function ProfileInformation() {
                             />
                           </div>
                           <div className="input-control wd50">
-                            <label htmlFor="usr">Phone Number *</label>
+                            <label htmlFor="usr">Phone Number*</label>
                             <input
                               name="phoneNumber"
                               placeholder={"Enter here"}
@@ -349,6 +349,7 @@ export default function ProfileInformation() {
                               }
                               value={values.phoneNumber}
                               maxLength={12}
+                              type="tel"
                             />
                             <ErrorMessage
                               errors={errors.phoneNumber}

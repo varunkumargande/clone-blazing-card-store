@@ -6,33 +6,28 @@ import IconNotification from "../../Icons/IconNotification";
 import IconDropdown from "../../Icons/IconDropdown";
 import IconProfile from "../../Icons/IconProfile";
 import IconMyOrders from "../../Icons/IconMyOrders";
-import IconSettings from "../../Icons/IconSettings";
 import IconLogout from "../../Icons/IconLogout";
-import IconSearch from "../../Icons/IconSearch";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "../../../i18n";
-import { categoryListApi } from "../../../api";
 import { useRouter } from "next/router";
-import { login } from "../../../store/auth/action";
 import { connect } from "react-redux";
 import Router from "next/router";
-import { modalSuccess } from "../../../api/intercept";
 import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
-import { imageUrl } from "../../../api/url";
-import MessageButton from "../../elements/MessageButton";
 import { stepState } from "../../Constants";
-import { chatLogin } from "../../../api";
-import { getBecomeSellerInfo } from "../../../store/becomeSeller/action";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation, DefaultImagePath } from "../../Constants/imageTransformation";
-import useSessionstorage from "../../elements/sessionStorageHook/useSessionstorage";
 import Notifications from "../../partials/Notifications/Notifications";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
-import { vendorAuth } from "../../../store/vendorAuth/action";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
 import { show } from "../../../store/toast/action";
+import { setCurrentUrlInLocal } from "../../../utilities/utils";
+import {
+  saveCategoryName,
+  saveSubCategoryName,
+} from "../../../store/category/action";
+import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function HeaderDefault({ auth }) {
   const router = useRouter();
@@ -46,26 +41,20 @@ function HeaderDefault({ auth }) {
 
   let { pageName } = router.query;
 
-  const { notifications, notificationsUnreadCount } = useNotifications();
+  const {
+    notifications,
+    notificationsUnreadCount,
+    setNotificationsUnreadCount,
+  } = useNotifications();
 
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
-
-  const authFunc = () => {
-    if (localStorage.getItem("blazingToken") !== null) {
-      dispatch(login());
-    }
-  };
 
   const toast = useSelector((state) => state?.toast?.toast);
 
   const handleOnClick = () => {
     setActive(!active);
   };
-
-  useEffect(() => {
-    authFunc();
-  }, []);
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
@@ -79,18 +68,12 @@ function HeaderDefault({ auth }) {
   }, []);
 
   useEffect(() => {
-    if (profile) {
-      handleProfileImage();
-    }
-  }, [profile]);
-
-  useEffect(() => {
     if (toggle) {
       handleStoreAndVendorToggle("seller");
     }
   }, [toggle]);
 
-  const handleProfileImage = () => {
+  const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
@@ -121,7 +104,7 @@ function HeaderDefault({ auth }) {
       );
     } else {
       return (
-        <img 
+        <img
           onError={() => {
             currentTarget.onerror = null;
             currentTarget.src = "/static/images/profileImg.png";
@@ -147,10 +130,6 @@ function HeaderDefault({ auth }) {
       })
     );
     Router.push("/");
-    setTimeout(() => {
-      window.location.reload();
-    }, 200)
-    
   };
 
   const handleSearchValue = (e) => {
@@ -173,6 +152,8 @@ function HeaderDefault({ auth }) {
               onChange={(e) => {
                 setToggle((prev) => !prev);
               }}
+              className={toggle && "checked"}
+              value={toggle}
               id="togBtn"
             />
             <span className="toogle-slide round">
@@ -217,8 +198,9 @@ function HeaderDefault({ auth }) {
   // ==============================================================================
 
   // ======================= handle check vendor and store ========================
-  const handleStoreAndVendorToggle = () => {
-    dispatch(vendorAuth());
+  const handleStoreAndVendorToggle = async () => {
+    await vendorAuthApi(dispatch);
+    setToggle(false);
   };
   // ==============================================================================
   // ======================= Onclick outside dropdown close ========================
@@ -241,17 +223,23 @@ function HeaderDefault({ auth }) {
     };
   }, []);
 
+  /**
+   * go to home page
+   */
+
+  const handleGoToHomePage = (e) => {
+    e.preventDefault();
+    dispatch(saveCategoryName(null));
+    dispatch(saveSubCategoryName(null));
+    Router.push("/");
+  };
+
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
         <div className="left flex flex-wrap flex-center">
           <div className="logo">
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                Router.push("/");
-              }}
-            >
+            <a onClick={(e) => handleGoToHomePage(e)}>
               <Logo />
             </a>
           </div>
@@ -304,11 +292,16 @@ function HeaderDefault({ auth }) {
                       </div>
                       <Notifications
                         notifications={notifications.slice(0, 3)}
+                        setNotificationsUnreadCount={
+                          setNotificationsUnreadCount
+                        }
                       />
                       {notifications.length > 3 && (
                         <li className="seeAll">
                           <Link href="/notifications">
-                            <a>{`See All (${notificationsUnreadCount} Unread)`}</a>
+                            <a>{`See All (${
+                              notificationsUnreadCount || 0
+                            } Unread)`}</a>
                           </Link>
                         </li>
                       )}
@@ -321,7 +314,9 @@ function HeaderDefault({ auth }) {
                   onClick={handleOnClick}
                 >
                   <span>
-                    <span className="profileImage flex justify-center flex-center">{handleProfileImage()}</span>
+                    <span className="profileImage flex justify-center flex-center">
+                      {renderProfileImage()}
+                    </span>
                     <IconDropdown />
                   </span>
 
@@ -363,16 +358,26 @@ function HeaderDefault({ auth }) {
               <>
                 {/* <div className="withotLogedIn flex flex-center justify-right"> */}
 
-                <Link href="account/login">
-                  <a className="primary-btn flex flex-center justify-center ml24">
-                    Sign In
-                  </a>
-                </Link>
-                <Link href="account/register">
-                  <a className="border-btn flex flex-center justify-center ml24">
-                    Sign up
-                  </a>
-                </Link>
+                <button
+                  className="primary-btn flex flex-center justify-center ml24"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentUrlInLocal();
+                    Router.push("/account/login");
+                  }}
+                >
+                  <a>Sign In</a>
+                </button>
+                <button
+                  className="border-btn flex flex-center justify-center ml24"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentUrlInLocal();
+                    Router.push("/account/register");
+                  }}
+                >
+                  <a>Sign up</a>
+                </button>
                 {/* </div> */}
               </>
             )}

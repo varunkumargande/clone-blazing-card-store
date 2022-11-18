@@ -39,7 +39,7 @@ function CustomAddCardDetail({ type, addressId }) {
     }
 
     if (expiary === "") {
-      setExpiaryError("Expiary Date is required");
+      setExpiaryError("Expiry Date is required");
       validateObj.expiary = false;
     } else {
       setExpiaryError("");
@@ -119,7 +119,7 @@ function CustomAddCardDetail({ type, addressId }) {
                 </div>
                 <div className="aa-input-main">
                   <div className="aa-input-container">
-                    <p>Expiary Date*</p>
+                    <p>Expiry Date*</p>
                     <input
                       type="month"
                       onChange={(e) => setExpiary(e.target.value)}

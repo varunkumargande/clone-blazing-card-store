@@ -152,8 +152,8 @@ function Signup(auth) {
       "",
       "",
       response.picture,
-      Router,
-      response
+      response,
+      dispatch
     );
   };
 
@@ -320,6 +320,7 @@ function Signup(auth) {
                   onChange={handleChange}
                   maxlength="12"
                   onBlur={handleBlur}
+                  type="tel"
                 />
                 <div className="errorText">
                   {errors.number && touched.number ? errors.number : null}
@@ -396,7 +397,7 @@ function Signup(auth) {
               <div className="checkbox-wrap mb32">
                 <label className="checkbox">
                   <input type="checkbox" onClick={() => handlePolicyCheck()} />
-                  <span class="checkmark"></span>
+                  <span className="checkmark"></span>
                   I’ve read and agree with{" "}
                   <Link href="/terms-conditions">
                     <a>Terms of Service</a>

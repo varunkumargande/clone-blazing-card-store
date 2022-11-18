@@ -33,6 +33,8 @@ function Streaming() {
   const [channel, setChannel] = useState(null);
   const [notificationData, setNotificationData] = useState(null);
 
+  const [currentAuctionDetails, setCurrentAuctionDetails] = useState(null);
+
   const stream = useSelector((state) => {
     return state?.stream;
   });
@@ -79,7 +81,7 @@ function Streaming() {
     return () => {
       dispatch(clearState());
     };
-  }, []);
+  }, [localStorage.getItem("blazingUser")]);
 
   //Method to show and hide left div
   const handleLeftDiv = useCallback((toggle) => {
@@ -130,6 +132,7 @@ function Streaming() {
           isLeftDivOpen={isLeftDivOpen}
           setIsBuyNowPaymentModal={setIsBuyNowPaymentModal}
           auctionCallBack={setLiveAuctionDetails}
+          currentAuctionDetails={currentAuctionDetails}
         />
         <CenterDiv
           open={open}
@@ -149,6 +152,8 @@ function Streaming() {
           userCount={count}
           streamNotification={notificationData}
           liveAuctionDetails={liveAuctionDetails}
+          setCurrentAuctionDetails={setCurrentAuctionDetails}
+          currentAuctionDetails={currentAuctionDetails}
         />
         <RightDiv
           streamingDetails={streamingDetails}
