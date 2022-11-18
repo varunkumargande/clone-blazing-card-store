@@ -44,7 +44,7 @@ function SeeAllSubCategories({
         setSeeMoreLoader
       );
     }
-  }, [query, offset]);
+  }, [query?.category, offset]);
 
   const handleSubCategorySelect = (name, id) => {
     dispatch(saveSubCategoryName(name));
