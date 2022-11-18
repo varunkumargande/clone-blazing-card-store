@@ -52,7 +52,11 @@ function HeaderDefault({ auth }) {
 
   let { pageName } = router.query;
 
-  const { notifications, notificationsUnreadCount } = useNotifications();
+  const {
+    notifications,
+    notificationsUnreadCount,
+    setNotificationsUnreadCount,
+  } = useNotifications();
 
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
@@ -178,7 +182,7 @@ function HeaderDefault({ auth }) {
               onChange={(e) => {
                 setToggle((prev) => !prev);
               }}
-              className={toggle && 'checked'}
+              className={toggle && "checked"}
               value={toggle}
               id="togBtn"
             />
@@ -318,11 +322,16 @@ function HeaderDefault({ auth }) {
                       </div>
                       <Notifications
                         notifications={notifications.slice(0, 3)}
+                        setNotificationsUnreadCount={
+                          setNotificationsUnreadCount
+                        }
                       />
                       {notifications.length > 3 && (
                         <li className="seeAll">
                           <Link href="/notifications">
-                            <a>{`See All (${notificationsUnreadCount} Unread)`}</a>
+                            <a>{`See All (${
+                              notificationsUnreadCount || 0
+                            } Unread)`}</a>
                           </Link>
                         </li>
                       )}
