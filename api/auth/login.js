@@ -2,6 +2,9 @@ import { cartListApi } from "../cart/cartList";
 import getProfileApi from "../home/getInfo";
 import APIServices from "../../services";
 import { show } from "../../store/toast/action";
+import { removeCurrentUrlInLocal } from "../../utilities/utils";
+import { login } from "../../store/auth/action";
+
 export async function UserLogin(
   email,
   password,
@@ -27,8 +30,14 @@ export async function UserLogin(
       JSON.stringify(result.data.data.chatUser)
     );
     getProfileApi();
+    dispatch(login());
+    if (localStorage.getItem("login_redirection_url")) {
+      Router.push(localStorage.getItem("login_redirection_url"));
+      removeCurrentUrlInLocal();
+    } else {
+      Router.push("/");
+    }
     dispatch(show({ message: result.data.message, type: "success" }));
-    Router.push("/");
     cartListApi(dispatch);
   } else {
     setLoginError(

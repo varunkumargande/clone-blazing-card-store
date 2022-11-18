@@ -1,4 +1,5 @@
 import moment from "moment";
+import Router from "next/router";
 import { cloudImageUrl, cloudFolder } from "../api/url";
 
 export const stringFormatter = (string) => {
@@ -40,24 +41,28 @@ export const utcToLocal = (date, time) => {
  * @param {*} time "HH:mm"
  * @returns
  */
-export const getStreamScheduleDate = (date, time , dateOnly = false) => {
-  if(!date || !time) {
+export const getStreamScheduleDate = (date, time, dateOnly = false) => {
+  if (!date || !time) {
     return;
   }
   const utcTimeFormat = moment.utc(`${date} ${time}`).toDate(); // this will convert date string to UTC format
-  const localDateTime = moment(utcTimeFormat).local().format("YYYY-MM-DD HH:mm"); // This will get local date and time
+  const localDateTime = moment(utcTimeFormat)
+    .local()
+    .format("YYYY-MM-DD HH:mm"); // This will get local date and time
   const localDate = moment(utcTimeFormat).local().format("YYYY-MM-DD"); // This will get local date and time
-  const convertedTime = (localDateTime.split(" "))[1]; // at array first index you will get Local time
+  const convertedTime = localDateTime.split(" ")[1]; // at array first index you will get Local time
   const currentTime = moment(moment().format("YYYY-MM-DD HH:mm")); // this will get current Local time
   const scheduleTime = moment(localDateTime);
-  const difference = !!dateOnly ? 'isDate' : scheduleTime.diff(currentTime, 'days');
+  const difference = !!dateOnly
+    ? "isDate"
+    : scheduleTime.diff(currentTime, "days");
   switch (difference) {
     case 0:
       return `Today ${convertedTime}`;
     case 1:
-      return `Tomorrow ${convertedTime}`
-    case 'isDate':
-      return `${localDate}`
+      return `Tomorrow ${convertedTime}`;
+    case "isDate":
+      return `${localDate}`;
     default:
       return `After ${difference} days`;
   }
@@ -77,6 +82,13 @@ export const getStateName = (stateList, stateCode) => {
   return stateName[0].name;
 };
 
+export const setCurrentUrlInLocal = () => {
+  localStorage.setItem("login_redirection_url", Router?.router?.state?.asPath);
+};
+
+export const removeCurrentUrlInLocal = () => {
+  localStorage.removeItem("login_redirection_url");
+};
 /**
  * Method to convert string into camel case
  * @param {*} str

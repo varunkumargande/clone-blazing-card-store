@@ -22,9 +22,12 @@ import "react-loading-skeleton/dist/skeleton.css";
 import "../scss/elements/_streaming.scss";
 import CurrentDeviceProvider from "../contexts/Devices/CurrentDevices";
 import CategoriesDataProvider from "../contexts/Categoires/CategoriesData";
+import { login } from "../store/auth/action";
 
 function MyApp({ Component, pageProps }) {
   const RedirectMaintain = useSelector((s) => s.setting.maintenance);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   useEffect(() => {
     if (RedirectMaintain === 1) {
       Router.push("/maintenance");
@@ -48,6 +51,17 @@ function MyApp({ Component, pageProps }) {
         viewcolorThemeCurrent(localStorage.getItem("colorThemeBlazingView"))
       );
   }, []);
+
+// updates the redux state that user logged in
+  const authFunc = () => {
+    dispatch(login());
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("blazingToken") !== null && !isLoggedIn) {
+      authFunc();
+    }
+  }, [typeof window ?? localStorage.getItem("blazingToken"), isLoggedIn]);
 
   const getLayout =
     Component.getLayout || ((page) => <DefaultLayout children={page} />);
