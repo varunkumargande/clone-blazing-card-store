@@ -23,7 +23,12 @@ import { DefaultImagePath } from "../../Constants/defaultImage";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageTransformation";
-import { dislikedRequest, likedRequest, removeLikedRequest } from "../../../store/likedStream/action";
+import {
+  dislikedRequest,
+  likedRequest,
+  removeLikedRequest,
+} from "../../../store/likedStream/action";
+import Styles from "../../../modular_scss/StreamingBase.module.scss";
 
 function StreamingBase({
   cardDetail,
@@ -35,6 +40,8 @@ function StreamingBase({
   userCount,
   streamNotification,
   liveAuctionDetails,
+  setCurrentAuctionDetails,
+  currentAuctionDetails,
 }) {
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
@@ -61,7 +68,6 @@ function StreamingBase({
   );
 
   const [onPageLanding, setOnPageLanding] = useState(true);
-  const [currentAuctionDetails, setCurrentAuctionDetails] = useState(null);
 
   const { isMobile } = useIsMobile();
 
@@ -75,7 +81,7 @@ function StreamingBase({
     if (stream?.streamData?.isLike) {
       setLiked(true);
     }
-  }, [stream?.streamData?.isLike])
+  }, [stream?.streamData?.isLike]);
 
   /**
    * This useEffect will start countdown till 0
@@ -122,10 +128,11 @@ function StreamingBase({
 
   useEffect(() => {
     if (streamNotification) {
-      if (streamNotification?.product?.name !== currentAuctionDetails?.name) {
+      if (
+        streamNotification?.product &&
+        streamNotification?.product?.name !== currentAuctionDetails?.name
+      ) {
         setCurrentAuctionDetails(streamNotification?.product);
-      } else {
-        setCurrentAuctionDetails(null);
       }
 
       if (streamNotification?.name) {
@@ -375,13 +382,9 @@ function StreamingBase({
    * Method to identify name of stream
    * @returns string || null
    */
-  const currentAuctionDetail = useMemo(() => {
-    return (
-      currentAuctionDetails ||
-      streamNotification?.product ||
-      liveAuctionDetails?.latestAuction
-    );
-  }, [liveAuctionDetails, streamNotification, currentAuctionDetails]);
+  const renderCurrentAuctionDetail = useMemo(() => {
+    return currentAuctionDetails || liveAuctionDetails?.latestAuction;
+  }, [liveAuctionDetails, currentAuctionDetails]);
 
   const handleLikeUnlike = async () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -424,7 +427,7 @@ function StreamingBase({
       <>
         {profile?.avatar ? (
           <CloudinaryImage
-            imageUrl={`${profile?.avatar }`}
+            imageUrl={`${profile?.avatar}`}
             keyId={`${profile?.avatar || "avatar"}`}
             alternative={profile?.firstName?.[0] || "P"}
             transformation={ImageTransformation.streamChatProfile}
@@ -443,18 +446,20 @@ function StreamingBase({
         {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
         <StreamingElement volume={volumeLevel} isMute={isMute} />
       </div>
-      <div className="inner-wrapper">
+      <div className={`${Styles.overlay}`}>
         <div className="stream-header flex space-between">
-          <div className="head-title">
-            {currentAuctionDetail?.name ||
-              currentAuctionDetail?.productName ||
-              ""}
-            <p className="text-light">
-              {currentAuctionDetail?.description ||
-                currentAuctionDetail?.productDescription ||
-                ""}
-            </p>
-          </div>
+          {(renderCurrentAuctionDetail?.name ||
+            renderCurrentAuctionDetail?.productName) && (
+            <div className="head-title">
+              {renderCurrentAuctionDetail?.name ||
+                renderCurrentAuctionDetail?.productName}
+              <p className="text-light">
+                {renderCurrentAuctionDetail?.description ||
+                  renderCurrentAuctionDetail?.productDescription ||
+                  ""}
+              </p>
+            </div>
+          )}
           {!stream?.streamPageData?.streamPageDteails?.isLoggedIn && (
             <div className="head-title">
               {stream?.streamPageData?.streamPageDteails &&

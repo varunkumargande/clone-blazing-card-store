@@ -84,6 +84,7 @@ export default function PaymentDetail() {
       expireDate: values.expireDate,
       cvc: values.cvc,
       countryId: values.countryId,
+      termCheckBox: values.termCheckbox
     });
 
     handleCardApi(jsonData, isCardEdit, cardListApi, setCardLoader, dispatch);
@@ -188,7 +189,7 @@ export default function PaymentDetail() {
                                   {errors.expireDate && touched.expireDate
                                     ? errors.expireDate
                                     : null}
-                                  {/* {expValid == false ? "Expiary date is invalide": ""} */}
+                                  {/* {expValid == false ? "Expiry date is invalid": ""} */}
                                 </span>
                               </div>
                               <div className="input-control wd50">

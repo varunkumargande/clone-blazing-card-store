@@ -42,7 +42,7 @@ class StreamDetailModel {
       // avatarImage : userDetails?.avatar ? imageUrl + "?path=" + userDetails?.avatarPath + "&name=" + userDetails?.avatar + "&width=50&height=50" : "/static/img/no-image.png"
     };
     if (!!userDetails) {
-      streamDetails.loggedInUserName = userDetails?.firstName;
+      streamDetails.loggedInUserName = userDetails?.username;
       streamDetails.loggedInUserId = userDetails?.id;
       streamDetails.isLoggedIn = true;
     }

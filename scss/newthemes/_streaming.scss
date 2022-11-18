@@ -238,8 +238,6 @@
         width: 100%;
         height: 128px;
         padding: 26px 16px 0;
-        background:  linear-gradient(180deg, rgba(#000819,.4) 0%, rgba(0, 8, 25, 0) 129.69%);
-        backdrop-filter: opacity(0.4);
     }
     .head-title{
         font-size: 24px;
@@ -591,8 +589,8 @@
                 position: absolute;
                 left: 0;
                 top:0;
-                background: linear-gradient(180deg, #000819 0%, rgba(0, 8, 25, 0) 129.69%);
-                opacity: 0.4;
+                // background: linear-gradient(180deg, #000819 0%, rgba(0, 8, 25, 0) 129.69%);
+                // opacity: 0.4;
                 z-index: 5;
             }
             .head-title{
