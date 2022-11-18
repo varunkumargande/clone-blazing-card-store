@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import IconDelete from "../../Icons/IconDelete";
-import Link from "next/link";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { editProfileApi } from "../../../api";
@@ -11,12 +9,13 @@ import { Loader } from "../../reusable/Loader";
 import { uploadImageToServer } from "../../../utilities/common-helpers";
 import DefaultConstants from "../../../utilities/constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import { DefaultImagePath } from "../../Constants/imageConstants";
+
 export default function ProfileInformation() {
   const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB

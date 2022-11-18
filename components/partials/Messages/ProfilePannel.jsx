@@ -1,10 +1,6 @@
 import React from "react";
 import IconAddChat from "../../Icons/IconAddChat";
-import { imageUrl } from "../../../api/url";
-import { ImageTransformation } from "../../Constants/imageTransformation";
-import DefaultServices from "../../Services/DefaultServices";
-import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import { DefaultImagePath } from "../../Constants/imageConstants";
 
 export default function ProfilePannel({
   contacts,
