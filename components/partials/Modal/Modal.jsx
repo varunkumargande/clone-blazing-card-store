@@ -25,17 +25,17 @@ import { ImageTransformation } from "../../Constants/imageTransformation";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
-import { getStateName, setCurrentUrlInLocal } from "../../../utilities/utils";
+import { getStateName, handleModalClick, setCurrentUrlInLocal } from "../../../utilities/utils";
 import { DefaultImagePath } from "../../Constants/defaultImage";
 
 const responseGoogleFailure = (response) => {
   console.error("Failure response", response);
 };
 
+
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
   const [isCopied, setIsCopied] = useState(false);
-
   const handleCopy = (e) => {
     e.preventDefault();
     setIsCopied(true);
@@ -43,8 +43,11 @@ export function ShareModalModal({ setIsShareModalOpen }) {
     setTimeout(() => setIsCopied(false), 1000);
   };
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setIsShareModalOpen) }}
+    >
+      <div className="modal" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Share</h5>
           <button
@@ -115,8 +118,11 @@ export function ShareModalModal({ setIsShareModalOpen }) {
 export function ShippingTaxesModal(props) {
   const { setOpenShipPayDetails } = props;
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setOpenShipPayDetails) }}
+    >
+      <div className="modal" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Shipping & Taxes</h5>
           <button
@@ -162,8 +168,11 @@ export function CustomBidModal(props) {
     setAmountToBid,
   } = props;
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setOpen) }}
+    >
+      <div className="modal" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Custom Bid</h5>
           <button
@@ -246,7 +255,6 @@ export function PaymentInfoModal(props) {
     addressLoader,
     isBuyNowPaymentModal,
   } = props;
-
   const addressInfo =
     addressList?.length == 0
       ? "Add Address"
@@ -269,8 +277,11 @@ export function PaymentInfoModal(props) {
         cardDetail[0]?.card.last4;
 
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal medium">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, openPayment) }}
+    >
+      <div className="modal medium" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Payment Info</h5>
           <button
@@ -460,8 +471,11 @@ export function AddNewCardModal(props) {
       : ["", ""];
 
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal medium">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, close) }}
+    >
+      <div className="modal medium" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Card Detail</h5>
           <button
@@ -617,8 +631,11 @@ export function AddAddressModal(props) {
   return (
     <>
       {formik ? (
-        <div className="modalOverlay flex justify-center flex-center">
-          <div className="modal medium">
+        <div
+          className="modalOverlay flex justify-center flex-center"
+          onClick={(event) => { handleModalClick(event, close) }}
+        >
+          <div className="modal medium" onClick={(event) => { handleModalClick(event) }}>
             <div className="modal-header flex Space-between flex-center">
               <h5 className="modal-title">Add Address</h5>
               <button
@@ -786,8 +803,11 @@ export function DeletAccountModal({ setIsOpen, userName }) {
   });
 
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal medium">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setIsOpen) }}
+    >
+      <div className="modal medium" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Delete Account</h5>
           <button
@@ -930,8 +950,11 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   };
 
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal medium">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setIsOpen) }}
+    >
+      <div className="modal medium" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">New Message</h5>
           <button
@@ -1009,8 +1032,11 @@ export function UnfollowModalMultiple(props) {
     }
   };
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setIsOpenFollowUnfollow) }}
+    >
+      <div className="modal" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-body text-center">
           <div className="profile-icon">
             {!!profile && (
@@ -1068,8 +1094,11 @@ export function UnfollowModal(props) {
     }
   };
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setIsOpenFollowUnfollow) }}
+    >
+      <div className="modal" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-body text-center">
           <div className="profile-icon">
             {!!profile && (
@@ -1112,8 +1141,11 @@ export function UnfollowModal(props) {
 
 export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setPaymentSuccessful) }}
+    >
+      <div className="modal" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-body text-center">
           <div className="flex justify-content-end flex-center">
             <button
@@ -1182,8 +1214,11 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
     );
   };
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal signup">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, onDismiss) }}
+    >
+      <div className="modal signup" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center nobg">
           <h5 className="modal-title"></h5>
           <button
@@ -1256,8 +1291,11 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
 export function BidCreatedModal(props) {
   const { setIsBidResponseModal } = props;
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => { handleModalClick(event, setIsBidResponseModal) }}
+    >
+      <div className="modal" onClick={(event) => { handleModalClick(event) }}>
         <div className="modal-header flex Space-between flex-center nobg">
           <h5 className="modal-title"></h5>
           <button
