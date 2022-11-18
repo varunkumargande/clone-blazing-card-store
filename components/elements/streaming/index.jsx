@@ -99,10 +99,7 @@ function Streaming() {
       {showLoginModal && (
         <SignUPGoogle
           customMsg={"Signup to Join Blazing Cards"}
-          onDismiss={(e) => {
-            e.preventDefault();
-            setShowLoginModal(false);
-          }}
+          onDismiss={setShowLoginModal}
         />
       )}
       <div
