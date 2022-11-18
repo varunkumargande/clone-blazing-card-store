@@ -128,10 +128,7 @@ function categoryStream({ auth, category }) {
       {showModal && (
         <SignUPGoogle
           customMsg={"Signup to Join Blazing Cards"}
-          onDismiss={(e) => {
-            e.preventDefault();
-            setShowModal(false);
-          }}
+          onDismiss={setShowModal}
         />
       )}
       {isMobile ? "" : <HeaderDefault />}

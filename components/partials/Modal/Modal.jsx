@@ -1228,7 +1228,8 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
             data-dismiss="modal"
             aria-label="Close"
             onClick={(e) => {
-              onDismiss(e);
+              e.preventDefault();
+              onDismiss(false);
             }}
           >
             <span aria-hidden="true">

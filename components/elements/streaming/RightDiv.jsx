@@ -174,10 +174,7 @@ function RightDiv({ streamData, channel, client }) {
             customMsg={
               "In order to chat in the stream, you need to sign up or log in."
             }
-            onDismiss={(e) => {
-              e.preventDefault();
-              setShowLoginModal(false);
-            }}
+            onDismiss={setShowLoginModal}
           />
         )}
         <div className="chat-wrap">{showMessages()}</div>

@@ -335,10 +335,7 @@ export default function PublicProfile() {
       {showModal && (
         <SignUPGoogle
           customMsg={"Signup to Join Blazing Cards"}
-          onDismiss={(e) => {
-            e.preventDefault();
-            setShowModal(false);
-          }}
+          onDismiss={setShowModal}
         />
       )}
       {isMobile ? (
