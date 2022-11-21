@@ -412,7 +412,6 @@ export function AddNewCardModal(props) {
   const { payDetail, close, setPaymentLoader, fetchCardDetail } = props;
 
   const dispatch = useDispatch();
-  const [expValid, setExpValid] = useState(null);
   const [initialValueFlag, setInitialValueFlag] = useState(
     Array.isArray(payDetail) &&
       payDetail[0]?.card?.last4 &&
@@ -576,7 +575,6 @@ export function AddNewCardModal(props) {
                   errors={formik.errors.expireDate}
                   touched={formik.touched.expireDate}
                 />
-                {!!expValid == false && "Expiry date is invalid"}
               </div>
               <div className="input-control wd50">
                 <label>CVV</label>
