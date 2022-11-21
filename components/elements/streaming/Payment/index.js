@@ -34,7 +34,7 @@ function PaymentInfo(props) {
                                         </Row>
                                     </div>
                                     <div align="center">
-                                        <div class="nav-bar" />
+                                        <div className="nav-bar" />
                                     </div>
 
                                     <div>

@@ -1,3 +1,4 @@
+// register constant
 export const registerConstant = {
   heading: {
     name: "Sign Up to Blazing Cards",
@@ -38,14 +39,19 @@ export const registerConstant = {
       name: "number",
       placeholder: "Contact Number",
       label: "Contact Number",
-      regex:
-        /^([+]1){0,1}[1-9]\d{9}$/,
+      regex: /^([+]1){0,1}[1-9]\d{9}$/,
 
-        // ToDo: Need to remove this code. Keeping this for reference.
-        // /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+      // ToDo: Need to remove this code. Keeping this for reference.
+      // /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
 
-      regexMessage: "Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)",
+      regexMessage:
+        "Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)",
       required: "Contact number is required",
+    },
+    countryCodeField: {
+      name: "countryCode",
+      placeholder: "",
+      required: "Country Code is required",
     },
     passwordField: {
       name: "password",
@@ -71,4 +77,42 @@ export const registerConstant = {
     },
     forgetPassword: "Forgot Password",
   },
+};
+
+// login constants
+export const loginConstant = {
+  heading: {
+    name: "Sign In to Blazing Cards",
+  },
+  form: {
+    emailField: {
+      emailName: "email",
+      emailLabel: "Email Address *",
+      emailPlaceholder: "Enter email address",
+      validateEmail: "Invalid email address",
+      requiredEmail: "Email is required",
+    },
+    passwordField: {
+      passwordName: "password",
+      passwordLabel: "Password *",
+      passwordPlaceholder: "Enter password address",
+      requiredPassword: "Password is required",
+      validatePassword:
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character",
+      passwordRegex:
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+    },
+    button: {
+      name: "Sign in",
+    },
+    link: {
+      signup: "Sign Up",
+    },
+    forgetPassword: "Forgot Password",
+  },
+};
+
+//forgot password constant
+export const forgotPasswordConstant = {
+  requiredEmail: "Email is required",
 };

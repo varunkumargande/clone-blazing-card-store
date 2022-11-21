@@ -133,7 +133,7 @@ const OrderTracking = ({ orderTrack, trackLoading, currency }) => {
                     );
                   })}
                   {/* <div className="custom-dotted-track"/> */}
-                  {/* <hr class='dotted' /> */}
+                  {/* <hr className='dotted' /> */}
 
                   {/* <div className="custom-box-track"><img src="/static/img/checkbox.svg"/>Completed</div>
                         <div className="cautom-dotted-image"><img src="/static/img/dotted-image.png" rotate="180"></img></div>

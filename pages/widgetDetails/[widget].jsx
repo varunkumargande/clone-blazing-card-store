@@ -39,7 +39,7 @@ const WidgetDetails = () => {
           </div>
         </div>
         <div className="ps-shopping">
-          <div class="ps-shopping__content">
+          <div className="ps-shopping__content">
             <div className="ps-shopping-product">
               <div className="row">
                 {widgedetail &&

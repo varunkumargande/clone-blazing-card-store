@@ -1,0 +1,14 @@
+.images{
+    border-radius: 50%;
+    background-color: #e6e6e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+        object-fit: cover;
+        &[src*="defaultProfile"]{
+            max-width: 16px;
+            height: auto;
+        }
+    }
+}

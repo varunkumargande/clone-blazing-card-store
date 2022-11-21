@@ -15,15 +15,13 @@ import { connect } from "react-redux";
 import Router from "next/router";
 import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
-import { stepState } from "../../Constants/becomeSeller";
+import { stepState } from "../../Constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
 import Notifications from "../../partials/Notifications/Notifications";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
-import { vendorAuth } from "../../../store/vendorAuth/action";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
 import { show } from "../../../store/toast/action";
-import { DefaultImagePath } from "../../Constants/defaultImage";
 import { setCurrentUrlInLocal } from "../../../utilities/utils";
 import {
   saveCategoryName,

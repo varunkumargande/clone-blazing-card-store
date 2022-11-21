@@ -3,72 +3,35 @@ import Link from "next/link";
 import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
 import IconBack from "../../Icons/IconBack";
-import {
-  EmailValidator,
-  upperPresent,
-  lowerPresent,
-  numPresent,
-  specialPresent,
-} from "../../helper/emailValidator";
 import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { modalSuccess, modalWarning } from "../../../api/intercept";
-import { registerConstant } from "../../Constants/register";
+import { registerConstant } from "../../Constants/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
-
-// ======== import form components ==========
-import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { registerSchema } from "../../../utilities/validations/signupDetail";
+import { registerInitialValues } from "../../../utilities/validations/signupDetail";
 import { TextInput } from "../../CommonComponents/TextInput";
-// ==========================================
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import MySelect from "../../CommonComponents/MySelect";
+import Styles from "../../../modular_scss/Signup.module.scss";
 
 function Signup(auth) {
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [mail, setMail] = useState("");
-  const [pass, setpass] = useState("");
-  const [cpass, setCpass] = useState("");
-  const [number, setNumber] = useState("");
 
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const usernameInput = useRef();
-  const [singupError, setSingupError] = useState("");
-  const [nameValid, setNameValid] = useState("");
-  const [lastNameValid, setLastNameValid] = useState("");
-  const [mailValid, setMailValid] = useState("");
-  const [passValid, setPassValid] = useState([]);
-  const [cpassValid, setCpassValid] = useState("");
-  const [numValid, setNumValid] = useState("");
-  const [submit, setSubmit] = useState(0);
   const [passShow, setPassShow] = useState(false);
   const [conpassShow, setConPassShow] = useState(false);
   const [policyCheck, setPolicyCheck] = useState(false);
 
   const FullNameInputRef = React.useRef(null);
   const router = useRouter();
-  useEffect(() => {
-    FullNameInputRef.current.focus();
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (policyCheck == true) {
-      setSubmit(1);
-      validMessage();
-      if (validMessage()) {
-        UserRegister(name, mail, pass, cpass, number, Router);
-      }
-    } else {
-      modalWarning("error", registerConstant["policyError"]);
-    }
-  };
 
   const handleOnBlur = async () => {
     if (usernameInput) {
@@ -84,59 +47,6 @@ function Signup(auth) {
       setPolicyCheck(true);
     }
   };
-
-  const phoneRegExp =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-
-  const registerSchema = Yup.object().shape({
-    firstname: Yup.string()
-      .matches(
-        registerConstant.form.firstNameField.regex,
-        registerConstant.form.firstNameField.regexMessage
-      )
-      .max(20)
-      .required(registerConstant.form.firstNameField.required),
-
-    lastname: Yup.string()
-      .matches(
-        registerConstant.form.lastNameField.regex,
-        registerConstant.form.lastNameField.regexMessage
-      )
-      .max(20)
-      .required(registerConstant.form.lastNameField.required),
-
-    email: Yup.string()
-      .email(registerConstant.form.emailField.valid)
-      .required(registerConstant.form.emailField.required),
-
-    number: Yup.string()
-      .matches(
-        registerConstant.form.contactField.regex,
-        registerConstant.form.contactField.regexMessage
-      )
-      .required(registerConstant.form.contactField.required)
-      .min(10)
-      .max(12),
-
-    password: Yup.string()
-      .matches(
-        registerConstant.form.passwordField.regex,
-        registerConstant.form.passwordField.regexMessage
-      )
-      .required(registerConstant.form.passwordField.required),
-
-    cpass: Yup.string()
-      .required(registerConstant.form.conPasswordField.required)
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
-
-    username: Yup.string()
-      .matches(
-        registerConstant.form.usernameField.regex,
-        registerConstant.form.usernameField.regexMessage
-      )
-      .max(8)
-      .required(registerConstant.form.usernameField.required),
-  });
 
   const responseGoogle = (response) => {
     GoogleLoginApi(
@@ -203,135 +113,114 @@ function Signup(auth) {
       </div>
 
       <Formik
-        initialValues={{
-          firstname: "",
-          lastname: "",
-          number: "",
-          email: "",
-          password: "",
-          cpass: "",
-          username: "",
-        }}
+        initialValues={registerInitialValues()}
         validationSchema={registerSchema}
         onSubmit={(values) => {
           if (policyCheck == true && usernameAvailable) {
-            UserRegister(
-              values.firstname,
-              values.lastname,
-              values.email,
-              values.password,
-              values.cpass,
-              values.number,
-              values.username,
-              // usernameInput.current.value,
-              Router,
-              setSingupError,
-              dispatch
-            );
+            UserRegister(values, Router, dispatch);
           }
         }}
       >
         {({
-          formik,
           values,
           errors,
           touched,
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting,
         }) => (
           <>
             <form className="signup flex space-between" onSubmit={handleSubmit}>
-              <div className="input-control wd50">
-                <label>First Name*</label>
+              {/* <div className="input-control wd50"> */}
+              {/* <label>First Name*</label> */}
 
-                <input
-                  type="text"
-                  name="firstname"
-                  placeholder={"First Name"}
-                  ref={FullNameInputRef}
-                  value={values.firstname}
-                  maxlength="20"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
+              <TextInput
+                className="input-control wd50"
+                label={registerConstant.form.firstNameField.label}
+                name={registerConstant.form.firstNameField.name}
+                type="text"
+                placeholder={registerConstant.form.firstNameField.placeholder}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.firstname}
+              />
 
-                <div className="errorText">
-                  {touched.firstname && errors.firstname
-                    ? errors.firstname
-                    : null}
-                </div>
-              </div>
-              <div className="input-control wd50">
-                <label>Last Name*</label>
-                <input
-                  type="text"
-                  name="lastname"
-                  maxlength="20"
-                  placeholder={"Last Name"}
-                  value={values.lastname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <div className="errorText">
-                  {errors.lastname && touched.lastname ? errors.lastname : null}
-                </div>
-              </div>
-              <div className="input-control">
-                <label>Email Address*</label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder={"Email Address"}
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <div className="errorText">
-                  {errors.email && touched.email ? errors.email : null}
-                </div>
-              </div>
+              <TextInput
+                className="input-control wd50"
+                label={registerConstant.form.lastNameField.label}
+                name={registerConstant.form.lastNameField.name}
+                type="text"
+                placeholder={registerConstant.form.lastNameField.placeholder}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lastname}
+              />
+
+              <TextInput
+                className="input-control"
+                label={registerConstant.form.emailField.label}
+                name={registerConstant.form.emailField.name}
+                type="email"
+                placeholder={registerConstant.form.emailField.placeholder}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+              />
+
               <div className="input-control">
                 <label>Username*</label>
                 <input
-                  type="text"
-                  name="username"
-                  placeholder={"username"}
+                  name={registerConstant.form.usernameField.name}
+                  placeholder={registerConstant.form.usernameField.placeholder}
                   value={values.username}
                   onChange={handleChange}
                   ref={usernameInput}
                   onBlur={handleOnBlur}
                   onBlurCapture={handleBlur}
                 />
-                <div className="errorText">
-                  {errors.username && touched.username ? errors.username : null}
-                </div>
+                <ErrorMessage
+                  errors={errors.username}
+                  touched={touched.username}
+                />
+
                 {usernameAvailable === false && usernameAvailable !== null ? (
                   <div className="errorText">Username already exist</div>
                 ) : null}
               </div>
+
               <div className="input-control">
-                <label>Contact Number*</label>
-                <input
-                  name="number"
-                  placeholder={"Contact Number"}
-                  value={values.number}
-                  onChange={handleChange}
-                  maxlength="12"
-                  onBlur={handleBlur}
-                  type="tel"
-                />
-                <div className="errorText">
-                  {errors.number && touched.number ? errors.number : null}
+                <label>{registerConstant.form.contactField.label}</label>
+                <div className="d-flex space-between">
+                  <MySelect
+                    className={Styles.country_code}
+                    label={registerConstant.form.countryCodeField.label}
+                    name={registerConstant.form.countryCodeField.name}
+                    onChange={handleChange}
+                    value={values.countryCode}
+                    onBlur={handleBlur}
+                  >
+                    <option>+</option>
+                    <option value="+1">+1</option>
+                    <option value="+91">+91</option>
+                  </MySelect>
+
+                  <input
+                    className={Styles.phone_number}
+                    name={registerConstant.form.contactField.name}
+                    placeholder={registerConstant.form.contactField.placeholder}
+                    value={values.number}
+                    onChange={handleChange}
+                    maxlength="12"
+                  />
                 </div>
+                <ErrorMessage errors={errors.number} touched={touched.number} />
               </div>
 
               <div className="input-control wd50 pass">
                 <label>Password*</label>
                 <input
-                  name="password"
-                  placeholder={"Password"}
+                  name={registerConstant.form.passwordField.name}
+                  placeholder={registerConstant.form.passwordField.placeholder}
                   type={passShow ? "text" : "password"}
                   value={values.password}
                   onChange={handleChange}
@@ -355,16 +244,19 @@ function Signup(auth) {
                     </button>{" "}
                   </>
                 )}
-                <div className="errorText">
-                  {errors.password && touched.password ? errors.password : null}
-                </div>
+                <ErrorMessage
+                  errors={errors.password}
+                  touched={touched.password}
+                />
               </div>
 
               <div className="input-control wd50 pass">
                 <label>Confirm Password*</label>
                 <input
-                  name="cpass"
-                  placeholder={"Confirm Password"}
+                  name={registerConstant.form.conPasswordField.name}
+                  placeholder={
+                    registerConstant.form.conPasswordField.placeholder
+                  }
                   type={conpassShow ? "text" : "password"}
                   value={values.cpass}
                   onChange={handleChange}
@@ -389,9 +281,7 @@ function Signup(auth) {
                   </>
                 )}
 
-                <div className="errorText">
-                  {errors.cpass && touched.cpass ? errors.cpass : null}
-                </div>
+                <ErrorMessage errors={errors.cpass} touched={touched.cpass} />
               </div>
 
               <div className="checkbox-wrap mb32">
@@ -408,6 +298,7 @@ function Signup(auth) {
                   </Link>
                 </label>
               </div>
+
               <div className="submitWrap mb32">
                 <button
                   className={submitBtnState(errors)}

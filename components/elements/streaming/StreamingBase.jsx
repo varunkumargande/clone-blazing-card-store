@@ -19,10 +19,12 @@ import { useRouter } from "next/router";
 import { streamLikeDislike } from "../../../api/stream/streams_api";
 import IconSpeakerMute from "../../Icons/IconSpeakerMute";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../Constants/imageConstants";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
 import {
   dislikedRequest,
   likedRequest,
@@ -466,7 +468,7 @@ function StreamingBase({
                 `Please login to participate`}
             </div>
           )}
-          <div className="tme-wrap flex flex-center justify-center live">
+          <div className={`tme-wrap flex flex-center justify-center live ${Styles.tme-wrap}`}>
             <span>{userCount}</span> <button className="live"></button>
           </div>
           {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}

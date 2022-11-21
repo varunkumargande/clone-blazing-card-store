@@ -43,7 +43,10 @@ export default function categoryStream() {
   const getStreamCards = () => {
     return streamDetail?.scheduled?.map((detail) => {
       return (
-        <div className="card-list flex flex-center">
+        <div
+          className="card-list flex flex-center"
+          key={`category-stream-${detail?.id}`}
+        >
           <div className="inner-card-list">
             <a href={`/streaming?stream=${detail.id}&uuid=${detail.uuid}`}>
               <div className="image">

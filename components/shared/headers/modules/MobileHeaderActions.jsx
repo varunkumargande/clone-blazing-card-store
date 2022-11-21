@@ -73,7 +73,7 @@ function MobileHeaderActions({ auth, cartTotal }) {
       </Drawer>
 
       <Link href="/account/compare">
-        <a class="header__extra">
+        <a className="header__extra">
           <img src="/static/img/compare.svg" alt="" />
           <span>
             <i>0</i>
@@ -81,7 +81,7 @@ function MobileHeaderActions({ auth, cartTotal }) {
         </a>
       </Link>
       <Link href="/account/wishlist">
-        <a class="header__extra">
+        <a className="header__extra">
           <img src="/static/img/heart.svg" alt="" />
           <span>
             <i>0</i>
@@ -90,7 +90,7 @@ function MobileHeaderActions({ auth, cartTotal }) {
       </Link>
 
       {/* <Link href=""> */}
-      <a class="header__extra">
+      <a className="header__extra">
         <img src="/static/img/shopping-cart.svg" alt="" />
         <span>
           <i>0</i>

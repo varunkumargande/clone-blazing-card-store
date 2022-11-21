@@ -10,7 +10,7 @@ import {
   saveCategoryId,
 } from "../../../store/category/action";
 import { useDispatch } from "react-redux";
-import { categoryConstant } from "../../Constants/category";
+import { categoryConstant } from "../../Constants";
 import { useCategoriesData } from "../../../contexts/Categoires/CategoriesData";
 import TabsSkeleton from "../../../skeleton/TabsSkeleton";
 

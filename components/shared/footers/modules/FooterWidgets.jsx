@@ -64,14 +64,14 @@ const FooterWidgets = ({ footerDet, footerPage }) => {
             <div className="widget_content footer-contact-info">
               <p className="footer-color">
                 <i
-                  class="fa fa-map-marker"
+                  className="fa fa-map-marker"
                   aria-hidden="true"
                   style={{ fontSize: "25px", paddingRight: "16px" }}
                 ></i>
               </p>
               <h3 className="footer-color">
                 <i
-                  class="fa"
+                  className="fa"
                   style={{ fontSize: "25px", paddingRight: "15px" }}
                 >
                   &#xf095;
@@ -81,7 +81,7 @@ const FooterWidgets = ({ footerDet, footerPage }) => {
 
               <p className="footer-color">
                 <i
-                  class="fa fa-envelope"
+                  className="fa fa-envelope"
                   aria-hidden="true"
                   style={{
                     fontSize: "25px",
@@ -95,7 +95,7 @@ const FooterWidgets = ({ footerDet, footerPage }) => {
               </p>
               <p className="footer-color">
                 <i
-                  class="fa fa-clock-o"
+                  className="fa fa-clock-o"
                   aria-hidden="true"
                   style={{
                     fontSize: "25px",

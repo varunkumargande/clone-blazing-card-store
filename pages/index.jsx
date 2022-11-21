@@ -14,9 +14,11 @@ import { connect } from "react-redux";
 import { catStreamDetailApi } from "../api/stream/subStreamDetail";
 import { useIsMobile } from "../contexts/Devices/CurrentDevices";
 import { SignUPGoogle } from "../components/partials/Modal/Modal";
+import useIsLoggedIn from "../hooks/useIsLoggedIn";
 
 function landingPage({ category }) {
   const { isMobile } = useIsMobile();
+  const { isLoggedIn } = useIsLoggedIn();
 
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(null);
@@ -29,8 +31,10 @@ function landingPage({ category }) {
   const [fetch, setFetch] = useState(true);
 
   useEffect(() => {
-    dispatch(getBecomeSellerInfo());
-  }, []);
+    if (isLoggedIn) {
+      dispatch(getBecomeSellerInfo());
+    }
+  }, [isLoggedIn]);
 
   // ========================= category for home page ==============================
   const [categories, setCategories] = useState([]);

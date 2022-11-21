@@ -651,27 +651,32 @@ label{
 }
 // Toast Message
 .ToastMessageWrapper {
-  width: calc(100% - 30px);
-  max-width: 500px;
+  width: max-content;
   min-height: 52px;
   padding: 10px 15px;
-  @include pos(fixed,10px,0,null,0,99);
+  @include pos(fixed,54px,0,null,0,99);
   margin: 0 auto;
   border-radius: 8px;
   flex-wrap: nowrap;
   &.success{
-    background-color: $blue-color;
+    background-color: #E8F1FE;
+    color: #1877F2;
+    .icon {
+      fill: #1877F2;
+    }
   }
   &.error{
-    background-color: $red-color;
+    background-color: #FDEEEE;
+    color: #EB5757;
+    .icon {
+     fill:#EB5757;
+    }
   }
-  .toast-massage{
+  .toast-message{
     svg{
       margin-right: 5px;
     }
     line-height: 21px;
-    color:$white-color;
-    max-width: calc(100% - 30px);
     font-weight: 500;
   }
   .close{
@@ -679,9 +684,6 @@ label{
     opacity: 1;
     &:hover{
       opacity: 1;
-    }
-    .icon{
-      fill:$white-color;
     }
   }
 }
@@ -694,7 +696,9 @@ label{
 .w500{
   font-weight:500;
 }
-
+.pointer{
+  cursor: pointer;
+}
 @media all and (min-width:320px) and (max-width:1024px){
   .category-banner{
     .cover-wrap{
@@ -718,10 +722,12 @@ label{
     }
   }
 }
+
 @media all and (min-width:1025px){
   .wd50{
     width: calc(50% - 8px);
   }
+    
   .wd48{
     width: calc(50% - 12px);
   }
