@@ -415,7 +415,7 @@ function InformationCustom() {
                           accept="image/*"
                           name=""
                           id="file"
-                          class="file"
+                          className="file"
                           ref={inputFile}
                           onChange={(e) => changeDP(e)}
                         />
