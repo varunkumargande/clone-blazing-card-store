@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, connect } from "react-redux";
 import Router from "next/router";
@@ -69,7 +69,10 @@ function SeeAllSubCategories({
         .indexOf(category?.categoryName);
       return category?.categories[index]?.children?.map((item) => {
         return (
-          <div className="category-list">
+          <div
+            className="category-list"
+            key={`see-all-subcategories-${item.categoryId}`}
+          >
             <button
               className={`text-capitalize title ${
                 category?.subCategoryName === item.categorySlug && "active"

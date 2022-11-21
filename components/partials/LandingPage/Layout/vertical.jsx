@@ -10,7 +10,7 @@ function Vertical({ category, showLoginModal }) {
   const [catId, setCatId] = useState(null);
   const [loader, setLoader] = useState({});
   const [apiCount, setApiCount] = useState(0);
-  const [seeMoreLoader,setSeeMoreLoader] = useState(true);
+  const [seeMoreLoader, setSeeMoreLoader] = useState(true);
 
   useEffect(() => {
     if (category?.categoryName) {
@@ -39,14 +39,14 @@ function Vertical({ category, showLoginModal }) {
         setLoader,
         setApiCount,
         setSubCategories,
-       setSeeMoreLoader
+        setSeeMoreLoader
       );
     }
   }, [apiCount, subCategories]);
 
   useEffect(() => {
     if (!!catId) {
-     setSeeMoreLoader(true);
+      setSeeMoreLoader(true);
       catSubStreamDetailApi(
         setData,
         page,
@@ -55,29 +55,28 @@ function Vertical({ category, showLoginModal }) {
         setLoader,
         setApiCount,
         setSubCategories,
-       setSeeMoreLoader
+        setSeeMoreLoader
       );
     }
   }, [page]);
-
-  
 
   const showCardDetail = () => {
     if (subCategories) {
       return subCategories.map((item) => {
         return (
-          <CategoryStream
-            catData={data}
-            showLoginModal={showLoginModal}
-            catName={item?.name}
-            catSlug={item?.categorySlug}
-            catId={item?.categoryId}
-            loader={loader}
-            setPage={setPage}
-            page={page}
-            setCatId={setCatId}
-            seeMoreLoader={seeMoreLoader}
-          />
+            <CategoryStream
+              catData={data}
+              showLoginModal={showLoginModal}
+              catName={item?.name}
+              catSlug={item?.categorySlug}
+              catId={item?.categoryId}
+              loader={loader}
+              setPage={setPage}
+              page={page}
+              setCatId={setCatId}
+              seeMoreLoader={seeMoreLoader}
+              key={`vertical-${item?.categoryId}`}
+            />
         );
       });
     }

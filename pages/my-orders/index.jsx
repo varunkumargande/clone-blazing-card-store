@@ -50,13 +50,14 @@ export default function Myorders() {
     setFilter(filterValue[1]);
   };
   const dropDownFilter = () => {
-    return Object.entries(DROPDOWN_FILTERS).map((index) => {
-      return (
-        <>
-          <li onClick={(e) => handleFilter(index)}>{index[0]}</li>
-        </>
-      );
-    });
+    return Object.entries(DROPDOWN_FILTERS).map((data) => (
+        <li
+          onClick={(e) => handleFilter(data)}
+          key={`${data[0]}-my-orders-dropDown`}
+        >
+          {data[0]}
+        </li>
+    ));
   };
 
   const breadCrumb = [
