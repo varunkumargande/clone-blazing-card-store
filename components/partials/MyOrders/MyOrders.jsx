@@ -37,7 +37,7 @@ export default function MyOrders() {
                   <strong>Order ID: {order.orderProductPrefixId}</strong>
                   <span className="divide">|</span>
                   <span className="placed">
-                    Order Placed:{" "}
+                    Order Placed:
                     {moment(order.createdDate).format("MMMM DD, YYYY")}
                   </span>
                 </div>
