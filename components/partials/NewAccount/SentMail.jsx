@@ -4,7 +4,7 @@ import IconKey from "../../Icons/IconKey";
 import IconBack from "../../Icons/IconBack";
 
 import { forgotApi } from '../../../api/auth/forgotPassword'
-import { forgotPasswordConstant } from "../../Constants/forgot-password";
+import { forgotPasswordConstant } from "../../Constants/auth";
 import { useRouter } from "next/router";
 
 export default function SendMail({mail}) {

@@ -10,16 +10,15 @@ import IconMessageMobile from "../../Icons/IconMessageMobile";
 import IconLogoutMobile from "../../Icons/IconLogoutMobile";
 import IconNotificationMobile from "../../Icons/IconNotificationMobile";
 import { useTranslation } from "../../../i18n";
-import { login } from "../../../store/auth/action";
 import { connect } from "react-redux";
 import Router from "next/router";
 import { modalSuccess } from "../../../api/intercept";
 import { logOut } from "../../../store/auth/action";
 import { useDispatch } from "react-redux";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
-import { vendorAuth } from "../../../store/vendorAuth/action";
-import { chatLogin } from "../../../api";
+import { DefaultImagePath, ImageTransformation} from "../../Constants/imageConstants";
+import { setCurrentUrlInLocal } from "../../../utilities/utils";
+import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function MobileHeader({ auth }) {
   const [active, setActive] = useState(false);
@@ -29,14 +28,10 @@ function MobileHeader({ auth }) {
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
-  const authFunc = () => {
-    if (localStorage.getItem("blazingToken") !== null) {
-      dispatch(login());
-    }
-  };
 
-  const handleStoreAndVendorToggle = () => {
-    dispatch(vendorAuth());
+  const handleStoreAndVendorToggle = async () => {
+    await vendorAuthApi();
+    setToggle(false);
   };
 
   useEffect(() => {
@@ -44,10 +39,6 @@ function MobileHeader({ auth }) {
       handleStoreAndVendorToggle("seller");
     }
   }, [toggle]);
-
-  useEffect(() => {
-    authFunc();
-  }, []);
 
   useEffect(() => {
     let profileInterval = setInterval(() => {
@@ -98,10 +89,10 @@ function MobileHeader({ auth }) {
   }, []);
   useEffect(() => {
     if (profile) {
-      handleProfileImage();
+      renderProfileImage();
     }
   }, [profile]);
-  const handleProfileImage = () => {
+  const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
       return (
         <>
@@ -137,8 +128,11 @@ function MobileHeader({ auth }) {
             currentTarget.onerror = null;
             currentTarget.src = "/static/images/profileImg.png";
           }}
-          src={"/static/img/no-image-new.svg"}
+          height={20}
+          width={15}
+          src={DefaultImagePath.defaultProfileImage}
           alt="Profile"
+          className="error"
         />
       );
     }
@@ -149,13 +143,15 @@ function MobileHeader({ auth }) {
     if (profile?.isVendor && auth?.isLoggedIn) {
       return (
         <>
-          <div className="text-center become-seller">
+          <div className="text-center become-seller flex flex-center justify-center become-toggle">
             <label className="switch toggle-switch darkBlue">
               <input
                 type="checkbox"
                 onChange={(e) => {
                   setToggle((prev) => !prev);
                 }}
+                className={toggle && 'checked'}
+                value={toggle}
                 id="togBtn"
               />
               <span className="toogle-slide round">
@@ -216,15 +212,20 @@ function MobileHeader({ auth }) {
         <div className="right flex flex-wrap flex-center">
           {auth.isLoggedIn ? (
             <Link href="/account/myprofile">
-              <button className="profileImage">{handleProfileImage()}</button>
+              <button className="profileImage flex justify-center flex-center">{renderProfileImage()}</button>
             </Link>
           ) : (
             <>
-              <Link href="/account/login">
-                <a className="primary-btn flex flex-center justify-center ml24">
-                  Sign In
-                </a>
-              </Link>
+              <button
+                className="primary-btn flex flex-center justify-center ml24"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentUrlInLocal();
+                  Router.push("/account/login");
+                }}
+              >
+                <a>Sign In</a>
+              </button>
             </>
           )}
         </div>
@@ -268,17 +269,17 @@ function MobileHeader({ auth }) {
           </div>
         </div>
         <div className="menu-overflow">
-          <div className="search-wrap flex space-between flex-top">
+          {/* <div className="search-wrap flex space-between flex-top">
             <div className="Search">
               <input type="search" id="search" name="search" />
               <button className="search-btn">
                 <IconSearch />
               </button>
             </div>
-            {/* <div className="category-btn-wrap">
-                            <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
-                        </div> */}
-          </div>
+            <div className="category-btn-wrap">
+                <button className="category-btn flex flex-center justify-center" onClick={handleOnClick} ref={wrapperRef}><IconCategoryDrop /></button>
+            </div>
+          </div> */}
 
           {auth.isLoggedIn ? (
             <>
@@ -302,10 +303,13 @@ function MobileHeader({ auth }) {
                     </Link>
                   </li>
                   <li>
-                    <a className="message" onClick={(event) => {
-                      event.preventDefault();
-                      chatLogin();
-                    }}>
+                    <a
+                      className="message"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        Router.push("/chat");
+                      }}
+                    >
                       <IconMessageMobile />
                       <span>Message</span>
                     </a>
@@ -335,16 +339,26 @@ function MobileHeader({ auth }) {
           ) : (
             <>
               <div className="flex flex-wrap btn-wrapper column">
-                <Link href="/account/login">
-                  <a className="border-btn flex flex-center justify-center">
-                    Sign In
-                  </a>
-                </Link>
-                <Link href="/account/register">
-                  <a className="primary-btn flex flex-center justify-center">
-                    Sign up
-                  </a>
-                </Link>
+                <button
+                  className="border-btn flex flex-center justify-center"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentUrlInLocal();
+                    Router.push("/account/login");
+                  }}
+                >
+                  <a>Sign In</a>
+                </button>
+                <button
+                  className="primary-btn flex flex-center justify-center"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentUrlInLocal();
+                    Router.push("/account/register");
+                  }}
+                >
+                  <a>Sign up</a>
+                </button>
               </div>
               <div className="or flex flex-center justify-center">
                 <span>Or</span>

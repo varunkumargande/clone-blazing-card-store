@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, memo } from "react";
 import StreamingElement from "./StreamingElement";
 import Timer from "./Timer";
 import { createBid } from "../../../api/stream/createBid";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IconSpeaker from "../../Icons/IconSpeaker";
 import IconShare from "../../Icons/IconShare";
 import IconLikeWhite from "../../Icons/IconLikeWhite";
@@ -19,10 +19,18 @@ import { useRouter } from "next/router";
 import { streamLikeDislike } from "../../../api/stream/streams_api";
 import IconSpeakerMute from "../../Icons/IconSpeakerMute";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../Constants/imageConstants";
 import { useRef } from "react";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import {
+  dislikedRequest,
+  likedRequest,
+  removeLikedRequest,
+} from "../../../store/likedStream/action";
+import Styles from "../../../modular_scss/StreamingBase.module.scss";
 
 function StreamingBase({
   cardDetail,
@@ -34,6 +42,8 @@ function StreamingBase({
   userCount,
   streamNotification,
   liveAuctionDetails,
+  setCurrentAuctionDetails,
+  currentAuctionDetails,
 }) {
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
@@ -58,14 +68,22 @@ function StreamingBase({
   const [liked, setLiked] = useState(
     stream?.streamData?.isLike ? stream?.streamData?.isLike : false
   );
+
   const [onPageLanding, setOnPageLanding] = useState(true);
-  const [currentAuctionDetails, setCurrentAuctionDetails] = useState(null);
 
   const { isMobile } = useIsMobile();
 
   const myInterval = useRef(null);
 
   const stopTimer = useRef(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (stream?.streamData?.isLike) {
+      setLiked(true);
+    }
+  }, [stream?.streamData?.isLike]);
 
   /**
    * This useEffect will start countdown till 0
@@ -112,10 +130,11 @@ function StreamingBase({
 
   useEffect(() => {
     if (streamNotification) {
-      if (streamNotification?.product?.name !== currentAuctionDetails?.name) {
+      if (
+        streamNotification?.product &&
+        streamNotification?.product?.name !== currentAuctionDetails?.name
+      ) {
         setCurrentAuctionDetails(streamNotification?.product);
-      } else {
-        setCurrentAuctionDetails(null);
       }
 
       if (streamNotification?.name) {
@@ -365,13 +384,9 @@ function StreamingBase({
    * Method to identify name of stream
    * @returns string || null
    */
-  const currentAuctionDetail = useMemo(() => {
-    return (
-      currentAuctionDetails ||
-      streamNotification?.product ||
-      liveAuctionDetails?.latestAuction
-    );
-  }, [liveAuctionDetails, streamNotification, currentAuctionDetails]);
+  const renderCurrentAuctionDetail = useMemo(() => {
+    return currentAuctionDetails || liveAuctionDetails?.latestAuction;
+  }, [liveAuctionDetails, currentAuctionDetails]);
 
   const handleLikeUnlike = async () => {
     if (stream?.streamPageData?.streamPageDteails?.isLoggedIn) {
@@ -380,8 +395,14 @@ function StreamingBase({
         user_id: stream?.streamPageData?.streamPageDteails?.loggedInUserId,
       };
       const response = await streamLikeDislike(data);
-      if (response.status) {
-        setLiked(!liked);
+      if (response?.status) {
+        if (response?.data?.is_like) {
+          dispatch(likedRequest(uuid));
+        } else {
+          dispatch(removeLikedRequest(uuid));
+          dispatch(dislikedRequest(uuid));
+        }
+        setLiked(response?.data?.is_like);
       }
     } else {
       setShowLoginModal(true);
@@ -408,10 +429,10 @@ function StreamingBase({
       <>
         {profile?.avatar ? (
           <CloudinaryImage
-            imageUrl={`${profile?.avatar || `logo/user-fill.png`}`}
+            imageUrl={`${profile?.avatar}`}
             keyId={`${profile?.avatar || "avatar"}`}
             alternative={profile?.firstName?.[0] || "P"}
-            transformation={ImageTransformation.profileImageCard}
+            transformation={ImageTransformation.streamChatProfile}
           />
         ) : (
           <img src={DefaultImagePath.defaultProfileImage} alt="" />
@@ -427,18 +448,20 @@ function StreamingBase({
         {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
         <StreamingElement volume={volumeLevel} isMute={isMute} />
       </div>
-      <div className="inner-wrapper">
+      <div className={`${Styles.overlay}`}>
         <div className="stream-header flex space-between">
-          <div className="head-title">
-            {currentAuctionDetail?.name ||
-              currentAuctionDetail?.productName ||
-              ""}
-            <p className="text-light">
-              {currentAuctionDetail?.description ||
-                currentAuctionDetail?.productDescription ||
-                ""}
-            </p>
-          </div>
+          {(renderCurrentAuctionDetail?.name ||
+            renderCurrentAuctionDetail?.productName) && (
+            <div className="head-title">
+              {renderCurrentAuctionDetail?.name ||
+                renderCurrentAuctionDetail?.productName}
+              <p className="text-light">
+                {renderCurrentAuctionDetail?.description ||
+                  renderCurrentAuctionDetail?.productDescription ||
+                  ""}
+              </p>
+            </div>
+          )}
           {!stream?.streamPageData?.streamPageDteails?.isLoggedIn && (
             <div className="head-title">
               {stream?.streamPageData?.streamPageDteails &&
@@ -523,7 +546,7 @@ function StreamingBase({
         {streamNotification?.name ? (
           <div className="winner-profile flex flex-center">
             <div className="pf br50">
-              {renderUserAvatar(streamNotification?.customer)}
+              {renderUserAvatar(streamNotification)}
             </div>
             {streamNotification?.name} <span> &nbsp; is winner 🎉</span>
           </div>

@@ -3,30 +3,18 @@ import Link from "next/link";
 import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
 import IconBack from "../../Icons/IconBack";
-import {
-  EmailValidator,
-  upperPresent,
-  lowerPresent,
-  numPresent,
-  specialPresent,
-} from "../../helper/emailValidator";
 import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { modalSuccess, modalWarning } from "../../../api/intercept";
-import { registerConstant } from "../../Constants/register";
+import { modalWarning } from "../../../api/intercept";
+import { registerConstant } from "../../Constants/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
-
-// ======== import form components ==========
-import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { TextInput } from "../../CommonComponents/TextInput";
-// ==========================================
 
 function Signup(auth) {
   const dispatch = useDispatch();
@@ -40,12 +28,6 @@ function Signup(auth) {
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const usernameInput = useRef();
   const [singupError, setSingupError] = useState("");
-  const [nameValid, setNameValid] = useState("");
-  const [lastNameValid, setLastNameValid] = useState("");
-  const [mailValid, setMailValid] = useState("");
-  const [passValid, setPassValid] = useState([]);
-  const [cpassValid, setCpassValid] = useState("");
-  const [numValid, setNumValid] = useState("");
   const [submit, setSubmit] = useState(0);
   const [passShow, setPassShow] = useState(false);
   const [conpassShow, setConPassShow] = useState(false);
@@ -152,8 +134,8 @@ function Signup(auth) {
       "",
       "",
       response.picture,
-      Router,
-      response
+      response,
+      dispatch
     );
   };
 
@@ -320,6 +302,7 @@ function Signup(auth) {
                   onChange={handleChange}
                   maxlength="12"
                   onBlur={handleBlur}
+                  type="tel"
                 />
                 <div className="errorText">
                   {errors.number && touched.number ? errors.number : null}
@@ -396,7 +379,7 @@ function Signup(auth) {
               <div className="checkbox-wrap mb32">
                 <label className="checkbox">
                   <input type="checkbox" onClick={() => handlePolicyCheck()} />
-                  <span class="checkmark"></span>
+                  <span className="checkmark"></span>
                   I’ve read and agree with{" "}
                   <Link href="/terms-conditions">
                     <a>Terms of Service</a>

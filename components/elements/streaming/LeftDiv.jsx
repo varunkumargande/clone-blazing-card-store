@@ -9,11 +9,12 @@ import {
   userFollowUnfollow,
 } from "../../../api/stream/streams_api";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import Styles from "../../../modular_scss/LeftDiv.module.scss";
+import { handleModalClick } from "../../../utilities/utils";
 
 function LeftDiv({
   setShowLoginModal,
@@ -25,6 +26,7 @@ function LeftDiv({
   isLeftDivOpen,
   setIsBuyNowPaymentModal,
   auctionCallBack,
+  currentAuctionDetails,
 }) {
   const TOGGLE_STATES = {
     AUCTION: "auction",
@@ -189,11 +191,17 @@ function LeftDiv({
    */
   const getLiveAuctionClass = (productId) => {
     if (
-      productId == auctionNotification?.product?.productId ||
-      productId ==
+      +productId === currentAuctionDetails?.product?.productId ||
+      +productId === auctionNotification?.product?.productId
+    ) {
+      return Styles.pinned;
+    } else if (
+      !currentAuctionDetails?.product?.productId &&
+      !auctionNotification?.product?.productId &&
+      +productId ===
         streamProducts[toggleState]?.AuctionDetails?.latestAuction?.productId
     ) {
-      return "pinned";
+      return Styles.pinned;
     }
     return "";
   };
@@ -341,8 +349,11 @@ function LeftDiv({
   const UnfollowModal = () => {
     const vendorDetails = stream?.streamData?.vendorDetails;
     return (
-      <div className="modalOverlay flex justify-center flex-center">
-        <div className="modal">
+      <div
+        className="modalOverlay flex justify-center flex-center"
+        onClick={(event) => { handleModalClick(event, setShowUnFollowModal) }}
+      >
+        <div className="modal" onClick={(event) => { handleModalClick(event) }}>
           <div className="modal-body text-center">
             <div className="profile-icon">
               {stream?.streamData?.vendorDetails ? (
@@ -413,10 +424,7 @@ function LeftDiv({
           customMsg={
             "In order to buy a product in the stream, you need to sign up or log in."
           }
-          onDismiss={(e) => {
-            e.preventDefault();
-            setShowLogin(false);
-          }}
+          onDismiss={setShowLogin}
         />
       )}
       {showUnFollowModal && UnfollowModal()}
@@ -507,50 +515,52 @@ function LeftDiv({
         </div>
       </div>
       {isLeftDivOpen ? (
-        <div
-          className="leftdata-wrapper"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          <h3 className="title text-capitalize">
-            {streamTitle || (
-              <Skeleton
-                baseColor="#dddbdb66"
-                highlightColor="#cdcccc"
-                width={`100px`}
-              />
-            )}
-          </h3>
-          <div className="tab-wrapper flex">{getToggles()}</div>
-          <div className="search">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={filterKeyword}
-              onChange={handleSearchProduct}
-            />
-          </div>
-          <div className={`${toggleState}-list leftdata-list`}>
-            <div className="product-count">
-              {!streamProductsFetched ? (
+        <div className="leftdata-wrapper">
+          <div
+            className="leftdata-inner"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <h3 className="title text-capitalize">
+              {streamTitle || (
                 <Skeleton
                   baseColor="#dddbdb66"
                   highlightColor="#cdcccc"
                   width={`100px`}
                 />
-              ) : handleProductCount <= 1 ? (
-                `${handleProductCount} Product`
-              ) : (
-                `${handleProductCount} Products`
               )}
+            </h3>
+            <div className="tab-wrapper flex">{getToggles()}</div>
+            <div className="search">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={filterKeyword}
+                onChange={handleSearchProduct}
+              />
             </div>
-            <ul className="product-list">
-              {streamProductsFetched
-                ? showProductList()
-                : showProductListSkimmer()}
-            </ul>
+            <div className={`${toggleState}-list leftdata-list`}>
+              <div className="product-count">
+                {!streamProductsFetched ? (
+                  <Skeleton
+                    baseColor="#dddbdb66"
+                    highlightColor="#cdcccc"
+                    width={`100px`}
+                  />
+                ) : handleProductCount <= 1 ? (
+                  `${handleProductCount} Product`
+                ) : (
+                  `${handleProductCount} Products`
+                )}
+              </div>
+              <ul className="product-list">
+                {streamProductsFetched
+                  ? showProductList()
+                  : showProductListSkimmer()}
+              </ul>
+            </div>
           </div>
         </div>
       ) : (

@@ -10,3 +10,9 @@ export const ImageTransformation = {
     streamChatProfile: "w_50,h_50,c_fill,q_auto,r_100,fl_any_format,dpr_auto",
     sellerDocument: "w_206,h_130,c_fill,q_auto,fl_any_format,dpr_auto"
 };
+
+
+export const DefaultImagePath = {
+    defaultImage: 'defaultCard.png',
+    defaultProfileImage: '/static/images/defaultProfile.svg'
+}

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, memo } from "react";
 import Skeleton from "react-loading-skeleton";
 import IconChat from "../../Icons/IconChat";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
-import { DefaultImagePath } from "../../Constants/defaultImage";
 
 // import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
 // import useLiveUserCount from "../../CustomHooks/LiveUserCounts";
@@ -66,6 +65,9 @@ function RightDiv({ streamData, channel, client }) {
         type: "text",
       });
       setInputValue("");
+      // Below line to scroll to bottom
+      document.getElementsByClassName('chat-wrap')[0].scrollTop = document.getElementsByClassName('chat-wrap')[0].scrollHeight;
+
     }
   };
 
@@ -79,6 +81,7 @@ function RightDiv({ streamData, channel, client }) {
       sendAndUpdateMessage();
     }
   };
+
 
   const showMessages = () => {
     if (!channel) {
@@ -170,10 +173,7 @@ function RightDiv({ streamData, channel, client }) {
             customMsg={
               "In order to chat in the stream, you need to sign up or log in."
             }
-            onDismiss={(e) => {
-              e.preventDefault();
-              setShowLoginModal(false);
-            }}
+            onDismiss={setShowLoginModal}
           />
         )}
         <div className="chat-wrap">{showMessages()}</div>

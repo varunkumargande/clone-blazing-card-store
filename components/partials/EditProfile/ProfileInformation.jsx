@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import IconDelete from "../../Icons/IconDelete";
-import Link from "next/link";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { editProfileApi } from "../../../api";
@@ -11,12 +9,13 @@ import { Loader } from "../../reusable/Loader";
 import { uploadImageToServer } from "../../../utilities/common-helpers";
 import DefaultConstants from "../../../utilities/constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import { DefaultImagePath } from "../../Constants/imageConstants";
+
 export default function ProfileInformation() {
   const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB
@@ -270,7 +269,7 @@ export default function ProfileInformation() {
                       <div className="inner-box">
                         <div className="flex space-between">
                           <div className="input-control wd50">
-                            <label>First Name *</label>
+                            <label>First Name*</label>
                             <input
                               placeholder={"Enter here"}
                               className="grey-bg"
@@ -294,7 +293,7 @@ export default function ProfileInformation() {
                             />
                           </div>
                           <div className="input-control wd50">
-                            <label>Last Name *</label>
+                            <label>Last Name*</label>
                             <input
                               name="lastName"
                               placeholder={"Enter here"}
@@ -320,7 +319,7 @@ export default function ProfileInformation() {
                         <div className="flex space-between">
                           <div className="input-control wd50">
                             <div className="flex space-between flex-center">
-                              <label htmlFor="usr">Username *</label>
+                              <label htmlFor="usr">Username*</label>
                             </div>
                             <input
                               name="text"
@@ -332,7 +331,7 @@ export default function ProfileInformation() {
                             />
                           </div>
                           <div className="input-control wd50">
-                            <label htmlFor="usr">Phone Number *</label>
+                            <label htmlFor="usr">Phone Number*</label>
                             <input
                               name="phoneNumber"
                               placeholder={"Enter here"}
@@ -349,6 +348,7 @@ export default function ProfileInformation() {
                               }
                               value={values.phoneNumber}
                               maxLength={12}
+                              type="tel"
                             />
                             <ErrorMessage
                               errors={errors.phoneNumber}

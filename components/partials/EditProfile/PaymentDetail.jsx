@@ -84,6 +84,7 @@ export default function PaymentDetail() {
       expireDate: values.expireDate,
       cvc: values.cvc,
       countryId: values.countryId,
+      termCheckBox: values.termCheckbox
     });
 
     handleCardApi(jsonData, isCardEdit, cardListApi, setCardLoader, dispatch);
@@ -147,7 +148,7 @@ export default function PaymentDetail() {
                             </div>
                             <div className="flex space-between">
                               <div className="input-control wd50">
-                                <label>Card Number *</label>
+                                <label>Card Number*</label>
                                 <input
                                   name="cardNumber"
                                   placeholder={"Enter here"}
@@ -174,7 +175,7 @@ export default function PaymentDetail() {
                                 </span>
                               </div>
                               <div className="input-control wd50">
-                                <label htmlFor="usr">Expiry *</label>
+                                <label htmlFor="usr">Expiry*</label>
                                 <input
                                   name="expireDate"
                                   placeholder={"MM/YY"}
@@ -188,11 +189,11 @@ export default function PaymentDetail() {
                                   {errors.expireDate && touched.expireDate
                                     ? errors.expireDate
                                     : null}
-                                  {/* {expValid == false ? "Expiary date is invalide": ""} */}
+                                  {/* {expValid == false ? "Expiry date is invalid": ""} */}
                                 </span>
                               </div>
                               <div className="input-control wd50">
-                                <label htmlFor="usr">CVV *</label>
+                                <label htmlFor="usr">CVV*</label>
                                 <input
                                   name="cvc"
                                   placeholder={"Enter here"}
@@ -217,7 +218,7 @@ export default function PaymentDetail() {
                                 </span>
                               </div>
                               <div className="input-control wd50">
-                                <label htmlFor="usr">Country *</label>
+                                <label htmlFor="usr">Country*</label>
                                 <select
                                   className="grey-bg"
                                   name="countryId"

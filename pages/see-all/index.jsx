@@ -19,6 +19,7 @@ import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
 import SeeMoreLoader from "../../components/reusable/SeeMoreLoader";
 import { limit } from "../../components/Constants";
+import { SignUPGoogle } from "../../components/partials/Modal/Modal";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -50,12 +51,12 @@ function categoryStream({ auth, category }) {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-      dispatch(savePageType(query?.page));
+      dispatch(savePageType(query?.page.replace(/\s/g, "")));
     } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
-        dispatch(savePageType("allCategory"));
+        dispatch(savePageType("all category"));
       }
     }
   }, [query]);
@@ -114,8 +115,28 @@ function categoryStream({ auth, category }) {
     });
   };
 
+  /**
+   *
+   * @returns showing header title of pages
+   */
+  const showHeader = () => {
+    if (query?.page == "scheduled") {
+      return "Scheduled Shows";
+    } else if (query?.page == "live") {
+      return "Live Shows";
+    } else {
+      return <> {stringFormatter(query?.page)} </>;
+    }
+  };
+
   return (
     <div className="home-container">
+      {showModal && (
+        <SignUPGoogle
+          customMsg={"Signup to Join Blazing Cards"}
+          onDismiss={setShowModal}
+        />
+      )}
       {isMobile ? "" : <HeaderDefault />}
       {isMobile ? (
         ""
@@ -123,8 +144,15 @@ function categoryStream({ auth, category }) {
         <section className="breadcrumbs-wrapper">
           <div className="inner-container">
             <ul className="breadcrumbs flex flex-center">
-              <li onClick={() => handleToGoHome()}>Home</li>/
-              <li className="current">{stringFormatter(query?.page)}</li>
+              <li
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToGoHome();
+                }}
+              >
+                Home
+              </li>
+              /<li className="current">{showHeader()}</li>
             </ul>
           </div>
         </section>
@@ -133,12 +161,18 @@ function categoryStream({ auth, category }) {
         <div className="inner-container">
           <div className="title-wrap see-all-back flex space-between flex-center">
             <div className="flex flex-center">
-              <div className="edit-back" onClick={() => handleToGoHome()}>
+              <div
+                className="edit-back"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToGoHome();
+                }}
+              >
                 <IconBack />
               </div>
               &nbsp;&nbsp;&nbsp;{" "}
               <h3 className="title">
-                {stringFormatter(query?.page)}
+                {showHeader()}
                 {/* All Categories */}
               </h3>
             </div>

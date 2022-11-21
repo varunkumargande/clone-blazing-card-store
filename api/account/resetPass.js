@@ -29,7 +29,7 @@ export async function resetPassApi(key, newPass, Router, dispatch) {
 export async function resetConfomPassApi(key, setPageTrue) {
   const result = await APIServices.get(
     "customer/forgot-password-key-check",
-    key
+    encodeURIComponent(key)
   );
   if (result && result.data && result.data.status === 1) {
     setPageTrue(true);

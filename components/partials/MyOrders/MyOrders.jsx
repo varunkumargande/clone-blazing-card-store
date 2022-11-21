@@ -34,7 +34,7 @@ export default function MyOrders() {
             >
               <div className="order-header flex flex-center space-between">
                 <div className="order-head">
-                  <strong>Order ID: {order.orderProductPrefixId}</strong>
+                  <strong>Order ID: {order?.orderId}</strong>
                   <span className="divide">|</span>
                   <span className="placed">
                     Order Placed:
@@ -57,7 +57,7 @@ export default function MyOrders() {
               <div className="order-body flex space-between">
                 <div className="order-text flex">
                   <div className="order-details">
-                    <div className="flex mb12">
+                    <div className="flex mb12 product-name-wrap">
                       <div className="order-title">{order.productName}</div>
                       <button className="status shipped">
                         {order.orderStatusName}

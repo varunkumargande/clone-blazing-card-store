@@ -152,6 +152,16 @@
             background-color: $body-bg;
             color: $primary-color;
         }
+        &.search{
+            input{
+                background-color: $white-color;
+                border-color: $border2-color;
+                border-radius: 21px;
+                padding: 0 25px 0 40px;
+                font-size: 14px;
+                background: url('/static/images/search-icon.svg') no-repeat 16px center;
+            }
+        }
         &.with-bg{
             font-size: 14px;
             line-height: 24px;
@@ -352,6 +362,19 @@
             .modal-header{
                 background-color: $white-color;
                 border-bottom: 1px solid $border2-color;
+                padding-top: 30px;
+                .close{
+                    span{
+                        display: none
+                    }
+                    width: 70px;
+                    height: 4px;
+                    background-color: $border2-color;
+                    position: absolute;
+                    top:10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
             }
             .modal-footer{
                 padding: 24px 16px;

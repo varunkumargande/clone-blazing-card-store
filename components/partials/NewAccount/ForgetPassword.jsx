@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from 'react';
 import SendMail from "./SentMail";
 import { forgotApi } from '../../../api/auth/forgotPassword'
-import { forgotPasswordConstant } from "../../Constants/forgot-password";
+import { forgotPasswordConstant } from "../../Constants/auth";
 import { useDispatch } from "react-redux";
 export default function ForgetPassword() {
     const dispatch = useDispatch();

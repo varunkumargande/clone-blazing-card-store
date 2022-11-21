@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import IconClose from "../../Icons/IconClose";
 import IconShareFacebook from "../../Icons/IconShareFacebook";
 import IconShareTwitter from "../../Icons/IconShareTwitter";
@@ -8,20 +7,13 @@ import IconGoogle from "../../Icons/IconGoogle";
 import Timer from "../../elements/streaming/Timer";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { array, element } from "prop-types";
-import { addCardDetail } from "../../../api/stream/payment";
 import { deleteAccountApi } from "../../../api/account/deleteAccount";
-import axios from "axios";
-import { searchUsers } from "../../../chatService";
-import PaymentCard from "../EditProfile/PaymentCard";
 import { handleCardApi } from "../../../api/account/editCard";
 import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
 import { addChatFrend, searchUser } from "../../../api/chat";
 import { regex } from "../../Constants/regex";
-import { apiUrl } from "../../../api/url";
-import { SocialMediaShareLink } from "../../Constants/socialMediaShareLink";
-import { io } from "socket.io-client";
+import { SocialMediaShareLink } from "../../Constants";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
@@ -29,30 +21,18 @@ import jwt_decode from "jwt-decode";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import Router from "next/router";
 import DefaultServices from "../../Services/DefaultServices";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../Constants/imageConstants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
-import { getStateName } from "../../../utilities/utils";
-
-const responseGoogle = (response) => {
-  GoogleLoginApi(
-    response.given_name,
-    response.family_name,
-    response.email,
-    "",
-    "",
-    response.email.split("@")[0],
-    "gmail",
-    "",
-    "",
-    "",
-    "",
-    response.picture,
-    Router,
-    response
-  );
-};
+import {
+  getStateName,
+  handleModalClick,
+  setCurrentUrlInLocal,
+} from "../../../utilities/utils";
 
 const responseGoogleFailure = (response) => {
   console.error("Failure response", response);
@@ -61,7 +41,6 @@ const responseGoogleFailure = (response) => {
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
   const [isCopied, setIsCopied] = useState(false);
-
   const handleCopy = (e) => {
     e.preventDefault();
     setIsCopied(true);
@@ -69,8 +48,18 @@ export function ShareModalModal({ setIsShareModalOpen }) {
     setTimeout(() => setIsCopied(false), 1000);
   };
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setIsShareModalOpen);
+      }}
+    >
+      <div
+        className="modal"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Share</h5>
           <button
@@ -141,8 +130,18 @@ export function ShareModalModal({ setIsShareModalOpen }) {
 export function ShippingTaxesModal(props) {
   const { setOpenShipPayDetails } = props;
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setOpenShipPayDetails);
+      }}
+    >
+      <div
+        className="modal"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Shipping & Taxes</h5>
           <button
@@ -188,8 +187,18 @@ export function CustomBidModal(props) {
     setAmountToBid,
   } = props;
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setOpen);
+      }}
+    >
+      <div
+        className="modal"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Custom Bid</h5>
           <button
@@ -272,7 +281,6 @@ export function PaymentInfoModal(props) {
     addressLoader,
     isBuyNowPaymentModal,
   } = props;
-
   const addressInfo =
     addressList?.length == 0
       ? "Add Address"
@@ -295,8 +303,18 @@ export function PaymentInfoModal(props) {
         cardDetail[0]?.card.last4;
 
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal medium">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, openPayment);
+      }}
+    >
+      <div
+        className="modal medium"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Payment Info</h5>
           <button
@@ -394,7 +412,6 @@ export function AddNewCardModal(props) {
   const { payDetail, close, setPaymentLoader, fetchCardDetail } = props;
 
   const dispatch = useDispatch();
-  const [expValid, setExpValid] = useState(null);
   const [initialValueFlag, setInitialValueFlag] = useState(
     Array.isArray(payDetail) &&
       payDetail[0]?.card?.last4 &&
@@ -411,7 +428,9 @@ export function AddNewCardModal(props) {
       .min(15, "Card Number is invalid !"),
     cvc: Yup.string().min(2, "Too Short!").required("Required"),
     expireDate: Yup.string().required("Required"),
-    // countryId: Yup.string().required("Required"),
+    termCheckbox: Yup.bool()
+      .oneOf([true], "Please accept terms & conditions")
+      .required("Please accept terms & conditions"),
   });
 
   const formik = useFormik({
@@ -425,12 +444,14 @@ export function AddNewCardModal(props) {
             "/" +
             payDetail[0]?.card?.exp_year.toString().slice(-2)
           : "",
+      termCheckbox: !!payDetail[0]?.termCheckBox,
     },
     onSubmit: (values) => {
       const jsonData = JSON.stringify({
         cardNumber: values.cardNumber,
         expireDate: values.expireDate,
         cvc: values.cvc,
+        termCheckBox: values.termCheckbox,
       });
 
       if (payDetail == false) {
@@ -484,8 +505,18 @@ export function AddNewCardModal(props) {
       : ["", ""];
 
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal medium">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, close);
+      }}
+    >
+      <div
+        className="modal medium"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Card Detail</h5>
           <button
@@ -521,7 +552,10 @@ export function AddNewCardModal(props) {
               <span className="card-icon">
                 {formik?.values?.cardNumber >= 3 ? CardImage : ""}
               </span>
-              <ErrorMessage errors={formik.errors.cardNumber} />
+              <ErrorMessage
+                errors={formik.errors.cardNumber}
+                touched={formik.touched.cardNumber}
+              />
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
@@ -537,8 +571,10 @@ export function AddNewCardModal(props) {
                   value={handleExpDate(formik.values)}
                   maxLength={5}
                 />
-                <ErrorMessage errors={formik.errors.expireDate} />
-                {expValid == false ? "Expiary date is invalide" : ""}
+                <ErrorMessage
+                  errors={formik.errors.expireDate}
+                  touched={formik.touched.expireDate}
+                />
               </div>
               <div className="input-control wd50">
                 <label>CVV</label>
@@ -556,13 +592,41 @@ export function AddNewCardModal(props) {
                   }}
                   maxLength={type === "amex" ? 4 : 3}
                 />
-                <ErrorMessage errors={formik.errors.cvc} />{" "}
+                <ErrorMessage
+                  errors={formik.errors.cvc}
+                  touched={formik.touched.cvc}
+                />
               </div>
             </div>
-            <div className="infotext">
-              By providing your card information, you allow Blazing Cards to
-              charge your card for future payments in accordance with their
-              terms.
+            <div className="checkbox-wrap mb32">
+              <label className="checkbox">
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    formik.setFieldValue(
+                      "termCheckbox",
+                      !formik.values.termCheckbox
+                    );
+                  }}
+                >
+                  <input
+                    name="termCheckbox"
+                    type="checkbox"
+                    checked={formik.values.termCheckbox}
+                    onChange={(e) => {}}
+                  />
+                  <span className="checkmark"></span>
+                </div>
+                <div className="discriptionlg">
+                  By providing your card information, you allow BLAZING CARDS to
+                  charge your card for future payments in accordance with their
+                  terms.
+                </div>
+              </label>
+              <ErrorMessage
+                errors={formik.errors.termCheckbox}
+                touched={formik.touched.termCheckbox}
+              />
             </div>
           </div>
           <div className="modal-footer">
@@ -617,8 +681,18 @@ export function AddAddressModal(props) {
   return (
     <>
       {formik ? (
-        <div className="modalOverlay flex justify-center flex-center">
-          <div className="modal medium">
+        <div
+          className="modalOverlay flex justify-center flex-center"
+          onClick={(event) => {
+            handleModalClick(event, close);
+          }}
+        >
+          <div
+            className="modal medium"
+            onClick={(event) => {
+              handleModalClick(event);
+            }}
+          >
             <div className="modal-header flex Space-between flex-center">
               <h5 className="modal-title">Add Address</h5>
               <button
@@ -778,7 +852,7 @@ export function DeletAccountModal({ setIsOpen, userName }) {
       password: "",
     },
     validateOnMount: true,
-    onSubmit: async (values) =>  {
+    onSubmit: async (values) => {
       await deleteAccountApi(values, dispatch);
       setIsOpen(false);
     },
@@ -786,8 +860,18 @@ export function DeletAccountModal({ setIsOpen, userName }) {
   });
 
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal medium">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setIsOpen);
+      }}
+    >
+      <div
+        className="modal medium"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">Delete Account</h5>
           <button
@@ -858,11 +942,18 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
+  const dispatch = useDispatch();
 
   // handle username and search frend
   const handleUsername = async (e) => {
     e.preventDefault();
-    searchUser(setUserData, setUserDataLoader, e.target.value);
+    searchUser(
+      setUserData,
+      setUserDataLoader,
+      e.target.value,
+      dispatch,
+      setIsOpen
+    );
   };
   // ====================================================================
 
@@ -874,7 +965,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
   // handle for submit for add frend
   const handleSubmitUser = () => {
-    addChatFrend(userId, fetchUserData, setIsOpen, socket);
+    addChatFrend(userId, fetchUserData, setIsOpen, socket, dispatch);
   };
   // =============================================================
 
@@ -885,21 +976,25 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
           return (
             <>
               <div
-                className={
-                  !!userId
-                    ? "profile-chat-list flex space-between active-user"
-                    : "profile-chat-list flex space-between"
-                }
-                onClick={() => handleAddUserForChat(item._id, item.username)}
+                className={`profile-chat-list flex space-between ${
+                  userId == item?._id && `active`
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAddUserForChat(item._id, item.username);
+                }}
+                key={`${item.username}-chat-panel`}
               >
                 <div className="profile-image-title flex flex-center">
                   <div className="image br50">
                     <img
                       src={
                         item?.avatarImage == ""
-                          ? "/static/img/no-image.png"
-                          : item?.avatarImage
+                          ? DefaultImagePath.defaultProfileImage
+                          : `${process.env.NEXT_PUBLIC_CLOUD_IMAGE_URL}${process.env.NEXT_PUBLIC_CHAT_PROFILE_IMAGE_SIZE}${item?.avatarImage}`
                       }
+                      width="40"
+                      height="40"
                       alt=""
                     />
                   </div>
@@ -907,6 +1002,7 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
                     <div className="name">
                       {item.username} <span className="new"></span>
                     </div>
+                    <div className="time">@{item?.username}</div>
                   </div>
                 </div>
               </div>
@@ -918,8 +1014,18 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   };
 
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal medium">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setIsOpen);
+      }}
+    >
+      <div
+        className="modal medium"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center">
           <h5 className="modal-title">New Message</h5>
           <button
@@ -936,10 +1042,9 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
         </div>
 
         <div className="modal-body">
-          <div className="input-control">
-            <label>User Name</label>
+          <div className="input-control search">
             <input
-              type="text"
+              type="search"
               name="username"
               placeholder={"Enter Username"}
               onChange={(e) => handleUsername(e)}
@@ -960,7 +1065,10 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
             <button
               className="primary-btn"
               type="submit"
-              onClick={() => handleSubmitUser()}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmitUser();
+              }}
             >
               Next
             </button>
@@ -995,8 +1103,18 @@ export function UnfollowModalMultiple(props) {
     }
   };
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setIsOpenFollowUnfollow);
+      }}
+    >
+      <div
+        className="modal"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-body text-center">
           <div className="profile-icon">
             {!!profile && (
@@ -1054,8 +1172,18 @@ export function UnfollowModal(props) {
     }
   };
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setIsOpenFollowUnfollow);
+      }}
+    >
+      <div
+        className="modal"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-body text-center">
           <div className="profile-icon">
             {!!profile && (
@@ -1098,8 +1226,18 @@ export function UnfollowModal(props) {
 
 export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setPaymentSuccessful);
+      }}
+    >
+      <div
+        className="modal"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-body text-center">
           <div className="flex justify-content-end flex-center">
             <button
@@ -1134,18 +1272,63 @@ export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
 }
 
 export function SignUPGoogle({ onDismiss, customMsg }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setCurrentUrlInLocal();
+  }, []);
+
+  useEffect(() => {
+    if (
+      localStorage.getItem("blazingUser") &&
+      document.getElementById("signup-modal-close")
+    ) {
+      document.getElementById("signup-modal-close").click();
+    }
+  }, [localStorage.getItem("blazingUser")]);
+
+  const responseGoogle = (response) => {
+    GoogleLoginApi(
+      response.given_name,
+      response.family_name,
+      response.email,
+      "",
+      "",
+      response.email.split("@")[0],
+      "gmail",
+      "",
+      "",
+      "",
+      "",
+      response.picture,
+      response,
+      dispatch
+    );
+  };
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal signup">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, onDismiss);
+      }}
+    >
+      <div
+        className="modal signup"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center nobg">
           <h5 className="modal-title"></h5>
           <button
             type="button"
+            id="signup-modal-close"
             className="close"
             data-dismiss="modal"
             aria-label="Close"
             onClick={(e) => {
-              onDismiss(e);
+              e.preventDefault();
+              onDismiss(false);
             }}
           >
             <span aria-hidden="true">
@@ -1174,18 +1357,30 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
               }}
             />
           </GoogleOAuthProvider>
-          <div class="or mb26 flex flex-center justify-center">
+          <div className="or mb26 flex flex-center justify-center">
             <span>Or</span>
           </div>
           <div className="signin-signup">
-            <Link href="/account/register">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setCurrentUrlInLocal();
+                Router.push("/account/register");
+              }}
+            >
               <a>Sign Up</a>
-            </Link>
+            </button>
             /
-            <Link href="/account/login">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setCurrentUrlInLocal();
+                Router.push("/account/login");
+              }}
+            >
               <a>Sign In</a>
-            </Link>{" "}
-            on Blazing Cards
+            </button>
+            &nbsp; on Blazing Cards
           </div>
         </div>
       </div>
@@ -1196,8 +1391,18 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
 export function BidCreatedModal(props) {
   const { setIsBidResponseModal } = props;
   return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal">
+    <div
+      className="modalOverlay flex justify-center flex-center"
+      onClick={(event) => {
+        handleModalClick(event, setIsBidResponseModal);
+      }}
+    >
+      <div
+        className="modal"
+        onClick={(event) => {
+          handleModalClick(event);
+        }}
+      >
         <div className="modal-header flex Space-between flex-center nobg">
           <h5 className="modal-title"></h5>
           <button

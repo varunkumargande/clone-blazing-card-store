@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
@@ -7,12 +7,12 @@ import IconShareFacebook from "../../components/Icons/IconShareFacebook";
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
 import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
 import ProfileMethods from "../../api/profile/ProfileMethods";
-import PublicProfileConstants from "../../components/Constants/publicProfile";
+import PublicProfileConstants from "../../components/Constants";
 import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
 import DefaultServices from "../../components/Services/DefaultServices";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../components/Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../components/Constants/imageConstants";
 import BackButton from "../../components/CommonComponents/BackButton";
 import {
   SignUPGoogle,
@@ -20,7 +20,6 @@ import {
 } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
-import { DefaultImagePath } from "../../components/Constants/defaultImage";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -39,21 +38,19 @@ export default function PublicProfile() {
     tabs && tabs.length > 0 ? tabs[0].key : ""
   );
   const [showModal, setShowModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
   const [key, setKey] = useState(1);
   const [isOpenFollowUnfollow, setIsOpenFollowUnfollow] = useState(false);
   const wrapperRef = useRef(null);
 
-  const getSessionUser = () => {
-    if (typeof window !== "undefined") {
-      if (window && window.localStorage.getItem("blazingUser")) {
-        let user = JSON.parse(localStorage.getItem("blazingUser"));
-        return user;
-      }
+  useEffect(() => {
+    if (localStorage.getItem("blazingUser")) {
+      setCurrentUser(JSON.parse(localStorage.getItem("blazingUser")));
     }
-    return false;
-  };
+  }, []);
 
-  const user = getSessionUser();
+  const user = currentUser;
+  const loggedInUserId = currentUser?.id;
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -62,14 +59,12 @@ export default function PublicProfile() {
   };
 
   const getAllBuyerDetails = () => {
-    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
     ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
   };
 
   const getAllVendorDetails = () => {
-    const loggedInUserId = getSessionUser().id;
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
     ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
@@ -232,7 +227,6 @@ export default function PublicProfile() {
   };
 
   const renderTab = (tab, key) => {
-    const loggedInUserId = getSessionUser().id;
     return (
       <div className="category-list" key={key}>
         <button
@@ -347,10 +341,7 @@ export default function PublicProfile() {
       {showModal && (
         <SignUPGoogle
           customMsg={"Signup to Join Blazing Cards"}
-          onDismiss={(e) => {
-            e.preventDefault();
-            setShowModal(false);
-          }}
+          onDismiss={setShowModal}
         />
       )}
       {isMobile ? (
