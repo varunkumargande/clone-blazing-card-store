@@ -7,14 +7,17 @@ import { DeletAccountModal } from "../Modal/Modal";
 import { imageUrl } from "../../../api/url";
 import { Loader } from "../../reusable/Loader";
 import { uploadImageToServer } from "../../../utilities/common-helpers";
-import DefaultConstants from "../../../utilities/constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageConstants";
+import { DefaultImagePath } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { useDispatch } from "react-redux";
-import { DefaultImagePath } from "../../Constants/imageConstants";
+import { show } from "../../../store/toast/action";
+import { profileSchema } from "../../../utilities/validations/profileDetails";
+import { profileInitialValues } from "../../../utilities/validations/profileDetails";
+import MySelect from "../../CommonComponents/MySelect";
 
 export default function ProfileInformation() {
   const dispatch = useDispatch();
@@ -36,16 +39,14 @@ export default function ProfileInformation() {
         firstName: JSON.parse(localStorage.getItem("blazingUser"))?.firstName,
         lastName: JSON.parse(localStorage.getItem("blazingUser"))?.lastName,
         bio: JSON.parse(localStorage.getItem("blazingUser"))?.bio,
-        twitterUrl: JSON.parse(localStorage.getItem("blazingUser"))
-          ?.twitterUrl,
+        twitterUrl: JSON.parse(localStorage.getItem("blazingUser"))?.twitterUrl,
         facebookUrl: JSON.parse(localStorage.getItem("blazingUser"))
           ?.facebookUrl,
         phoneNumber: JSON.parse(localStorage.getItem("blazingUser"))
           ?.mobileNumber,
         emailId: JSON.parse(localStorage.getItem("blazingUser"))?.email,
         avatar: JSON.parse(localStorage.getItem("blazingUser"))?.avatar,
-        avatarPath: JSON.parse(localStorage.getItem("blazingUser"))
-          ?.avatarPath,
+        avatarPath: JSON.parse(localStorage.getItem("blazingUser"))?.avatarPath,
         username: JSON.parse(localStorage.getItem("blazingUser"))?.username,
       };
       setProfileData(jsonObject);
@@ -91,28 +92,6 @@ export default function ProfileInformation() {
       setimpuploadsuccess(true);
     }
   };
-
-  const profileSchema = Yup.object().shape({
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
-    phoneNumber: Yup.string().required("Required")
-      .matches(
-        regex.phoneNumber,
-        'Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)'),
-    bio: Yup.string().max(300),
-    twitterUrl: Yup.string()
-      .matches(
-        /(?:http:\/\/)?(?:www\.)?twitter\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)/,
-        "Invalid twitter Link !"
-      )
-      .nullable(),
-    facebookUrl: Yup.string()
-      .matches(
-        /(?:https?:\/\/)?(?:www\.)?(?:facebook|fb|m\.facebook)\.(?:com|me)\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-\.]+)(?:\/)?/i,
-        "Invalid facebook Link !"
-      )
-      .nullable(),
-  });
 
   const handleImage = () => {
     return (
@@ -165,14 +144,14 @@ export default function ProfileInformation() {
                           />
                         ) : (
                           <img
-                           onError={() => {
-                            currentTarget.onerror = null;
-                            currentTarget.src = "/static/images/profileImg.png";
-                           }}
-                           height={172}
-                           width={131}
-                           src={DefaultImagePath.defaultProfileImage}
-                           alt="Profile"
+                            onError={() => {
+                              currentTarget.onerror = null;
+                              currentTarget.src = DefaultImagePath.defaultImage;
+                            }}
+                            height={172}
+                            width={131}
+                            src={DefaultImagePath.defaultProfileImage}
+                            alt="Profile"
                           />
                         )}
                       </>
@@ -228,28 +207,23 @@ export default function ProfileInformation() {
           <>
             {handleImageUpload()}
             <Formik
-              initialValues={{
-                firstName: !!profileData?.firstName
-                  ? profileData?.firstName
-                  : "",
-                lastName: !!profileData?.lastName ? profileData?.lastName : "",
-                bio: !!profileData?.bio ? profileData?.bio : "",
-                twitterUrl: !!profileData?.twitterUrl
-                  ? profileData?.twitterUrl
-                  : "",
-                facebookUrl: !!profileData?.facebookUrl
-                  ? profileData?.facebookUrl
-                  : "",
-                phoneNumber: !!profileData?.phoneNumber
-                  ? profileData?.phoneNumber
-                  : "",
-                emailId: !!profileData?.emailId ? profileData?.emailId : "",
-                userName: profileData?.username || ""
-              }}
+              initialValues={profileInitialValues(profileData)}
               validationSchema={profileSchema}
               onSubmit={(values) => {
-                setLoader(true);
-                editProfileApi(values, newDpName, Router, setLoader, dispatch);
+                if (values.countryCode == "") {
+                  dispatch(
+                    show({ message: "Country Code is required", type: "error" })
+                  );
+                } else {
+                  setLoader(true);
+                  editProfileApi(
+                    values,
+                    newDpName,
+                    Router,
+                    setLoader,
+                    dispatch
+                  );
+                }
               }}
             >
               {({
@@ -330,30 +304,46 @@ export default function ProfileInformation() {
                               disabled
                             />
                           </div>
+
                           <div className="input-control wd50">
                             <label htmlFor="usr">Phone Number*</label>
-                            <input
-                              name="phoneNumber"
-                              placeholder={"Enter here"}
-                              id="usr"
-                              className="grey-bg"
-                              onChange={(e) =>
-                                setFieldValue(
-                                  "phoneNumber",
-                                  e.target.value.replace(
-                                    regex.excludePlusAndNumber,
-                                    ""
+
+                            <div className="flex space-between">
+                              <MySelect
+                                className="grey-bg"
+                                name="countryCode"
+                                onChange={handleChange}
+                                value={values.countryCode}
+                                onBlur={handleBlur}
+                              >
+                                <option>+</option>
+                                <option value="+1">+1</option>
+                                <option value="+91">+91</option>
+                              </MySelect>
+
+                              <input
+                                name="phoneNumber"
+                                placeholder={"Enter here"}
+                                id="usr"
+                                className="grey-bg wd70"
+                                onChange={(e) =>
+                                  setFieldValue(
+                                    "phoneNumber",
+                                    e.target.value.replace(
+                                      regex.excludePlusAndNumber,
+                                      ""
+                                    )
                                   )
-                                )
-                              }
-                              value={values.phoneNumber}
-                              maxLength={12}
-                              type="tel"
-                            />
-                            <ErrorMessage
-                              errors={errors.phoneNumber}
-                              touched={touched.phoneNumber}
-                            />
+                                }
+                                value={values.phoneNumber}
+                                maxLength={12}
+                                type="tel"
+                              />
+                              <ErrorMessage
+                                errors={errors.phoneNumber}
+                                touched={touched.phoneNumber}
+                              />
+                            </div>
                           </div>
                         </div>
 
@@ -452,12 +442,11 @@ export default function ProfileInformation() {
 
       {handleProfileForm()}
 
-      {isOpen ? (
-        <>
-          <DeletAccountModal setIsOpen={setIsOpen} userName={profileData?.username} />
-        </>
-      ) : (
-        ""
+      {isOpen && (
+        <DeletAccountModal
+          setIsOpen={setIsOpen}
+          userName={profileData?.username}
+        />
       )}
 
       <h3>Delete Your Blazing Cards Account</h3>
