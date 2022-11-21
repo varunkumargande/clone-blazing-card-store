@@ -17,7 +17,7 @@ function Error({ statusCode }) {
     <div className="site-content">
       <HeaderDefault />
       <TostMessage
-        data={{ message: "Redirecting to HomePage", type: "success" }}
+        data={{ message: "Redirecting to HomePage", type: "error" }}
       ></TostMessage>
       <div className="ps-page--404">
         <div className="container">
