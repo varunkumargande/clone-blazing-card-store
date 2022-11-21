@@ -18,6 +18,7 @@ import { show } from "../../../store/toast/action";
 import { profileSchema } from "../../../utilities/validations/profileDetails";
 import { profileInitialValues } from "../../../utilities/validations/profileDetails";
 import MySelect from "../../CommonComponents/MySelect";
+import Styles from "../../../modular_scss/ProfileInformation.module.scss";
 
 export default function ProfileInformation() {
   const dispatch = useDispatch();
@@ -308,9 +309,9 @@ export default function ProfileInformation() {
                           <div className="input-control wd50">
                             <label htmlFor="usr">Phone Number*</label>
 
-                            <div className="flex space-between">
+                            <div className="d-flex space-between">
                               <MySelect
-                                className="grey-bg"
+                                className={`grey-bg ${Styles.country_code}`}
                                 name="countryCode"
                                 onChange={handleChange}
                                 value={values.countryCode}
@@ -325,7 +326,7 @@ export default function ProfileInformation() {
                                 name="phoneNumber"
                                 placeholder={"Enter here"}
                                 id="usr"
-                                className="grey-bg wd70"
+                                className={`grey-bg ${Styles.phone_number}`}
                                 onChange={(e) =>
                                   setFieldValue(
                                     "phoneNumber",
@@ -339,11 +340,11 @@ export default function ProfileInformation() {
                                 maxLength={12}
                                 type="tel"
                               />
-                              <ErrorMessage
-                                errors={errors.phoneNumber}
-                                touched={touched.phoneNumber}
-                              />
                             </div>
+                            <ErrorMessage
+                              errors={errors.phoneNumber}
+                              touched={touched.phoneNumber}
+                            />
                           </div>
                         </div>
 
