@@ -115,7 +115,11 @@ export default function PublicProfile() {
         return (
           <>
             {upcomingShows.map((show, index) => (
-              <StreamCard detail={show} showLoginModal={setShowModal} />
+              <StreamCard
+                detail={show}
+                showLoginModal={setShowModal}
+                key={`public-profile-upcoming-${show?.id}`}
+              />
             ))}
           </>
         );
@@ -137,6 +141,7 @@ export default function PublicProfile() {
               <StreamCard
                 detail={show}
                 showLoginModal={setShowModal}
+                key={`public-profile-previous-${show?.id}`}
                 isDate={true}
               />
             ))}
@@ -183,6 +188,7 @@ export default function PublicProfile() {
                   setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
                   setFollowing={setFollowers}
                   following={followers}
+                  key={`public-profile-followers-${details?.f_id}`}
                 />
               ))}
             </>
@@ -199,13 +205,14 @@ export default function PublicProfile() {
           return (
             <>
               {following.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowing}
-                  following={following}
-                />
+                  <Followers
+                    person={details}
+                    isFollower={isForFollower}
+                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                    setFollowing={setFollowing}
+                    following={following}
+                    key={`public-profile-following-${details?.id}`}
+                  />
               ))}
             </>
           );
