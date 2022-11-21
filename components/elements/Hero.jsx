@@ -4,7 +4,7 @@ import CardCarousel from './carousel/CardCarousel'
 function Hero() {
   return (
     <div>
-        <div class="hero-image">
+        <div className="hero-image">
          <img src={"/static/img/blog-banner.jpg"}/>
        
     </div>

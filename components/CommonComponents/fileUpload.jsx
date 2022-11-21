@@ -52,8 +52,8 @@ export default function FileUpload({ label, ...props }) {
           {/* <div className="processing flex column justify-center flex-center">
             <div className="process mb8">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 34 34">
-                <circle cx="16" cy="16" r="16" class="progress-bar__background" />
-                <circle cx="16" cy="16" r="16" strokeDashoffset="25" class="progress-bar__progress " />
+                <circle cx="16" cy="16" r="16" className="progress-bar__background" />
+                <circle cx="16" cy="16" r="16" strokeDashoffset="25" className="progress-bar__progress " />
               </svg>
               <span className="remaing-time">
                 <strong>75%</strong><br />
@@ -66,8 +66,8 @@ export default function FileUpload({ label, ...props }) {
           {/* <div className="processing flex column justify-center flex-center">
             <div className="process mb8">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 34 34">
-                <circle cx="16" cy="16" r="16" class="progress-bar__background" />
-                <circle cx="16" cy="16" r="16" strokeDashoffset="0" class="progress-bar__progress " />
+                <circle cx="16" cy="16" r="16" className="progress-bar__background" />
+                <circle cx="16" cy="16" r="16" strokeDashoffset="0" className="progress-bar__progress " />
               </svg>
               <span className="remaing-time">
                 <IconChecked />

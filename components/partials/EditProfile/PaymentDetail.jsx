@@ -254,7 +254,7 @@ export default function PaymentDetail() {
                                   onChange={handleChange}
                                   value={values.termCheckbox}
                                 />
-                                <span class="checkmark"></span>
+                                <span className="checkmark"></span>
                                 <div className="discriptionlg">
                                   By providing your card information, you allow
                                   BLAZING CARDS to charge your card for future

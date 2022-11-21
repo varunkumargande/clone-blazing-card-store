@@ -1583,19 +1583,19 @@ function Checkout() {
 
             {/* <div className="custom-place-order">
                             <button onClick={e => onCheckoutApiCall(e)} disabled={buttonLoader}>{!buttonLoader ?<>{t('StockCheckout.Placeorder')}
-                            </>:<i class="fa fa-refresh fa-spin"></i>} </button>
+                            </>:<i className="fa fa-refresh fa-spin"></i>} </button>
                            
                         </div> */}
 
             {/* <div className="custom-place-order">
                             <button onClick={e => onCheckoutApiCall(e)}>{!buttonLoader ?<>{t('StockCheckout.Placeorder')}
-                            </>:<i class="fa fa-refresh fa-spin"></i>} </button>
+                            </>:<i className="fa fa-refresh fa-spin"></i>} </button>
                            
                         </div> */}
             <div className="custom-place-order">
               {buttonLoader === true ? (
                 <button disabled={buttondisable === true}>
-                  <i class="fa fa-refresh fa-spin"></i>
+                  <i className="fa fa-refresh fa-spin"></i>
                 </button>
               ) : (
                 <button

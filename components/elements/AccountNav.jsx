@@ -70,9 +70,9 @@ function AccountNav({keyValue}){
                 </Menu>
             </div>
             <input type="checkbox" id="menu-toggle"></input>
-            <label class="hamburger-wrapper" for="menu-toggle">
-                {/* <span class="burger-label">Menu</span> */}
-                <span class="hamburger"></span>
+            <label className="hamburger-wrapper" for="menu-toggle">
+                {/* <span className="burger-label">Menu</span> */}
+                <span className="hamburger"></span>
             </label>
             <nav>
                 <Menu defaultSelectedKeys={[JSON.stringify(keyValue)]}>
