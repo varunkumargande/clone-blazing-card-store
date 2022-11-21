@@ -179,17 +179,14 @@ function MyProfile(props) {
           return (
             <>
               {followers.map((details, index) => (
-                <React.Fragment
-                  key={`follower-myprofile-${index}-${details?.id}`}
-                >
                   <Followers
                     person={details}
                     isFollower={isForFollower}
                     setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
                     setFollowing={setFollowers}
                     following={followers}
+                    key={`follower-myprofile-${index}-${details?.id}`}
                   />
-                </React.Fragment>
               ))}
             </>
           );
@@ -205,17 +202,14 @@ function MyProfile(props) {
           return (
             <>
               {following.map((details, index) => (
-                <React.Fragment
-                  key={`following-myprofile-${index}-${details?.id}`}
-                >
                   <Followers
                     person={details}
                     isFollower={isForFollower}
                     setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
                     setFollowing={setFollowing}
                     following={following}
+                    key={`following-myprofile-${index}-${details?.id}`}
                   />
-                </React.Fragment>
               ))}
             </>
           );

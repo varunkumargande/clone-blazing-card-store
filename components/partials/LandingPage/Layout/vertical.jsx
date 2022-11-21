@@ -64,7 +64,6 @@ function Vertical({ category, showLoginModal }) {
     if (subCategories) {
       return subCategories.map((item) => {
         return (
-          <React.Fragment key={`vertical-${item?.categoryId}`}>
             <CategoryStream
               catData={data}
               showLoginModal={showLoginModal}
@@ -76,8 +75,8 @@ function Vertical({ category, showLoginModal }) {
               page={page}
               setCatId={setCatId}
               seeMoreLoader={seeMoreLoader}
+              key={`vertical-${item?.categoryId}`}
             />
-          </React.Fragment>
         );
       });
     }

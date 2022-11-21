@@ -210,15 +210,14 @@ export default function PublicProfile() {
           return (
             <>
               {following.map((details, index) => (
-                <React.Fragment key={`public-profile-following-${details?.id}`}>
                   <Followers
                     person={details}
                     isFollower={isForFollower}
                     setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
                     setFollowing={setFollowing}
                     following={following}
+                    key={`public-profile-following-${details?.id}`}
                   />
-                </React.Fragment>
               ))}
             </>
           );
