@@ -9,11 +9,10 @@ import {
   userFollowUnfollow,
 } from "../../../api/stream/streams_api";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
-import { DefaultImagePath } from "../../Constants/defaultImage";
 import Styles from "../../../modular_scss/LeftDiv.module.scss";
 import { handleModalClick } from "../../../utilities/utils";
 

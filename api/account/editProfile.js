@@ -17,7 +17,7 @@ export async function editProfileApi(
     lastName: values.lastName,
     emailId: values.emailId,
     image: newDpName,
-    phoneNumber: values.phoneNumber.toString(),
+    phoneNumber: values.countryCode + "-" + values.phoneNumber.toString(),
     bio: values.bio,
     twitterUrl: values.twitterUrl,
     facebookUrl: values.facebookUrl,
@@ -37,7 +37,9 @@ export async function editProfileApi(
       Authorization: `Bearer ${token}`,
     };
     if (localStorage.getItem("chat-app-current-user")) {
-      const user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+      const user = JSON.parse(
+        localStorage.getItem("chat-app-current-user")
+      )?._id;
       await axios
         .post(`${setAvatarRoute}/${user}`, chatData, {
           headers: chatHeader,

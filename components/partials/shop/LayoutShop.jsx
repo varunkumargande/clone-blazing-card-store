@@ -468,8 +468,8 @@ function LayoutShop({
                                         
                                          {setction.id==attitems.filterSectionId?<>
                                         
-                                          <label class="ant-checkbox-wrapper">
-                                          <span class="ant-checkbox">
+                                          <label className="ant-checkbox-wrapper">
+                                          <span className="ant-checkbox">
                                             <Checkbox
                                               name={attitems.itemName}
                                               checked={attitems.checked}

@@ -2,9 +2,14 @@ import { show } from "../../store/toast/action";
 export const apiValidation = (
     result,
     dispatch,
+    setShowModal=null
   ) => {
     if (result?.status === 200) {
-      dispatch(show({ message: result?.data?.message, type: "success" }));
+      if (setShowModal) {
+        setShowModal(true);
+      } else {
+        dispatch(show({ message: result?.data?.message, type: "success" }));
+      }
       return true
     } else {
       const data = result?.data?.data?.message || result?.data?.message;

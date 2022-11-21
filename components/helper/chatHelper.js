@@ -1,4 +1,4 @@
-import { chatConstant } from "../Constants/chatLocal";
+import { chatConstant } from "../Constants";
 import Router from "next/router";
 import { loginRoute } from "../../chatService";
 import axios from "axios";

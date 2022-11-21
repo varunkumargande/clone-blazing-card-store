@@ -8,14 +8,14 @@ import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
 import StreamCard from "../../components/elements/StreamCard";
 import ProfileMethods from "../../api/profile/ProfileMethods";
 import { connect, useSelector } from "react-redux";
-import PublicProfileConstants from "../../components/Constants/publicProfile";
+import PublicProfileConstants from "../../components/Constants";
 import Link from "next/link";
 import Followers from "../../components/partials/Profile/Followers";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../components/Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../components/Constants/imageConstants";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
-import { DefaultImagePath } from "../../components/Constants/defaultImage";
+
 
 function MyProfile(props) {
   const router = useRouter();
@@ -129,7 +129,7 @@ function MyProfile(props) {
         return (
           <>
             {upcomingShows.map((show, index) => (
-              <StreamCard detail={show} />
+                <StreamCard detail={show} key={`upcoming-myprofile-${show?.id}`}/>
             ))}
           </>
         );
@@ -148,7 +148,7 @@ function MyProfile(props) {
         return (
           <>
             {previousShows.map((show, index) => (
-              <StreamCard detail={show} />
+                <StreamCard detail={show} key={`previousshows-myprofile-${show?.id}`}/>
             ))}
           </>
         );
@@ -181,13 +181,14 @@ function MyProfile(props) {
           return (
             <>
               {followers.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowers}
-                  following={followers}
-                />
+                  <Followers
+                    person={details}
+                    isFollower={isForFollower}
+                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                    setFollowing={setFollowers}
+                    following={followers}
+                    key={`follower-myprofile-${index}-${details?.id}`}
+                  />
               ))}
             </>
           );
@@ -203,13 +204,14 @@ function MyProfile(props) {
           return (
             <>
               {following.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowing}
-                  following={following}
-                />
+                  <Followers
+                    person={details}
+                    isFollower={isForFollower}
+                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                    setFollowing={setFollowing}
+                    following={following}
+                    key={`following-myprofile-${index}-${details?.id}`}
+                  />
               ))}
             </>
           );
