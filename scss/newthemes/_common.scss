@@ -694,7 +694,9 @@ label{
 .w500{
   font-weight:500;
 }
-
+.pointer{
+  cursor: pointer;
+}
 @media all and (min-width:320px) and (max-width:1024px){
   .category-banner{
     .cover-wrap{
