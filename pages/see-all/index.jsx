@@ -20,6 +20,7 @@ import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
 import SeeMoreLoader from "../../components/reusable/SeeMoreLoader";
 import { limit } from "../../components/Constants";
 import { SignUPGoogle } from "../../components/partials/Modal/Modal";
+import CategoriesMobile from "../../components/partials/CategoiesMobile/CategoriesMobile";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -182,6 +183,7 @@ function categoryStream({ auth, category }) {
       <div className="card-wrapper">
         <section className="Live-wrapper card-inner">
           <div className="inner-container">
+          {/* <CategoriesMobile/> */}
             <div className="aside-content-wrap flex flex-start space-between">
               {handleShowParentCategories()}
               <div className="overflow-none">
