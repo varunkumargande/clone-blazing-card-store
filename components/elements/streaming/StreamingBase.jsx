@@ -468,7 +468,7 @@ function StreamingBase({
                 `Please login to participate`}
             </div>
           )}
-          <div className="tme-wrap flex flex-center justify-center live">
+          <div className={`tme-wrap flex flex-center justify-center live ${Styles.tme-wrap}`}>
             <span>{userCount}</span> <button className="live"></button>
           </div>
           {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
