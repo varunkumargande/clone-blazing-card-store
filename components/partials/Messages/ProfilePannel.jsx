@@ -1,10 +1,7 @@
 import React from "react";
 import IconAddChat from "../../Icons/IconAddChat";
-import { imageUrl } from "../../../api/url";
-import { ImageTransformation } from "../../Constants/imageTransformation";
-import DefaultServices from "../../Services/DefaultServices";
-import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import { DefaultImagePath } from "../../Constants/imageConstants";
+import Styles from '../../../modular_scss/message.module.scss';
 
 export default function ProfilePannel({
   contacts,
@@ -52,7 +49,7 @@ export default function ProfilePannel({
                     key={`${item.username}-profile-panel`}
                   >
                     <div className="profile-image-title flex flex-center">
-                      <div className="image br50">
+                      <div className={`image br50 ${Styles.images}`}>
                         <img
                           src={
                             item?.avatarImage == ""

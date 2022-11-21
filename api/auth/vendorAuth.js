@@ -1,5 +1,5 @@
 import APIServices from "../../services";
-import { apiConstant } from "../../components/Constants/apis";
+import { apiConstant } from "../../components/Constants";
 import { show } from "../../store/toast/action";
 import { getErrorMessage } from "../../utilities/common-helpers";
 

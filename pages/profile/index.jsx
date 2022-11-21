@@ -7,12 +7,12 @@ import IconShareFacebook from "../../components/Icons/IconShareFacebook";
 import IconShareTwitter from "../../components/Icons/IconShareTwitter";
 import IconShareWhatsup from "../../components/Icons/IconShareWhatsup";
 import ProfileMethods from "../../api/profile/ProfileMethods";
-import PublicProfileConstants from "../../components/Constants/publicProfile";
+import PublicProfileConstants from "../../components/Constants";
 import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
 import DefaultServices from "../../components/Services/DefaultServices";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
-import { ImageTransformation } from "../../components/Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../components/Constants/imageConstants";
 import BackButton from "../../components/CommonComponents/BackButton";
 import {
   SignUPGoogle,
@@ -20,7 +20,6 @@ import {
 } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
-import { DefaultImagePath } from "../../components/Constants/defaultImage";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -116,7 +115,11 @@ export default function PublicProfile() {
         return (
           <>
             {upcomingShows.map((show, index) => (
-              <StreamCard detail={show} showLoginModal={setShowModal} />
+              <StreamCard
+                detail={show}
+                showLoginModal={setShowModal}
+                key={`public-profile-upcoming-${show?.id}`}
+              />
             ))}
           </>
         );
@@ -138,6 +141,7 @@ export default function PublicProfile() {
               <StreamCard
                 detail={show}
                 showLoginModal={setShowModal}
+                key={`public-profile-previous-${show?.id}`}
                 isDate={true}
               />
             ))}
@@ -184,6 +188,7 @@ export default function PublicProfile() {
                   setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
                   setFollowing={setFollowers}
                   following={followers}
+                  key={`public-profile-followers-${details?.f_id}`}
                 />
               ))}
             </>
@@ -200,13 +205,14 @@ export default function PublicProfile() {
           return (
             <>
               {following.map((details, index) => (
-                <Followers
-                  person={details}
-                  isFollower={isForFollower}
-                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                  setFollowing={setFollowing}
-                  following={following}
-                />
+                  <Followers
+                    person={details}
+                    isFollower={isForFollower}
+                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                    setFollowing={setFollowing}
+                    following={following}
+                    key={`public-profile-following-${details?.id}`}
+                  />
               ))}
             </>
           );

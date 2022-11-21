@@ -1,10 +1,8 @@
-import { message } from "antd";
 import React, { useRef, useEffect } from "react";
 import IconChat from "../../Icons/IconChat";
-import IconGallery from "../../Icons/IconGallery";
-import moment from "moment";
 import Router from "next/router";
-import { DefaultImagePath } from "../../Constants/defaultImage";
+import { DefaultImagePath } from "../../Constants/imageConstants";
+import Styles from '../../../modular_scss/message.module.scss';
 
 export default function ChatPannel({
   messages,
@@ -49,31 +47,32 @@ export default function ChatPannel({
       {!!contactDetail ? (
         <>
           <div className="right-pannel">
-            <div
-              className="profile-header-title flex flex-center"
-              onClick={(e) => {
-                e.preventDefault();
-                navigateToProfileInfo(contactDetail?.userId);
-              }}
-            >
-              <div className="image">
-                <img
-                  src={
-                    contactDetail?.avatarImage == ""
-                      ? DefaultImagePath.defaultProfileImage
-                      : `${process.env.NEXT_PUBLIC_CLOUD_IMAGE_URL}${process.env.NEXT_PUBLIC_CHAT_PROFILE_IMAGE_SIZE}${contactDetail.avatarImage}`
-                  }
-                  width="40"
-                  height="40"
-                  alt=""
-                />
-              </div>
-              <div className="profile-text">
-                <div className="name">
-                  {contactDetail?.firstName} {contactDetail?.lastName}{" "}
-                  <span className="new"></span>
+            <div className="profile-header-title flex flex-center">
+              <div class="chat-title flex flex-center justify-start pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateToProfileInfo(contactDetail?.userId);
+                }}
+              >
+                <div className={`image ${Styles.images}`}>
+                  <img
+                    src={
+                      contactDetail?.avatarImage == ""
+                        ? DefaultImagePath.defaultProfileImage
+                        : `${process.env.NEXT_PUBLIC_CLOUD_IMAGE_URL}${process.env.NEXT_PUBLIC_CHAT_PROFILE_IMAGE_SIZE}${contactDetail.avatarImage}`
+                    }
+                    width="40"
+                    height="40"
+                    alt=""
+                  />
                 </div>
-                <div className="time">@{contactDetail?.username}</div>
+                <div className="profile-text">
+                  <div className="name">
+                    {contactDetail?.firstName} {contactDetail?.lastName}{" "}
+                    <span className="new"></span>
+                  </div>
+                  <div className="time">@{contactDetail?.username}</div>
+                </div>
               </div>
             </div>
             <div className="chat-box-wrap">

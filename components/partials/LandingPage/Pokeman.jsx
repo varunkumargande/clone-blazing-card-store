@@ -22,7 +22,7 @@ export default function Pokeman(){
                         
                         
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list Loader">
+                            <div className="inner-card-list Loader">
                                 <div className="image flex flex-center justify-center column">
                                     <div className="LoaderImg">
                                         <div className="loader-icon"><IconLoader /></div>
@@ -42,7 +42,7 @@ export default function Pokeman(){
 
                         {/* Loader ended*/}
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -56,7 +56,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -70,7 +70,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -84,7 +84,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -98,7 +98,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -112,7 +112,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -126,7 +126,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -140,7 +140,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -154,7 +154,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -168,7 +168,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -182,7 +182,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -196,7 +196,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -210,7 +210,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -224,7 +224,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -238,7 +238,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -252,7 +252,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -266,7 +266,7 @@ export default function Pokeman(){
                             </div>
                         </div>
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>

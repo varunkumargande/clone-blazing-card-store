@@ -1,26 +1,16 @@
 import APIServices from "../../services";
 import { show } from "../../store/toast/action";
-export async function UserRegister(
-  firstname,
-  lastname,
-  email,
-  password,
-  confirmPassword,
-  number,
-  usernameInput,
-  Router,
-  setSingupError,
-  dispatch
-) {
+export async function UserRegister(values, Router, dispatch) {
   const data = JSON.stringify({
-    name: firstname,
-    lastName: lastname,
-    emailId: email,
-    password: password,
-    confirmPassword: confirmPassword,
-    phoneNumber: number,
-    userName: usernameInput,
+    name: values.firstname,
+    lastName: values.lastname,
+    emailId: values.email,
+    password: values.password,
+    confirmPassword: values.cpass,
+    phoneNumber: values.countryCode + "-" + values.number,
+    userName: values.username,
   });
+
   const result = await APIServices.create("customer/register", data);
   if (result.status == 200) {
     dispatch(
@@ -31,7 +21,6 @@ export async function UserRegister(
     );
     Router.push("/account/login");
   } else {
-    setSingupError(result.data.message);
     dispatch(
       show({
         message: result.data.message,

@@ -1,4 +1,3 @@
-import { getPostsDetail } from "../../store/post/action";
 import APIServices from '../../services'
 
 export async function basicDteailsApi(payload) {

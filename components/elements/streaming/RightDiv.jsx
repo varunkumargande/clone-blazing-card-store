@@ -1,10 +1,9 @@
 import React, { useState, useEffect, memo } from "react";
 import Skeleton from "react-loading-skeleton";
 import IconChat from "../../Icons/IconChat";
-import { ImageTransformation } from "../../Constants/imageTransformation";
+import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
-import { DefaultImagePath } from "../../Constants/defaultImage";
 
 // import useJoinRTM from "../../CustomHooks/JoinRtm"; // do not remove
 // import useLiveUserCount from "../../CustomHooks/LiveUserCounts";

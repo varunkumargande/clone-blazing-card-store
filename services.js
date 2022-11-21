@@ -1,6 +1,5 @@
 import http from "./api/intercept";
 
-
 class APIServices {
   getAll(url) {
     return http.get(`/${url}`);
@@ -21,8 +20,6 @@ class APIServices {
   createPost(url) {
     return http.post(`/${url}`);
   }
-
-
 
   update(url, id, data) {
     return http.put(`/${url}/${id}`, data);

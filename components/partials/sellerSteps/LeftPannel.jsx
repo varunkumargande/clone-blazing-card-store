@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { stepState } from "../../Constants/becomeSeller";
+import { stepState } from "../../Constants";
 
 export default function LeftPannel(){
     const router = useRouter()

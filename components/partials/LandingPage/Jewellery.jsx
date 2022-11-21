@@ -18,7 +18,7 @@ export default function Jewellery(){
                 <div className="flex inner-container">
                     <div className="card-wrap flex">
                         <div className="card-list flex flex-center">
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -30,7 +30,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -42,7 +42,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -54,7 +54,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -66,7 +66,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -78,7 +78,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -90,7 +90,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -102,7 +102,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -114,7 +114,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -126,7 +126,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -138,7 +138,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -150,7 +150,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -162,7 +162,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -174,7 +174,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -186,7 +186,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>
@@ -198,7 +198,7 @@ export default function Jewellery(){
                                     <button className="cate-btn"> BABY & KIDS</button>
                                 </div>
                             </div>
-                            <div class="inner-card-list">
+                            <div className="inner-card-list">
                                 <div className="image">
                                     <img src="/static/images/card.png" alt="Card" />
                                     <div className="tme-wrap flex flex-center justify-center live"><span>1.2K</span> <button className="live"></button></div>

@@ -235,7 +235,7 @@ export default function PaymentDetails() {
                     );
                   }}
                 />
-                <span class="checkmark"></span>
+                <span className="checkmark"></span>
                 <div className="discriptionlg">
                   By providing your card information, you allow BLAZING CARDS to
                   charge your card for future payments in accordance with their
