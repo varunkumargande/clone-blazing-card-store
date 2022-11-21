@@ -19,6 +19,7 @@ import { profileSchema } from "../../../utilities/validations/profileDetails";
 import { profileInitialValues } from "../../../utilities/validations/profileDetails";
 import MySelect from "../../CommonComponents/MySelect";
 import Styles from "../../../modular_scss/ProfileInformation.module.scss";
+import DefaultConstants from "../../../utilities/constants";
 
 export default function ProfileInformation() {
   const dispatch = useDispatch();
