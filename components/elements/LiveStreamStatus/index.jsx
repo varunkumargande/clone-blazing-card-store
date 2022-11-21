@@ -21,7 +21,7 @@ function LiveStreamStatus({
   likeDislikeStream,
   showLoginModal,
   auth,
-  isDate
+  isDate,
 }) {
   const [likedStream, setLikedStream] = useState([]);
   const dispatch = useDispatch();
