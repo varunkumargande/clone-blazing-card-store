@@ -12,6 +12,7 @@ import { Loader } from "../../reusable/Loader";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
 import { regex } from "../../Constants/regex";
 import { useDispatch } from "react-redux";
+import { SuccessMessageModal } from "../Modal/Modal";
 export default function PaymentDetail() {
   const dispatch = useDispatch();
   const [cardData, setCardData] = useState(null);
@@ -21,6 +22,8 @@ export default function PaymentDetail() {
   const [isCardData, setIsCardData] = useState(false);
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [expValid, setExpValid] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
 
   useEffect(() => {
     setDelStatus(0);
@@ -87,7 +90,7 @@ export default function PaymentDetail() {
       termCheckBox: values.termCheckbox
     });
 
-    handleCardApi(jsonData, isCardEdit, cardListApi, setCardLoader, dispatch);
+    handleCardApi(jsonData, isCardEdit, cardListApi, setCardLoader, dispatch, setShowModal);
   };
 
   const handleExpDate = (values) => {
@@ -295,6 +298,13 @@ export default function PaymentDetail() {
     <div className="profile-detail">
       <h3>Payment Details</h3>
       {handleCardDetail()}
+      {showModal &&
+        <SuccessMessageModal
+          message={`Card Added Successfully!`}
+          subMessage={`Congratulations you have added new a card!`}
+          setPaymentSuccessful={setShowModal}
+        />
+      }
     </div>
   );
 }
