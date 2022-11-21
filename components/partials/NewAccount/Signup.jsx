@@ -7,7 +7,7 @@ import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { registerConstant } from "../../../components/Constants/auth";
+import { registerConstant } from "../../Constants/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
@@ -19,6 +19,7 @@ import { registerInitialValues } from "../../../utilities/validations/signupDeta
 import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import MySelect from "../../CommonComponents/MySelect";
+import Styles from "../../../modular_scss/Signup.module.scss";
 
 function Signup(auth) {
   const dispatch = useDispatch();
@@ -189,9 +190,9 @@ function Signup(auth) {
 
               <div className="input-control">
                 <label>{registerConstant.form.contactField.label}</label>
-                <div className="flex space-between">
+                <div className="d-flex space-between">
                   <MySelect
-                    className=""
+                    className={Styles.country_code}
                     label={registerConstant.form.countryCodeField.label}
                     name={registerConstant.form.countryCodeField.name}
                     onChange={handleChange}
@@ -204,7 +205,7 @@ function Signup(auth) {
                   </MySelect>
 
                   <input
-                    className="wd70"
+                    className={Styles.phone_number}
                     name={registerConstant.form.contactField.name}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
