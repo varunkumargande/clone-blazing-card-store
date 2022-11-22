@@ -317,7 +317,7 @@ function StreamingBase({
    * Method will set bidding amount
    */
   const checkBidAmount = () => {
-    if (amountToBid > bidAmount) setAmountToBid(+amountToBid - 1);
+    if (+amountToBid > +bidAmount + 1) setAmountToBid(+amountToBid - 1);
   };
 
   /**
@@ -468,7 +468,9 @@ function StreamingBase({
                 `Please login to participate`}
             </div>
           )}
-          <div className={`tme-wrap flex flex-center justify-center live ${Styles.tme_wrap}`}>
+          <div
+            className={`tme-wrap flex flex-center justify-center live ${Styles.tme_wrap}`}
+          >
             <span>{userCount}</span> <button className="live"></button>
           </div>
           {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
