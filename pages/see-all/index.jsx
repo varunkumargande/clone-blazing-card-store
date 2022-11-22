@@ -125,6 +125,8 @@ function categoryStream({ auth, category }) {
       return "Scheduled Shows";
     } else if (query?.page == "live") {
       return "Live Shows";
+    } else if (query?.page == "allCategory") {
+      return "All Category";
     } else {
       return <> {stringFormatter(query?.page)} </>;
     }
@@ -183,7 +185,7 @@ function categoryStream({ auth, category }) {
       <div className="card-wrapper">
         <section className="Live-wrapper card-inner">
           <div className="inner-container">
-          {/* <CategoriesMobile/> */}
+            {/* <CategoriesMobile/> */}
             <div className="aside-content-wrap flex flex-start space-between">
               {handleShowParentCategories()}
               <div className="overflow-none">
