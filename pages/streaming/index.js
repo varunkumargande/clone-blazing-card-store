@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { useEffect } from "react";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import NavigationList from "../../components/shared/navigation/NavigationList";
 import ThemeChanger from "../../components/elements/color/themeControl";
@@ -80,4 +80,4 @@ export async function getServerSideProps(context) {
   return { props: { data } };
 }
 
-export default memo(StreamingPage);
+export default StreamingPage;
