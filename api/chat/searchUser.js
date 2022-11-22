@@ -11,6 +11,7 @@ export async function searchUser(
 ) {
   setUserDataLoader(true);
   const token = localStorage.getItem("blazingToken");
+  let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
   const chatHeader = {
     Authorization: `Bearer ${token}`,
   };
@@ -19,6 +20,7 @@ export async function searchUser(
       searchUsers,
       {
         slang: value,
+        userId: user?._id,
       },
       {
         headers: chatHeader,

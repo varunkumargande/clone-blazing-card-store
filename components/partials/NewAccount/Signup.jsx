@@ -7,7 +7,7 @@ import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { registerConstant } from "../../Constants/auth";
+import { registerConstant } from "../../../components/Constants/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
@@ -19,7 +19,9 @@ import { registerInitialValues } from "../../../utilities/validations/signupDeta
 import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import MySelect from "../../CommonComponents/MySelect";
+import { countriesList } from "../../Constants/countryList";
 import Styles from "../../../modular_scss/Signup.module.scss";
+import { regex } from "../../Constants/regex";
 
 function Signup(auth) {
   const dispatch = useDispatch();
@@ -128,6 +130,7 @@ function Signup(auth) {
           handleChange,
           handleBlur,
           handleSubmit,
+          setFieldValue,
         }) => (
           <>
             <form className="signup flex space-between" onSubmit={handleSubmit}>
@@ -190,7 +193,7 @@ function Signup(auth) {
 
               <div className="input-control">
                 <label>{registerConstant.form.contactField.label}</label>
-                <div className="d-flex space-between">
+                <div className="flex space-between">
                   <MySelect
                     className={Styles.country_code}
                     label={registerConstant.form.countryCodeField.label}
@@ -200,8 +203,13 @@ function Signup(auth) {
                     onBlur={handleBlur}
                   >
                     <option>+</option>
-                    <option value="+1">+1</option>
-                    <option value="+91">+91</option>
+                    {countriesList.map((item) => {
+                      return (
+                        <>
+                          <option value={item?.code}>{item?.code}</option>
+                        </>
+                      );
+                    })}
                   </MySelect>
 
                   <input
@@ -209,7 +217,12 @@ function Signup(auth) {
                     name={registerConstant.form.contactField.name}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setFieldValue(
+                        "number",
+                        e.target.value.replace(regex.onlyNumbers, "")
+                      )
+                    }
                     maxlength="12"
                   />
                 </div>
