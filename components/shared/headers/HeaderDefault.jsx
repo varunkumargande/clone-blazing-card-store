@@ -288,7 +288,7 @@ function HeaderDefault({ auth }) {
                   >
                     <div className="notification-wrapper title-wrap ">
                       <div className="head-title flex space-between flex-center">
-                        <h1>Notification</h1>
+                        <h1>Notifications</h1>
                       </div>
                       <Notifications
                         notifications={notifications.slice(0, 3)}

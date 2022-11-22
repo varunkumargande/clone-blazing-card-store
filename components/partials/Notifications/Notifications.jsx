@@ -91,7 +91,7 @@ const Notifications = (props) => {
           <div className="image mb26">
             <IconNoNotifications />
           </div>
-          <h3>No Notification</h3>
+          <h3>No Notifications</h3>
         </div>
       );
     }
