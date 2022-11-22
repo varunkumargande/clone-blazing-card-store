@@ -32,7 +32,7 @@ export const registerConstant = {
       placeholder: "Username",
       label: "Username",
       regex: /^[a-zA-Z0-9]*$/,
-      regexMessage: "Please enter a valid username",
+      regexMessage: "Please enter a valid Username",
       required: "Username is required",
     },
     contactField: {

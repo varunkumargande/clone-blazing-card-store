@@ -1380,7 +1380,7 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
             >
               <a>Sign In</a>
             </button>
-            &nbsp; on Blazing Cards
+            on Blazing Cards
           </div>
         </div>
       </div>
