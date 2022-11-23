@@ -20,6 +20,7 @@ import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import MySelect from "../../CommonComponents/MySelect";
 import Styles from "../../../modular_scss/Signup.module.scss";
+import { openInNewTab } from "../../../utilities/utils";
 
 function Signup(auth) {
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ function Signup(auth) {
   const handleBackButton = () => {
     router.back();
   };
+ 
   return (
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}>
@@ -290,13 +292,23 @@ function Signup(auth) {
                   <input type="checkbox" onClick={() => handlePolicyCheck()} />
                   <span className="checkmark"></span>
                   I’ve read and agree with{" "}
-                  <Link href="/terms-conditions">
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openInNewTab("/terms-conditions");
+                    }}
+                  >
                     <a>Terms of Service</a>
-                  </Link>{" "}
+                  </span>
                   &{" "}
-                  <Link href="/privacy-policy">
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openInNewTab("/privacy-policy");
+                    }}
+                  >
                     <a>Privacy Policy</a>
-                  </Link>
+                  </span>
                 </label>
               </div>
 
