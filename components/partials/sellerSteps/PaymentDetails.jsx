@@ -152,6 +152,7 @@ export default function PaymentDetails() {
                 label="Card Number*"
                 name="cardNumber"
                 type="text"
+                inputMode="numeric"
                 placeholder="Enter here"
                 formProps={formProps}
                 onChange={(event) => {
@@ -185,6 +186,7 @@ export default function PaymentDetails() {
                 label="CVV*"
                 name="cvv"
                 type="password"
+                inputMode="numeric"
                 placeholder="Enter here"
                 maxLength={cardType === "amex" ? 4 : 3}
                 formProps={formProps}

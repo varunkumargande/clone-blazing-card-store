@@ -210,6 +210,7 @@ function Signup(auth) {
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
                     onChange={handleChange}
+                    inputMode="tel"
                     maxlength="12"
                   />
                 </div>

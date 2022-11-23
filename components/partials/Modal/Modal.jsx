@@ -538,6 +538,7 @@ export function AddNewCardModal(props) {
               <label>Card Number *</label>
               <input
                 type="text"
+                inputMode="numeric"
                 name="cardNumber"
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
@@ -583,6 +584,7 @@ export function AddNewCardModal(props) {
                   placeholder={"Enter here"}
                   value={formik.values.cvc}
                   type="password"
+                  inputMode="numeric"
                   onChange={(e) => {
                     resetFormData();
                     formik.setFieldValue(

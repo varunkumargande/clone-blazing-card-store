@@ -159,6 +159,7 @@ export default function PaymentDetail() {
                                   onChange={handleChange}
                                   value={values.cardNumber}
                                   type="text"
+                                  inputMode="numeric"
                                   onChange={(e) =>
                                     setFieldValue(
                                       "cardNumber",
@@ -212,6 +213,7 @@ export default function PaymentDetail() {
                                   }
                                   value={values.cvc}
                                   type="password"
+                                  inputMode="numeric"
                                   maxLength={type === "amex" ? 4 : 3}
                                 />
                                 <span className="errorMessage">
