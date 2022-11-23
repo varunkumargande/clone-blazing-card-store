@@ -28,7 +28,7 @@ function SeeAllSubCategories({
   const { isCategoriesFetched } = useCategoriesData();
 
   useEffect(() => {
-    if (Object.keys(query).length && query?.category) {
+    if (Object.keys(query).length && query?.category && query?.subCategory) {
       if (streamData.length) {
         setSeeMoreLoader(true);
       } else {
@@ -44,7 +44,7 @@ function SeeAllSubCategories({
         setSeeMoreLoader
       );
     }
-  }, [query?.category, offset]);
+  }, [query?.subCategory, query?.category, offset]);
 
   const handleSubCategorySelect = (name, id) => {
     dispatch(saveSubCategoryName(name));
@@ -77,9 +77,10 @@ function SeeAllSubCategories({
               className={`text-capitalize title ${
                 category?.subCategoryName === item.categorySlug && "active"
               }`}
-              onClick={() =>
-                handleSubCategorySelect(item.categorySlug, item.categoryId)
-              }
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubCategorySelect(item.categorySlug, item.categoryId);
+              }}
             >
               {item.name}
             </button>
@@ -101,7 +102,10 @@ function SeeAllSubCategories({
                 className={
                   category?.subCategoryName === "all" ? "title active" : "title"
                 }
-                onClick={() => handleSubCategorySelect("all")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSubCategorySelect("all");
+                }}
               >
                 All
               </button>

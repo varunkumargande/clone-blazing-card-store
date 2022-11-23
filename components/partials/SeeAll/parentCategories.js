@@ -61,7 +61,7 @@ function SeeAllParentCategories({
             className={
               category?.categoryName === element?.categorySlug ? "active" : ""
             }
-            onClick={() => handleSelectCategory(element?.categorySlug, index)}
+            onClick={(e) => {e.preventDefault();handleSelectCategory(element?.categorySlug, index)}}
           >
             {stringFormatter(element?.name)}
           </li>
