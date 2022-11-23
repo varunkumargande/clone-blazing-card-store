@@ -14,6 +14,7 @@ const Streaming = dynamic(() => import("../../components/elements/streaming"), {
 });
 
 function StreamingPage(data) {
+  console.log(data, "data")
   const SeoData = data?.data?.data;
   const network = useNetwork();
   const { isMobile } = useIsMobile();
