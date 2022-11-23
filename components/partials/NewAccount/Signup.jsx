@@ -83,12 +83,7 @@ function Signup(auth) {
   const handleBackButton = () => {
     router.back();
   };
-  const handleTermsOfService = () => {
-    window.open("/terms-conditions", "mywindow").focus();
-  };
-  const handlePrivacyPolicy = () => {
-    window.open("/privacy-policy", "mywindow").focus();
-  };
+ 
   return (
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}>
