@@ -20,6 +20,7 @@ import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import MySelect from "../../CommonComponents/MySelect";
 import Styles from "../../../modular_scss/Signup.module.scss";
+import { openInNewTab } from "../../../utilities/utils";
 
 function Signup(auth) {
   const dispatch = useDispatch();
@@ -295,23 +296,23 @@ function Signup(auth) {
                   <input type="checkbox" onClick={() => handlePolicyCheck()} />
                   <span className="checkmark"></span>
                   I’ve read and agree with{" "}
-                  <a
+                  <span
                     onClick={(e) => {
                       e.preventDefault();
-                      handleTermsOfService();
+                      openInNewTab("/terms-conditions");
                     }}
                   >
-                    Terms of Service
-                  </a>
+                    <a>Terms of Service</a>
+                  </span>
                   &{" "}
-                  <a
+                  <span
                     onClick={(e) => {
                       e.preventDefault();
-                      handlePrivacyPolicy();
+                      openInNewTab("/privacy-policy");
                     }}
                   >
-                    Privacy Policy
-                  </a>
+                    <a>Privacy Policy</a>
+                  </span>
                 </label>
               </div>
 
