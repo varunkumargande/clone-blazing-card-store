@@ -1,6 +1,7 @@
 import { addFriend } from "../../chatService";
 import axios from "axios";
 import { show } from "../../store/toast/action";
+import useChatUser from "../../hooks/useChatUser";
 
 export async function addChatFrend(
   friendId,

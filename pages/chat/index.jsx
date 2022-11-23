@@ -27,6 +27,7 @@ import {
   getFriendList,
   getMessage,
 } from "../../api/chat";
+import useChatUser from "../../hooks/useChatUser";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
@@ -34,6 +35,7 @@ function Chat({ auth }) {
   const dispatch = useDispatch();
   const socket = useRef();
 
+  const chatUser = useChatUser();
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -62,9 +64,8 @@ function Chat({ auth }) {
 
   useEffect(() => {
     if (!!localStorage.getItem("chat-app-current-user")) {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
       socket.current = io(host);
-      socket.current.emit("add-user", user?._id);
+      socket.current.emit("add-user", chatUser?.chatUser?._id);
     } else {
       Router.push("/");
     }
@@ -89,7 +90,7 @@ function Chat({ auth }) {
 
   const chatSocketInitializer = async () => {
     socket?.current?.on(`fetch-friend`, async (data) => {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+      let user = chatUser?.chatUser?._id;
       if (data?.friendId == user) {
         await fetchUserData();
       }
@@ -107,30 +108,30 @@ function Chat({ auth }) {
 
   // // ==================== contact's function =========================
   const changeCurrentChat = async (index) => {
-    const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
-    socket.current.emit("add-chat-currentUser", data?._id, contacts[index]._id);
+    socket.current.emit(
+      "add-chat-currentUser",
+      chatUser?.chatUser?._id,
+      contacts[index]._id
+    );
     setCurrentSelected(index);
     setCurrentChat(contacts[index]);
-    getMessage(setMessages, contacts);
+    getMessage(setMessages, contacts, index);
   };
   // // =================================================================
 
   // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
     const messageTime = moment().utc().format("HH:mm");
-    const data = await JSON.parse(
-      localStorage.getItem("chat-app-current-user")
-    );
     socket.current.emit("send-msg", {
       to: currentChat._id,
-      from: data?._id,
+      from: chatUser?.chatUser?._id,
       isRead: false,
       msg,
       messageTime,
     });
 
     let sendMessageData = {
-      from: data?._id,
+      from: chatUser?.chatUser?._id,
       to: currentChat._id,
       message: msg,
       messageTime: messageTime,
@@ -233,7 +234,6 @@ function Chat({ auth }) {
         <HeaderDefault />
       )}
 
-      {console.log(contacts.length == true)}
       <div className="messages-wrapper">
         {!isMobile ? <h1>Messages</h1> : ""}
         <div className="flex space-between message-inner">

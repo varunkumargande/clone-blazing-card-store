@@ -2,7 +2,7 @@ import axios from "axios";
 import { show } from "../../store/toast/action";
 import { recieveMessageRoute } from "../../chatService";
 
-export async function getMessage(setMessages, contacts) {
+export async function getMessage(setMessages, contacts, index) {
   const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
   const token = localStorage.getItem("blazingToken");
   await axios
@@ -10,7 +10,7 @@ export async function getMessage(setMessages, contacts) {
       recieveMessageRoute,
       {
         from: data?._id,
-        to: contacts[index]._id,
+        to: contacts[index]?._id,
       },
       {
         headers: {

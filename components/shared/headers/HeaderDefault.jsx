@@ -17,7 +17,12 @@ import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
 import { stepState } from "../../Constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
+import { io } from "socket.io-client";
+import { host } from "../../../chatService";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../Constants/imageConstants";
 import Notifications from "../../partials/Notifications/Notifications";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
@@ -28,8 +33,11 @@ import {
   saveSubCategoryName,
 } from "../../../store/category/action";
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
+import useChatUser from "../../../hooks/useChatUser";
 
 function HeaderDefault({ auth }) {
+  const chatUser = useChatUser();
+  const socket = useRef();
   const router = useRouter();
   const [active, setActive] = useState(false);
   const [notificationDropdownActive, setNotificationDropdownActive] =
@@ -38,18 +46,16 @@ function HeaderDefault({ auth }) {
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const [toggle, setToggle] = useState(false);
-
   let { pageName } = router.query;
-
   const {
     notifications,
     notificationsUnreadCount,
     setNotificationsUnreadCount,
   } = useNotifications();
+  const [chatNotification, setChatNotification] = useState([]);
 
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
-
   const toast = useSelector((state) => state?.toast?.toast);
 
   const handleOnClick = () => {
@@ -65,7 +71,18 @@ function HeaderDefault({ auth }) {
         clearInterval(profileInterval);
       }
     }, 10);
+    // if (socket.current) {
+    //   socket.current.on("new-message-notification", (id) => {
+    //     setChatNotification(id);
+    //   });
+    // }
   }, []);
+
+  // useEffect(() => {
+  //   if (!!localStorage.getItem("chat-app-current-user")) {
+  //     socket.current = io(host);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (toggle) {
