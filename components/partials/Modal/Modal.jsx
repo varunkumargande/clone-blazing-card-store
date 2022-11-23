@@ -1224,7 +1224,7 @@ export function UnfollowModal(props) {
   );
 }
 
-export function OrderSuccessful({ message, subMessage, setPaymentSuccessful }) {
+export function SuccessMessageModal({ message, subMessage, setPaymentSuccessful }) {
   return (
     <div
       className="modalOverlay flex justify-center flex-center"
@@ -1380,7 +1380,7 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
             >
               <a>Sign In</a>
             </button>
-            &nbsp; on Blazing Cards
+            on Blazing Cards
           </div>
         </div>
       </div>

@@ -32,7 +32,7 @@ export const registerConstant = {
       placeholder: "Username",
       label: "Username",
       regex: /^[a-zA-Z0-9]*$/,
-      regexMessage: "Please enter a valid username",
+      regexMessage: "Please enter a valid Username",
       required: "Username is required",
     },
     contactField: {
@@ -47,6 +47,11 @@ export const registerConstant = {
       regexMessage:
         "Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)",
       required: "Contact number is required",
+    },
+    countryCodeField: {
+      name: "countryCode",
+      placeholder: "",
+      required: "Country Code is required",
     },
     passwordField: {
       name: "password",
@@ -109,5 +114,5 @@ export const loginConstant = {
 
 //forgot password constant
 export const forgotPasswordConstant = {
-    "requiredEmail": "Email is required"
-}
+  requiredEmail: "Email is required",
+};

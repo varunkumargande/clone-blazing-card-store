@@ -6,9 +6,7 @@ import IconBack from "../Icons/IconBack";
 const ErrorMessage = ({ errors, touched }) => {
   return (
     <>
-      <span className="errorMessage">
-        {errors && touched ? errors : null}
-      </span>
+      <span className="errorMessage">{errors && touched && errors}</span>
     </>
   );
 };

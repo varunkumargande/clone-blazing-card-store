@@ -7,7 +7,7 @@ import {
   PaymentInfoModal,
   AddNewCardModal,
   AddAddressModal,
-  OrderSuccessful,
+  SuccessMessageModal,
 } from "../../partials/Modal/Modal";
 import { countryListApi } from "../../../api";
 import { getStreamingShippmentDetail } from "../../../api/stream/shippmentApi";
@@ -139,7 +139,7 @@ function CenterDiv({
         currentAuctionDetails={currentAuctionDetails}
       />
       {paymentSuccessful && (
-        <OrderSuccessful
+        <SuccessMessageModal
           message={`Order Placed Successfully!`}
           subMessage={`Order ID - ${orderId}`}
           setPaymentSuccessful={setPaymentSuccessful}

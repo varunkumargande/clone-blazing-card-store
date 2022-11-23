@@ -45,7 +45,7 @@ function AccountQuickLinks(props) {
 
           <a onClick={(e) => setShowPop(!showPop)}>Account</a>
 
-          <i class="fa fa-angle-down" aria-hidden="true"></i>
+          <i className="fa fa-angle-down" aria-hidden="true"></i>
           {/* <span><CaretDownOutlined style={{color:"white",textAlign:"center",fontSize:"10px"}} /></span> */}
           <div onClick={eventToVendorAdminPanel}>
             <a style={{ padding: "0 4px", color: "#fff" }}>
