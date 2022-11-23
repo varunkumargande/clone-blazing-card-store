@@ -17,12 +17,12 @@ export default function useJoinRTM(streamData, callBack) {
       const token = await getToken(
         options.rtm,
         options.messageChannel,
-        options.audience + options.audienceId,
+        options.audience,
         options.accountType,
         options.userType
       );
       setClient(client);
-      await client.login({ uid: options.audience + options.audienceId, token });
+      await client.login({ uid: options.audience, token });
       const channel = client.createChannel(options.messageChannel);
       await channel.join();
       callBack(channel);
