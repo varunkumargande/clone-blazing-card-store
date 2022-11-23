@@ -6,7 +6,7 @@
         "dev": "node server.js",
         "dev:staging": "node server.js",
         "dev:production": "node server.js",
-        "build": "cp .env .env.local && next build",
+        "build": "next build",
         "build:staging": "next build",
         "build:production": "next build",
         "build:dev": "cp .env.development .env.local && next build",
