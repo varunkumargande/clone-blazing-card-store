@@ -82,6 +82,12 @@ function Signup(auth) {
   const handleBackButton = () => {
     router.back();
   };
+  const handleTermsOfService = () => {
+    window.open("/terms-conditions", "mywindow").focus();
+  };
+  const handlePrivacyPolicy = () => {
+    window.open("/privacy-policy", "mywindow").focus();
+  };
   return (
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}>
@@ -289,13 +295,23 @@ function Signup(auth) {
                   <input type="checkbox" onClick={() => handlePolicyCheck()} />
                   <span className="checkmark"></span>
                   I’ve read and agree with{" "}
-                  <Link href="/terms-conditions">
-                    <a>Terms of Service</a>
-                  </Link>{" "}
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleTermsOfService();
+                    }}
+                  >
+                    Terms of Service
+                  </a>
                   &{" "}
-                  <Link href="/privacy-policy">
-                    <a>Privacy Policy</a>
-                  </Link>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePrivacyPolicy();
+                    }}
+                  >
+                    Privacy Policy
+                  </a>
                 </label>
               </div>
 
