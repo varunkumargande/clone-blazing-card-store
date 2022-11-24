@@ -5,6 +5,7 @@ import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import Footer from "../../components/partials/LandingPage/Footer";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import Error from "../_error";
 
 const notifications = () => {
   const {
@@ -17,6 +18,18 @@ const notifications = () => {
   } = useNotifications();
 
   const { isMobile } = useIsMobile();
+
+  const [errorCode, setErrorcode] = useState(0);
+
+  useEffect(() => {
+    if (!localStorage.getItem("blazingUser")) {
+      setErrorcode(404);
+    }
+  }, []);
+
+  if (errorCode) {
+    return <Error statusCode={errorCode} />;
+  }
 
   return (
     <>
