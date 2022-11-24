@@ -12,7 +12,10 @@ import StreamCard from "../../components/elements/StreamCard";
 import Followers from "../../components/partials/Profile/Followers";
 import DefaultServices from "../../components/Services/DefaultServices";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
-import { ImageTransformation, DefaultImagePath } from "../../components/Constants/imageConstants";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../components/Constants/imageConstants";
 import BackButton from "../../components/CommonComponents/BackButton";
 import {
   SignUPGoogle,
@@ -20,6 +23,7 @@ import {
 } from "../../components/partials/Modal/Modal";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
+import Error from "../_error";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -41,16 +45,16 @@ export default function PublicProfile() {
   const [currentUser, setCurrentUser] = useState({});
   const [key, setKey] = useState(1);
   const [isOpenFollowUnfollow, setIsOpenFollowUnfollow] = useState(false);
+  const [errorCode, setErrorcode] = useState(0);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
     if (localStorage.getItem("blazingUser")) {
       setCurrentUser(JSON.parse(localStorage.getItem("blazingUser")));
+    } else if (!router.query.userId) {
+      setErrorcode(404);
     }
   }, []);
-
-  const user = currentUser;
-  const loggedInUserId = currentUser?.id;
 
   const handleClickOutside = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -60,16 +64,16 @@ export default function PublicProfile() {
 
   const getAllBuyerDetails = () => {
     ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
-    ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
-    ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
+    ProfileMethods.GetUserFollowers(userId, setFollowers, currentUser?.id);
+    ProfileMethods.GetUserFollowings(userId, setFollowing, currentUser?.id);
   };
 
   const getAllVendorDetails = () => {
     ProfileMethods.GetScheduledStreams(userId, setUpcomingShows);
     ProfileMethods.GetLikedStreams(userId, setLikedShows, setLoader);
     ProfileMethods.GetPreviousStreams(userId, setPreviousShows);
-    ProfileMethods.GetUserFollowers(userId, setFollowers, loggedInUserId);
-    ProfileMethods.GetUserFollowings(userId, setFollowing, loggedInUserId);
+    ProfileMethods.GetUserFollowers(userId, setFollowers, currentUser?.id);
+    ProfileMethods.GetUserFollowings(userId, setFollowing, currentUser?.id);
   };
 
   useEffect(() => {
@@ -87,7 +91,7 @@ export default function PublicProfile() {
 
   useEffect(() => {
     if (userId) {
-      ProfileMethods.GetPublicProfile(userId, setProfile, user.id);
+      ProfileMethods.GetPublicProfile(userId, setProfile, currentUser.id);
     }
   }, [userId, key]);
 
@@ -205,14 +209,14 @@ export default function PublicProfile() {
           return (
             <>
               {following.map((details, index) => (
-                  <Followers
-                    person={details}
-                    isFollower={isForFollower}
-                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                    setFollowing={setFollowing}
-                    following={following}
-                    key={`public-profile-following-${details?.id}`}
-                  />
+                <Followers
+                  person={details}
+                  isFollower={isForFollower}
+                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                  setFollowing={setFollowing}
+                  following={following}
+                  key={`public-profile-following-${details?.id}`}
+                />
               ))}
             </>
           );
@@ -237,13 +241,13 @@ export default function PublicProfile() {
               ProfileMethods.GetUserFollowers(
                 userId,
                 setFollowers,
-                loggedInUserId
+                currentUser?.id
               );
             } else if (tab.key === "following") {
               ProfileMethods.GetUserFollowings(
                 userId,
                 setFollowing,
-                loggedInUserId
+                currentUser?.id
               );
             }
           }}
@@ -315,19 +319,18 @@ export default function PublicProfile() {
 
   const handleFollow = () => {
     if (localStorage.getItem("blazingUser")) {
-      let user = JSON.parse(localStorage.getItem("blazingUser"));
       if (profile?.isFollow) {
         setIsOpenFollowUnfollow(true);
       }
       if (!profile?.isFollow) {
-        ProfileMethods.UserFollowUser(user.id, profile.id, setKey);
+        ProfileMethods.UserFollowUser(currentUser.id, profile.id, setKey);
       }
     } else {
       setShowModal(true);
     }
   };
   const handleFollowButtonText = () => {
-    if (user) {
+    if (currentUser) {
       if (profile?.isFollow) {
         return "Following";
       }
@@ -335,6 +338,10 @@ export default function PublicProfile() {
     }
     return "Follow";
   };
+
+  if (errorCode) {
+    return <Error statusCode={errorCode} />;
+  }
 
   return (
     <div className="home-container profile-container-wrap">
@@ -402,7 +409,7 @@ export default function PublicProfile() {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        user ? chatLogin() : setShowModal(true);
+                        currentUser ? chatLogin() : setShowModal(true);
                       }}
                       className="border-btn edit-profile-btn"
                     >

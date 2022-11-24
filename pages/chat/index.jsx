@@ -27,6 +27,7 @@ import moment, { utc } from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { show } from "../../store/toast/action";
+import Error from "../_error";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
@@ -47,6 +48,7 @@ function Chat({ auth }) {
   const [loader, setLoader] = useState(false);
   const [userCount, setUserCount] = useState(null);
   const [isChatPanelVisible, setChatPanelVisible] = useState(false);
+  const [errorCode, setErrorcode] = useState(0);
 
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -59,7 +61,7 @@ function Chat({ auth }) {
       socket.current = io(host);
       socket.current.emit("add-user", user?._id);
     } else {
-      Router.push("/");
+      setErrorcode(404);
     }
   }, []);
   useEffect(() => {
@@ -79,12 +81,14 @@ function Chat({ auth }) {
   }, []);
 
   const chatSocketInitializer = async () => {
-    socket.current.on(`fetch-friend`, async (data) => {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
-      if (data?.friendId == user) {
-        await fetchUserData();
-      }
-    });
+    const user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+    if (user) {
+      socket.current.on(`fetch-friend`, async (data) => {
+        if (data?.friendId == user) {
+          await fetchUserData();
+        }
+      });
+    }
   };
 
   // ============================== fetch frend list ===================================
@@ -122,8 +126,10 @@ function Chat({ auth }) {
   // // ==================== contact's function =========================
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
-    setCurrentUserName(data.username);
-    setCurrentUserImage(data.avatarImage);
+    if (data) {
+      setCurrentUserName(data.username);
+      setCurrentUserImage(data.avatarImage);
+    }
   }, []);
   const changeCurrentChat = async (index) => {
     const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
@@ -237,6 +243,11 @@ function Chat({ auth }) {
     }
   };
   // ============================================================================
+
+
+  if (errorCode) {
+    return <Error statusCode={errorCode} />;
+  }
 
   return (
     <>

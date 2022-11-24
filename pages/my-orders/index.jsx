@@ -11,10 +11,14 @@ import { useDispatch } from "react-redux";
 import Link from "next/link";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import Error from "../_error";
+
 export default function Myorders() {
   const [searchVal, setSearchVal] = useState("");
   const [active, setActive] = useState(false);
   const { isMobile } = useIsMobile();
+  const [errorCode, setErrorcode] = useState(0);
+
   const wrapperRef = useRef(null);
   const [filter, setFilter] = useState("Recent");
   const dispatch = useDispatch();
@@ -24,6 +28,12 @@ export default function Myorders() {
     "Last 3 months": "last_3",
   };
   const [dropFilter, setDropFilter] = useState("Recent");
+
+  useEffect(() => {
+    if (!localStorage.getItem("blazingUser")) {
+      setErrorcode(404);
+    }
+  }, []);
 
   const handleOnClick = () => {
     setActive(!active);
@@ -51,12 +61,12 @@ export default function Myorders() {
   };
   const dropDownFilter = () => {
     return Object.entries(DROPDOWN_FILTERS).map((data) => (
-        <li
-          onClick={(e) => handleFilter(data)}
-          key={`${data[0]}-my-orders-dropDown`}
-        >
-          {data[0]}
-        </li>
+      <li
+        onClick={(e) => handleFilter(data)}
+        key={`${data[0]}-my-orders-dropDown`}
+      >
+        {data[0]}
+      </li>
     ));
   };
 
@@ -90,6 +100,11 @@ export default function Myorders() {
       </>
     );
   };
+
+  if (errorCode) {
+    return <Error statusCode={errorCode} />;
+  }
+
   return (
     <>
       {isMobile ? "" : <HeaderDefault />}
