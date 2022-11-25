@@ -35,7 +35,6 @@ import {
 } from "../../../utilities/utils";
 
 const responseGoogleFailure = (response) => {
-  console.error("Failure response", response);
 };
 
 export function ShareModalModal({ setIsShareModalOpen }) {
@@ -944,8 +943,13 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [currentChatUser, setCurrentChatUser]=useState(null)
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    if(!!JSON.parse(localStorage.getItem("chat-app-current-user"))){
+      setCurrentChatUser(JSON.parse(localStorage.getItem("chat-app-current-user")))
+    }
+  },[])
   // handle username and search frend
   const handleUsername = async (e) => {
     e.preventDefault();
@@ -967,7 +971,8 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
   // handle for submit for add frend
   const handleSubmitUser = () => {
-    addChatFrend(userId, fetchUserData, setIsOpen, socket, dispatch);
+    if(currentChatUser?._id)
+    addChatFrend(userId, fetchUserData, setIsOpen, socket, dispatch, currentChatUser?._id);
   };
   // =============================================================
 
@@ -1351,8 +1356,8 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
                 </button>
               )}
               onSuccess={(credentialResponse) => {
-                let data = jwt_decode(credentialResponse.credential);
-                responseGoogle(data);
+                const credentials = jwt_decode(credentialResponse.credential);
+                responseGoogle(credentials);
               }}
               onError={(response) => {
                 responseGoogleFailure(response);

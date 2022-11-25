@@ -4,13 +4,15 @@ import { show } from "../../store/toast/action";
 import { getErrorMessage } from "../../utilities/common-helpers";
 import { setAvatarRoute } from "../../chatService";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 export async function editProfileApi(
   values,
   newDpName,
   Router,
   setLoader,
-  dispatch
+  dispatch,
+  currentChatUser
 ) {
   const data = {
     firstName: values.firstName,
@@ -36,12 +38,9 @@ export async function editProfileApi(
     const chatHeader = {
       Authorization: `Bearer ${token}`,
     };
-    if (localStorage.getItem("chat-app-current-user")) {
-      const user = JSON.parse(
-        localStorage.getItem("chat-app-current-user")
-      )?._id;
+    if (!!currentChatUser?.user?._id) {
       await axios
-        .post(`${setAvatarRoute}/${user}`, chatData, {
+        .post(`${setAvatarRoute}/${currentChatUser?.user?._id}`, chatData, {
           headers: chatHeader,
         })
         .then((res) => {})
