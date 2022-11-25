@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import IconChat from "../../Icons/IconChat";
 import Router from "next/router";
+import moment from "moment";
 import { DefaultImagePath } from "../../Constants/imageConstants";
-import Styles from '../../../modular_scss/message.module.scss';
+import Styles from "../../../modular_scss/message.module.scss";
 
 export default function ChatPannel({
   messages,
@@ -48,7 +49,8 @@ export default function ChatPannel({
         <>
           <div className="right-pannel">
             <div className="profile-header-title flex flex-center">
-              <div class="chat-title flex flex-center justify-start pointer"
+              <div
+                class="chat-title flex flex-center justify-start pointer"
                 onClick={(e) => {
                   e.preventDefault();
                   navigateToProfileInfo(contactDetail?.userId);
@@ -86,7 +88,10 @@ export default function ChatPannel({
                           key={`${item.time}-chat-panel-sender`}
                         >
                           <div className="chat">{item?.message}</div>
-                          <div className="time">{item?.time}</div>
+                          <div className="time">
+                            {item?.time &&
+                              moment(new Date(item?.time)).format("HH:mm")}
+                          </div>
                         </div>
                       </>
                     );

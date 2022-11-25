@@ -36,13 +36,15 @@ export default function ProfileInformation() {
   const [isOpen, setIsOpen] = useState(false);
   const toast = useSelector((state) => state?.toast?.toast);
   const [disableUploadButton, setDisableUploadButton] = useState(false);
-  const [currentChatUser, setCurrentChatUser]=useState(null);
+  const [currentChatUser, setCurrentChatUser] = useState(null);
 
   useEffect(() => {
-    if(!!JSON.parse(localStorage.getItem("chat-app-current-user"))){
-      setCurrentChatUser(JSON.parse(localStorage.getItem("chat-app-current-user")))
+    if (!!JSON.parse(localStorage.getItem("chat-app-current-user"))) {
+      setCurrentChatUser(
+        JSON.parse(localStorage.getItem("chat-app-current-user"))
+      );
     }
-  },[])
+  }, []);
   useEffect(() => {
     if (localStorage.getItem("blazingUser")) {
       setLoader(true);
@@ -129,7 +131,7 @@ export default function ProfileInformation() {
             <div className="prifile-image br50">
               {profileData != null ? (
                 showImageLoader ? (
-                  <Loader />
+                  <Loader className="d-flex w-50 m-auto" />
                 ) : (
                   <>
                     {newDp != "" ? (
