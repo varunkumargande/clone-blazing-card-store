@@ -24,7 +24,7 @@ export async function UserRegister(values, Router, dispatch) {
     dispatch(
       show({
         message: result.data.message,
-        type: "success",
+        type: "error",
       })
     );
   }
