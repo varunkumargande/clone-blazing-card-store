@@ -94,7 +94,7 @@ function Chat({ auth }) {
   // ============================== fetch frend list ===================================
   const fetchUserData = async () => {
     if (localStorage.getItem("chat-app-current-user")) {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+      const user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
       const token = localStorage.getItem("blazingToken");
       let userId = {
         userId: user,
