@@ -7,24 +7,27 @@ export async function addChatFrend(
   fetchUserData,
   setIsOpen,
   socket,
-  dispatch
+  dispatch,
+  currentChatUserId
 ) {
   socket.current.emit("add-friend", {
-    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
+    userId: currentChatUserId,
     friendId: friendId,
   });
 
   const jsonData = {
-    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
+    userId: currentChatUserId,
     friendId: friendId,
   };
-
   const token = localStorage.getItem("blazingToken");
   const chatHeader = {
     Authorization: `Bearer ${token}`,
   };
   await axios
-    .post(addFriend, jsonData, {
+    .post(addFriend, {
+      userId: currentChatUserId,
+      friendId: friendId,
+    }, {
       headers: chatHeader,
     })
     .then((res) => {
