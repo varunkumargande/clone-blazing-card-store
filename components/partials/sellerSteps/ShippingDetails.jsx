@@ -30,7 +30,8 @@ export default function ShippingDetails() {
 
   const handleSubmit = (values) => {
     const data = {
-      shipFromName: values?.fullName,
+      shipFirstName : values?.firstName,
+      shipLastName: values?.lastName,
       addressLine1: values?.addressLine1,
       addressLine2: values?.addressLine2,
       countryId: Number(values?.country),
@@ -41,16 +42,25 @@ export default function ShippingDetails() {
     dispatch(addShippingData(data, router));
   };
 
+  /**
+   * @method: handlePreviousClick
+   * @description: handle the previous click button. Basically send it to previous step.
+   */
+  const handlePreviousClick = () => {
+    router.push('/become-seller/paymentDetails');
+  }
+
   return (
     <div className="step-container">
-      <BackButton name={"Shipping Details"} />
+      <BackButton name={"Shipping Details"} backUrl="/" />
       <div className="sub-title">
         A return address must be added before going live on Blazing Cards. This
         will be used on your shipment labels.
       </div>
       <Formik
         initialValues={{
-          fullName: shippingDetails?.shipFromName ?? "",
+          firstName: shippingDetails?.shipFirstName ?? "",
+          lastName: shippingDetails?.shipLastName ?? "",
           addressLine1: shippingDetails?.addressLine1 ?? "",
           addressLine2: shippingDetails?.addressLine2 ?? "",
           country: shippingDetails?.country ?? US_CODE,
@@ -70,8 +80,16 @@ export default function ShippingDetails() {
             <div className="flex space-between">
               <TextInput
                 className="input-control wd48"
-                label="Full Name*"
-                name="fullName"
+                label="First Name*"
+                name="firstName"
+                type="text"
+                placeholder="Enter here"
+                maxLength="25"
+              />
+              <TextInput
+                className="input-control wd48"
+                label="Last Name*"
+                name="lastName"
                 type="text"
                 placeholder="Enter here"
                 maxLength="25"
@@ -155,8 +173,8 @@ export default function ShippingDetails() {
             </div>
 
             <div className="submit-wrapper flex space-between conform">
-              <button type="reset" className="border-btn">
-                Cancel
+              <button onClick={handlePreviousClick} className="border-btn">
+                Previous
               </button>
               <button type="submit" className="primary-btn">
                 Confirm Shipping Details
