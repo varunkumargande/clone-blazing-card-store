@@ -6,7 +6,7 @@ export const registerConstant = {
   form: {
     firstNameField: {
       name: "firstname",
-      placeholder: "Firstname",
+      placeholder: "First Name",
       label: "First Name",
       regex: /^[A-Za-z ]*$/,
       regexMessage: "Please enter a valid first name",
@@ -14,7 +14,7 @@ export const registerConstant = {
     },
     lastNameField: {
       name: "lastname",
-      placeholder: "Lastname",
+      placeholder: "Last Name",
       label: "Last Name",
       regex: /^[A-Za-z ]*$/,
       regexMessage: "Please enter a valid last name",
