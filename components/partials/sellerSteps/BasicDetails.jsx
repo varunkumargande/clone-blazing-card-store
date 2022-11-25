@@ -63,7 +63,6 @@ export default function BasicDetails() {
   const initialValues = {
     firstName: BasicDetails?.firstName ?? "",
     lastName: BasicDetails?.lastName ?? "",
-    uniqueId: BasicDetails?.uniqueId ?? "",
     upload: BasicDetails?.documents?.fileName
       ? new File([""], BasicDetails?.documents?.fileName, {
           type: "image/jpeg",
