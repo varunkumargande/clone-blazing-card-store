@@ -36,7 +36,13 @@ export default function ProfileInformation() {
   const [isOpen, setIsOpen] = useState(false);
   const toast = useSelector((state) => state?.toast?.toast);
   const [disableUploadButton, setDisableUploadButton] = useState(false);
+  const [currentChatUser, setCurrentChatUser]=useState(null);
 
+  useEffect(() => {
+    if(!!JSON.parse(localStorage.getItem("chat-app-current-user"))){
+      setCurrentChatUser(JSON.parse(localStorage.getItem("chat-app-current-user")))
+    }
+  },[])
   useEffect(() => {
     if (localStorage.getItem("blazingUser")) {
       setLoader(true);
@@ -217,7 +223,6 @@ export default function ProfileInformation() {
       </>
     );
   };
-
   const handleProfileForm = () => {
     if (loader == false) {
       if (!!profileData) {
@@ -239,7 +244,8 @@ export default function ProfileInformation() {
                     newDpName,
                     Router,
                     setLoader,
-                    dispatch
+                    dispatch,
+                    currentChatUser
                   );
                 }
               }}
