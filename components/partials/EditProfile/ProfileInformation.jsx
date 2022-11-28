@@ -13,13 +13,15 @@ import { DefaultImagePath } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { show } from "../../../store/toast/action";
 import { profileSchema } from "../../../utilities/validations/profileDetails";
 import { profileInitialValues } from "../../../utilities/validations/profileDetails";
 import MySelect from "../../CommonComponents/MySelect";
 import Styles from "../../../modular_scss/ProfileInformation.module.scss";
 import DefaultConstants from "../../../utilities/constants";
+import { TostMessage } from "../ToastMessage/ToastMessage";
+import { countriesCodeList } from "../../Constants/countryCodeList";
 
 export default function ProfileInformation() {
   const dispatch = useDispatch();
@@ -33,7 +35,17 @@ export default function ProfileInformation() {
   const [loader, setLoader] = useState(false);
   const [showImageLoader, setShowImageLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const toast = useSelector((state) => state?.toast?.toast);
+  const [disableUploadButton, setDisableUploadButton] = useState(false);
+  const [currentChatUser, setCurrentChatUser] = useState(null);
 
+  useEffect(() => {
+    if (!!JSON.parse(localStorage.getItem("chat-app-current-user"))) {
+      setCurrentChatUser(
+        JSON.parse(localStorage.getItem("chat-app-current-user"))
+      );
+    }
+  }, []);
   useEffect(() => {
     if (localStorage.getItem("blazingUser")) {
       setLoader(true);
@@ -73,11 +85,24 @@ export default function ProfileInformation() {
           uploadImage(files[0], reader.result);
         };
         reader.readAsDataURL(files[0]);
+        setDisableUploadButton(false);
       } else {
-        setNewDpError(`Profile image must be of max ${MaxProfileImageSize}MB`);
+        if (!!inputFile.current.value) {
+          dispatch(
+            show({
+              message: `Profile image must be of max ${MaxProfileImageSize}MB`,
+              type: "error",
+            })
+          );
+          e.target.value = null;
+          inputFile.current.value = "";
+          setDisableUploadButton(true);
+        }
       }
     } else {
-      setNewDpError("Please upload a valid Profile Image");
+      dispatch(
+        show({ message: "Please upload a valid Profile Image", type: "error" })
+      );
     }
   };
 
@@ -95,13 +120,6 @@ export default function ProfileInformation() {
     }
   };
 
-  const handleImage = () => {
-    return (
-      imageUrl +
-      `?path=${profileData?.avatarPath}&name=/${profileData?.avatar}&width=300&height=300`
-    );
-  };
-
   const handleCancelButton = () => {
     setLoader(true);
   };
@@ -114,7 +132,7 @@ export default function ProfileInformation() {
             <div className="prifile-image br50">
               {profileData != null ? (
                 showImageLoader ? (
-                  <Loader />
+                  <Loader className="d-flex w-50 m-auto" />
                 ) : (
                   <>
                     {newDp != "" ? (
@@ -167,16 +185,23 @@ export default function ProfileInformation() {
             <div className="profile-text">
               <div className="profile-btn-wrap flex flex-center mb16">
                 <label
-                  className={`upload-btn flex justify-center flex-center ${
-                    showImageLoader && "disable-upload-image-btn"
-                  }`}
+                  className={
+                    disableUploadButton && !!toast.message
+                      ? "upload-btn flex justify-center flex-center disable-upload-image-btn"
+                      : `upload-btn flex justify-center flex-center ${
+                          showImageLoader && "disable-upload-image-btn"
+                        }`
+                  }
                 >
                   Update Profile Image
                   <input
                     type="file"
                     accept=".png, .jpg, .jpeg"
                     ref={inputFile}
-                    disabled={showImageLoader}
+                    disabled={
+                      showImageLoader ||
+                      (disableUploadButton && !!toast.message)
+                    }
                     onChange={(e) => changeDP(e)}
                   />
                 </label>
@@ -201,7 +226,6 @@ export default function ProfileInformation() {
       </>
     );
   };
-
   const handleProfileForm = () => {
     if (loader == false) {
       if (!!profileData) {
@@ -223,7 +247,8 @@ export default function ProfileInformation() {
                     newDpName,
                     Router,
                     setLoader,
-                    dispatch
+                    dispatch,
+                    currentChatUser
                   );
                 }
               }}
@@ -308,7 +333,7 @@ export default function ProfileInformation() {
                           </div>
 
                           <div className="input-control wd50">
-                            <label htmlFor="usr">Phone Number*</label>
+                            <label htmlFor="usr">Contact Number*</label>
 
                             <div className="d-flex space-between">
                               <MySelect
@@ -318,9 +343,15 @@ export default function ProfileInformation() {
                                 value={values.countryCode}
                                 onBlur={handleBlur}
                               >
-                                <option>+</option>
-                                <option value="+1">+1</option>
-                                <option value="+91">+91</option>
+                                {countriesCodeList.map((item) => {
+                                  return (
+                                    <>
+                                      <option value={item?.code}>
+                                        {item?.code}
+                                      </option>
+                                    </>
+                                  );
+                                })}
                               </MySelect>
 
                               <input
@@ -328,6 +359,7 @@ export default function ProfileInformation() {
                                 placeholder={"Enter here"}
                                 id="usr"
                                 className={`grey-bg ${Styles.phone_number}`}
+                                onBlur={handleBlur}
                                 onChange={(e) =>
                                   setFieldValue(
                                     "phoneNumber",
@@ -462,6 +494,7 @@ export default function ProfileInformation() {
           Delete Account
         </span>
       </div>
+      {!!toast.message && <TostMessage data={toast}></TostMessage>}
     </div>
   );
 }

@@ -1,33 +1,40 @@
 import { addFriend } from "../../chatService";
 import axios from "axios";
 import { show } from "../../store/toast/action";
-import useChatUser from "../../hooks/useChatUser";
+import useChatUser from "../../utilities/chatUser";
 
 export async function addChatFrend(
   friendId,
   fetchUserData,
   setIsOpen,
   socket,
-  dispatch
+  dispatch,
+  currentChatUserId
 ) {
   socket.current.emit("add-friend", {
-    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
+    userId: currentChatUserId,
     friendId: friendId,
   });
 
   const jsonData = {
-    userId: JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
+    userId: currentChatUserId,
     friendId: friendId,
   };
-
   const token = localStorage.getItem("blazingToken");
   const chatHeader = {
     Authorization: `Bearer ${token}`,
   };
   await axios
-    .post(addFriend, jsonData, {
-      headers: chatHeader,
-    })
+    .post(
+      addFriend,
+      {
+        userId: currentChatUserId,
+        friendId: friendId,
+      },
+      {
+        headers: chatHeader,
+      }
+    )
     .then((res) => {
       fetchUserData();
       setIsOpen(false);

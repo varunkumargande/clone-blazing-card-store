@@ -4,12 +4,16 @@ import IconError from "../../Icons/IconError";
 import IconClose from "../../Icons/IconClose";
 import { hide } from "../../../store/toast/action";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 export function TostMessage({ data }) {
   const dispatch = useDispatch();
   function handleClose() {
     dispatch(hide());
   }
-  setTimeout(handleClose, 5000);
+  useEffect(() => {
+    setTimeout(handleClose, 1000);
+  },[])
+  
   return (
     <div
       className={`ToastMessageWrapper flex space-between flex-center ${data?.type}`}

@@ -33,10 +33,8 @@ import {
   saveSubCategoryName,
 } from "../../../store/category/action";
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
-import useChatUser from "../../../hooks/useChatUser";
 
 function HeaderDefault({ auth }) {
-  const chatUser = useChatUser();
   const socket = useRef();
   const router = useRouter();
   const [active, setActive] = useState(false);
@@ -305,7 +303,7 @@ function HeaderDefault({ auth }) {
                   >
                     <div className="notification-wrapper title-wrap ">
                       <div className="head-title flex space-between flex-center">
-                        <h1>Notification</h1>
+                        <h1>Notifications</h1>
                       </div>
                       <Notifications
                         notifications={notifications.slice(0, 3)}

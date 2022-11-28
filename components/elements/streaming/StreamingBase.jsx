@@ -317,7 +317,7 @@ function StreamingBase({
    * Method will set bidding amount
    */
   const checkBidAmount = () => {
-    if (amountToBid > bidAmount) setAmountToBid(+amountToBid - 1);
+    if (+amountToBid > +bidAmount + 1) setAmountToBid(+amountToBid - 1);
   };
 
   /**
@@ -452,22 +452,24 @@ function StreamingBase({
         <div className="stream-header flex space-between">
           {(renderCurrentAuctionDetail?.name ||
             renderCurrentAuctionDetail?.productName) && (
-            <div className="head-title">
+            <div className="head-title w-100">
               {renderCurrentAuctionDetail?.name ||
                 renderCurrentAuctionDetail?.productName}
               <p className="text-light">
                 {renderCurrentAuctionDetail?.description ||
                   renderCurrentAuctionDetail?.productDescription ||
                   ""}
+                {!stream?.streamPageData?.streamPageDteails?.isLoggedIn && (
+                  <div className="head-title">
+                    {stream?.streamPageData?.streamPageDteails &&
+                      `Please login to participate`}
+                  </div>
+                )}
               </p>
+              
             </div>
           )}
-          {!stream?.streamPageData?.streamPageDteails?.isLoggedIn && (
-            <div className="head-title">
-              {stream?.streamPageData?.streamPageDteails &&
-                `Please login to participate`}
-            </div>
-          )}
+          
           <div className={`tme-wrap flex flex-center justify-center live ${Styles.tme_wrap}`}>
             <span>{userCount}</span> <button className="live"></button>
           </div>

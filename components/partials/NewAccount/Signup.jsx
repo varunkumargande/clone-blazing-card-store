@@ -19,9 +19,10 @@ import { registerInitialValues } from "../../../utilities/validations/signupDeta
 import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import MySelect from "../../CommonComponents/MySelect";
-import { countriesList } from "../../Constants/countryList";
+import { countriesCodeList } from "../../Constants/countryList";
 import Styles from "../../../modular_scss/Signup.module.scss";
 import { regex } from "../../Constants/regex";
+import { openInNewTab } from "../../../utilities/utils";
 
 function Signup(auth) {
   const dispatch = useDispatch();
@@ -84,6 +85,7 @@ function Signup(auth) {
   const handleBackButton = () => {
     router.back();
   };
+
   return (
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}>
@@ -202,8 +204,7 @@ function Signup(auth) {
                     value={values.countryCode}
                     onBlur={handleBlur}
                   >
-                    <option>+</option>
-                    {countriesList.map((item) => {
+                    {countriesCodeList.map((item) => {
                       return (
                         <>
                           <option value={item?.code}>{item?.code}</option>
@@ -217,6 +218,7 @@ function Signup(auth) {
                     name={registerConstant.form.contactField.name}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
+                    onBlur={handleBlur}
                     onChange={(e) =>
                       setFieldValue(
                         "number",
@@ -302,13 +304,23 @@ function Signup(auth) {
                   <input type="checkbox" onClick={() => handlePolicyCheck()} />
                   <span className="checkmark"></span>
                   I’ve read and agree with{" "}
-                  <Link href="/terms-conditions">
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openInNewTab("/terms-conditions");
+                    }}
+                  >
                     <a>Terms of Service</a>
-                  </Link>{" "}
+                  </span>
                   &{" "}
-                  <Link href="/privacy-policy">
+                  <span
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openInNewTab("/privacy-policy");
+                    }}
+                  >
                     <a>Privacy Policy</a>
-                  </Link>
+                  </span>
                 </label>
               </div>
 

@@ -62,6 +62,6 @@ export const registerInitialValues = () => {
     password: "",
     cpass: "",
     username: "",
-    countryCode: "",
+    countryCode: "+1",
   };
 };

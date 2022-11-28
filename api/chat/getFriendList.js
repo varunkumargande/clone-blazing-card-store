@@ -1,7 +1,7 @@
 import axios from "axios";
 import { show } from "../../store/toast/action";
 import { friendList } from "../../chatService";
-import useChatUser from "../../hooks/useChatUser";
+import useChatUser from "../../utilities/chatUser";
 
 export async function getFriendList(setContacts, setUserCount, dispatch) {
   let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;

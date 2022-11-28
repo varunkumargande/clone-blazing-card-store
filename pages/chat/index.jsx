@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-import styled from "styled-components";
 // import { allUsersRoute, host } from "../../api/utils/APIRoutes";
 // import { v4 as uuidv4 } from "uuid";
 import IconBack from "../../components/Icons/IconBack";
@@ -27,6 +26,7 @@ import {
   getFriendList,
   getMessage,
 } from "../../api/chat";
+import { chatUser } from "../../utilities/chatUser";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
@@ -57,12 +57,9 @@ function Chat({ auth }) {
   useEffect(() => {
     if (!!localStorage.getItem("chat-app-current-user")) {
       socket.current = io(host);
-      socket.current.emit(
-        "add-user",
-        JSON.parse(localStorage.getItem("chat-app-current-user"))?._id
-      );
+      socket.current.emit("add-user", chatUser()?._id);
     } else {
-      Router.push("/");
+      setErrorcode(404);
     }
   }, []);
 
@@ -90,12 +87,14 @@ function Chat({ auth }) {
   }, []);
 
   const chatSocketInitializer = async () => {
-    socket.current.on(`fetch-friend`, async (data) => {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
-      if (data?.friendId == user) {
-        await fetchUserData();
-      }
-    });
+    const user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+    if (user) {
+      socket.current.on(`fetch-friend`, async (data) => {
+        if (data?.friendId == user) {
+          await fetchUserData();
+        }
+      });
+    }
   };
 
   // ============================== fetch frend list ===================================
@@ -140,7 +139,7 @@ function Chat({ auth }) {
     };
     sendMessage(sendMessageData);
     const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg, time: moment().format("HH:mm") });
+    msgs.push({ fromSelf: true, message: msg, time: moment().format() });
     setMessages(msgs);
   };
 
