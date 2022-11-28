@@ -38,9 +38,9 @@ export async function editProfileApi(
     const chatHeader = {
       Authorization: `Bearer ${token}`,
     };
-    if (!!currentChatUser?.user?._id) {
+    if (!!currentChatUser?._id) {
       await axios
-        .post(`${setAvatarRoute}/${currentChatUser?.user?._id}`, chatData, {
+        .post(`${setAvatarRoute}/${currentChatUser?._id}`, chatData, {
           headers: chatHeader,
         })
         .then((res) => {})
