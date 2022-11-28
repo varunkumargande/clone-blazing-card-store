@@ -6,18 +6,21 @@ import IconBack from "../../Icons/IconBack";
 import { forgotApi } from '../../../api/auth/forgotPassword'
 import { forgotPasswordConstant } from "../../Constants/auth";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+
 
 export default function SendMail({mail}) {
-
+    const dispatch = useDispatch();
     const [mailError, setMailError] = useState("")
     const [forgotSuccess, setForgotSuccess] = useState(false)
     const router = useRouter();
+    const [forError, setForError] = useState("");
 
     const handleSubmit = () => {
         if(mail == "") {
             setMailError(forgotPasswordConstant["requiredEmail"])
         }else {
-            forgotApi(mail, setForgotSuccess)
+            forgotApi(mail, setForgotSuccess,setForError, dispatch)
         }
     }
 
