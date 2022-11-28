@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-import styled from "styled-components";
 // import { allUsersRoute, host } from "../../api/utils/APIRoutes";
 // import { v4 as uuidv4 } from "uuid";
 import IconBack from "../../components/Icons/IconBack";
@@ -94,7 +93,7 @@ function Chat({ auth }) {
   // ============================== fetch frend list ===================================
   const fetchUserData = async () => {
     if (localStorage.getItem("chat-app-current-user")) {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+      const user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
       const token = localStorage.getItem("blazingToken");
       let userId = {
         userId: user,
@@ -154,7 +153,7 @@ function Chat({ auth }) {
 
   // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
-    const messageTime = moment().utc().format("HH:mm");
+    const messageTime = moment().utc();
     const data = await JSON.parse(
       localStorage.getItem("chat-app-current-user")
     );
@@ -180,7 +179,7 @@ function Chat({ auth }) {
       }
     );
     const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg, time: moment().format("HH:mm") });
+    msgs.push({ fromSelf: true, message: msg, time: moment().format() });
     setMessages(msgs);
   };
 
@@ -243,7 +242,6 @@ function Chat({ auth }) {
     }
   };
   // ============================================================================
-
 
   if (errorCode) {
     return <Error statusCode={errorCode} />;
