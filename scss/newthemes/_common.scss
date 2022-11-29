@@ -522,6 +522,21 @@ label{
     color: $white-color;
   }
 }
+.cate-btn{
+  height: 32px;
+  padding: 0 12px;
+  border:1px solid $border2-color;
+  border-radius: 16px;
+  color:$disc-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.active{
+    background-color: #E8F1FE;
+    border-color: $blue-color;
+    color:$blue-color;
+  }
+}
 // Toggle switch
 .switch {
 	width: 138px;

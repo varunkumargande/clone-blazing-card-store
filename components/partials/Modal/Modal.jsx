@@ -1568,3 +1568,83 @@ export function ReturnOrderModal(props) {
     </div>
   );
 }
+export function IntrestedModal(props) {
+  return (
+    <div
+      className="modalOverlay flex justify-center flex-center">
+      <div
+        className="modal large"
+      >
+        <div className="modal-header flex justify-center flex-center">
+          <h5 className="modal-title">Tell us what you’re interested in</h5>
+        </div>
+        <div className="modal-body">
+          <div className="categories-wrap flex-wrap">
+            <div className="catgories">
+                <button className="cate-btn active">Sports</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex justify-center wd100">
+            <button
+              className="primary-btn">
+              Pick atleast 1 or more
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
