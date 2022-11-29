@@ -5,7 +5,7 @@ export function Loader(props) {
   return (
     <>
       <div>
-        <img className={props.className} src={"/static/img/Loader/loader_blue.gif"} alt="Loading" />
+        <img className={props.className}  src={"/static/img/Loader/loader_blue.gif"} alt="Loading" />
       </div>
     </>
   );
