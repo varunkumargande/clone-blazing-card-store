@@ -18,7 +18,7 @@
             max-width: 450px;
         }
         &.large{
-            max-width: 777px;
+            max-width: 792px;
         }
         &.signup{
             .modal-body{
@@ -168,6 +168,13 @@
             }
             .input-control{
                 margin-bottom: 0;
+            }
+        }
+        .categories-wrap{
+            display: flex;
+            margin: -9px;
+            .catgories{
+                padding: 9px;
             }
         }
     }
@@ -364,6 +371,13 @@
         border-top: 1px solid $border2-color;
         .btn-wrap{
             width: 100%;
+        }
+        .wd100{
+            width: 100%;
+            .primary-btn{
+                padding: 0 15px;
+                width: auto;
+            }
         }
         .primary-btn{
             &.disable{

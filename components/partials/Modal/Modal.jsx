@@ -1514,3 +1514,137 @@ export function ProductReviewModal(props) {
     </div>
   );
 }
+export function ReturnOrderModal(props) {
+  return (
+    <div
+      className="modalOverlay flex justify-center flex-center">
+      <div
+        className="modal large"
+      >
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">Return Order</h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <div className="input-control">
+              <label>Select a Reason for Return*</label>
+              <select className="grey-bg">
+                <option>Select Reason</option>
+                <option>Reason1</option>
+                <option>Reason2</option>
+              </select>
+              <div className="errorText"></div>
+          </div>
+          <div className="input-control mb0">
+              <label>Additional Information</label>
+              <textarea className="grey-bg" placeholder="Enter information"></textarea>
+              <div className="errorText"></div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex space-between btn-wrap">
+            <button className="border-btn">
+              Cancel
+            </button>
+            <button
+              className={
+                "primary-btn disable"
+              }
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function IntrestedModal(props) {
+  return (
+    <div
+      className="modalOverlay flex justify-center flex-center">
+      <div
+        className="modal large"
+      >
+        <div className="modal-header flex justify-center flex-center">
+          <h5 className="modal-title">Tell us what you’re interested in</h5>
+        </div>
+        <div className="modal-body">
+          <div className="categories-wrap flex-wrap">
+            <div className="catgories">
+                <button className="cate-btn active">Sports</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex justify-center wd100">
+            <button
+              className="primary-btn">
+              Pick atleast 1 or more
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
