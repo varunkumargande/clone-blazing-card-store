@@ -133,6 +133,9 @@ h1{
   margin-bottom: 16px;
   position: relative;
   width: 100%;
+  &.mb0{
+    margin-bottom: 0;
+  }
   .input-control{
     margin-bottom: 0 !important;
   }
