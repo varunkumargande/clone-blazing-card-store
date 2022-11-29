@@ -42,7 +42,7 @@ export default function PaymentDetail() {
 
   const cardListApi = async () => {
     const result = await APIServices.getUser("customer-card-details/getCard");
-    if (result.status == 200) {
+    if (result?.status == 200) {
       if (result.data.data != false) {
         setCardData(result.data.data[0]);
         setCardLoader(false);
