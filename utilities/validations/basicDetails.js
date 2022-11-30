@@ -2,8 +2,8 @@ import * as yup from "yup";
 import { regex } from "../../components/Constants/regex";
 
 export const basicDetailvalidation = yup.object().shape({
-  fullName: yup.string().matches(regex.onlyAlphabetsBothCases, 'Please enter letters only').required('Please Enter Your Full name'),
-  uniqueId: yup.string().matches(regex.isNumbers, 'Please enter digits only').min(9, "Digits should be equal to 9").required("Please Enter your UniqueId"),
+  firstName: yup.string().matches(regex.onlyAlphabetsBothCases, 'Please enter letters only').required('Please enter a valid First Name'),
+  lastName: yup.string().matches(regex.onlyAlphabetsBothCases, 'Please enter letters only').required('Please enter a valid Last Name'),
   upload: yup
     .mixed()
     .required("Please upload identification document")

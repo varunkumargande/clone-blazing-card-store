@@ -33,7 +33,7 @@ import {
   handleModalClick,
   setCurrentUrlInLocal,
 } from "../../../utilities/utils";
-
+import IconStar from "../../Icons/IconStar";
 const responseGoogleFailure = (response) => {
 };
 
@@ -1427,6 +1427,222 @@ export function BidCreatedModal(props) {
         <div className="modal-body text-center">
           <div className="Stream-title text-center mb24">Bid Placed</div>
           <div className="">You have bid successfully!!</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function ProductReviewModal(props) {
+  return (
+    <div
+      className="modalOverlay flex justify-center flex-center">
+      <div
+        className="modal large"
+      >
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">Write a Product Review</h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <div className="prduct-reviews flex space-between">
+            <div className="review-left wd50">
+              <div className="title">Rate the following aspects of the product</div>
+                <div className="reviewBox flex space-between flex-center">
+                  <div className="label">Shipping*</div>
+                  <div className="review">
+                    <span className="active"><IconStar/></span>
+                    <span className="active"><IconStar/></span>
+                    <span className="active"><IconStar/></span>
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                  </div>
+                </div>
+                <div className="reviewBox flex space-between flex-center">
+                  <div className="label">Packaging*</div>
+                  <div className="review">
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                  </div>
+                </div>
+                <div className="reviewBox flex space-between flex-center">
+                  <div className="label">Accuracy*</div>
+                  <div className="review">
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                    <span><IconStar/></span>
+                  </div>
+                </div>
+            </div>
+            <div className="review-right wd50">
+                <div className="input-control mb32">
+                    <label>Description*</label>
+                    <textarea className="grey-bg" placeholder="Enter here"></textarea>
+                    <div className="errorText"></div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex space-between btn-wrap">
+            <button className="border-btn">
+              Cancel
+            </button>
+            <button
+              className={
+                "primary-btn disable"
+              }
+            >
+              Submit Review
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function ReturnOrderModal(props) {
+  return (
+    <div
+      className="modalOverlay flex justify-center flex-center">
+      <div
+        className="modal large"
+      >
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">Return Order</h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <div className="input-control">
+              <label>Select a Reason for Return*</label>
+              <select className="grey-bg">
+                <option>Select Reason</option>
+                <option>Reason1</option>
+                <option>Reason2</option>
+              </select>
+              <div className="errorText"></div>
+          </div>
+          <div className="input-control mb0">
+              <label>Additional Information</label>
+              <textarea className="grey-bg" placeholder="Enter information"></textarea>
+              <div className="errorText"></div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex space-between btn-wrap">
+            <button className="border-btn">
+              Cancel
+            </button>
+            <button
+              className={
+                "primary-btn disable"
+              }
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function IntrestedModal(props) {
+  return (
+    <div
+      className="modalOverlay flex justify-center flex-center">
+      <div
+        className="modal large"
+      >
+        <div className="modal-header flex justify-center flex-center">
+          <h5 className="modal-title">Tell us what you’re interested in</h5>
+        </div>
+        <div className="modal-body">
+          <div className="categories-wrap flex-wrap">
+            <div className="catgories">
+                <button className="cate-btn active">Sports</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+            <div className="catgories">
+                <button className="cate-btn">Cards</button>
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex justify-center wd100">
+            <button
+              className="primary-btn">
+              Pick atleast 1 or more
+            </button>
+          </div>
         </div>
       </div>
     </div>
