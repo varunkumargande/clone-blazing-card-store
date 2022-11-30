@@ -1,9 +1,11 @@
+import { useRouter } from "next/router";
 import React, { useState, useEffect, memo } from "react";
 import { connect } from "react-redux";
 import { catSubStreamDetailApi } from "../../../../api/stream/subStreamDetail";
 import CategoryStream from "../Electronic";
 
 function Vertical({ category, showLoginModal }) {
+  const { query } = useRouter();
   const [subCategories, setSubCategories] = useState([]);
   const [data, setData] = useState({});
   const [page, setPage] = useState(0);
@@ -16,9 +18,7 @@ function Vertical({ category, showLoginModal }) {
     if (category?.categoryName) {
       setApiCount(0);
       setData({});
-      const data = { ...loader };
-      data[category?.categoryId] = false;
-      setLoader(true);
+      setLoader({});
     }
     if (category?.categories?.length) {
       const catData = category?.categories.find(
@@ -38,8 +38,7 @@ function Vertical({ category, showLoginModal }) {
         data,
         setLoader,
         setApiCount,
-        setSubCategories,
-        setSeeMoreLoader
+        setSeeMoreLoader,
       );
     }
   }, [apiCount, subCategories]);
@@ -54,7 +53,6 @@ function Vertical({ category, showLoginModal }) {
         data,
         setLoader,
         setApiCount,
-        setSubCategories,
         setSeeMoreLoader
       );
     }
@@ -62,8 +60,17 @@ function Vertical({ category, showLoginModal }) {
 
   const showCardDetail = () => {
     if (subCategories) {
-      return subCategories.map((item) => {
-        return (
+      return subCategories
+        .filter((item) => {
+          if (
+            !loader[item?.categoryId] ||
+            data[item?.categoryId]?.data?.length
+          ) {
+            return item;
+          }
+        })
+        .map((item) => {
+          return (
             <CategoryStream
               catData={data}
               showLoginModal={showLoginModal}
@@ -77,8 +84,8 @@ function Vertical({ category, showLoginModal }) {
               seeMoreLoader={seeMoreLoader}
               key={`vertical-${item?.categoryId}`}
             />
-        );
-      });
+          );
+        });
     }
   };
 

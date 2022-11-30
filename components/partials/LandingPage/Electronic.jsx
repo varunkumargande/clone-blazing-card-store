@@ -103,11 +103,7 @@ function CategoryStream({
           <div className="flex inner-container">
             <div className="card-wrap flex">
               {getStreamCards}
-              {/* {seeMoreLoader ? (
-                <StreamLoadSkeleton count={3} name={`home-intrenal-page`} />
-              ) : ( */}
-                {handleCatCardVisisble()}
-              {/* )} */}
+              {handleCatCardVisisble()}
             </div>
           </div>
         ) : (
