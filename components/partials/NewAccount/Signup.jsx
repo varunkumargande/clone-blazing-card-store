@@ -188,6 +188,10 @@ function Signup(auth) {
                 {usernameAvailable === false && usernameAvailable !== null ? (
                   <div className="errorText">Username already exist</div>
                 ) : null}
+                {/* <div className="userSuggestion flex nowrap">
+                  <div className={Styles.label}>Available:</div>
+                  <div className={`${Styles.label} flex flex-wrap`}><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span></div>
+                </div> */}
               </div>
 
               <div className="input-control">
