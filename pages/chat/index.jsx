@@ -69,7 +69,7 @@ function Chat({ auth }) {
         setArrivalMessage({
           fromSelf: false,
           message: msg,
-          time: moment().utc(time).local().format("HH:mm"),
+          time
         });
       });
     }
