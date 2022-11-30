@@ -34,6 +34,8 @@ import {
   setCurrentUrlInLocal,
 } from "../../../utilities/utils";
 import IconStar from "../../Icons/IconStar";
+import Styles from "../../../modular_scss/Signup.module.scss";
+
 const responseGoogleFailure = (response) => {
 };
 
@@ -1641,6 +1643,42 @@ export function IntrestedModal(props) {
             <button
               className="primary-btn">
               Pick atleast 1 or more
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function UserSuggestionModal(props) {
+  return (
+    <div
+      className="modalOverlay flex justify-center flex-center">
+      <div
+        className="modal large"
+      >
+        <div className="modal-header flex justify-center flex-center nobg hauto">
+          <h5 className={`${Styles.width520} modal-title text-center mt20 mb20`}>Your username is how other community members will
+see you. What should we call you?</h5>
+        </div>
+        <div className="modal-body">
+          <div className="innerBody flex justify-center">
+            <div className={`${Styles.width520} input-control`}>
+              <label>Username*</label>
+              <input name="username" type="text" placeholder="Username" value="" />
+              <div className="errorText"></div>
+              <div className="userSuggestion flex nowrap">
+                <div className={Styles.label}>Available:</div>
+                <div className={`${Styles.label} flex flex-wrap`}><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span></div>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex justify-center wd100">
+            <button
+              className="primary-btn">
+              Great, Let’s Go
             </button>
           </div>
         </div>

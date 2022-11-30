@@ -36,10 +36,13 @@
             background-color: $white-color;
             height: 40px;
         }
+        &.hauto{
+            height: auto !important;
+        }
     }
     .modal-title{
         font-size: 20px;
-        line-height: 21px;
+        line-height: 24px;
         font-weight: 600;
     }
     .close{

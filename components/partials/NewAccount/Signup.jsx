@@ -34,13 +34,6 @@ function Signup(auth) {
   const FullNameInputRef = React.useRef(null);
   const router = useRouter();
 
-  const handleOnBlur = async () => {
-    if (usernameInput) {
-      const res = await getUsername(usernameInput.current.value);
-      setUsernameAvailable(res);
-    }
-  };
-
   const handlePolicyCheck = () => {
     if (policyCheck) {
       setPolicyCheck(false);
@@ -68,22 +61,28 @@ function Signup(auth) {
     );
   };
 
-  const responseGoogleFailure = (response) => {
-    console.error("Failure response", response);
-  };
+  const responseGoogleFailure = (response) => {};
 
   const submitBtnState = (errors) =>
     Object.keys(errors).length > 0 || policyCheck === false
       ? "disable-btn"
       : "primary-btn";
-  const submitBtnDisableState = (errors) =>
-    Object.keys(errors).length > 0 || policyCheck === false ? true : false;
+
+  const isDisable = (errors) =>
+    Object.keys(errors).length > 0 || !policyCheck;
 
   //go back to previous page
   const handleBackButton = () => {
     router.back();
   };
- 
+
+  const checkUsernameExists = async (usernameToCheck) => {
+    if (!!usernameToCheck) {
+      const res = await getUsername(usernameToCheck);
+      setUsernameAvailable(res);
+    }
+  };
+
   return (
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}>
@@ -118,7 +117,7 @@ function Signup(auth) {
         initialValues={registerInitialValues()}
         validationSchema={registerSchema}
         onSubmit={(values) => {
-          if (policyCheck == true && usernameAvailable) {
+          if (!!policyCheck && usernameAvailable) {
             UserRegister(values, Router, dispatch);
           }
         }}
@@ -176,18 +175,25 @@ function Signup(auth) {
                   placeholder={registerConstant.form.usernameField.placeholder}
                   value={values.username}
                   onChange={handleChange}
+                  onInput={(e) => {
+                    if (e?.target?.value?.length === 8)
+                      checkUsernameExists(e?.target?.value);
+                  }}
                   ref={usernameInput}
-                  onBlur={handleOnBlur}
                   onBlurCapture={handleBlur}
                 />
                 <ErrorMessage
-                  errors={errors.username}
+                  errors={
+                    !!errors.username
+                      ? errors.username
+                      : !(!!usernameAvailable) && "Username already exist"
+                  }
                   touched={touched.username}
                 />
-
-                {usernameAvailable === false && usernameAvailable !== null ? (
-                  <div className="errorText">Username already exist</div>
-                ) : null}
+                {/* <div className="userSuggestion flex nowrap">
+                  <div className={Styles.label}>Available:</div>
+                  <div className={`${Styles.label} flex flex-wrap`}><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span></div>
+                </div> */}
               </div>
 
               <div className="input-control">
@@ -201,7 +207,6 @@ function Signup(auth) {
                     value={values.countryCode}
                     onBlur={handleBlur}
                   >
-                    <option>+</option>
                     <option value="+1">+1</option>
                     <option value="+91">+91</option>
                   </MySelect>
@@ -214,6 +219,7 @@ function Signup(auth) {
                     onChange={handleChange}
                     inputMode="tel"
                     maxlength="12"
+                    onBlur={handleBlur}
                   />
                 </div>
                 <ErrorMessage errors={errors.number} touched={touched.number} />
@@ -315,7 +321,9 @@ function Signup(auth) {
               <div className="submitWrap mb32">
                 <button
                   className={submitBtnState(errors)}
-                  disabled={() => submitBtnDisableState(errors)}
+                  disabled={() => {
+                    isDisable(errors);
+                  }}
                 >
                   Sign Up
                 </button>
