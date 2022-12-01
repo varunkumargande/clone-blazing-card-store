@@ -49,7 +49,7 @@ function Chat({ auth }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [newNotification, setNewNotification] = useState([]);
   const [notificationData, setNotificationData] = useState([]);
-  const [currentUserData, setCurrentUserData] = useChatCurrentUser("chat-app-current-user")
+  const [currentUserData, setCurrentUserData] = useChatCurrentUser()
 
   const { isMobile } = useIsMobile();
 

@@ -8,9 +8,9 @@ function getChatCurrentUser(keyName) {
     }
 }
 
-export const useChatCurrentUser = (keyName) => {
+export const useChatCurrentUser = () => {
     const [value, setValue] = useState(() => {
-        return getChatCurrentUser(keyName)
+        return getChatCurrentUser("chat-app-current-user")
     })
-    return [value, setValue]
+    return [value]
 }
