@@ -26,7 +26,7 @@ function Vertical({ category, showLoginModal }) {
       );
       setSubCategories(catData?.children);
     }
-  }, [category]);
+  }, [category?.categoryName, category?.categories?.length]);
 
   useEffect(() => {
     const catLength = subCategories?.length;
@@ -39,6 +39,7 @@ function Vertical({ category, showLoginModal }) {
         setLoader,
         setApiCount,
         setSeeMoreLoader,
+        false
       );
     }
   }, [apiCount, subCategories]);
@@ -53,7 +54,8 @@ function Vertical({ category, showLoginModal }) {
         data,
         setLoader,
         setApiCount,
-        setSeeMoreLoader
+        setSeeMoreLoader,
+        true
       );
     }
   }, [page]);

@@ -109,6 +109,7 @@ export async function catSubStreamDetailApi(
   setLoader,
   setApiCount,
   setSeeMoreLoader,
+  isLoadMore
 ) {
   const result = await APIServices.getAll(
     `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}`
@@ -116,23 +117,32 @@ export async function catSubStreamDetailApi(
 
   if (result?.status === 200) {
     if (!!result?.data?.data?.total) {
-      // duplicating old data to newdata var
-      const newData = { ...data };
-      // getting new sub data from api
-      const newsubdata = result?.data?.data;
-      // adding api reponse data to particular sub category
-      newData[catId] = { ...newsubdata };
-      if (data[catId]?.data) {
-        newData[catId].data = data[catId].data.concat(newData[catId].data);
+      if (isLoadMore) {
+        // duplicating old data to newdata var
+        const newData = { ...data };
+        // getting new sub data from api
+        const newsubdata = result?.data?.data;
+        // adding api reponse data to particular sub category
+        newData[catId] = { ...newsubdata };
+        if (data[catId]?.data) {
+          newData[catId].data = data[catId].data.concat(newData[catId].data);
+        }
+        // if old data exist then concatenate inside  else direcltly save new data
+        setData(newData);
+      } else {
+        data[catId] = {};
+        data[catId] = result?.data?.data;
+        setData(data);
       }
-      // if old data exist then concatenate inside  else direcltly save new data
-      setData(newData);
     }
-    setApiCount((count) => count + 1);
   }
 
   setLoader((loader) => ({ ...loader, [catId]: true }));
   setSeeMoreLoader(false);
+
+  if (result?.status) {
+    setApiCount((count) => count + 1);
+  }
 }
 /**
  * *************************************************************************************************
