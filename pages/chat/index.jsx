@@ -20,8 +20,7 @@ import moment, { utc } from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { show } from "../../store/toast/action";
-// import { getCurrentUser } from "../../api/common/common"
-import { useLocalStorage } from "../../api/common/useLocalStorage";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 import {
   getChatNotification,
@@ -101,25 +100,12 @@ function Chat({ auth }) {
     }
   };
 
-  //Custom Hook
-  console.log("currentUserData: ", currentUserData?._id)
-  console.log(currentUserData?.firstName)
-
-  //Current User Data form localStorage
-  // console.log(getCurrentUser())
-  // useEffect(() => {
-  //   console.log("currentUser: ", getCurrentUser()?._id)
-  // getCurrentUser(setCurrentUserData)
-  // })
-  // console.log(currentUserData)
-
   // ============================== fetch frend list ===================================
   const fetchUserData = async () => {
     if (currentUserData) {
       getFriendList(setContacts, setUserCount, dispatch);
     }
   };
-  // console.log(contacts?.length)
 
   // =====================================================================================
 
@@ -255,12 +241,11 @@ function Chat({ auth }) {
         <div className="flex space-between message-inner">
           {isMobile ? (
             <>
-              {/* {console.log(contacts.length)} */}
-              {!contacts?.length ? ( //no contacts-> Chat Panel
+              {!contacts?.length ? (
                 handleChatPanel()
               ) : (
                 <>
-                  {!isChatPanelVisible //contacts-> Profile Panel
+                  {!isChatPanelVisible
                     ? handleProfilePanel()
                     : handleChatPanel()}
                 </>
@@ -268,7 +253,6 @@ function Chat({ auth }) {
             </>
           ) : (
             <>
-              {/* for desktop */}
               {handleProfilePanel()} {handleChatPanel()}
             </>
           )}
