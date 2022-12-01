@@ -46,7 +46,7 @@ export default function ProfilePannel({
         <>
           <div className="profile-title-wrap flex space-between flex-center">
             <div className="title">
-              <span>{userCount}</span>Total User
+              <span>{notificationData?.length}</span>New Notification
             </div>
             <button
               className="btn-chat flex flex-center justify-center br50"
@@ -86,18 +86,11 @@ export default function ProfilePannel({
                       <div className="profile-text">
                         <div className="name flex flex-center">
                           {item?.firstName} {item?.lastName}
-                          {currentUser == index ? (
-                            <span className="current"></span>
-                          ) : (
-                            <>
-                              {showNotificationStatus(item?._id)}
+                           {showNotificationStatus(item?._id)}
                               {newNotification.includes(item?._id) && (
                                 <span className="new"></span>
                               )}
-                            </>
-                          )}
                         </div>
-
                         <div className="time">@{item?.username}</div>
                       </div>
                     </div>

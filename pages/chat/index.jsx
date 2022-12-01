@@ -20,6 +20,9 @@ import moment, { utc } from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { show } from "../../store/toast/action";
+// import { getCurrentUser } from "../../api/common/common"
+import { useLocalStorage } from "../../api/common/useLocalStorage";
+
 import {
   getChatNotification,
   sendMessage,
@@ -47,6 +50,7 @@ function Chat({ auth }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [newNotification, setNewNotification] = useState([]);
   const [notificationData, setNotificationData] = useState([]);
+  const [currentUserData, setCurrentUserData] = useLocalStorage("chat-app-current-user")
 
   const { isMobile } = useIsMobile();
 
@@ -55,9 +59,9 @@ function Chat({ auth }) {
   };
 
   useEffect(() => {
-    if (!!localStorage.getItem("chat-app-current-user")) {
+    if (!!currentUserData) {
       socket.current = io(host);
-      socket.current.emit("add-user", chatUser()?._id);
+      socket.current.emit("add-user", currentUserData?._id);
     } else {
       setErrorcode(404);
     }
@@ -87,7 +91,7 @@ function Chat({ auth }) {
   }, []);
 
   const chatSocketInitializer = async () => {
-    const user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+    const user = currentUserData?._id;
     if (user) {
       socket.current.on(`fetch-friend`, async (data) => {
         if (data?.friendId == user) {
@@ -97,12 +101,25 @@ function Chat({ auth }) {
     }
   };
 
+  //Custom Hook
+  console.log("currentUserData: ", currentUserData?._id)
+  console.log(currentUserData?.firstName)
+
+  //Current User Data form localStorage
+  // console.log(getCurrentUser())
+  // useEffect(() => {
+  //   console.log("currentUser: ", getCurrentUser()?._id)
+  // getCurrentUser(setCurrentUserData)
+  // })
+  // console.log(currentUserData)
+
   // ============================== fetch frend list ===================================
   const fetchUserData = async () => {
-    if (localStorage.getItem("chat-app-current-user")) {
+    if (currentUserData) {
       getFriendList(setContacts, setUserCount, dispatch);
     }
   };
+  // console.log(contacts?.length)
 
   // =====================================================================================
 
@@ -110,7 +127,7 @@ function Chat({ auth }) {
   const changeCurrentChat = async (index) => {
     socket.current.emit(
       "add-chat-currentUser",
-      JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
+      currentUserData?._id,
       contacts[index]._id
     );
     setCurrentSelected(index);
@@ -124,14 +141,14 @@ function Chat({ auth }) {
     const messageTime = moment().utc().format("HH:mm");
     socket.current.emit("send-msg", {
       to: currentChat._id,
-      from: JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
+      from: currentUserData?._id,
       isRead: false,
       msg,
       messageTime,
     });
 
     let sendMessageData = {
-      from: JSON.parse(localStorage.getItem("chat-app-current-user"))?._id,
+      from: currentUserData?._id,
       to: currentChat._id,
       message: msg,
       messageTime: messageTime,
@@ -233,24 +250,25 @@ function Chat({ auth }) {
       ) : (
         <HeaderDefault />
       )}
-
       <div className="messages-wrapper">
         {!isMobile ? <h1>Messages</h1> : ""}
         <div className="flex space-between message-inner">
           {isMobile ? (
             <>
-              {!contacts?.length ? (
+              {/* {console.log(contacts.length)} */}
+              {!contacts?.length ? ( //no contacts-> Chat Panel
                 handleChatPanel()
               ) : (
                 <>
-                  {isChatPanelVisible
-                    ? handleChatPanel()
-                    : handleProfilePanel()}
+                  {!isChatPanelVisible //contacts-> Profile Panel
+                    ? handleProfilePanel()
+                    : handleChatPanel()}
                 </>
               )}
             </>
           ) : (
             <>
+              {/* for desktop */}
               {handleProfilePanel()} {handleChatPanel()}
             </>
           )}

@@ -113,25 +113,25 @@ export default function ChatPannel({
                 <div ref={divRef} />
               </div>
             </div>
-          </div>
-          <div className="input-chat flex space-between flex-center">
-            <input
-              value={msg}
-              type="text"
-              placeholder="Start conversation..."
-              onChange={(e) => setMsg(e.target.value)}
-              onKeyDown={(event) => handleEnterPressEvent(event)}
-            />
-            {/* <button className="g-btn">
+            <div className="input-chat flex space-between flex-center">
+              <input
+                value={msg}
+                type="text"
+                placeholder="Start conversation..."
+                onChange={(e) => setMsg(e.target.value)}
+                onKeyDown={(event) => handleEnterPressEvent(event)}
+              />
+              {/* <button className="g-btn">
                 <IconGallery />
               </button> */}
-            <button
-              className="chat-btn flex flex-center justify-center br50"
-              onClick={(event) => sendChat(event)}
-              onKeyDown={(event) => handleEnterPressEvent(event)}
-            >
-              <IconChat />
-            </button>
+              <button
+                className="chat-btn flex flex-center justify-center br50"
+                onClick={(event) => sendChat(event)}
+                onKeyDown={(event) => handleEnterPressEvent(event)}
+              >
+                <IconChat />
+              </button>
+            </div>
           </div>
         </>
       ) : (

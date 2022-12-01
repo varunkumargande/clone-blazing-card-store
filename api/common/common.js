@@ -1,3 +1,4 @@
+// import { useEffect, useState } from 'react';
 import APIServices from '../../services'
 
 export const getImageSignedUrl = async (payLoad) => {
@@ -15,3 +16,15 @@ export const getStateList = async (setStateList) => {
     setStateList(result.data.data);
   }
 }
+
+// export const getCurrentUser = () => {
+//   // var currentUser = JSON.parse(localStorage.getItem('chat-app-current-user'))
+//   // return currentUser
+//     var currentUser = JSON.parse(localStorage.getItem('chat-app-current-user'))
+//     if(!!currentUser) {
+//       return currentUser
+//     }
+//     else {
+//       console.log("No data found")
+//     }
+// }
