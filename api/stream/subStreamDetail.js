@@ -20,7 +20,7 @@ export async function streamDetailApi(
   page,
   setTotal,
   setLoader,
- setSeeMoreLoader
+  setSeeMoreLoader
 ) {
   const result = await APIServices.getAll(
     `stream/stream-homePage?type=${categoryConstant.SCHEDULE_DATA.type}&limit=${categoryConstant.SCHEDULE_DATA.limit}&offset=${page}&key=10980374eab848ac`
@@ -29,11 +29,17 @@ export async function streamDetailApi(
     setData((data) => data.concat(result?.data?.data?.data));
     setTotal(result?.data?.data?.total);
   }
- setSeeMoreLoader(false);
+  setSeeMoreLoader(false);
   setLoader(false);
 }
 
-export async function liveDetailApi(setData, page, setTotal, setLoader,setSeeMoreLoader) {
+export async function liveDetailApi(
+  setData,
+  page,
+  setTotal,
+  setLoader,
+  setSeeMoreLoader
+) {
   const result = await APIServices.getAll(
     `stream/stream-homePage?type=${categoryConstant.LIVE_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}&key=10980374eab848ac`
   );
@@ -42,7 +48,7 @@ export async function liveDetailApi(setData, page, setTotal, setLoader,setSeeMor
     setTotal(result?.data?.data?.total);
   }
   setLoader(false);
- setSeeMoreLoader(false)
+  setSeeMoreLoader(false);
 }
 
 /**
@@ -56,7 +62,7 @@ export async function catStreamDetailApi(
   setLoader,
   data,
   setCategories,
- setSeeMoreLoader
+  setSeeMoreLoader
 ) {
   const result = await APIServices.getAll(
     `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${page}&categoryId=${catId}&key=10980374eab848ac`
@@ -89,7 +95,7 @@ export async function catStreamDetailApi(
     }
   }
   setLoader((loader) => ({ ...loader, [catId]: true }));
- setSeeMoreLoader(false)
+  setSeeMoreLoader(false);
   if (result?.status) {
     setApiCount((count) => count + 1);
   }
@@ -102,40 +108,38 @@ export async function catSubStreamDetailApi(
   data,
   setLoader,
   setApiCount,
-  setSubCategories,
- setSeeMoreLoader
+  setSeeMoreLoader,
+  isLoadMore
 ) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}&key=10980374eab848ac`
+    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}`
   );
 
   if (result?.status === 200) {
     if (!!result?.data?.data?.total) {
-      // duplicating old data to newdata var
-      const newData = { ...data };
-      // getting new sub data from api
-      const newsubdata = result?.data?.data;
-      // adding api reponse data to particular sub category
-      newData[catId] = { ...newsubdata };
-      if (data[catId]?.data) {
-        newData[catId].data = data[catId].data.concat(newData[catId].data);
+      if (isLoadMore) {
+        // duplicating old data to newdata var
+        const newData = { ...data };
+        // getting new sub data from api
+        const newsubdata = result?.data?.data;
+        // adding api reponse data to particular sub category
+        newData[catId] = { ...newsubdata };
+        if (data[catId]?.data) {
+          newData[catId].data = data[catId].data.concat(newData[catId].data);
+        }
+        // if old data exist then concatenate inside  else direcltly save new data
+        setData(newData);
+      } else {
+        data[catId] = {};
+        data[catId] = result?.data?.data;
+        setData(data);
       }
-      // if old data exist then concatenate inside  else direcltly save new data
-      setData(newData);
-    }
-    if (result?.data?.data?.total === 0) {
-      setSubCategories((categories) =>
-        categories.filter((item) => {
-          if (item.categoryId !== catId) {
-            return item;
-          }
-        })
-      );
     }
   }
 
   setLoader((loader) => ({ ...loader, [catId]: true }));
- setSeeMoreLoader(false)
+  setSeeMoreLoader(false);
+
   if (result?.status) {
     setApiCount((count) => count + 1);
   }

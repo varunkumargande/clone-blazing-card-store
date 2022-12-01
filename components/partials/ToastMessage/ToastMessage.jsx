@@ -11,7 +11,7 @@ export function TostMessage({ data }) {
     dispatch(hide());
   }
   useEffect(() => {
-    setTimeout(handleClose, 5000);
+    setTimeout(handleClose, 1000);
   },[])
   
   return (

@@ -102,6 +102,9 @@ h1{
 .mt16{
   margin-top: 16px;
 }
+.mt20{
+  margin-top: 20px;
+}
 .ml24{
   margin-left: 24px;
 }
@@ -133,6 +136,9 @@ h1{
   margin-bottom: 16px;
   position: relative;
   width: 100%;
+  &.mb0{
+    margin-bottom: 0;
+  }
   .input-control{
     margin-bottom: 0 !important;
   }
@@ -519,6 +525,21 @@ label{
     color: $white-color;
   }
 }
+.cate-btn{
+  height: 32px;
+  padding: 0 12px;
+  border:1px solid $border2-color;
+  border-radius: 16px;
+  color:$disc-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.active{
+    background-color: #E8F1FE;
+    border-color: $blue-color;
+    color:$blue-color;
+  }
+}
 // Toggle switch
 .switch {
 	width: 138px;
@@ -680,7 +701,7 @@ label{
     font-weight: 500;
   }
   .close{
-    width:14px;
+    width:10px;
     opacity: 1;
     &:hover{
       opacity: 1;
@@ -727,7 +748,11 @@ label{
   .wd50{
     width: calc(50% - 8px);
   }
-    
+  .prduct-reviews{
+    .wd50{
+      width: calc(50% - 15px);
+    }
+  }
   .wd48{
     width: calc(50% - 12px);
   }

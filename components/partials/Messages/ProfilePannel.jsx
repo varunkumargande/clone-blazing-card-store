@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import IconAddChat from "../../Icons/IconAddChat";
 import { DefaultImagePath } from "../../Constants/imageConstants";
-import Styles from '../../../modular_scss/message.module.scss';
+import Styles from "../../../modular_scss/message.module.scss";
+import { getChatNotification } from "../../../api/chat/getChatNotification";
+import { useEffect } from "react";
 
 export default function ProfilePannel({
   contacts,
@@ -11,20 +13,40 @@ export default function ProfilePannel({
   setChatPanelVisible,
   setCurrentUser,
   currentUser,
+  newNotification,
+  setNewNotification,
+  notificationData,
+  setNotificationData,
 }) {
-  const handleSelectChatUser = (index) => {
+  const handleSelectChatUser = (index, id) => {
+    /**
+     * these both function is use for remove read message satus in state
+     **/
+    setNewNotification((data) => data.filter((item) => item != id));
+    setNotificationData((data) => data.filter((item) => item?.sender != id));
+    // ========================================================================
+
+    // this is function for change user for chat
     changeCurrentChat(index);
+    // =========================================
+
     setChatPanelVisible(true);
     setCurrentUser(index);
   };
 
+  const showNotificationStatus = (id) => {
+    return notificationData.map((item) => {
+      if (item?.sender == id) return <span className="new"></span>;
+    });
+  };
+
   return (
     <div className="profile-wrapper">
-      {contacts.length ? (
+      {contacts?.length ? (
         <>
           <div className="profile-title-wrap flex space-between flex-center">
             <div className="title">
-              <span>{userCount}</span>Total User
+              <span>{notificationData?.length}</span>New Notification
             </div>
             <button
               className="btn-chat flex flex-center justify-center br50"
@@ -44,7 +66,7 @@ export default function ProfilePannel({
                     className="profile-chat-list flex space-between"
                     onClick={(e) => {
                       e.preventDefault();
-                      handleSelectChatUser(index);
+                      handleSelectChatUser(index, item._id);
                     }}
                     key={`${item.username}-profile-panel`}
                   >
@@ -64,7 +86,8 @@ export default function ProfilePannel({
                       <div className="profile-text">
                         <div className="name flex flex-center">
                           {item?.firstName} {item?.lastName}
-                          {currentUser == index && (
+                          {showNotificationStatus(item?._id)}
+                          {newNotification.includes(item?._id) && (
                             <span className="new"></span>
                           )}
                         </div>

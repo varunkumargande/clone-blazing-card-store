@@ -55,7 +55,7 @@ function RightDiv({ streamData, channel, client }) {
       const message = initialMessage ?? inputValue;
       const messageObject = {
         message,
-        userId: options.audience + options.audienceId,
+        userId: options.audience,
         profileUrl: profileUrl,
       };
 
@@ -155,7 +155,7 @@ function RightDiv({ streamData, channel, client }) {
                 )}
               </div>
               <div className="chat-text-wrap">
-                <div className="name">{userId.replace(/\d+/g, "")}</div>
+                <div className="name">{userId}</div>
                 <div className="chat">{message}</div>
               </div>
             </div>

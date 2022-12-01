@@ -13,8 +13,12 @@ import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
 import { catStreamDetailApi } from "../api/stream/subStreamDetail";
 import { useIsMobile } from "../contexts/Devices/CurrentDevices";
-import { SignUPGoogle } from "../components/partials/Modal/Modal";
+import {
+  IntrestedModal,
+  SignUPGoogle,
+} from "../components/partials/Modal/Modal";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
+import getCategoriesToSelect from "../api/home/getCategoriesToSelect";
 
 function landingPage({ category }) {
   const { isMobile } = useIsMobile();
@@ -45,7 +49,9 @@ function landingPage({ category }) {
   const [catStreamData, setCateStreamData] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [seeMoreLoader, setSeeMoreLoader] = useState(true);
-
+  const [categoryList, setCategoryList] = useState([]);
+  const [isInterestedCategoryOpen, setIsInterestedCategoryOpen] =
+    useState(false);
   const streamLiveDetail = useSelector(
     (state) => state?.stream?.liveDetails
   )?.length;
@@ -119,7 +125,18 @@ function landingPage({ category }) {
   /**
    * ===============================================
    */
+  //get category list to select
+  const interestedCategoryList = async () => {
+    const list = await getCategoriesToSelect(categoryList);
+    if (list?.length > 0) {
+      setCategoryList(list);
+      setIsInterestedCategoryOpen(true);
+    }
+  };
 
+  useEffect(() => {
+    interestedCategoryList();
+  }, []);
   /**
    * showing stream data carousel based on categories
    */
@@ -168,6 +185,12 @@ function landingPage({ category }) {
         <SignUPGoogle
           customMsg={"Signup to Join Blazing Cards"}
           onDismiss={setShowModal}
+        />
+      )}
+      {isInterestedCategoryOpen && (
+        <IntrestedModal
+          categoryList={categoryList}
+          setIsInterestedCategoryOpen={setIsInterestedCategoryOpen}
         />
       )}
       <Category

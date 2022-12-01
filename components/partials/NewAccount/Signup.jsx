@@ -7,7 +7,7 @@ import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { connect, useDispatch } from "react-redux";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { registerConstant } from "../../Constants/auth";
+import { registerConstant } from "../../../components/Constants/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
@@ -19,7 +19,9 @@ import { registerInitialValues } from "../../../utilities/validations/signupDeta
 import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import MySelect from "../../CommonComponents/MySelect";
+import { countriesCodeList } from "../../Constants/countryList";
 import Styles from "../../../modular_scss/Signup.module.scss";
+import { regex } from "../../Constants/regex";
 import { openInNewTab } from "../../../utilities/utils";
 
 function Signup(auth) {
@@ -33,13 +35,6 @@ function Signup(auth) {
 
   const FullNameInputRef = React.useRef(null);
   const router = useRouter();
-
-  const handleOnBlur = async () => {
-    if (usernameInput) {
-      const res = await getUsername(usernameInput.current.value);
-      setUsernameAvailable(res);
-    }
-  };
 
   const handlePolicyCheck = () => {
     if (policyCheck) {
@@ -68,22 +63,28 @@ function Signup(auth) {
     );
   };
 
-  const responseGoogleFailure = (response) => {
-    console.error("Failure response", response);
-  };
+  const responseGoogleFailure = (response) => {};
 
   const submitBtnState = (errors) =>
     Object.keys(errors).length > 0 || policyCheck === false
       ? "disable-btn"
       : "primary-btn";
-  const submitBtnDisableState = (errors) =>
-    Object.keys(errors).length > 0 || policyCheck === false ? true : false;
+
+  const isDisable = (errors) =>
+    Object.keys(errors).length > 0 || !policyCheck;
 
   //go back to previous page
   const handleBackButton = () => {
     router.back();
   };
- 
+
+  const checkUsernameExists = async (usernameToCheck) => {
+    if (!!usernameToCheck) {
+      const res = await getUsername(usernameToCheck);
+      setUsernameAvailable(res);
+    }
+  };
+
   return (
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}>
@@ -118,7 +119,7 @@ function Signup(auth) {
         initialValues={registerInitialValues()}
         validationSchema={registerSchema}
         onSubmit={(values) => {
-          if (policyCheck == true && usernameAvailable) {
+          if (!!policyCheck && usernameAvailable) {
             UserRegister(values, Router, dispatch);
           }
         }}
@@ -130,6 +131,7 @@ function Signup(auth) {
           handleChange,
           handleBlur,
           handleSubmit,
+          setFieldValue,
         }) => (
           <>
             <form className="signup flex space-between" onSubmit={handleSubmit}>
@@ -176,23 +178,30 @@ function Signup(auth) {
                   placeholder={registerConstant.form.usernameField.placeholder}
                   value={values.username}
                   onChange={handleChange}
+                  onInput={(e) => {
+                    if (e?.target?.value?.length === 8)
+                      checkUsernameExists(e?.target?.value);
+                  }}
                   ref={usernameInput}
-                  onBlur={handleOnBlur}
                   onBlurCapture={handleBlur}
                 />
                 <ErrorMessage
-                  errors={errors.username}
+                  errors={
+                    !!errors.username
+                      ? errors.username
+                      : !(!!usernameAvailable) && "Username already exist"
+                  }
                   touched={touched.username}
                 />
-
-                {usernameAvailable === false && usernameAvailable !== null ? (
-                  <div className="errorText">Username already exist</div>
-                ) : null}
+                {/* <div className="userSuggestion flex nowrap">
+                  <div className={Styles.label}>Available:</div>
+                  <div className={`${Styles.label} flex flex-wrap`}><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span></div>
+                </div> */}
               </div>
 
               <div className="input-control">
                 <label>{registerConstant.form.contactField.label}</label>
-                <div className="d-flex space-between">
+                <div className="flex space-between">
                   <MySelect
                     className={Styles.country_code}
                     label={registerConstant.form.countryCodeField.label}
@@ -201,9 +210,13 @@ function Signup(auth) {
                     value={values.countryCode}
                     onBlur={handleBlur}
                   >
-                    <option>+</option>
-                    <option value="+1">+1</option>
-                    <option value="+91">+91</option>
+                    {countriesCodeList.map((item) => {
+                      return (
+                        <>
+                          <option value={item?.code}>{item?.code}</option>
+                        </>
+                      );
+                    })}
                   </MySelect>
 
                   <input
@@ -211,9 +224,15 @@ function Signup(auth) {
                     name={registerConstant.form.contactField.name}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
-                    onChange={handleChange}
-                    inputMode="tel"
+                    onBlur={handleBlur}
+                    onChange={(e) =>
+                      setFieldValue(
+                        "number",
+                        e.target.value.replace(regex.onlyNumbers, "")
+                      )
+                    }
                     maxlength="12"
+                    onBlur={handleBlur}
                   />
                 </div>
                 <ErrorMessage errors={errors.number} touched={touched.number} />
@@ -300,7 +319,7 @@ function Signup(auth) {
                   >
                     <a>Terms of Service</a>
                   </span>
-                  &{" "}
+                  {" "}&#38;{" "}
                   <span
                     onClick={(e) => {
                       e.preventDefault();
@@ -315,7 +334,9 @@ function Signup(auth) {
               <div className="submitWrap mb32">
                 <button
                   className={submitBtnState(errors)}
-                  disabled={() => submitBtnDisableState(errors)}
+                  disabled={() => {
+                    isDisable(errors);
+                  }}
                 >
                   Sign Up
                 </button>
