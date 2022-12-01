@@ -5,7 +5,7 @@ export const profileSchema = Yup.object().shape({
   firstName: Yup.string().required("First name Required"),
   lastName: Yup.string().required("Last name Required"),
   phoneNumber: Yup.string()
-    .required("Required")
+    .required("Contact Number is Required")
     .matches(
       regex.phoneNumber,
       "Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)"

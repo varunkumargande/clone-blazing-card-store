@@ -17,7 +17,12 @@ import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
 import { stepState } from "../../Constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
+import { io } from "socket.io-client";
+import { host } from "../../../chatService";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../Constants/imageConstants";
 import Notifications from "../../partials/Notifications/Notifications";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
@@ -30,6 +35,7 @@ import {
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function HeaderDefault({ auth }) {
+  const socket = useRef();
   const router = useRouter();
   const [active, setActive] = useState(false);
   const [notificationDropdownActive, setNotificationDropdownActive] =
@@ -41,16 +47,15 @@ function HeaderDefault({ auth }) {
   const [isVendor, setVendor] = useState(false);
 
   let { pageName } = router.query;
-
   const {
     notifications,
     notificationsUnreadCount,
     setNotificationsUnreadCount,
   } = useNotifications();
+  const [chatNotification, setChatNotification] = useState([]);
 
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
-
   const toast = useSelector((state) => state?.toast?.toast);
 
   const handleOnClick = () => {
@@ -66,7 +71,18 @@ function HeaderDefault({ auth }) {
         clearInterval(profileInterval);
       }
     }, 10);
+    // if (socket.current) {
+    //   socket.current.on("new-message-notification", (id) => {
+    //     setChatNotification(id);
+    //   });
+    // }
   }, []);
+
+  // useEffect(() => {
+  //   if (!!localStorage.getItem("chat-app-current-user")) {
+  //     socket.current = io(host);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (toggle) {

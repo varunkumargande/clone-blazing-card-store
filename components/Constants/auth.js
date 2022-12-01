@@ -38,7 +38,7 @@ export const registerConstant = {
     contactField: {
       name: "number",
       placeholder: "Contact Number",
-      label: "Contact Number",
+      label: "Contact Number*",
       regex: /^([+]1){0,1}[1-9]\d{9}$/,
 
       // ToDo: Need to remove this code. Keeping this for reference.

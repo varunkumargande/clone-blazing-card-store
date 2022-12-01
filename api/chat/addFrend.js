@@ -1,6 +1,7 @@
 import { addFriend } from "../../chatService";
 import axios from "axios";
 import { show } from "../../store/toast/action";
+import useChatUser from "../../utilities/chatUser";
 
 export async function addChatFrend(
   friendId,
@@ -24,12 +25,16 @@ export async function addChatFrend(
     Authorization: `Bearer ${token}`,
   };
   await axios
-    .post(addFriend, {
-      userId: currentChatUserId,
-      friendId: friendId,
-    }, {
-      headers: chatHeader,
-    })
+    .post(
+      addFriend,
+      {
+        userId: currentChatUserId,
+        friendId: friendId,
+      },
+      {
+        headers: chatHeader,
+      }
+    )
     .then((res) => {
       fetchUserData();
       setIsOpen(false);
