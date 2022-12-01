@@ -3,7 +3,7 @@ import { show } from "../../store/toast/action";
 import { notificationList } from "../../chatService";
 
 export async function getChatNotification(setNotificationData) {
-  let userId = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
+  const userId = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
   const token = localStorage.getItem("blazingToken");
 
   const chatHeader = {
