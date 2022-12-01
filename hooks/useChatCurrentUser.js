@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-function getLocalStorageValue(keyName) {
+function getChatCurrentUser(keyName) {
     if (typeof window !== 'undefined') {
         // Perform localStorage action
         const currentUser = JSON.parse(window.localStorage?.getItem(keyName))
@@ -8,9 +8,9 @@ function getLocalStorageValue(keyName) {
     }
 }
 
-export const useLocalStorage = (keyName) => {
+export const useChatCurrentUser = (keyName) => {
     const [value, setValue] = useState(() => {
-        return getLocalStorageValue(keyName)
+        return getChatCurrentUser(keyName)
     })
     return [value, setValue]
 }

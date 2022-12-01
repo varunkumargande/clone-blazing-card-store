@@ -20,7 +20,7 @@ import moment, { utc } from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { show } from "../../store/toast/action";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useChatCurrentUser } from "../../hooks/useChatCurrentUser";
 
 import {
   getChatNotification,
@@ -49,7 +49,7 @@ function Chat({ auth }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [newNotification, setNewNotification] = useState([]);
   const [notificationData, setNotificationData] = useState([]);
-  const [currentUserData, setCurrentUserData] = useLocalStorage("chat-app-current-user")
+  const [currentUserData, setCurrentUserData] = useChatCurrentUser("chat-app-current-user")
 
   const { isMobile } = useIsMobile();
 
