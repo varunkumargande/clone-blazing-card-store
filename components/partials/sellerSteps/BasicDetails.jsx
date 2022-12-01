@@ -26,12 +26,12 @@ export default function BasicDetails() {
   );
 
   const handleSubmit = async (values) => {
-    if (!!values?.fullName && !!values?.uniqueId && !!values?.upload) {
+    if (!!values?.firstName && !!values?.lastName && !!values?.upload) {
       const time = new Date().getTime();
       const fileName = `${time}_${values?.upload?.name}`;
       const data = {
-        fullName: values.fullName,
-        uniqueId: values.uniqueId,
+        firstName: values.firstName,
+        lastName: values.lastName,
         documents: {
           fileName: values?.upload?.name,
           image: updateFileName,
@@ -61,8 +61,8 @@ export default function BasicDetails() {
   };
 
   const initialValues = {
-    fullName: BasicDetails?.fullName ?? "",
-    uniqueId: BasicDetails?.uniqueId ?? "",
+    firstName: BasicDetails?.firstName ?? "",
+    lastName: BasicDetails?.lastName ?? "",
     upload: BasicDetails?.documents?.fileName
       ? new File([""], BasicDetails?.documents?.fileName, {
           type: "image/jpeg",
@@ -80,9 +80,18 @@ export default function BasicDetails() {
       setUpdateFileName(uploadImage.fileName);
     }
   };
+
+  /**
+   * @method: handlePreviousClick
+   * @description: handle the previous click button. Basically send it to previous step.
+   */
+  const handlePreviousClick = () => {
+    router.push('/become-seller/guidelines')
+  }
+
   return (
     <div className="step-container">
-      <BackButton name={"Basic Details"} />
+      <BackButton name={"Basic Details"} backUrl="/" />
       <div className="sub-title">
         Blazing Cards takes marketplace safety seriously. Sellers must have a
         valid payment method on file. In rare occasions, sellers are charged a
@@ -103,8 +112,8 @@ export default function BasicDetails() {
             <div className="flex space-between">
               <TextInput
                 className="input-control wd48"
-                label="Full Name*"
-                name="fullName"
+                label="First Name*"
+                name="firstName"
                 type="text"
                 placeholder="Enter here"
                 maxLength="25"
@@ -112,18 +121,13 @@ export default function BasicDetails() {
 
               <TextInput
                 className="input-control wd48"
-                label="Unique Id*"
-                name="uniqueId"
+                label="Last Name*"
+                name="lastName"
                 type="text"
-                value={formProps.values.uniqueId}
-                onChange={(e) => {
-                  formProps.setFieldTouched("uniqueId", true, true);
-                  formProps.handleChange(e);
-                }}
                 placeholder="Enter here"
-                maxLength={9}
-                minLength={9}
+                maxLength="25"
               />
+
             </div>
             <div className="flex space-between">
               <FileUpload
@@ -140,8 +144,8 @@ export default function BasicDetails() {
               />
             </div>
             <div className="submit-wrapper flex space-between">
-              <button type="reset" onClick={() => {}} className="border-btn">
-                Cancel
+              <button onClick={handlePreviousClick} className="border-btn">
+                Previous
               </button>
               <button type="submit" className="primary-btn">
                 Save & Next

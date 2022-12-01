@@ -75,7 +75,6 @@ export default function ChatPannel({
                   </div>
                   <div className="time">@{contactDetail?.username}</div>
                 </div>
-                <div className="time">@{contactDetail?.username}</div>
               </div>
             </div>
             <div className="chat-box-wrap">
@@ -91,7 +90,7 @@ export default function ChatPannel({
                           <div className="chat">{item?.message}</div>
                           <div className="time">
                             {item?.time &&
-                              moment(new Date(item?.time)).format("HH:mm")}
+                              moment(new Date(item?.time)).format("lll")}
                           </div>
                         </div>
                       </>
@@ -104,7 +103,10 @@ export default function ChatPannel({
                           key={`${item.time}-chat-panel-receiver`}
                         >
                           <div className="chat">{item?.message}</div>
-                          <div className="time">{item?.time}</div>
+                          <div className="time">
+                            {item?.time &&
+                              moment(new Date(item?.time)).format("lll")}
+                            </div>
                         </div>
                       </>
                     );

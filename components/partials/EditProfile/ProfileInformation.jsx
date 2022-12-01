@@ -133,7 +133,7 @@ export default function ProfileInformation() {
             <div className="prifile-image br50">
               {profileData != null ? (
                 showImageLoader ? (
-                  <Loader className="d-flex w-50 m-auto" />
+                  <Loader className="d-flex w-50 m-auto"  />
                 ) : (
                   <>
                     {newDp != "" ? (

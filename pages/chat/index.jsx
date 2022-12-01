@@ -72,9 +72,9 @@ function Chat({ auth }) {
         setArrivalMessage({
           fromSelf: false,
           message: msg,
-          time: moment().utc(time).local().format("HH:mm"),
           isRead: false,
           fromUser: userData,
+          time
         });
       });
       socket.current.on("new-message-notification", (id) => {

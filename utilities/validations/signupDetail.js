@@ -43,14 +43,13 @@ export const registerSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Passwords must match"),
 
   username: Yup.string()
+    .max(8)
+    .min(8)
+    .required(registerConstant.form.usernameField.required)
     .matches(
       registerConstant.form.usernameField.regex,
       registerConstant.form.usernameField.regexMessage
-    )
-    .max(8)
-    .required(registerConstant.form.usernameField.required),
-
-  countryCode: Yup.string().required("Country Code is required"),
+    ),
 });
 
 export const registerInitialValues = () => {

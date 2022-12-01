@@ -44,6 +44,8 @@ function HeaderDefault({ auth }) {
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const [toggle, setToggle] = useState(false);
+  const [isVendor, setVendor] = useState(false);
+
   let { pageName } = router.query;
   const {
     notifications,
@@ -87,6 +89,15 @@ function HeaderDefault({ auth }) {
       handleStoreAndVendorToggle("seller");
     }
   }, [toggle]);
+
+  /**
+   * UseEffect will check if Buyer is a seller or not via notification
+   */
+  useEffect(() => {
+    if(!isVendor && (notifications && notifications[0] && notifications[0]['notify_type'] == 'Vendor')) {
+      setVendor(true);
+    }
+  }, [notifications])
 
   const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
@@ -158,7 +169,7 @@ function HeaderDefault({ auth }) {
 
   // =================== handle check user login toggle buttun ====================
   const handleCheckUserLoginForVendor = () => {
-    if (profile?.isVendor && auth?.isLoggedIn) {
+    if ((profile?.isVendor || isVendor) && auth?.isLoggedIn) {
       return (
         <>
           <label className="switch toggle-switch darkBlue">
@@ -179,11 +190,10 @@ function HeaderDefault({ auth }) {
         </>
       );
     } else {
-      if (auth?.isLoggedIn) {
         return (
           <>
             {!stepState.includes(pageName) ? (
-              <Link href="/become-seller/guidelines">
+              <Link href={auth?.isLoggedIn ? "/become-seller/guidelines" : "/account/login"}>
                 <a className="border-btn flex flex-center justify-center become">
                   Become a Seller
                 </a>
@@ -191,19 +201,6 @@ function HeaderDefault({ auth }) {
             ) : null}
           </>
         );
-      } else {
-        return (
-          <>
-            {!stepState.includes(pageName) ? (
-              <Link href="/account/login">
-                <a className="flex flex-center justify-center become Link">
-                  Become a Seller
-                </a>
-              </Link>
-            ) : null}
-          </>
-        );
-      }
     }
   };
   // ==============================================================================
