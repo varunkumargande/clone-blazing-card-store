@@ -49,8 +49,8 @@ function CategoryStream({
    */
   const handleCatCardVisisble = () => {
     if (!!catData[catId]) {
-      if (catData[catId]?.total == limit) {
-        return <>{showCatCardLoader(setPage, page, catId, setCatId)} </>;
+      if (catData[catId]?.total !== catData[catId]?.data.length) {
+        return <>{showCatCardLoader(setPage, page, catId, setCatId)}</>;
       }
     }
   };
@@ -103,11 +103,7 @@ function CategoryStream({
           <div className="flex inner-container">
             <div className="card-wrap flex">
               {getStreamCards}
-              {/* {seeMoreLoader ? (
-                <StreamLoadSkeleton count={3} name={`home-intrenal-page`} />
-              ) : ( */}
-                {handleCatCardVisisble()}
-              {/* )} */}
+              {handleCatCardVisisble()}
             </div>
           </div>
         ) : (
