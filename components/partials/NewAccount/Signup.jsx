@@ -5,11 +5,10 @@ import IconEye from "../../Icons/IconEye";
 import IconBack from "../../Icons/IconBack";
 import { UserRegister } from "../../../api";
 import Router from "next/router";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { registerConstant } from "../../../components/Constants/auth";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { getUsername } from "../../../api/auth/getUsername";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
@@ -20,21 +19,31 @@ import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import MySelect from "../../CommonComponents/MySelect";
 import { countriesCodeList } from "../../Constants/countryList";
-import Styles from "../../../modular_scss/Signup.module.scss";
+import useDebounce from "../../../hooks/useDebounce";
 import { regex } from "../../Constants/regex";
 import { openInNewTab } from "../../../utilities/utils";
+import Styles from "../../../modular_scss/Signup.module.scss";
 
-function Signup(auth) {
+function Signup() {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const usernameInput = useRef();
   const [passShow, setPassShow] = useState(false);
   const [conpassShow, setConPassShow] = useState(false);
   const [policyCheck, setPolicyCheck] = useState(false);
+  const [searchUsername, setSearchUsername] = useState("");
+  const debouncedSearchTerm = useDebounce(searchUsername, 500);
 
-  const FullNameInputRef = React.useRef(null);
-  const router = useRouter();
+  useEffect(
+    () => {
+      if (debouncedSearchTerm) {
+        checkUsernameExists(debouncedSearchTerm);
+      }
+    },
+    [debouncedSearchTerm] // Only call effect if debounced search term changes
+  );
 
   const handlePolicyCheck = () => {
     if (policyCheck) {
@@ -65,13 +74,11 @@ function Signup(auth) {
 
   const responseGoogleFailure = (response) => {};
 
-  const submitBtnState = (errors) =>
-    Object.keys(errors).length > 0 || policyCheck === false
-      ? "disable-btn"
-      : "primary-btn";
-
-  const isDisable = (errors) =>
-    Object.keys(errors).length > 0 || !policyCheck;
+  const isDisable = (errors) => {
+    return Boolean(
+      Object.keys(errors).length > 0 || !policyCheck || !usernameAvailable
+    );
+  };
 
   //go back to previous page
   const handleBackButton = () => {
@@ -137,7 +144,6 @@ function Signup(auth) {
             <form className="signup flex space-between" onSubmit={handleSubmit}>
               {/* <div className="input-control wd50"> */}
               {/* <label>First Name*</label> */}
-
               <TextInput
                 className="input-control wd50"
                 label={registerConstant.form.firstNameField.label}
@@ -179,17 +185,19 @@ function Signup(auth) {
                   value={values.username}
                   onChange={handleChange}
                   onInput={(e) => {
-                    if (e?.target?.value?.length === 8)
-                      checkUsernameExists(e?.target?.value);
+                    if (e?.target?.value?.length >= 8)
+                      setSearchUsername(e?.target?.value);
                   }}
                   ref={usernameInput}
                   onBlurCapture={handleBlur}
+                  maxLength={12}
+                  minLength={8}
                 />
                 <ErrorMessage
                   errors={
                     !!errors.username
                       ? errors.username
-                      : !(!!usernameAvailable) && "Username already exist"
+                      : !!!usernameAvailable && "Username already exist"
                   }
                   touched={touched.username}
                 />
@@ -302,10 +310,8 @@ function Signup(auth) {
                     </button>{" "}
                   </>
                 )}
-
                 <ErrorMessage errors={errors.cpass} touched={touched.cpass} />
               </div>
-
               <div className="checkbox-wrap mb32">
                 <label className="checkbox">
                   <input type="checkbox" onClick={() => handlePolicyCheck()} />
@@ -318,8 +324,8 @@ function Signup(auth) {
                     }}
                   >
                     <a>Terms of Service</a>
-                  </span>
-                  {" "}&#38;{" "}
+                  </span>{" "}
+                  &#38;{" "}
                   <span
                     onClick={(e) => {
                       e.preventDefault();
@@ -330,10 +336,9 @@ function Signup(auth) {
                   </span>
                 </label>
               </div>
-
               <div className="submitWrap mb32">
                 <button
-                  className={submitBtnState(errors)}
+                  className={isDisable(errors) ? "disable-btn" : "primary-btn"}
                   disabled={() => {
                     isDisable(errors);
                   }}
@@ -359,7 +364,4 @@ function Signup(auth) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return state.auth;
-};
-export default connect(mapStateToProps)(Signup);
+export default Signup;
