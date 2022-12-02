@@ -33,10 +33,11 @@ import {
   handleModalClick,
   setCurrentUrlInLocal,
 } from "../../../utilities/utils";
+import IconStar from "../../Icons/IconStar";
+import saveSelectedCategories from "../../../api/home/saveSelectedCategories";
+import Styles from "../../../modular_scss/Signup.module.scss";
 
-const responseGoogleFailure = (response) => {
-  console.error("Failure response", response);
-};
+const responseGoogleFailure = (response) => {};
 
 export function ShareModalModal({ setIsShareModalOpen }) {
   const pageUrl = window.location.href;
@@ -538,6 +539,7 @@ export function AddNewCardModal(props) {
               <label>Card Number *</label>
               <input
                 type="text"
+                inputMode="numeric"
                 name="cardNumber"
                 placeholder={"Enter here"}
                 value={formik.values.cardNumber}
@@ -583,6 +585,7 @@ export function AddNewCardModal(props) {
                   placeholder={"Enter here"}
                   value={formik.values.cvc}
                   type="password"
+                  inputMode="numeric"
                   onChange={(e) => {
                     resetFormData();
                     formik.setFieldValue(
@@ -942,8 +945,15 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
   const [userData, setUserData] = useState([]);
   const [userDataLoader, setUserDataLoader] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [currentChatUser, setCurrentChatUser] = useState(null);
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    if (!!JSON.parse(localStorage.getItem("chat-app-current-user"))) {
+      setCurrentChatUser(
+        JSON.parse(localStorage.getItem("chat-app-current-user"))
+      );
+    }
+  }, []);
   // handle username and search frend
   const handleUsername = async (e) => {
     e.preventDefault();
@@ -965,7 +975,15 @@ export function ChatUserModal({ setIsOpen, fetchUserData, socket }) {
 
   // handle for submit for add frend
   const handleSubmitUser = () => {
-    addChatFrend(userId, fetchUserData, setIsOpen, socket, dispatch);
+    if (currentChatUser?._id)
+      addChatFrend(
+        userId,
+        fetchUserData,
+        setIsOpen,
+        socket,
+        dispatch,
+        currentChatUser?._id
+      );
   };
   // =============================================================
 
@@ -1224,7 +1242,11 @@ export function UnfollowModal(props) {
   );
 }
 
-export function SuccessMessageModal({ message, subMessage, setPaymentSuccessful }) {
+export function SuccessMessageModal({
+  message,
+  subMessage,
+  setPaymentSuccessful,
+}) {
   return (
     <div
       className="modalOverlay flex justify-center flex-center"
@@ -1349,8 +1371,8 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
                 </button>
               )}
               onSuccess={(credentialResponse) => {
-                let data = jwt_decode(credentialResponse.credential);
-                responseGoogle(data);
+                const credentials = jwt_decode(credentialResponse.credential);
+                responseGoogle(credentials);
               }}
               onError={(response) => {
                 responseGoogleFailure(response);
@@ -1380,7 +1402,7 @@ export function SignUPGoogle({ onDismiss, customMsg }) {
             >
               <a>Sign In</a>
             </button>
-            &nbsp; on Blazing Cards
+            on Blazing Cards
           </div>
         </div>
       </div>
@@ -1420,6 +1442,265 @@ export function BidCreatedModal(props) {
         <div className="modal-body text-center">
           <div className="Stream-title text-center mb24">Bid Placed</div>
           <div className="">You have bid successfully!!</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function ProductReviewModal(props) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal large">
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">Write a Product Review</h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <div className="prduct-reviews flex space-between">
+            <div className="review-left wd50">
+              <div className="title">
+                Rate the following aspects of the product
+              </div>
+              <div className="reviewBox flex space-between flex-center">
+                <div className="label">Shipping*</div>
+                <div className="review">
+                  <span className="active">
+                    <IconStar />
+                  </span>
+                  <span className="active">
+                    <IconStar />
+                  </span>
+                  <span className="active">
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                </div>
+              </div>
+              <div className="reviewBox flex space-between flex-center">
+                <div className="label">Packaging*</div>
+                <div className="review">
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                </div>
+              </div>
+              <div className="reviewBox flex space-between flex-center">
+                <div className="label">Accuracy*</div>
+                <div className="review">
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                  <span>
+                    <IconStar />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="review-right wd50">
+              <div className="input-control mb32">
+                <label>Description*</label>
+                <textarea
+                  className="grey-bg"
+                  placeholder="Enter here"
+                ></textarea>
+                <div className="errorText"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex space-between btn-wrap">
+            <button className="border-btn">Cancel</button>
+            <button className={"primary-btn disable"}>Submit Review</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function ReturnOrderModal(props) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal large">
+        <div className="modal-header flex Space-between flex-center">
+          <h5 className="modal-title">Return Order</h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <div className="input-control">
+            <label>Select a Reason for Return*</label>
+            <select className="grey-bg">
+              <option>Select Reason</option>
+              <option>Reason1</option>
+              <option>Reason2</option>
+            </select>
+            <div className="errorText"></div>
+          </div>
+          <div className="input-control mb0">
+            <label>Additional Information</label>
+            <textarea
+              className="grey-bg"
+              placeholder="Enter information"
+            ></textarea>
+            <div className="errorText"></div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex space-between btn-wrap">
+            <button className="border-btn">Cancel</button>
+            <button className={"primary-btn disable"}>Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function IntrestedModal(props) {
+  const { categoryList, setIsInterestedCategoryOpen } = props;
+  let selectedCategories = [];
+  const handleSelectedCategoryList = () => {
+    if (selectedCategories.length > 0) {
+      saveSelectedCategories(selectedCategories, setIsInterestedCategoryOpen);
+    }
+  };
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal large">
+        <div className="modal-header flex justify-center flex-center">
+          <h5 className="modal-title">Tell us what you’re interested in</h5>
+        </div>
+        <div className="modal-body">
+          <div className="categories-wrap flex-wrap">
+            {!!categoryList &&
+              categoryList.map((category, index) => {
+                return (
+                  <div className="catgories">
+                    <button
+                      className="cate-btn"
+                      value={category?.categoryId}
+                      onClick={(event) => {
+                        if (event.target.className === "cate-btn active") {
+                          event.target.className = "cate-btn";
+                          selectedCategories.splice(
+                            selectedCategories.indexOf(
+                              Number(event.target.value)
+                            ),
+                            1
+                          );
+                        } else {
+                          if(selectedCategories.length<10){
+                            event.target.className = "cate-btn active";
+                            selectedCategories.push(Number(event.target.value));
+                          }
+                        }
+                      }}
+                    >
+                      {category?.name}
+                    </button>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex justify-center wd100">
+            <button
+              className="primary-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                handleSelectedCategoryList();
+              }}
+            >
+              Pick atleast 1 or more
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+export function UserSuggestionModal(props) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal large">
+        <div className="modal-header flex justify-center flex-center nobg hauto">
+          <h5
+            className={`${Styles.width520} modal-title text-center mt20 mb20`}
+          >
+            Your username is how other community members will see you. What
+            should we call you?
+          </h5>
+        </div>
+        <div className="modal-body">
+          <div className="innerBody flex justify-center">
+            <div className={`${Styles.width520} input-control`}>
+              <label>Username*</label>
+              <input
+                name="username"
+                type="text"
+                placeholder="Username"
+                value=""
+              />
+              <div className="errorText"></div>
+              <div className="userSuggestion flex nowrap">
+                <div className={Styles.label}>Available:</div>
+                <div className={`${Styles.label} flex flex-wrap`}>
+                  <span className={Styles.link}>aasthahanda12</span>
+                  <span className={Styles.link}>aasthahanda12</span>
+                  <span className={Styles.link}>aasthahanda12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <div className="flex justify-center wd100">
+            <button className="primary-btn">Great, Let’s Go</button>
+          </div>
         </div>
       </div>
     </div>

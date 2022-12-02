@@ -471,7 +471,7 @@ function LeftDiv({
           )}
         </div>
         <div
-          className="profile-wrap"
+          className="profile-wrap pointer"
           onClick={(e) => {
             e.preventDefault();
             handleProfileClick();

@@ -1,4 +1,4 @@
-import React from "react";
+
 import * as cryptoJs from "crypto-js";
 
 class StreamDetailModel {
@@ -16,11 +16,12 @@ class StreamDetailModel {
       "ff20a253698574300fe4c77abfd5c18ff65367a8"
     );
     var appId = bytes.toString(cryptoJs.enc.Utf8);
+    const randomUserId = Math.floor(Math.random() * 20);
     let streamDetails = {
       sellerName: streamData?.vendorDetails?.username,
       sellerId: streamData?.vendorDetails?.vendor_id,
-      loggedInUserName: "Guest",
-      loggedInUserId: Math.floor(Math.random() * 20),
+      loggedInUserId: randomUserId,
+      loggedInUserName: "Guest" + randomUserId,
       uuid: streamData?.uuid,
       title: streamData?.title,
       description: streamData?.description,

@@ -19,6 +19,7 @@ import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { DefaultImagePath, ImageTransformation} from "../../Constants/imageConstants";
 import { setCurrentUrlInLocal } from "../../../utilities/utils";
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
+import { useNotifications } from "../../../contexts/Notifications/Notifications";
 
 function MobileHeader({ auth }) {
   const [active, setActive] = useState(false);
@@ -28,6 +29,12 @@ function MobileHeader({ auth }) {
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
+  const [isVendor, setVendor] = useState(false);
+
+  const {
+    notifications,
+    notificationsUnreadCount,
+  } = useNotifications();
 
   const handleStoreAndVendorToggle = async () => {
     await vendorAuthApi();
@@ -51,9 +58,16 @@ function MobileHeader({ auth }) {
     }, 10);
   }, []);
 
-  const handleOnClick = () => {
-    setActive(!active);
-  };
+  /**
+   * UseEffect will check if Buyer is a seller or not via notification
+   */
+  useEffect(() => {
+    if(!isVendor && (notifications && notifications[0] && notifications[0]['notify_type'] == 'Vendor')) {
+      setVendor(true);
+    }
+  }, [notifications])
+
+
   const handleMobOnClick = () => {
     mobSetActive(!mobActive);
   };
@@ -62,6 +76,7 @@ function MobileHeader({ auth }) {
       setActive(false);
     }
   };
+  
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, false);
     return () => {
@@ -140,7 +155,7 @@ function MobileHeader({ auth }) {
 
   // =================== handle check user login toggle buttun ====================
   const handleCheckUserLoginForVendor = () => {
-    if (profile?.isVendor && auth?.isLoggedIn) {
+    if ((profile?.isVendor || isVendor) && auth?.isLoggedIn) {
       return (
         <>
           <div className="text-center become-seller flex flex-center justify-center become-toggle">
@@ -163,12 +178,11 @@ function MobileHeader({ auth }) {
         </>
       );
     } else {
-      if (auth?.isLoggedIn) {
         return (
           <>
             <div className="text-center become-seller border-btn">
               Want to sell?
-              <Link href="/become-seller/guidelines">
+              <Link href={auth?.isLoggedIn ? "/become-seller/guidelines" : "/account/login"}>
                 <a className="flex flex-center justify-center become">
                   Become a Seller
                 </a>
@@ -176,20 +190,6 @@ function MobileHeader({ auth }) {
             </div>
           </>
         );
-      } else {
-        return (
-          <>
-            <div className="text-center become-seller flex flex-center justify-center">
-              Want to sell?
-              <Link href="/account/login">
-                <a className="flex flex-center justify-center become Link">
-                  Become a Seller
-                </a>
-              </Link>
-            </div>
-          </>
-        );
-      }
     }
   };
   // ==============================================================================
@@ -316,7 +316,9 @@ function MobileHeader({ auth }) {
                   </li>
                   <li>
                     <Link href="/notifications">
-                      <a className="notification">
+                      <a className={`notification ${
+                    notificationsUnreadCount && "active"
+                  }`}>
                         <IconNotificationMobile />
                         <span>Notification</span>
                       </a>

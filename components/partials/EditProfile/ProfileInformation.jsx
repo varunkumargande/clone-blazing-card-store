@@ -13,13 +13,16 @@ import { DefaultImagePath } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
 import { regex } from "../../Constants/regex";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { show } from "../../../store/toast/action";
 import { profileSchema } from "../../../utilities/validations/profileDetails";
 import { profileInitialValues } from "../../../utilities/validations/profileDetails";
 import MySelect from "../../CommonComponents/MySelect";
 import Styles from "../../../modular_scss/ProfileInformation.module.scss";
 import DefaultConstants from "../../../utilities/constants";
+import { TostMessage } from "../ToastMessage/ToastMessage";
+import { countriesCodeList } from "../../Constants/countryCodeList";
+import { profileConstant } from "../../Constants/profile";
 
 export default function ProfileInformation() {
   const dispatch = useDispatch();
@@ -33,7 +36,17 @@ export default function ProfileInformation() {
   const [loader, setLoader] = useState(false);
   const [showImageLoader, setShowImageLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const toast = useSelector((state) => state?.toast?.toast);
+  const [disableUploadButton, setDisableUploadButton] = useState(false);
+  const [currentChatUser, setCurrentChatUser] = useState(null);
 
+  useEffect(() => {
+    if (!!JSON.parse(localStorage.getItem("chat-app-current-user"))) {
+      setCurrentChatUser(
+        JSON.parse(localStorage.getItem("chat-app-current-user"))
+      );
+    }
+  }, []);
   useEffect(() => {
     if (localStorage.getItem("blazingUser")) {
       setLoader(true);
@@ -73,11 +86,24 @@ export default function ProfileInformation() {
           uploadImage(files[0], reader.result);
         };
         reader.readAsDataURL(files[0]);
+        setDisableUploadButton(false);
       } else {
-        setNewDpError(`Profile image must be of max ${MaxProfileImageSize}MB`);
+        if (!!inputFile.current.value) {
+          dispatch(
+            show({
+              message: `Profile image must be of max ${MaxProfileImageSize}MB`,
+              type: "error",
+            })
+          );
+          e.target.value = null;
+          inputFile.current.value = "";
+          setDisableUploadButton(true);
+        }
       }
     } else {
-      setNewDpError("Please upload a valid Profile Image");
+      dispatch(
+        show({ message: "Please upload a valid Profile Image", type: "error" })
+      );
     }
   };
 
@@ -95,13 +121,6 @@ export default function ProfileInformation() {
     }
   };
 
-  const handleImage = () => {
-    return (
-      imageUrl +
-      `?path=${profileData?.avatarPath}&name=/${profileData?.avatar}&width=300&height=300`
-    );
-  };
-
   const handleCancelButton = () => {
     setLoader(true);
   };
@@ -114,7 +133,7 @@ export default function ProfileInformation() {
             <div className="prifile-image br50">
               {profileData != null ? (
                 showImageLoader ? (
-                  <Loader />
+                  <Loader className="d-flex w-50 m-auto"  />
                 ) : (
                   <>
                     {newDp != "" ? (
@@ -167,16 +186,23 @@ export default function ProfileInformation() {
             <div className="profile-text">
               <div className="profile-btn-wrap flex flex-center mb16">
                 <label
-                  className={`upload-btn flex justify-center flex-center ${
-                    showImageLoader && "disable-upload-image-btn"
-                  }`}
+                  className={
+                    disableUploadButton && !!toast.message
+                      ? "upload-btn flex justify-center flex-center disable-upload-image-btn"
+                      : `upload-btn flex justify-center flex-center ${
+                          showImageLoader && "disable-upload-image-btn"
+                        }`
+                  }
                 >
                   Update Profile Image
                   <input
                     type="file"
                     accept=".png, .jpg, .jpeg"
                     ref={inputFile}
-                    disabled={showImageLoader}
+                    disabled={
+                      showImageLoader ||
+                      (disableUploadButton && !!toast.message)
+                    }
                     onChange={(e) => changeDP(e)}
                   />
                 </label>
@@ -201,7 +227,6 @@ export default function ProfileInformation() {
       </>
     );
   };
-
   const handleProfileForm = () => {
     if (loader == false) {
       if (!!profileData) {
@@ -223,7 +248,8 @@ export default function ProfileInformation() {
                     newDpName,
                     Router,
                     setLoader,
-                    dispatch
+                    dispatch,
+                    currentChatUser
                   );
                 }
               }}
@@ -245,11 +271,11 @@ export default function ProfileInformation() {
                       <div className="inner-box">
                         <div className="flex space-between">
                           <div className="input-control wd50">
-                            <label>First Name*</label>
+                            <label>{profileConstant.form.firstNameField.label}</label>
                             <input
-                              placeholder={"Enter here"}
+                              placeholder={profileConstant.form.firstNameField.placeholder}
                               className="grey-bg"
-                              name="firstName"
+                              name={profileConstant.form.firstNameField.name}
                               onChange={(e) =>
                                 setFieldValue(
                                   e.target.name,
@@ -261,7 +287,7 @@ export default function ProfileInformation() {
                                 )
                               }
                               value={values.firstName}
-                              type="text"
+                              type={profileConstant.form.firstNameField.type}
                             />
                             <ErrorMessage
                               errors={errors.firstName}
@@ -269,10 +295,10 @@ export default function ProfileInformation() {
                             />
                           </div>
                           <div className="input-control wd50">
-                            <label>Last Name*</label>
+                            <label>{profileConstant.form.lastNameField.label}</label>
                             <input
-                              name="lastName"
-                              placeholder={"Enter here"}
+                              name={profileConstant.form.lastNameField.name}
+                              placeholder={profileConstant.form.lastNameField.placeholder}
                               className="grey-bg"
                               onChange={(e) =>
                                 setFieldValue(
@@ -295,12 +321,12 @@ export default function ProfileInformation() {
                         <div className="flex space-between">
                           <div className="input-control wd50">
                             <div className="flex space-between flex-center">
-                              <label htmlFor="usr">Username*</label>
+                              <label htmlFor="usr">{profileConstant.form.userNameField.label}</label>
                             </div>
                             <input
-                              name="text"
-                              placeholder={"Enter here"}
-                              id="usr"
+                              name={profileConstant.form.userNameField.name}
+                              placeholder={profileConstant.form.userNameField.placeholder}
+                              id={profileConstant.form.userNameField.id}
                               className="grey-bg"
                               value={profileData?.username}
                               disabled
@@ -308,29 +334,36 @@ export default function ProfileInformation() {
                           </div>
 
                           <div className="input-control wd50">
-                            <label htmlFor="usr">Phone Number*</label>
+                            <label htmlFor="usr">{profileConstant.form.contactNumberField.label}</label>
 
                             <div className="d-flex space-between">
                               <MySelect
                                 className={`grey-bg ${Styles.country_code}`}
-                                name="countryCode"
+                                name={profileConstant.form.contactNumberField.countryCodeName}
                                 onChange={handleChange}
                                 value={values.countryCode}
                                 onBlur={handleBlur}
                               >
-                                <option>+</option>
-                                <option value="+1">+1</option>
-                                <option value="+91">+91</option>
+                                {countriesCodeList.map((item) => {
+                                  return (
+                                    <>
+                                      <option value={item?.code}>
+                                        {item?.code}
+                                      </option>
+                                    </>
+                                  );
+                                })}
                               </MySelect>
 
                               <input
-                                name="phoneNumber"
-                                placeholder={"Enter here"}
-                                id="usr"
+                                name={profileConstant.form.contactNumberField.phoneNumberName}
+                                placeholder={profileConstant.form.contactNumberField.placeholder}
+                                id={profileConstant.form.contactNumberField.id}
                                 className={`grey-bg ${Styles.phone_number}`}
+                                onBlur={handleBlur}
                                 onChange={(e) =>
                                   setFieldValue(
-                                    "phoneNumber",
+                                    profileConstant.form.contactNumberField.phoneNumberName,
                                     e.target.value.replace(
                                       regex.excludePlusAndNumber,
                                       ""
@@ -339,7 +372,7 @@ export default function ProfileInformation() {
                                 }
                                 value={values.phoneNumber}
                                 maxLength={12}
-                                type="tel"
+                                type={profileConstant.form.contactNumberField.type}
                               />
                             </div>
                             <ErrorMessage
@@ -351,13 +384,13 @@ export default function ProfileInformation() {
 
                         <div className="input-control">
                           <div className="flex space-between flex-center">
-                            <label htmlFor="bio">Bio</label>
+                            <label htmlFor="bio">{profileConstant.form.bioField.label}</label>
                             <div className="max-limit">Max. 300 characters</div>
                           </div>
                           <textarea
-                            name="bio"
-                            id="bio"
-                            placeholder={"Enter here"}
+                            name={profileConstant.form.bioField.name}
+                            id={profileConstant.form.bioField.id}
+                            placeholder={profileConstant.form.bioField.placeholder}
                             className="grey-bg"
                             onChange={handleChange}
                             value={values.bio}
@@ -376,10 +409,10 @@ export default function ProfileInformation() {
                       <div className="inner-box">
                         <div className="flex space-between">
                           <div className="input-control">
-                            <label>Twitter</label>
+                            <label>{profileConstant.form.socialShareLinksField.twitter.label}</label>
                             <input
-                              name="twitterUrl"
-                              placeholder={"Enter your profile url"}
+                              name={profileConstant.form.socialShareLinksField.twitter.name}
+                              placeholder={profileConstant.form.socialShareLinksField.twitter.placeholder}
                               className="grey-bg"
                               onChange={handleChange}
                               value={values.twitterUrl}
@@ -392,12 +425,12 @@ export default function ProfileInformation() {
                           </div>
                           <div className="input-control">
                             <div className="flex space-between flex-center">
-                              <label htmlFor="usr">Facebook</label>
+                              <label htmlFor="usr">{profileConstant.form.socialShareLinksField.facebook.label}</label>
                             </div>
                             <input
-                              name="facebookUrl"
-                              placeholder={"Enter your profile url"}
-                              id="usr"
+                              name={profileConstant.form.socialShareLinksField.facebook.name}
+                              placeholder={profileConstant.form.socialShareLinksField.facebook.placeholder}
+                              id={profileConstant.form.socialShareLinksField.facebook.id}
                               className="grey-bg"
                               onChange={handleChange}
                               value={values.facebookUrl}
@@ -413,13 +446,13 @@ export default function ProfileInformation() {
                     <div className="button-wrapper flex mb40">
                       <button
                         className="border-btn mr16"
-                        type="button"
+                        type={profileConstant.form.buttonField.cancelButton.type}
                         onClick={() => handleCancelButton()}
                       >
-                        Cancel
+                        {profileConstant.form.buttonField.cancelButton.label}
                       </button>
-                      <button className="primary-btn" type="submit">
-                        Save
+                      <button className="primary-btn" type={profileConstant.form.buttonField.submitButton.type}>
+                        {profileConstant.form.buttonField.submitButton.label}
                       </button>
                     </div>
                   </form>
@@ -462,6 +495,7 @@ export default function ProfileInformation() {
           Delete Account
         </span>
       </div>
+      {!!toast.message && <TostMessage data={toast}></TostMessage>}
     </div>
   );
 }
