@@ -49,7 +49,7 @@ function CategoryStream({
   const handleCatCardVisisble = () => {
     if (!!catData[catId]) {
       if (catData[catId]?.total !== catData[catId]?.data.length) {
-        return <>{showCatCardLoader(setPage, page, catId, setCatId)}</>;
+        return showCatCardLoader(setPage, page, catId, setCatId);
       }
     }
   };
