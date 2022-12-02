@@ -16,7 +16,7 @@ export async function chatLogin() {
   if (data.success === true) {
     localStorage.setItem(
       chatConstant["localStorageKey"],
-      JSON.stringify(data.response)
+      JSON.stringify(data.response.user)
     );
     Router.push("/chat");
     modalSuccess("success", "success");

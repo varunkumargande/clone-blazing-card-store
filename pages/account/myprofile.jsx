@@ -12,10 +12,13 @@ import PublicProfileConstants from "../../components/Constants";
 import Link from "next/link";
 import Followers from "../../components/partials/Profile/Followers";
 import CloudinaryImage from "../../components/CommonComponents/CloudinaryImage";
-import { ImageTransformation, DefaultImagePath } from "../../components/Constants/imageConstants";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../components/Constants/imageConstants";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
-
+import Error from "../_error";
 
 function MyProfile(props) {
   const router = useRouter();
@@ -30,6 +33,7 @@ function MyProfile(props) {
   const [likedShows, setLikedShows] = useState([]);
   const [tabs, setTabs] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+  const [errorCode, setErrorcode] = useState(0);
 
   const [activeTab, setActiveTab] = useState(
     tabs && tabs.length > 0 ? tabs[0].key : ""
@@ -65,6 +69,8 @@ function MyProfile(props) {
   useEffect(() => {
     if (localStorage.getItem("blazingUser")) {
       setCurrentUser(JSON.parse(localStorage.getItem("blazingUser")));
+    } else {
+      setErrorcode(404);
     }
   }, []);
 
@@ -129,7 +135,10 @@ function MyProfile(props) {
         return (
           <>
             {upcomingShows.map((show, index) => (
-                <StreamCard detail={show} key={`upcoming-myprofile-${show?.id}`}/>
+              <StreamCard
+                detail={show}
+                key={`upcoming-myprofile-${show?.id}`}
+              />
             ))}
           </>
         );
@@ -148,7 +157,10 @@ function MyProfile(props) {
         return (
           <>
             {previousShows.map((show, index) => (
-                <StreamCard detail={show} key={`previousshows-myprofile-${show?.id}`}/>
+              <StreamCard
+                detail={show}
+                key={`previousshows-myprofile-${show?.id}`}
+              />
             ))}
           </>
         );
@@ -181,14 +193,14 @@ function MyProfile(props) {
           return (
             <>
               {followers.map((details, index) => (
-                  <Followers
-                    person={details}
-                    isFollower={isForFollower}
-                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                    setFollowing={setFollowers}
-                    following={followers}
-                    key={`follower-myprofile-${index}-${details?.id}`}
-                  />
+                <Followers
+                  person={details}
+                  isFollower={isForFollower}
+                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                  setFollowing={setFollowers}
+                  following={followers}
+                  key={`follower-myprofile-${index}-${details?.id}`}
+                />
               ))}
             </>
           );
@@ -204,14 +216,14 @@ function MyProfile(props) {
           return (
             <>
               {following.map((details, index) => (
-                  <Followers
-                    person={details}
-                    isFollower={isForFollower}
-                    setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
-                    setFollowing={setFollowing}
-                    following={following}
-                    key={`following-myprofile-${index}-${details?.id}`}
-                  />
+                <Followers
+                  person={details}
+                  isFollower={isForFollower}
+                  setIsOpenFollowUnfollow={setIsOpenFollowUnfollow}
+                  setFollowing={setFollowing}
+                  following={following}
+                  key={`following-myprofile-${index}-${details?.id}`}
+                />
               ))}
             </>
           );
@@ -350,6 +362,10 @@ function MyProfile(props) {
       );
     }
   };
+
+  if (errorCode) {
+    return <Error statusCode={errorCode} />;
+  }
 
   return (
     <div className="home-container profile-container-wrap">

@@ -10,9 +10,8 @@ export async function UserRegister(values, Router, dispatch) {
     phoneNumber: values.countryCode + "-" + values.number,
     userName: values.username,
   });
-
   const result = await APIServices.create("customer/register", data);
-  if (result.status == 200) {
+  if (result?.status == 200) {
     dispatch(
       show({
         message: "Congratulation! your account has been created",
@@ -23,8 +22,8 @@ export async function UserRegister(values, Router, dispatch) {
   } else {
     dispatch(
       show({
-        message: result.data.message,
-        type: "success",
+        message: result?.data?.message,
+        type: "error",
       })
     );
   }

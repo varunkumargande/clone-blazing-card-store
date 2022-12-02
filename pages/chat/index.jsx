@@ -2,17 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-import styled from "styled-components";
 // import { allUsersRoute, host } from "../../api/utils/APIRoutes";
 // import { v4 as uuidv4 } from "uuid";
 import IconBack from "../../components/Icons/IconBack";
-import {
-  sendMessageRoute,
-  recieveMessageRoute,
-  allUsersRoute,
-  friendList,
-  host,
-} from "../../chatService";
+import { recieveMessageRoute, friendList, host } from "../../chatService";
 import ChatInput from "../../components/chats/components/ChatInput";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import MobileHeader from "../../components/shared/headers/MobileHeader";
@@ -27,6 +20,15 @@ import moment, { utc } from "moment";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { show } from "../../store/toast/action";
+import { useChatCurrentUser } from "../../hooks/useChatCurrentUser";
+
+import {
+  getChatNotification,
+  sendMessage,
+  getFriendList,
+  getMessage,
+} from "../../api/chat";
+import { chatUser } from "../../utilities/chatUser";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
@@ -37,144 +39,110 @@ function Chat({ auth }) {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
-  const [currentUserName, setCurrentUserName] = useState(undefined);
-  const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
   const [messages, setMessages] = useState([]);
-  const [userIndex, setUserIndex] = useState([]);
   const [msg, setMsg] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [loader, setLoader] = useState(false);
   const [userCount, setUserCount] = useState(null);
   const [isChatPanelVisible, setChatPanelVisible] = useState(false);
-
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [newNotification, setNewNotification] = useState([]);
+  const [notificationData, setNotificationData] = useState([]);
+  const [currentUserData, setCurrentUserData] = useChatCurrentUser()
 
   const { isMobile } = useIsMobile();
 
+  const fetchUserChatNotification = () => {
+    getChatNotification(setNotificationData);
+  };
+
   useEffect(() => {
-    if (!!localStorage.getItem("chat-app-current-user")) {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"));
+    if (!!currentUserData) {
       socket.current = io(host);
-      socket.current.emit("add-user", user?._id);
+      socket.current.emit("add-user", currentUserData?._id);
     } else {
-      Router.push("/");
+      setErrorcode(404);
     }
   }, []);
+
   useEffect(() => {
     if (socket.current) {
-      socket.current.on("msg-recieve", (msg, time) => {
+      socket.current.on("msg-recieve", (msg, time, from, userData) => {
         setArrivalMessage({
           fromSelf: false,
           message: msg,
-          time: moment().utc(time).local().format("HH:mm"),
+          isRead: false,
+          fromUser: userData,
+          time
         });
+      });
+      socket.current.on("new-message-notification", (id) => {
+        setNewNotification((data) => data.concat(id));
       });
     }
   }, []);
+
   useEffect(() => {
     fetchUserData();
     chatSocketInitializer();
+    fetchUserChatNotification();
   }, []);
 
   const chatSocketInitializer = async () => {
-    socket.current.on(`fetch-friend`, async (data) => {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
-      if (data?.friendId == user) {
-        await fetchUserData();
-      }
-    });
+    const user = currentUserData?._id;
+    if (user) {
+      socket.current.on(`fetch-friend`, async (data) => {
+        if (data?.friendId == user) {
+          await fetchUserData();
+        }
+      });
+    }
   };
 
   // ============================== fetch frend list ===================================
   const fetchUserData = async () => {
-    if (localStorage.getItem("chat-app-current-user")) {
-      let user = JSON.parse(localStorage.getItem("chat-app-current-user"))?._id;
-      const token = localStorage.getItem("blazingToken");
-      let userId = {
-        userId: user,
-      };
-      const chatHeader = {
-        Authorization: `Bearer ${token}`,
-      };
-      const data = await axios
-        .post(friendList, userId, {
-          headers: chatHeader,
-        })
-        .then((res) => {
-          setContacts(res?.data?.response?.data);
-          setUserCount(res?.data?.response?.userCount);
-        })
-        .catch((err) => {
-          dispatch(
-            show({
-              message: err.response?.data?.message,
-              type: "error",
-            })
-          );
-        });
+    if (currentUserData) {
+      getFriendList(setContacts, setUserCount, dispatch);
     }
   };
 
   // =====================================================================================
 
   // // ==================== contact's function =========================
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
-    setCurrentUserName(data.username);
-    setCurrentUserImage(data.avatarImage);
-  }, []);
   const changeCurrentChat = async (index) => {
-    const data = JSON.parse(localStorage.getItem("chat-app-current-user"));
+    socket.current.emit(
+      "add-chat-currentUser",
+      currentUserData?._id,
+      contacts[index]._id
+    );
     setCurrentSelected(index);
     setCurrentChat(contacts[index]);
-    const token = localStorage.getItem("blazingToken");
-    const response = await axios.post(
-      recieveMessageRoute,
-      {
-        from: data?._id,
-        to: contacts[index]._id,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    setMessages(response.data.response);
+    getMessage(setMessages, contacts, index);
   };
   // // =================================================================
 
   // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
     const messageTime = moment().utc().format("HH:mm");
-    const data = await JSON.parse(
-      localStorage.getItem("chat-app-current-user")
-    );
     socket.current.emit("send-msg", {
       to: currentChat._id,
-      from: data?._id,
+      from: currentUserData?._id,
+      isRead: false,
       msg,
       messageTime,
     });
-    const token = localStorage.getItem("blazingToken");
-    await axios.post(
-      sendMessageRoute,
-      {
-        from: data?._id,
-        to: currentChat._id,
-        message: msg,
-        messageTime: messageTime,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+
+    let sendMessageData = {
+      from: currentUserData?._id,
+      to: currentChat._id,
+      message: msg,
+      messageTime: messageTime,
+      isRead: false,
+    };
+    sendMessage(sendMessageData);
     const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg, time: moment().format("HH:mm") });
+    msgs.push({ fromSelf: true, message: msg, time: moment().format() });
     setMessages(msgs);
   };
 
@@ -213,6 +181,10 @@ function Chat({ auth }) {
           setChatPanelVisible={setChatPanelVisible}
           setCurrentUser={setCurrentUser}
           currentUser={currentUser}
+          newNotification={newNotification}
+          setNewNotification={setNewNotification}
+          notificationData={notificationData}
+          setNotificationData={setNotificationData}
         />
       </>
     );
@@ -221,20 +193,18 @@ function Chat({ auth }) {
 
   // =========================== chat panel view ================================
   const handleChatPanel = () => {
-    if (!!contacts) {
-      return (
-        <>
-          <ChatPannel
-            handleSendMsg={handleSendMsg}
-            msg={msg}
-            messages={messages}
-            setMsg={setMsg}
-            contactDetail={contacts[currentSelected]}
-            setIsOpen={setIsOpen}
-          />
-        </>
-      );
-    }
+    return (
+      <>
+        <ChatPannel
+          handleSendMsg={handleSendMsg}
+          msg={msg}
+          messages={messages}
+          setMsg={setMsg}
+          contactDetail={!!contacts && contacts[currentSelected]}
+          setIsOpen={setIsOpen}
+        />
+      </>
+    );
   };
   // ============================================================================
 
@@ -270,7 +240,17 @@ function Chat({ auth }) {
         {!isMobile ? <h1>Messages</h1> : ""}
         <div className="flex space-between message-inner">
           {isMobile ? (
-            <>{isChatPanelVisible ? handleChatPanel() : handleProfilePanel()}</>
+            <>
+              {!contacts?.length ? (
+                handleChatPanel()
+              ) : (
+                <>
+                  {!isChatPanelVisible
+                    ? handleProfilePanel()
+                    : handleChatPanel()}
+                </>
+              )}
+            </>
           ) : (
             <>
               {handleProfilePanel()} {handleChatPanel()}

@@ -106,9 +106,18 @@ export default function PaymentDetails() {
     const format = "XXXXXXXXXXXX" + cardNumber;
     return format;
   };
+
+  /**
+   * @method: handlePreviousClick
+   * @description: handle the previous click button. Basically send it to previous step.
+   */
+  const handlePreviousClick = () => {
+    router.push('/become-seller/basicDetails')
+  }
+    
   return (
     <div className="step-container">
-      <BackButton name={"Payment Details"} />
+      <BackButton name={"Payment Details"} backUrl="/" />
       <div className="sub-title">
         Blazing Cards takes marketplace safety seriously. Sellers must have a
         valid payment method on file. In rare occasions, sellers are charged a
@@ -152,6 +161,7 @@ export default function PaymentDetails() {
                 label="Card Number*"
                 name="cardNumber"
                 type="text"
+                inputMode="numeric"
                 placeholder="Enter here"
                 formProps={formProps}
                 onChange={(event) => {
@@ -185,6 +195,7 @@ export default function PaymentDetails() {
                 label="CVV*"
                 name="cvv"
                 type="password"
+                inputMode="numeric"
                 placeholder="Enter here"
                 maxLength={cardType === "amex" ? 4 : 3}
                 formProps={formProps}
@@ -247,8 +258,8 @@ export default function PaymentDetails() {
               </div>
             </div>
             <div className="submit-wrapper flex space-between">
-              <button type="reset" className="border-btn">
-                Cancel
+              <button onClick={handlePreviousClick} className="border-btn">
+                Previous
               </button>
               {initialPaymentDetailFlag && !formProps.dirty ? (
                 <button onClick={redirectToNext} className="primary-btn">

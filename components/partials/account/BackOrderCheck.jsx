@@ -14,7 +14,7 @@ const CheckBackOrder=({orderId})=>{
     }
 
     useEffect(()=>{
-        setTimeout(function(){ handleRoute(); }, 3000);
+        setTimeout(function(){ handleRoute(); }, 1000);
     },[])
 
     return(

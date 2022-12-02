@@ -17,7 +17,12 @@ import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
 import { stepState } from "../../Constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
+import { io } from "socket.io-client";
+import { host } from "../../../chatService";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../Constants/imageConstants";
 import Notifications from "../../partials/Notifications/Notifications";
 import { useNotifications } from "../../../contexts/Notifications/Notifications";
 import { TostMessage } from "../../../components/partials/ToastMessage/ToastMessage";
@@ -30,6 +35,7 @@ import {
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 
 function HeaderDefault({ auth }) {
+  const socket = useRef();
   const router = useRouter();
   const [active, setActive] = useState(false);
   const [notificationDropdownActive, setNotificationDropdownActive] =
@@ -38,18 +44,18 @@ function HeaderDefault({ auth }) {
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const [toggle, setToggle] = useState(false);
+  const [isVendor, setVendor] = useState(false);
 
   let { pageName } = router.query;
-
   const {
     notifications,
     notificationsUnreadCount,
     setNotificationsUnreadCount,
   } = useNotifications();
+  const [chatNotification, setChatNotification] = useState([]);
 
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
-
   const toast = useSelector((state) => state?.toast?.toast);
 
   const handleOnClick = () => {
@@ -65,13 +71,33 @@ function HeaderDefault({ auth }) {
         clearInterval(profileInterval);
       }
     }, 10);
+    // if (socket.current) {
+    //   socket.current.on("new-message-notification", (id) => {
+    //     setChatNotification(id);
+    //   });
+    // }
   }, []);
+
+  // useEffect(() => {
+  //   if (!!localStorage.getItem("chat-app-current-user")) {
+  //     socket.current = io(host);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (toggle) {
       handleStoreAndVendorToggle("seller");
     }
   }, [toggle]);
+
+  /**
+   * UseEffect will check if Buyer is a seller or not via notification
+   */
+  useEffect(() => {
+    if(!isVendor && (notifications && notifications[0] && notifications[0]['notify_type'] == 'Vendor')) {
+      setVendor(true);
+    }
+  }, [notifications])
 
   const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
@@ -143,7 +169,7 @@ function HeaderDefault({ auth }) {
 
   // =================== handle check user login toggle buttun ====================
   const handleCheckUserLoginForVendor = () => {
-    if (profile?.isVendor && auth?.isLoggedIn) {
+    if ((profile?.isVendor || isVendor) && auth?.isLoggedIn) {
       return (
         <>
           <label className="switch toggle-switch darkBlue">
@@ -164,11 +190,10 @@ function HeaderDefault({ auth }) {
         </>
       );
     } else {
-      if (auth?.isLoggedIn) {
         return (
           <>
             {!stepState.includes(pageName) ? (
-              <Link href="/become-seller/guidelines">
+              <Link href={auth?.isLoggedIn ? "/become-seller/guidelines" : "/account/login"}>
                 <a className="border-btn flex flex-center justify-center become">
                   Become a Seller
                 </a>
@@ -176,19 +201,6 @@ function HeaderDefault({ auth }) {
             ) : null}
           </>
         );
-      } else {
-        return (
-          <>
-            {!stepState.includes(pageName) ? (
-              <Link href="/account/login">
-                <a className="flex flex-center justify-center become Link">
-                  Become a Seller
-                </a>
-              </Link>
-            ) : null}
-          </>
-        );
-      }
     }
   };
   // ==============================================================================
@@ -288,7 +300,7 @@ function HeaderDefault({ auth }) {
                   >
                     <div className="notification-wrapper title-wrap ">
                       <div className="head-title flex space-between flex-center">
-                        <h1>Notification</h1>
+                        <h1>Notifications</h1>
                       </div>
                       <Notifications
                         notifications={notifications.slice(0, 3)}

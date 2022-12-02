@@ -6,7 +6,7 @@ export const registerConstant = {
   form: {
     firstNameField: {
       name: "firstname",
-      placeholder: "Firstname",
+      placeholder: "First Name",
       label: "First Name",
       regex: /^[A-Za-z ]*$/,
       regexMessage: "Please enter a valid first name",
@@ -14,7 +14,7 @@ export const registerConstant = {
     },
     lastNameField: {
       name: "lastname",
-      placeholder: "Lastname",
+      placeholder: "Last Name",
       label: "Last Name",
       regex: /^[A-Za-z ]*$/,
       regexMessage: "Please enter a valid last name",
@@ -32,13 +32,13 @@ export const registerConstant = {
       placeholder: "Username",
       label: "Username",
       regex: /^[a-zA-Z0-9]*$/,
-      regexMessage: "Please enter a valid username",
+      regexMessage: "Please enter a valid Username",
       required: "Username is required",
     },
     contactField: {
       name: "number",
       placeholder: "Contact Number",
-      label: "Contact Number",
+      label: "Contact Number*",
       regex: /^([+]1){0,1}[1-9]\d{9}$/,
 
       // ToDo: Need to remove this code. Keeping this for reference.
