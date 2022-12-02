@@ -47,6 +47,7 @@ export default function ProfileInformation() {
       );
     }
   }, []);
+
   useEffect(() => {
     if (localStorage.getItem("blazingUser")) {
       setLoader(true);

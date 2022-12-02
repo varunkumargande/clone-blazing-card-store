@@ -40,13 +40,19 @@ export default function ProfilePannel({
     });
   };
 
+  const showTotalNotification = () => {
+    const totalNotificationCount =
+      notificationData?.length + newNotification.length;
+    return totalNotificationCount;
+  };
+
   return (
     <div className="profile-wrapper">
       {contacts?.length ? (
         <>
           <div className="profile-title-wrap flex space-between flex-center">
             <div className="title">
-              <span>{notificationData?.length}</span>New Notification
+              <span>{showTotalNotification()}</span>New Notification
             </div>
             <button
               className="btn-chat flex flex-center justify-center br50"
