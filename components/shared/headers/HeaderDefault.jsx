@@ -17,8 +17,6 @@ import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
 import { stepState } from "../../Constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { io } from "socket.io-client";
-import { host } from "../../../chatService";
 import {
   ImageTransformation,
   DefaultImagePath,
@@ -33,6 +31,8 @@ import {
   saveSubCategoryName,
 } from "../../../store/category/action";
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
+import { nftMarketUrl } from "../../../api/url";
+
 
 function HeaderDefault({ auth }) {
   const socket = useRef();
@@ -214,6 +214,12 @@ function HeaderDefault({ auth }) {
     await vendorAuthApi(dispatch);
     setToggle(false);
   };
+
+  const handleMarketPlaceRedirection = () => {
+    window
+      .open(nftMarketUrl, "mywindow")
+      .focus();
+  }
   // ==============================================================================
   // ======================= Onclick outside dropdown close ========================
   const handleClickOutside = (event) => {
@@ -342,6 +348,12 @@ function HeaderDefault({ auth }) {
                           </span>
                         </a>
                       </Link>
+                    </li>
+                    <li>
+                        <a className="active" onClick={(e)=>{e.preventDefault();handleMarketPlaceRedirection()}}>
+                          <IconMyOrders />
+                            NFT Market
+                        </a>
                     </li>
                     <li>
                       <Link href="/my-orders">
