@@ -10,6 +10,7 @@ export const notificationBaseUrl =
 export const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const cloudImageUrl = process.env.NEXT_PUBLIC_CLOUD_IMAGE_URL;
 export const cloudFolder = process.env.NEXT_PUBLIC_CLOUD_FOLDER;
+export const nftMarketUrl = process.env.NEXT_PUBLIC_NFT_MARKET_URL
 
 // just for safety, this lines are from .env
 // ENVIRONMENT=development
