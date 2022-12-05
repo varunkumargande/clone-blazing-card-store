@@ -10,8 +10,15 @@ import Router from "next/router";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { loginConstant } from "../../Constants/auth";
+
+/**
+ * google and facebook login component and packages
+ */
 import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import FacebookLoginComponent from "../../../utilities/facebookLogin";
+// ======================================================================
+
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 
@@ -88,7 +95,9 @@ function Login(props) {
             onError={() => {}}
           />
         </GoogleOAuthProvider>
+        <FacebookLoginComponent />
       </div>
+
       <div className="or mb32 flex flex-center justify-center">
         <span>Or</span>
       </div>
@@ -159,7 +168,10 @@ function Login(props) {
                     </button>
                   </>
                 )}
-                <ErrorMessage errors={errors.password} touched={touched.password} />
+                <ErrorMessage
+                  errors={errors.password}
+                  touched={touched.password}
+                />
                 <div className="flex justify-right mb16 forget">
                   <Link href="/account/forgot-password">
                     <a>{loginConstant.form.forgetPassword}</a>

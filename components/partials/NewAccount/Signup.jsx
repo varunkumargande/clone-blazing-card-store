@@ -23,6 +23,7 @@ import useDebounce from "../../../hooks/useDebounce";
 import { regex } from "../../Constants/regex";
 import { openInNewTab } from "../../../utilities/utils";
 import Styles from "../../../modular_scss/Signup.module.scss";
+import FacebookLoginComponent from "../../../utilities/facebookLogin";
 
 function Signup() {
   const dispatch = useDispatch();
@@ -116,6 +117,7 @@ function Signup() {
             }}
           />
         </GoogleOAuthProvider>
+        <FacebookLoginComponent />
       </div>
 
       <div className="or mb32 flex flex-center justify-center">
