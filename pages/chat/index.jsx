@@ -124,7 +124,7 @@ function Chat({ auth }) {
 
   // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
-    const messageTime = moment().utc().format("HH:mm");
+    const messageTime = moment().utc();
     socket.current.emit("send-msg", {
       to: currentChat._id,
       from: currentUserData?._id,
