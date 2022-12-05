@@ -77,17 +77,23 @@ function categoryStream({ auth, category }) {
   };
 
   const handleShowParentCategories = () => {
+    console.log("ismobile", isMobile, streamData, category);
     if (!!category?.categories) {
-      return (
-        <SeeAllParentCategories
-          setCatIndex={setCatIndex}
-          setStreamData={setStreamData}
-          setLoader={setLoader}
-          offset={offset}
-          streamData={streamData}
-          setOffset={setOffset}
-        />
-      );
+      if (isMobile) {
+        return <CategoriesMobile category={category} />;
+      } else {
+        return (
+          <SeeAllParentCategories
+            setCatIndex={setCatIndex}
+            setStreamData={setStreamData}
+            setLoader={setLoader}
+            offset={offset}
+            streamData={streamData}
+            setOffset={setOffset}
+            isMobile={isMobile}
+          />
+        );
+      }
     }
   };
 
