@@ -713,7 +713,7 @@ export function AddAddressModal(props) {
             <form>
               <div className="modal-body">
                 <div className="input-control">
-                  <label>Company *</label>
+                  <label>Full Name *</label>
                   <input
                     name="company"
                     placeholder={"Enter here"}
