@@ -48,13 +48,13 @@ function Chat({ auth }) {
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [newNotification, setNewNotification] = useState([]);
-  const [notificationData, setNotificationData] = useState([]);
-  const [currentUserData, setCurrentUserData] = useChatCurrentUser()
+  const [msgNotificationData, setMsgNotificationData] = useState([]);
+  const [currentUserData, setCurrentUserData] = useChatCurrentUser();
 
   const { isMobile } = useIsMobile();
 
   const fetchUserChatNotification = () => {
-    getChatNotification(setNotificationData);
+    getChatNotification(setMsgNotificationData);
   };
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function Chat({ auth }) {
           message: msg,
           isRead: false,
           fromUser: userData,
-          time
+          time,
         });
       });
       socket.current.on("new-message-notification", (id) => {
@@ -124,7 +124,7 @@ function Chat({ auth }) {
 
   // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
-    const messageTime = moment().utc().format("HH:mm");
+    const messageTime = moment().utc();
     socket.current.emit("send-msg", {
       to: currentChat._id,
       from: currentUserData?._id,
@@ -183,8 +183,8 @@ function Chat({ auth }) {
           currentUser={currentUser}
           newNotification={newNotification}
           setNewNotification={setNewNotification}
-          notificationData={notificationData}
-          setNotificationData={setNotificationData}
+          notificationData={msgNotificationData}
+          setNotificationData={setMsgNotificationData}
         />
       </>
     );
