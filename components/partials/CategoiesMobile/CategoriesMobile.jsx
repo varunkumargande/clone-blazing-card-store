@@ -1,32 +1,49 @@
 import Router, { useRouter } from "next/router";
 import React from "react";
 import Styles from "../../../modular_scss/CategoriesMobile.module.scss";
-export default function CategoriesMobile(props) {
+import { useDispatch } from "react-redux";
+import {
+    saveCategoryName,
+    saveSubCategoryName,
+  } from "../../../store/category/action";
+import { useEffect } from "react";
+import { memo } from "react";
+
+function CategoriesMobile(props) {
   const { category, handleSelectCategory } = props;
+  const dispatch = useDispatch();
   const Accordion = ({ title, children }) => {
     const [isOpen, setOpen] = React.useState(false);
     const { query } = useRouter();
     const handleSubCategory = (name) => {
-      Router.push({
-        pathname: "/see-all",
-        query: {
-          page: query.page,
-          category: name,
-          subCategory: "all",
-        },
-      });
-      setOpen(!isOpen);
+      console.log("ppp")
+      //   Router.push({
+      //     pathname: "/see-all",
+      //     query: {
+      //       page: query.page,
+      //       category: name,
+      //       subCategory: "all",
+      //     },
+      //   });
     };
+    // useEffect(() => {
+    //     if(query?.category === title){
+    //         handleSelectCategory(title);
+    //     }
+    // },[query?.category]);
+    console.log(query?.category, title)
     return (
       <div className={`accordion-wrapper ${Styles.AccordionWrapper}`}>
         <div
-          className={`accordion-title ${Styles.Title} ${isOpen ? "open" : ""}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleSubCategory(title);
-          }}
+          className={`accordion-title ${Styles.Title} ${query?.category === title ? "open" : ""}`}
+        //   onClick={(e) => {
+        //     console.log("isOpen000", isOpen);
+        //     setOpen(!isOpen);
+        //     console.log("isOpen99", isOpen);
+        //   }}
         >
           {title}
+          {console.log("isOpen", isOpen)}
         </div>
         <div className={`accordion-item ${!isOpen ? "collapsed" : ""}`}>
           <div className={`accordion-content ${Styles.AccordionItem}`}>
@@ -84,3 +101,4 @@ export default function CategoriesMobile(props) {
     </div>
   );
 }
+export default memo(CategoriesMobile);
