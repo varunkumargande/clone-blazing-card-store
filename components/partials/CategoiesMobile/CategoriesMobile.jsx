@@ -1,5 +1,5 @@
 import Router, { useRouter } from "next/router";
-import React from "react";
+import React, { useMemo } from "react";
 import Styles from "../../../modular_scss/CategoriesMobile.module.scss";
 import { useDispatch } from "react-redux";
 import {
@@ -14,14 +14,24 @@ import { camelCase } from "../../../utilities/utils";
 import SeeAllSubCategories from "../../../components/partials/SeeAll/subCategories";
 
 function CategoriesMobile(props) {
-  const { category, handleSelectCategory } = props;
-  const [streamData, setStreamData] = useState([]);
-  const [loaderSeeMore, setSeeMoreLoader] = useState(true);
-  const [offset, setOffset] = useState(0);
-  const [loader, setLoader] = useState(true);
+  const {
+    category,
+    handleSelectCategory,
+    setCatIndex,
+    setStreamData,
+    setLoader,
+    offset,
+    setOffset,
+    streamData,
+    setSeeMoreLoader,
+    setSubCatId,
+  } = props;
+
+  const { query } = useRouter();
+
   const Accordion = ({ title, index, children }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-    const { query } = useRouter();
+    const [isOpen, setIsOpen] = React.useState(false);
+
     useEffect(() => {
       if (query?.category === title) {
         setIsOpen(!isOpen);
@@ -50,50 +60,36 @@ function CategoriesMobile(props) {
       </div>
     );
   };
-  return (
-    <div className={`${Styles.MobileCard}`}>
-      {category &&
-        category?.categories?.map((element, index) => {
-          return (
-            <Accordion title={`${element?.categorySlug}`} index={index}>
+
+  const showSubCategories = useMemo(() => {
+    return (
+      category &&
+      !!category?.categories.length &&
+      category?.categories?.map((element, index) => {
+        return (
+          <Accordion title={`${element?.categorySlug}`} index={index}>
+            {query?.category === element?.categorySlug && (
               <div className="card-content">
                 <ul className={`${Styles.ListWrap}`}>
-                  {query?.category === title && category?.categories[index]?.children?.map((item) => {
-                    return (
-                      <SeeAllSubCategories
-                        catIndex={index}
-                        setSubCatId={item.id}
-                        setStreamData={setStreamData}
-                        setLoader={setLoader}
-                        offset={offset}
-                        streamData={streamData}
-                        setOffset={setOffset}
-                        setSeeMoreLoader={setSeeMoreLoader}
-                      />
-                      
-                    );
-                  })}
+                  <SeeAllSubCategories
+                    catIndex={index}
+                    setSubCatId={setSubCatId}
+                    setStreamData={setStreamData}
+                    setLoader={setLoader}
+                    offset={offset}
+                    streamData={streamData}
+                    setOffset={setOffset}
+                    setSeeMoreLoader={setSeeMoreLoader}
+                  />
                 </ul>
               </div>
-            </Accordion>
-          );
-        })}
+            )}
+          </Accordion>
+        );
+      })
+    );
+  }, [category?.categories, query?.category]);
 
-      {/* <Accordion title="Watches">
-                <div className="card-content">
-                    <ul className={`${Styles.ListWrap}`}>
-                        <li className={`flex space-between flex-center ${Styles.List}`}>
-                            All 
-                            <button className={`${Styles.CheckBtn}`}></button>
-                        </li>
-                        <li className={`flex space-between flex-center ${Styles.List} ${Styles.ListActive}`}>
-                            All 
-                            <button className={`${Styles.CheckBtn} ${Styles.CheckBtnActive}`}></button>
-                        </li>
-                    </ul>
-                </div>
-            </Accordion> */}
-    </div>
-  );
+  return <div className={`${Styles.MobileCard}`}>{showSubCategories}</div>;
 }
 export default memo(CategoriesMobile);

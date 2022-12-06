@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import IconBack from "../../components/Icons/IconBack";
 import Footer from "../../components/partials/LandingPage/Footer";
@@ -20,7 +20,6 @@ import StreamCardSkeleton from "../../skeleton/StreamCardSkeleton";
 import SeeMoreLoader from "../../components/reusable/SeeMoreLoader";
 import { limit } from "../../components/Constants";
 import { SignUPGoogle } from "../../components/partials/Modal/Modal";
-import CategoriesMobile from "../../components/partials/CategoiesMobile/CategoriesMobile";
 
 function categoryStream({ auth, category }) {
   const dispatch = useDispatch();
@@ -78,22 +77,23 @@ function categoryStream({ auth, category }) {
 
   const handleShowParentCategories = () => {
     if (!!category?.categories) {
-        return (
-          <SeeAllParentCategories
-            setCatIndex={setCatIndex}
-            setStreamData={setStreamData}
-            setLoader={setLoader}
-            offset={offset}
-            streamData={streamData}
-            setOffset={setOffset}
-            isMobile={isMobile}
-          />
-        );
+      return (
+        <SeeAllParentCategories
+          setCatIndex={setCatIndex}
+          setStreamData={setStreamData}
+          setLoader={setLoader}
+          offset={offset}
+          streamData={streamData}
+          setOffset={setOffset}
+          setSubCatId={setSubCatId}
+          setSeeMoreLoader={setSeeMoreLoader}
+        />
+      );
     }
   };
 
-  const handleShowSubCategories = () => {
-    if (!!category?.categories) {
+  const handleShowSubCategories = useMemo(() => {
+    if (!!category?.categories?.length) {
       return (
         <SeeAllSubCategories
           catIndex={catIndex}
@@ -107,7 +107,7 @@ function categoryStream({ auth, category }) {
         />
       );
     }
-  };
+  }, [category?.categories]);
 
   const handleToGoHome = () => {
     dispatch(saveCategoryName(null));
@@ -186,11 +186,10 @@ function categoryStream({ auth, category }) {
       <div className="card-wrapper">
         <section className="Live-wrapper card-inner">
           <div className="inner-container">
-            {/* <CategoriesMobile/> */}
             <div className="aside-content-wrap flex flex-start space-between">
               {handleShowParentCategories()}
               <div className="overflow-none">
-                {handleShowSubCategories()}
+                {!isMobile && handleShowSubCategories}
                 <div className="card-wrap flex inner-container">
                   {loader ? (
                     <StreamCardSkeleton

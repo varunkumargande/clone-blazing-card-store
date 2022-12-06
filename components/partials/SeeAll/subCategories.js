@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, connect } from "react-redux";
 import Router from "next/router";
@@ -28,6 +28,9 @@ function SeeAllSubCategories({
   const { query } = useRouter();
   const { isCategoriesFetched } = useCategoriesData();
   const { isMobile } = useIsMobile();
+
+  const [stopFetching, setStopFetching] = useState(false);
+
   useEffect(() => {
     if (Object.keys(query).length && query?.category && query?.subCategory) {
       if (streamData.length) {
@@ -35,7 +38,6 @@ function SeeAllSubCategories({
       } else {
         setLoader(true);
       }
-      console.log("apicall");
       getStreamSubCategoryBasedApi(
         camelCase(query?.page),
         query?.category,
@@ -46,7 +48,7 @@ function SeeAllSubCategories({
         setSeeMoreLoader
       );
     }
-  }, [query?.subCategory, query?.category, offset]);
+  }, [query?.subCategory, query?.category, offset, stopFetching]);
 
   const handleSubCategorySelect = (name, id) => {
     dispatch(saveSubCategoryName(name));
@@ -63,7 +65,6 @@ function SeeAllSubCategories({
   };
 
   const getAllSubCategoriesCard = () => {
-    console.log("11111111");
     if (!!category?.categories && isCategoriesFetched) {
       const index = category?.categories
         .map(function (e) {
@@ -77,6 +78,7 @@ function SeeAllSubCategories({
               className={`flex space-between flex-center ${Styles.List}`}
               onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 handleSubCategorySelect(item.categorySlug, item.categoryId);
               }}
             >
@@ -109,31 +111,51 @@ function SeeAllSubCategories({
       return <TabsSkeleton count={5} name={"home-tabs-section"} />;
     }
   };
-  console.log("999");
-  return (
-    <>
-      <section className="category-wrapper cotegories-border mb35">
-        <div className="overflow-wrap">
-          <div className="Category-list-wrap inner-container flex">
-            <div className="category-list">
-              <button
-                className={
-                  category?.subCategoryName === "all" ? "title active" : "title"
-                }
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleSubCategorySelect("all");
-                }}
-              >
-                All
-              </button>
+  if (isMobile) {
+    return (
+      <>
+        <li
+          className={`flex space-between flex-center ${Styles.List}`}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleSubCategorySelect("all");
+          }}
+        >
+          All
+          <button className={`${Styles.CheckBtn}`}></button>
+        </li>
+        {getAllSubCategoriesCard()}
+      </>
+    );
+  } else {
+    return (
+      <>
+        <section className="category-wrapper cotegories-border mb35">
+          <div className="overflow-wrap">
+            <div className="Category-list-wrap inner-container flex">
+              <div className="category-list">
+                <button
+                  className={
+                    category?.subCategoryName === "all"
+                      ? "title active"
+                      : "title"
+                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubCategorySelect("all");
+                  }}
+                >
+                  All
+                </button>
+              </div>
+              {getAllSubCategoriesCard()}
             </div>
-            {getAllSubCategoriesCard()}
           </div>
-        </div>
-      </section>
-    </>
-  );
+        </section>
+      </>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {

@@ -9,6 +9,7 @@ import {
 } from "../../../store/category/action";
 import { getStreamCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 import CategoriesMobile from "../CategoiesMobile/CategoriesMobile";
+import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function SeeAllParentCategories({
   category,
@@ -17,10 +18,13 @@ function SeeAllParentCategories({
   setLoader,
   offset,
   setOffset,
-  isMobile,
+  streamData,
+  setSubCatId,
+  setSeeMoreLoader,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const { isMobile } = useIsMobile();
 
   const handleSelectCategory = (name, index) => {
     setCatIndex(index);
@@ -61,6 +65,14 @@ function SeeAllParentCategories({
           <CategoriesMobile
             category={category}
             handleSelectCategory={handleSelectCategory}
+            setCatIndex={setCatIndex}
+            setStreamData={setStreamData}
+            setLoader={setLoader}
+            offset={offset}
+            streamData={streamData}
+            setOffset={setOffset}
+            setSubCatId={setSubCatId}
+            setSeeMoreLoader={setSeeMoreLoader}
           />
         );
       } else {
