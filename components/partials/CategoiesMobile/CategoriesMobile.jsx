@@ -8,14 +8,20 @@ import {
 } from "../../../store/category/action";
 import { useEffect } from "react";
 import { memo } from "react";
+import { getStreamSubCategoryBasedApi } from "../../../api/stream/subStreamDetail";
+import { useState } from "react";
+import { camelCase } from "../../../utilities/utils";
+import SeeAllSubCategories from "../../../components/partials/SeeAll/subCategories";
 
 function CategoriesMobile(props) {
   const { category, handleSelectCategory } = props;
-  const dispatch = useDispatch();
-  const Accordion = ({ title, children }) => {
-    const [isOpen, setIsOpen] = React.useState(false);
+  const [streamData, setStreamData] = useState([]);
+  const [loaderSeeMore, setSeeMoreLoader] = useState(true);
+  const [offset, setOffset] = useState(0);
+  const [loader, setLoader] = useState(true);
+  const Accordion = ({ title, index, children }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
     const { query } = useRouter();
-
     useEffect(() => {
       if (query?.category === title) {
         setIsOpen(!isOpen);
@@ -31,7 +37,7 @@ function CategoriesMobile(props) {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            !isOpen ? handleSelectCategory(title) : setIsOpen(false);
+            !isOpen ? handleSelectCategory(title, index) : setIsOpen(false);
           }}
         >
           {title}
@@ -49,26 +55,24 @@ function CategoriesMobile(props) {
       {category &&
         category?.categories?.map((element, index) => {
           return (
-            <Accordion
-              title={`${element?.categorySlug}`}
-              handleSelectCategory={handleSelectCategory}
-            >
+            <Accordion title={`${element?.categorySlug}`} index={index}>
               <div className="card-content">
                 <ul className={`${Styles.ListWrap}`}>
-                  <li
-                    className={`flex space-between flex-center ${Styles.List}`}
-                  >
-                    All
-                    <button className={`${Styles.CheckBtn}`}></button>
-                  </li>
-                  <li
-                    className={`flex space-between flex-center ${Styles.List} ${Styles.ListActive}`}
-                  >
-                    All
-                    <button
-                      className={`${Styles.CheckBtn} ${Styles.CheckBtnActive}`}
-                    ></button>
-                  </li>
+                  {query?.category === title && category?.categories[index]?.children?.map((item) => {
+                    return (
+                      <SeeAllSubCategories
+                        catIndex={index}
+                        setSubCatId={item.id}
+                        setStreamData={setStreamData}
+                        setLoader={setLoader}
+                        offset={offset}
+                        streamData={streamData}
+                        setOffset={setOffset}
+                        setSeeMoreLoader={setSeeMoreLoader}
+                      />
+                      
+                    );
+                  })}
                 </ul>
               </div>
             </Accordion>
