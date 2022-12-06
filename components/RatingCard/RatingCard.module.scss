@@ -1,0 +1,74 @@
+.rating_card {
+    width: 614px;
+    background-color: #fff;
+    padding: 20px 28px 20px 24px;
+}
+
+.head_section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.left_part {
+    display: flex;
+    align-items: center;
+}
+.profile_icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+.image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.right_part {
+    display: flex;
+    width: 53px;
+    background-color: #F2F5FA;
+    border-radius: 4px;
+    padding: 5px 5px;
+}
+.number {
+    font-weight: 600;
+    font-size: 14px;
+    color: #000819;
+    margin-left: 10px;
+}
+.date {
+    color: #333D47;
+    font-size: 12px;
+    line-height: 1.4;
+    margin-top: 11px;
+}
+.text_content {
+    line-height: 1.7;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 0;
+    border-bottom: 1px solid #EBECED;
+}
+.rating_list {
+    padding: 0;
+    margin: 0;
+}
+
+.list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0 12px 0;
+    border-bottom: 1px solid #EBECED;
+}
+.rating {
+    display: flex;
+    width: 53px;
+    background-color: #F2F5FA;
+    border-radius: 4px;
+    padding: 5px 5px;
+}
