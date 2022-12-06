@@ -10,6 +10,8 @@ const FacebookLoginComponent = () => {
     facebookLoginApi(response, dispatch);
   });
 
+  return null;
+
   return (
     <div className="text-center mt-2">
       <FacebookLogin
