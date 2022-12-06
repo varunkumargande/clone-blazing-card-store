@@ -15,6 +15,7 @@ import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 import Styles from "../../../modular_scss/LeftDiv.module.scss";
 import { handleModalClick } from "../../../utilities/utils";
+import moment from "moment";
 
 function LeftDiv({
   setShowLoginModal,
@@ -56,6 +57,7 @@ function LeftDiv({
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showUnFollowModal, setShowUnFollowModal] = useState(false);
   const [noOfFollower, setNoOfFollower] = useState(0);
+  const [isDisable, setIsDisable] = useState(false);
   //to handle width of the screen and call methods accordingly
 
   const [showLogin, setShowLogin] = useState(false);
@@ -68,8 +70,14 @@ function LeftDiv({
   };
   const [streamProducts, setStreamProducts] = useState(initialStreamingData);
   const [streamProductsFetched, setStreamProductsFetched] = useState(false);
+  
 
-  // to initially show left div on desktop and hide on mobile screen
+  const getTime = (dateTime) => {
+    const currentTime = moment.utc(moment(new Date()).format("YYYY-MM-DD HH:mm"));
+    const createdTime = moment.utc(dateTime);
+    const difference = moment.duration(createdTime.diff(currentTime));
+    return !(difference.hours() >= 0)
+  }
   useEffect(() => {
     if (isMobile && isLeftDivOpen) {
       handleLeftDiv(false);
@@ -102,6 +110,7 @@ function LeftDiv({
           break;
         case TOGGLE_STATES.BUYNOW:
           url = `stream/streamProductList?streamuuid=${streamUuid}&sellType=buy_now`;
+          setIsDisable(getTime(String(stream?.streamData?.scheduleDate+" "+stream?.streamData?.scheduletime)));
           break;
         case TOGGLE_STATES.PURCHASED:
           url = "#";
@@ -269,7 +278,8 @@ function LeftDiv({
               </div>
               <div className="right">
                 <button
-                  className="border-btn"
+                  className={isDisable ? "border-btn disable-opacity" : "border-btn"}
+                  disabled={isDisable}
                   onClick={(e) => {
                     e.preventDefault();
                     handleBuyNow(product);
@@ -416,7 +426,6 @@ function LeftDiv({
       setFilterKeyword("");
     }
   };
-
   return (
     <div className="streaming-left">
       {showLogin && (
