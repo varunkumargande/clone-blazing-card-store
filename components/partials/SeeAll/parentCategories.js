@@ -8,6 +8,7 @@ import {
   saveSubCategoryName,
 } from "../../../store/category/action";
 import { getStreamCategoryBasedApi } from "../../../api/stream/subStreamDetail";
+import CategoriesMobile from "../CategoiesMobile/CategoriesMobile";
 
 function SeeAllParentCategories({
   category,
@@ -16,6 +17,7 @@ function SeeAllParentCategories({
   setLoader,
   offset,
   setOffset,
+  isMobile,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
@@ -54,19 +56,31 @@ function SeeAllParentCategories({
 
   const getAllCategoriesCard = () => {
     if (category?.categories) {
-      return category?.categories.map((element, index) => {
+      if (isMobile) {
         return (
-          <li
-            key={element?.categorySlug}
-            className={
-              category?.categoryName === element?.categorySlug ? "active" : ""
-            }
-            onClick={(e) => {e.preventDefault();handleSelectCategory(element?.categorySlug, index)}}
-          >
-            {stringFormatter(element?.name)}
-          </li>
+          <CategoriesMobile
+            category={category}
+            handleSelectCategory={handleSelectCategory}
+          />
         );
-      });
+      } else {
+        return category?.categories.map((element, index) => {
+          return (
+            <li
+              key={element?.categorySlug}
+              className={
+                category?.categoryName === element?.categorySlug ? "active" : ""
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                handleSelectCategory(element?.categorySlug, index);
+              }}
+            >
+              {stringFormatter(element?.name)}
+            </li>
+          );
+        });
+      }
     }
   };
 

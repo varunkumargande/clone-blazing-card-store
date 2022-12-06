@@ -77,11 +77,7 @@ function categoryStream({ auth, category }) {
   };
 
   const handleShowParentCategories = () => {
-    console.log("ismobile", isMobile, streamData, category);
     if (!!category?.categories) {
-      if (isMobile) {
-        return <CategoriesMobile category={category} />;
-      } else {
         return (
           <SeeAllParentCategories
             setCatIndex={setCatIndex}
@@ -93,7 +89,6 @@ function categoryStream({ auth, category }) {
             isMobile={isMobile}
           />
         );
-      }
     }
   };
 

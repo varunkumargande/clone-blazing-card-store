@@ -1,14 +1,30 @@
+import Router, { useRouter } from "next/router";
 import React from "react";
 import Styles from "../../../modular_scss/CategoriesMobile.module.scss";
 export default function CategoriesMobile(props) {
-  const { category } = props;
+  const { category, handleSelectCategory } = props;
   const Accordion = ({ title, children }) => {
     const [isOpen, setOpen] = React.useState(false);
+    const { query } = useRouter();
+    const handleSubCategory = (name) => {
+      Router.push({
+        pathname: "/see-all",
+        query: {
+          page: query.page,
+          category: name,
+          subCategory: "all",
+        },
+      });
+      setOpen(!isOpen);
+    };
     return (
       <div className={`accordion-wrapper ${Styles.AccordionWrapper}`}>
         <div
           className={`accordion-title ${Styles.Title} ${isOpen ? "open" : ""}`}
-          onClick={() => setOpen(!isOpen)}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleSubCategory(title);
+          }}
         >
           {title}
         </div>
@@ -26,7 +42,8 @@ export default function CategoriesMobile(props) {
         category?.categories?.map((element, index) => {
           return (
             <Accordion
-              title={`${element?.name}`}
+              title={`${element?.categorySlug}`}
+              handleSelectCategory={handleSelectCategory}
             >
               <div className="card-content">
                 <ul className={`${Styles.ListWrap}`}>
