@@ -3,9 +3,9 @@ import React from "react";
 import Styles from "../../../modular_scss/CategoriesMobile.module.scss";
 import { useDispatch } from "react-redux";
 import {
-    saveCategoryName,
-    saveSubCategoryName,
-  } from "../../../store/category/action";
+  saveCategoryName,
+  saveSubCategoryName,
+} from "../../../store/category/action";
 import { useEffect } from "react";
 import { memo } from "react";
 
@@ -13,37 +13,28 @@ function CategoriesMobile(props) {
   const { category, handleSelectCategory } = props;
   const dispatch = useDispatch();
   const Accordion = ({ title, children }) => {
-    const [isOpen, setOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
     const { query } = useRouter();
-    const handleSubCategory = (name) => {
-      console.log("ppp")
-      //   Router.push({
-      //     pathname: "/see-all",
-      //     query: {
-      //       page: query.page,
-      //       category: name,
-      //       subCategory: "all",
-      //     },
-      //   });
-    };
-    // useEffect(() => {
-    //     if(query?.category === title){
-    //         handleSelectCategory(title);
-    //     }
-    // },[query?.category]);
-    console.log(query?.category, title)
+
+    useEffect(() => {
+      if (query?.category === title) {
+        setIsOpen(!isOpen);
+      } else if (isOpen) {
+        setIsOpen(false);
+      }
+    }, [query?.category]);
+
     return (
       <div className={`accordion-wrapper ${Styles.AccordionWrapper}`}>
         <div
-          className={`accordion-title ${Styles.Title} ${query?.category === title ? "open" : ""}`}
-        //   onClick={(e) => {
-        //     console.log("isOpen000", isOpen);
-        //     setOpen(!isOpen);
-        //     console.log("isOpen99", isOpen);
-        //   }}
+          className={`accordion-title ${Styles.Title} ${isOpen ? "open" : ""}`}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            !isOpen ? handleSelectCategory(title) : setIsOpen(false);
+          }}
         >
           {title}
-          {console.log("isOpen", isOpen)}
         </div>
         <div className={`accordion-item ${!isOpen ? "collapsed" : ""}`}>
           <div className={`accordion-content ${Styles.AccordionItem}`}>
