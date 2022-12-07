@@ -1,10 +1,10 @@
 import { modalSuccess, modalWarning } from "../intercept";
 import APIServices from "../../services";
 
-export async function getUsername(username) {
-  const result = await APIServices.getAll(`customer/username/${username}`);
+export async function getUsername(username, setUsernameAvailable) {
+  const result = await APIServices.getAll(`customer/userName/${username}`);
   if (result && result.data) {
-    return result.data.status;
+    setUsernameAvailable(result.data);
   } else {
     modalWarning("error", result?.data?.message);
   }
