@@ -1,7 +1,6 @@
 import { getStreamDetails } from "../../store/stream/action";
 import APIServices from "../../services";
-import { categoryConstant } from "../../components/Constants";
-import { limit } from "../../components/Constants";
+import { categoryConstant, limit } from "../../components/Constants";
 
 export async function substreamDetailApi(
   dispatch,
@@ -112,7 +111,7 @@ export async function catSubStreamDetailApi(
   isLoadMore
 ) {
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${categoryConstant.LIVE_DATA.limit}`
+    `stream/stream-homePage?type=${categoryConstant?.SUB_CATEGORY_DATA.type}&subCategoryId=${catId}&offset=${page}&limit=${limit}`
   );
 
   if (result?.status === 200) {
