@@ -6,22 +6,29 @@
   width: calc(96% - 88px) !important;
 }
 
-
-.width520{
+.width520 {
   max-width: 520px;
 }
-.width420{
+.width420 {
   max-width: 420px;
 }
-.label{
+.label {
   font-size: 16px;
   margin-right: 15px;
 }
-.value{
+.value {
   font-size: 16px;
   margin-right: 15px;
 }
-.link{
-  color:#1877F2;
+.link {
+  color: #1877f2;
   margin-right: 10px;
+}
+.success_message {
+  font-size: 12px;
+  line-height: 14px;
+  color: green;
+  margin-top: 6px;
+  width: 100%;
+  display: block;
 }

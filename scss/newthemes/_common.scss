@@ -1,130 +1,135 @@
-body{
+body {
   @include Inter;
   font-size: 14px;
   color: $primary-color;
   background-color: $body-bg;
 }
-header,.mobile-header{
+header,
+.mobile-header {
   background-color: $white-color;
   @include pos(re);
 }
-img,svg{
+img,
+svg {
   max-width: 100%;
 }
-button{
+button {
   background: none;
-  border:none;
+  border: none;
 }
-button,input{
+button,
+input {
   @include Inter;
 }
-h1{
+h1 {
   font-size: 24px;
   line-height: 30px;
-  color:$primary-color;
+  color: $primary-color;
   margin-bottom: 24px;
 }
-.heading-wrapper{
-  h1{
+.heading-wrapper {
+  h1 {
     margin-bottom: 0;
   }
 }
-.flex{
+.flex {
   display: flex;
 }
-.column{
+.column {
   flex-direction: column;
 }
-.flex-wrap{
+.flex-wrap {
   flex-wrap: wrap;
 }
-.space-between{
+.space-between {
   justify-content: space-between;
 }
-.justify-center{
+.justify-center {
   justify-content: center;
 }
-.justify-right{
+.justify-right {
   justify-content: flex-end;
 }
-.justify-left{
+.justify-left {
   justify-content: flex-start;
 }
-.flex-top,.flex-start{
+.flex-top,
+.flex-start {
   align-items: flex-start;
 }
-.flex-center{
+.flex-center {
   align-items: center;
 }
-.text-center{
+.text-center {
   text-align: center;
 }
-.inner-container{
+.inner-container {
   padding: 0 15px;
   max-width: 1310px;
   margin: 0 auto;
-  .overflow-wrap{
+  .overflow-wrap {
     overflow-x: auto;
-    .inner-container{
+    .inner-container {
       padding: 0 15px;
       max-width: 1310px;
-      margin:0 auto;
+      margin: 0 auto;
     }
   }
 }
-.mb8{
+.mb8 {
   margin-bottom: 8px;
 }
-.mb12{
+.mb12 {
   margin-bottom: 12px;
 }
-.mb16{
+.mb16 {
   margin-bottom: 16px;
 }
-.mb20{
+.mb20 {
   margin-bottom: 20px;
 }
-.mb24{
+.mb24 {
   margin-bottom: 24px;
 }
-.mb26{
+.mb26 {
   margin-bottom: 26px;
 }
-.mb32{
+.mb32 {
   margin-bottom: 32px;
 }
-.mb42{
+.mb42 {
   margin-bottom: 42px;
 }
-.mb70{
+.mb70 {
   margin-bottom: 70px;
 }
-.mt16{
+.mt16 {
   margin-top: 16px;
 }
-.mt20{
+.mt20 {
   margin-top: 20px;
 }
-.ml24{
+.ml24 {
   margin-left: 24px;
 }
-.mb35{
+.mb35 {
   margin-bottom: 35px;
 }
-.mb40{
+.mb40 {
   margin-bottom: 40px;
 }
-.mr16{
+.mr16 {
   margin-right: 16px;
 }
-.mr16{
+.mr16 {
   margin-right: 16px;
 }
-.ml20{
+.ml20 {
   margin-left: 20px;
 }
 // common input
-.errorText,.errorMessage{
+.errorText,
+.errorMessage {
   font-size: 12px;
   line-height: 14px;
   color: $danger-color;
@@ -132,225 +137,229 @@ h1{
   width: 100%;
   display: block;
 }
-.input-control{
+.input-control {
   margin-bottom: 16px;
   position: relative;
   width: 100%;
-  &.mb0{
+  &.mb0 {
     margin-bottom: 0;
   }
-  .input-control{
+  .input-control {
     margin-bottom: 0 !important;
   }
-  &.wd420{
+  &.wd420 {
     max-width: 420px;
   }
-  input,select,textarea{
-      font-size: 16px;
-      line-height: 24px;
-      color:$primary-color;
-      width: 100%;
-      border-radius: 8px;
-      background-color: $white-color;
-      border:none;
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+    line-height: 24px;
+    color: $primary-color;
+    width: 100%;
+    border-radius: 8px;
+    background-color: $white-color;
+    border: none;
+    outline: none;
+    border: 1px solid $white-color;
+    padding: 0 30px 0 15px;
+    filter: none;
+    &.grey-bg {
+      background-color: $body-bg;
+      &:focus,
+      &.filled {
+        background-color: $white-color;
+        border-color: $border2-color;
+      }
+    }
+    &:focus {
       outline: none;
-      border:1px solid $white-color;
-      padding: 0 30px 0 15px;
-      filter:none;
-      &.grey-bg{
-        background-color: $body-bg;
-        &:focus,&.filled{
-          background-color: $white-color;
-          border-color: $border2-color;
-        }
-      }
-      &:focus{
-          outline: none;
-          border-color: $blue-color;          
-      }
-      &::placeholder { 
-          color: $light-grey-color;
-          opacity: 1; 
-      }
-      &:-ms-input-placeholder { 
-          color: $light-grey-color;
-      }
-      &::-ms-input-placeholder { 
-          color: $light-grey-color;
-      }
-      &.error{
-        background-color: #FDEEEE;
-        border-color: $danger-color;
-      }
+      border-color: $blue-color;
+    }
+    &::placeholder {
+      color: $light-grey-color;
+      opacity: 1;
+    }
+    &:-ms-input-placeholder {
+      color: $light-grey-color;
+    }
+    &::-ms-input-placeholder {
+      color: $light-grey-color;
+    }
+    &.error {
+      background-color: #fdeeee;
+      border-color: $danger-color;
+    }
   }
-  
-  .card-icon{
-    @include pos(ab,32px,10px,null,null);
+
+  .card-icon {
+    @include pos(ab, 32px, 10px, null, null);
   }
-  select{
+  select {
     appearance: none;
-    background:$white-color url('/static/images/down.svg') no-repeat calc(100% - 10px) center;
-    option{
+    background: $white-color url("/static/images/down.svg") no-repeat
+      calc(100% - 10px) center;
+    option {
       padding: 0 15px;
     }
   }
-  input,select{
-      height: 42px;
+  input,
+  select {
+    height: 42px;
   }
-  textarea{
-      height: 108px;
-      resize: none;
-      padding: 15px;
+  textarea {
+    height: 108px;
+    resize: none;
+    padding: 15px;
   }
-  .show-hide{
-      width: 24px;
-      position: absolute;
-      top:40px;
-      right: 10px;
-      border:none;
-      cursor: pointer;
-      background: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      .icon{
-        transition: all .12s;
-      }
-      
+  .show-hide {
+    width: 24px;
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    border: none;
+    cursor: pointer;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    .icon {
+      transition: all 0.12s;
+    }
   }
-  .uplad-wrapper{
-    width:100%;
+  .uplad-wrapper {
+    width: 100%;
     height: 238px;
-    border:1px dashed $light-grey-color;
+    border: 1px dashed $light-grey-color;
     background-color: $white-color;
     border-radius: 8px;
   }
-  .upload{
-    width:100%;
+  .upload {
+    width: 100%;
     height: 238px;
     appearance: none;
     cursor: pointer;
-    .drag{
-      margin:16px 0 24px;
-      color:$light-grey-color;
+    .drag {
+      margin: 16px 0 24px;
+      color: $light-grey-color;
       font-size: 16px;
       font-weight: 400;
     }
-    .primary-btn{
+    .primary-btn {
       width: 99px;
-      color:$white-color
+      color: $white-color;
     }
   }
-  #upload{
+  #upload {
     display: none;
   }
-  &.pass{
-    input[type="password"]{
-      ~ .show-hide{
-        &:after{
-          content: '';
+  &.pass {
+    input[type="password"] {
+      ~ .show-hide {
+        &:after {
+          content: "";
           width: 2px;
           height: 22px;
           background-color: $border-color;
           transform: rotate(45deg);
-          @include pos(ab,1px,null,null,11px);
+          @include pos(ab, 1px, null, null, 11px);
           border-left: 1px solid $white-color;
-          transition: all .12s;
+          transition: all 0.12s;
         }
-        &:hover{
-          &:after{
+        &:hover {
+          &:after {
             background-color: $primary-color;
           }
-          .icon{
+          .icon {
             fill: $primary-color;
           }
         }
       }
-      &:focus{
-        ~ .show-hide{
-          &:after{
+      &:focus {
+        ~ .show-hide {
+          &:after {
             background-color: $primary-color;
           }
-          .icon{
+          .icon {
             fill: $primary-color;
           }
         }
       }
     }
-    input[type="text"]{
-      ~ .show-hide{
-        &:hover{
-          &:after{
+    input[type="text"] {
+      ~ .show-hide {
+        &:hover {
+          &:after {
             background-color: $primary-color;
           }
-          .icon{
+          .icon {
             fill: $primary-color;
           }
         }
       }
-      &:focus{
-        ~ .show-hide{
-          &:after{
+      &:focus {
+        ~ .show-hide {
+          &:after {
             background-color: $primary-color;
           }
-          .icon{
+          .icon {
             fill: $primary-color;
           }
         }
       }
     }
   }
-  .max-limit{
+  .max-limit {
     font-size: 12px;
     line-height: 16px;
     color: $orange-color;
   }
-  .processing{ 
-    .border-btn{
+  .processing {
+    .border-btn {
       width: 97px;
     }
-    .uploaded{
+    .uploaded {
       font-size: 16px;
-      line-height:21px;
+      line-height: 21px;
       margin-top: 10px;
     }
     .imageName {
-      span{
+      span {
         display: block;
         line-height: 22px;
       }
-      .remove{
-        width:14px;
+      .remove {
+        width: 14px;
         height: 14px;
-        color:$white-color;
+        color: $white-color;
         line-height: 14px;
         background-color: $red-color;
         border-radius: 50%;
         margin-left: 6px;
         margin-top: 4px;
-        svg{
+        svg {
           height: 12px;
-          .icon{
-            fill:$white-color;
+          .icon {
+            fill: $white-color;
           }
         }
       }
     }
-    .process{ 
+    .process {
       @include pos(re);
-      .remaing-time{
-        @include pos(ab,50%,null,null,50%);
-        transform: translate(-50%,-50%);
+      .remaing-time {
+        @include pos(ab, 50%, null, null, 50%);
+        transform: translate(-50%, -50%);
         text-align: center;
-        strong{
+        strong {
           font-size: 24px;
           line-height: 24px;
           margin-bottom: 4px;
           font-weight: 500;
         }
       }
-      
+
       $progress-bar-stroke-width: 1.8;
       $progress-bar-size: 130px;
       svg {
@@ -359,7 +368,7 @@ h1{
       }
       .progress-bar__background {
         fill: none;
-        stroke: #A1ABB7;
+        stroke: #a1abb7;
         stroke-width: $progress-bar-stroke-width;
       }
 
@@ -376,23 +385,23 @@ h1{
   }
 }
 // common forget
-.forget{
+.forget {
   font-size: 14px;
   line-height: 21px;
   font-weight: 500;
-  color:$blue-color;
-  margin-top:6px;
+  color: $blue-color;
+  margin-top: 6px;
   width: 100%;
 }
 // common label
-label{
+label {
   font-size: 16px;
   line-height: 24px;
   font-weight: 600;
-  color:$primary-color;
+  color: $primary-color;
 }
 // common checkbox
-.checkbox-wrap{
+.checkbox-wrap {
   .checkbox {
     display: block;
     position: relative;
@@ -445,7 +454,7 @@ label{
     width: 18px;
     border-radius: 2px;
     margin-top: 2px;
-    border:2px solid $border-color;
+    border: 2px solid $border-color;
     &:after {
       content: "";
       position: absolute;
@@ -453,23 +462,23 @@ label{
     }
   }
 }
-.submitWrap{
-  width:100%;
-}
-.cheackboxWrap{
+.submitWrap {
   width: 100%;
 }
-.br50{
+.cheackboxWrap {
+  width: 100%;
+}
+.br50 {
   border-radius: 50%;
 }
-.nowrap{
+.nowrap {
   flex-wrap: nowrap;
 }
 
-.primary-btn{
+.primary-btn {
   font-size: 16px;
   font-weight: 500;
-  color:$white-color;
+  color: $white-color;
   background-color: $blue-color;
   width: 100%;
   height: 48px;
@@ -477,41 +486,41 @@ label{
   display: flex;
   justify-content: center;
   align-items: center;
-  border:none;
-  transition: all .2s;
-  &.disable{
-    opacity: .6;
+  border: none;
+  transition: all 0.2s;
+  &.disable {
+    opacity: 0.6;
     pointer-events: all;
     cursor: not-allowed !important;
   }
-  &:hover{
+  &:hover {
     color: $white-color;
     background-color: $primary-btn-hover;
   }
 }
-.disable-btn{
+.disable-btn {
   font-size: 16px;
   font-weight: 500;
-  color:$white-color;
-  background-color: rgba($blue-color,.4);
+  color: $white-color;
+  background-color: rgba($blue-color, 0.4);
   width: 100%;
   height: 48px;
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border:none;
+  border: none;
   cursor: not-allowed;
-  transition: all .2s;
+  transition: all 0.2s;
   pointer-events: none;
-  &:hover{
+  &:hover {
     color: $white-color;
   }
 }
-.border-btn{
+.border-btn {
   font-size: 16px;
   height: 48px;
-  color:$blue-color;
+  color: $blue-color;
   font-weight: 500;
   border-radius: 8px;
   border: 1px solid $blue-color;
@@ -519,155 +528,155 @@ label{
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all .2s;
-  &:hover{
+  transition: all 0.2s;
+  &:hover {
     background-color: $blue-color;
     color: $white-color;
   }
 }
-.cate-btn{
+.cate-btn {
   height: 32px;
   padding: 0 12px;
-  border:1px solid $border2-color;
+  border: 1px solid $border2-color;
   border-radius: 16px;
-  color:$disc-color;
+  color: $disc-color;
   display: flex;
   justify-content: center;
   align-items: center;
-  &.active{
-    background-color: #E8F1FE;
+  &.active {
+    background-color: #e8f1fe;
     border-color: $blue-color;
-    color:$blue-color;
+    color: $blue-color;
   }
 }
 // Toggle switch
 .switch {
-	width: 138px;
-	height: 42px;
-	display: flex;
-	input {
-		display: none;
-		 &.checked {
-			+ .toogle-slide {
-				&:after {
-					left: 0;
-				}
-				span {
-					&.on {
-						color: $white-color;
-					}
-					&.off {
-						color: $search-color;
-					}
-				}
-			}
-		}
-	}
-	.toogle-slide {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		border-radius: 24px;
-		justify-content: space-between;
-		@include pos(re);
-		z-index: 3;
-		cursor: pointer;
+  width: 138px;
+  height: 42px;
+  display: flex;
+  input {
+    display: none;
+    &.checked {
+      + .toogle-slide {
+        &:after {
+          left: 0;
+        }
+        span {
+          &.on {
+            color: $white-color;
+          }
+          &.off {
+            color: $search-color;
+          }
+        }
+      }
+    }
+  }
+  .toogle-slide {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 24px;
+    justify-content: space-between;
+    @include pos(re);
+    z-index: 3;
+    cursor: pointer;
     background-color: $search-bg;
-		&:after {
-			content: "";
-			width: 50%;
-			height: calc(100% + 2px);
-			background: $blue-color;
-			@include pos(ab, -1px, null, null, 50%);
-			border-radius: 24px;
-			z-index: -1;
-			transition: left 0.5s;
-		}
-		span {
-			width: calc(50% + 1px);
-			font-size: 14px;
-			line-height: 16px;
-			font-weight: 500;
-			text-align: center;
-			transition: color 0.5s;
-			height: calc(100% + 2px);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			&.on {
-				color: $search-color;
-				border-radius: 0 0 16px 16px;
-				margin-left: -1px;
-			}
-			&.off {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				color: $white-color;
-				border-radius: 16px 16px 0 0;
-				margin-right: -1px;
-			}
-		}
-	}
+    &:after {
+      content: "";
+      width: 50%;
+      height: calc(100% + 2px);
+      background: $blue-color;
+      @include pos(ab, -1px, null, null, 50%);
+      border-radius: 24px;
+      z-index: -1;
+      transition: left 0.5s;
+    }
+    span {
+      width: calc(50% + 1px);
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: 500;
+      text-align: center;
+      transition: color 0.5s;
+      height: calc(100% + 2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &.on {
+        color: $search-color;
+        border-radius: 0 0 16px 16px;
+        margin-left: -1px;
+      }
+      &.off {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $white-color;
+        border-radius: 16px 16px 0 0;
+        margin-right: -1px;
+      }
+    }
+  }
 }
-#container.visible{
+#container.visible {
   display: none;
 }
 // Breadcrumb css changes
-.breadcrumbs-wrapper{
+.breadcrumbs-wrapper {
   padding-top: 30px;
   background-color: $white-color;
-  &.no-bg{
+  &.no-bg {
     background-color: transparent;
   }
-  ul{
+  ul {
     margin-bottom: 0;
   }
 }
-.breadcrumbs{
+.breadcrumbs {
   color: $search-color;
   padding: 0;
-  li{
+  li {
     list-style: none;
     padding: 0 4px 0 4px;
     cursor: pointer;
-    &:first-child{
+    &:first-child {
       padding-left: 0;
     }
-    &.current{
+    &.current {
       color: $blue-color;
       cursor: unset;
     }
   }
 }
-.back{
+.back {
   margin-right: 10px;
   cursor: pointer;
-  .icon{
-    fill:#A1ABB7;
+  .icon {
+    fill: #a1abb7;
   }
 }
-.edit-back{
+.edit-back {
   cursor: pointer;
 }
-.category-banner{
+.category-banner {
   @include pos(re);
-  > img{
+  > img {
     width: 100%;
     min-height: 200px;
   }
-  .cover-wrap{
+  .cover-wrap {
     padding: 0 15px;
-    @include pos(ab,null,null,24px,50%);
+    @include pos(ab, null, null, 24px, 50%);
     transform: translateX(-50%);
     width: 100%;
     max-width: 1310px;
   }
-  .cover-btn{
-      height: 36px;
-      color: $white-color;
-      border-color: $white-color;
-      background-color: rgba($white-color,.3);
+  .cover-btn {
+    height: 36px;
+    color: $white-color;
+    border-color: $white-color;
+    background-color: rgba($white-color, 0.3);
   }
 }
 // Toast Message
@@ -675,123 +684,132 @@ label{
   width: max-content;
   min-height: 52px;
   padding: 10px 15px;
-  @include pos(fixed,54px,0,null,0,99);
+  @include pos(fixed, 54px, 0, null, 0, 99);
   margin: 0 auto;
   border-radius: 8px;
   flex-wrap: nowrap;
-  &.success{
-    background-color: #E8F1FE;
-    color: #1877F2;
+  &.success {
+    background-color: #e8f1fe;
+    color: #1877f2;
     .icon {
-      fill: #1877F2;
+      fill: #1877f2;
     }
   }
-  &.error{
-    background-color: #FDEEEE;
-    color: #EB5757;
+  &.error {
+    background-color: #fdeeee;
+    color: #eb5757;
     .icon {
-     fill:#EB5757;
+      fill: #eb5757;
     }
   }
-  .toast-message{
-    svg{
+  .toast-message {
+    svg {
       margin-right: 5px;
     }
     line-height: 21px;
     font-weight: 500;
   }
-  .close{
-    width:10px;
+  .close {
+    width: 10px;
     opacity: 1;
-    &:hover{
+    &:hover {
       opacity: 1;
     }
   }
 }
-.home-container .card-wrapper,.steps-wrapper,.edit-inner-container,.myorder-wrapper,.layout--default .notification-wrapper{
+.home-container .card-wrapper,
+.steps-wrapper,
+.edit-inner-container,
+.myorder-wrapper,
+.layout--default .notification-wrapper {
   min-height: 61.25vh;
 }
-.blue{
+.blue {
   color: $blue-color;
 }
-.w500{
-  font-weight:500;
+.w500 {
+  font-weight: 500;
 }
-.pointer{
+.pointer {
   cursor: pointer;
 }
-@media all and (min-width:320px) and (max-width:1024px){
-  .category-banner{
-    .cover-wrap{
+@media all and (min-width: 320px) and (max-width: 1024px) {
+  .category-banner {
+    .cover-wrap {
       bottom: 122px;
       justify-content: center;
     }
   }
-  .edit-back,.back{
-    .icon{
-      fill:$primary-color;
+  .edit-back,
+  .back {
+    .icon {
+      fill: $primary-color;
     }
   }
-  .header-title{
+  .header-title {
     background-color: $white-color;
     padding: 40px 15px 32px;
-    > .flex{
+    > .flex {
       margin: 0;
     }
-    .edit-back{
-        margin-right: 12px;
+    .edit-back {
+      margin-right: 12px;
     }
   }
 }
 
-@media all and (min-width:1025px){
-  .wd50{
+@media all and (min-width: 1025px) {
+  .wd50 {
     width: calc(50% - 8px);
   }
-  .prduct-reviews{
-    .wd50{
+  .prduct-reviews {
+    .wd50 {
       width: calc(50% - 15px);
     }
   }
-  .wd48{
+  .wd48 {
     width: calc(50% - 12px);
   }
-  .input-control{
-    input,select{
-        height: 48px;
+  .input-control {
+    input,
+    select {
+      height: 48px;
     }
-    .show-hide{
-        top:42px;
+    .show-hide {
+      top: 42px;
     }
-  }  
+  }
 }
 
-@media all and (min-width:1600px){
-  .inner-container{
+@media all and (min-width: 1600px) {
+  .inner-container {
     max-width: calc(100% - 130px);
-    .overflow-wrap{
-      .inner-container{
+    .overflow-wrap {
+      .inner-container {
         max-width: calc(100% - 130px);
         padding: 0 15px;
       }
     }
-    .overflow-none{
-      .inner-container{
+    .overflow-none {
+      .inner-container {
         max-width: none;
       }
     }
   }
   .category-banner {
-    .cover-wrap{
+    .cover-wrap {
       max-width: calc(100% - 130px);
     }
   }
-
 }
 .disable-opacity {
   opacity: 0.5;
   pointer-events: all;
   cursor: not-allowed !important;
 }
-
-
+.username-list {
+  color: $blue-color;
+}
+.username-list:hover {
+  cursor: pointer;
+}
