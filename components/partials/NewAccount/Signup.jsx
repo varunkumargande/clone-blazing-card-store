@@ -17,6 +17,7 @@ import { registerSchema } from "../../../utilities/validations/signupDetail";
 import { registerInitialValues } from "../../../utilities/validations/signupDetail";
 import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import SuccessMessage from "../../CommonComponents/SuccessMessage";
 import MySelect from "../../CommonComponents/MySelect";
 import { countriesCodeList } from "../../Constants/countryList";
 import useDebounce from "../../../hooks/useDebounce";
@@ -32,6 +33,7 @@ function Signup() {
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const usernameInput = useRef();
   const [passShow, setPassShow] = useState(false);
+  const [username, setUsername] = useState(null);
   const [conpassShow, setConPassShow] = useState(false);
   const [policyCheck, setPolicyCheck] = useState(false);
   const [searchUsername, setSearchUsername] = useState("");
@@ -88,8 +90,26 @@ function Signup() {
 
   const checkUsernameExists = async (usernameToCheck) => {
     if (!!usernameToCheck) {
-      const res = await getUsername(usernameToCheck);
-      setUsernameAvailable(res);
+      await getUsername(usernameToCheck, setUsernameAvailable);
+    }
+  };
+
+  const showUsernameSuggestionList = (setFieldValue) => {
+    if (!usernameAvailable?.status) {
+      return usernameAvailable?.suggestion?.map((item) => {
+        return (
+          <span
+            className="username-list"
+            onClick={(e) => {
+              e.preventDefault(),
+                setFieldValue("username", item),
+                checkUsernameExists(item);
+            }}
+          >
+            <b>{item}</b> &nbsp;
+          </span>
+        );
+      });
     }
   };
 
@@ -128,7 +148,7 @@ function Signup() {
         initialValues={registerInitialValues()}
         validationSchema={registerSchema}
         onSubmit={(values) => {
-          if (!!policyCheck && usernameAvailable) {
+          if (!!policyCheck && !!usernameAvailable) {
             UserRegister(values, Router, dispatch);
           }
         }}
@@ -192,21 +212,31 @@ function Signup() {
                   }}
                   ref={usernameInput}
                   onBlurCapture={handleBlur}
-                  maxLength={12}
+                  maxLength={10}
                   minLength={8}
                 />
-                <ErrorMessage
-                  errors={
-                    !!errors.username
-                      ? errors.username
-                      : !!!usernameAvailable && "Username already exist"
-                  }
-                  touched={touched.username}
-                />
-                {/* <div className="userSuggestion flex nowrap">
-                  <div className={Styles.label}>Available:</div>
-                  <div className={`${Styles.label} flex flex-wrap`}><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span></div>
-                </div> */}
+
+                {!!errors.username ? (
+                  <ErrorMessage
+                    errors={
+                      !!errors.username
+                        ? errors.username
+                        : usernameAvailable?.message
+                    }
+                    touched={touched.username}
+                  />
+                ) : (
+                  <SuccessMessage
+                    message={usernameAvailable?.message}
+                    status={usernameAvailable?.status}
+                  />
+                )}
+              </div>
+              <div>
+                {!!usernameAvailable && !usernameAvailable?.status && (
+                  <b>Available : </b>
+                )}
+                {showUsernameSuggestionList(setFieldValue)}
               </div>
 
               <div className="input-control">
@@ -242,7 +272,6 @@ function Signup() {
                       )
                     }
                     maxlength="12"
-                    onBlur={handleBlur}
                   />
                 </div>
                 <ErrorMessage errors={errors.number} touched={touched.number} />
