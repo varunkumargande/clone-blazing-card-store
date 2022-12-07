@@ -19,10 +19,10 @@ export default function useLiveUserCount(streamData, callback) {
 
   const getUserCount = async () => {
     callback(channel);
-    await channel
-      ?.getMembers()
+    await client
+      ?.getChannelMemberCount([streamData?.option?.messageChannel])
       .then(async (members) => {
-        setUserCount(members?.length);
+        setUserCount(members[streamData?.option?.messageChannel]);
       })
       .catch((e) => {
         
