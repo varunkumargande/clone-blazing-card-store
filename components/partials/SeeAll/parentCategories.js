@@ -8,6 +8,8 @@ import {
   saveSubCategoryName,
 } from "../../../store/category/action";
 import { getStreamCategoryBasedApi } from "../../../api/stream/subStreamDetail";
+import CategoriesMobile from "../CategoiesMobile/CategoriesMobile";
+import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 
 function SeeAllParentCategories({
   category,
@@ -16,9 +18,13 @@ function SeeAllParentCategories({
   setLoader,
   offset,
   setOffset,
+  streamData,
+  setSubCatId,
+  setSeeMoreLoader,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const { isMobile } = useIsMobile();
 
   const handleSelectCategory = (name, index) => {
     setCatIndex(index);
@@ -54,19 +60,39 @@ function SeeAllParentCategories({
 
   const getAllCategoriesCard = () => {
     if (category?.categories) {
-      return category?.categories.map((element, index) => {
+      if (isMobile) {
         return (
-          <li
-            key={element?.categorySlug}
-            className={
-              category?.categoryName === element?.categorySlug ? "active" : ""
-            }
-            onClick={(e) => {e.preventDefault();handleSelectCategory(element?.categorySlug, index)}}
-          >
-            {stringFormatter(element?.name)}
-          </li>
+          <CategoriesMobile
+            category={category}
+            handleSelectCategory={handleSelectCategory}
+            setCatIndex={setCatIndex}
+            setStreamData={setStreamData}
+            setLoader={setLoader}
+            offset={offset}
+            streamData={streamData}
+            setOffset={setOffset}
+            setSubCatId={setSubCatId}
+            setSeeMoreLoader={setSeeMoreLoader}
+          />
         );
-      });
+      } else {
+        return category?.categories.map((element, index) => {
+          return (
+            <li
+              key={element?.categorySlug}
+              className={
+                category?.categoryName === element?.categorySlug ? "active" : ""
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                handleSelectCategory(element?.categorySlug, index);
+              }}
+            >
+              {stringFormatter(element?.name)}
+            </li>
+          );
+        });
+      }
     }
   };
 
