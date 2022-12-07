@@ -190,7 +190,7 @@ function categoryStream({ auth, category }) {
               {handleShowParentCategories()}
               <div
                 className="overflow-none"
-                onClick={scrollToStreamCards?.current?.scrollIntoView({
+                onClick={isMobile && scrollToStreamCards?.current?.scrollIntoView({
                   block: "center",
                   behavior: "smooth",
                 })}
