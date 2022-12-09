@@ -685,7 +685,7 @@ label {
   width: max-content;
   min-height: 52px;
   padding: 10px 15px;
-  @include pos(fixed, 54px, 0, null, 0, 99);
+  @include pos(fixed, 54px, 0, null, 0, 99999);
   margin: 0 auto;
   border-radius: 8px;
   flex-wrap: nowrap;
