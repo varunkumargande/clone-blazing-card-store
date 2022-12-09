@@ -17,6 +17,8 @@ import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
 import { stepState } from "../../Constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { io } from "socket.io-client";
+import { host } from "../../../chatService";
 import {
   ImageTransformation,
   DefaultImagePath,
@@ -32,7 +34,9 @@ import {
 } from "../../../store/category/action";
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 import { nftMarketUrl } from "../../../api/url";
-
+import { useChatCurrentUser } from "../../../hooks/useChatCurrentUser";
+import { useMessageSocket } from "../../../hooks/useMessageSocket";
+import { fetchUserChatNotification } from "../../../store/chat/action";
 
 function HeaderDefault({ auth }) {
   const socket = useRef();
@@ -45,6 +49,9 @@ function HeaderDefault({ auth }) {
   const { t } = useTranslation("common");
   const [toggle, setToggle] = useState(false);
   const [isVendor, setVendor] = useState(false);
+  const [currentUserData, setCurrentUserData] = useChatCurrentUser();
+  const [msgNotificationData, setMsgNotificationData] = useState([]);
+  const [socketData] = useMessageSocket();
 
   let { pageName } = router.query;
   const {
@@ -52,7 +59,7 @@ function HeaderDefault({ auth }) {
     notificationsUnreadCount,
     setNotificationsUnreadCount,
   } = useNotifications();
-  const [chatNotification, setChatNotification] = useState([]);
+  const [chatNotification, setChatNotification] = useState(null);
 
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
@@ -71,18 +78,15 @@ function HeaderDefault({ auth }) {
         clearInterval(profileInterval);
       }
     }, 10);
-    // if (socket.current) {
-    //   socket.current.on("new-message-notification", (id) => {
-    //     setChatNotification(id);
-    //   });
-    // }
+    fetchUserChatNotification(setMsgNotificationData, dispatch);
   }, []);
 
-  // useEffect(() => {
-  //   if (!!localStorage.getItem("chat-app-current-user")) {
-  //     socket.current = io(host);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (socketData)
+      socketData.on("new-message-notification", (id) => {
+        setChatNotification(id);
+      });
+  }, [socketData]);
 
   useEffect(() => {
     if (toggle) {
@@ -94,10 +98,15 @@ function HeaderDefault({ auth }) {
    * UseEffect will check if Buyer is a seller or not via notification
    */
   useEffect(() => {
-    if(!isVendor && (notifications && notifications[0] && notifications[0]['notify_type'] == 'Vendor')) {
+    if (
+      !isVendor &&
+      notifications &&
+      notifications[0] &&
+      notifications[0]["notify_type"] == "Vendor"
+    ) {
       setVendor(true);
     }
-  }, [notifications])
+  }, [notifications]);
 
   const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
@@ -190,17 +199,23 @@ function HeaderDefault({ auth }) {
         </>
       );
     } else {
-        return (
-          <>
-            {!stepState.includes(pageName) ? (
-              <Link href={auth?.isLoggedIn ? "/become-seller/guidelines" : "/account/login"}>
-                <a className="border-btn flex flex-center justify-center become">
-                  Become a Seller
-                </a>
-              </Link>
-            ) : null}
-          </>
-        );
+      return (
+        <>
+          {!stepState.includes(pageName) ? (
+            <Link
+              href={
+                auth?.isLoggedIn
+                  ? "/become-seller/guidelines"
+                  : "/account/login"
+              }
+            >
+              <a className="border-btn flex flex-center justify-center become">
+                Become a Seller
+              </a>
+            </Link>
+          ) : null}
+        </>
+      );
     }
   };
   // ==============================================================================
@@ -216,10 +231,8 @@ function HeaderDefault({ auth }) {
   };
 
   const handleMarketPlaceRedirection = () => {
-    window
-      .open(nftMarketUrl, "mywindow")
-      .focus();
-  }
+    window.open(nftMarketUrl, "mywindow").focus();
+  };
   // ==============================================================================
   // ======================= Onclick outside dropdown close ========================
   const handleClickOutside = (event) => {
@@ -286,6 +299,7 @@ function HeaderDefault({ auth }) {
                 >
                   <IconMessage />
                 </button>
+
                 <button
                   ref={notificationWrapperRef}
                   className={`profile Notification flex flex-center justify-center ${
@@ -350,10 +364,16 @@ function HeaderDefault({ auth }) {
                       </Link>
                     </li>
                     <li>
-                        <a className="active" onClick={(e)=>{e.preventDefault();handleMarketPlaceRedirection()}}>
-                          <IconMyOrders />
-                            NFT Market
-                        </a>
+                      <a
+                        className="active"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleMarketPlaceRedirection();
+                        }}
+                      >
+                        <IconMyOrders />
+                        NFT Market
+                      </a>
                     </li>
                     <li>
                       <Link href="/my-orders">
