@@ -258,7 +258,7 @@ function Signup() {
                   <PhoneInput
                     inputProps={{
                       name: registerConstant.form.contactField.name,
-                      className: "input-control",
+                      className: "input-control phone-input",
                     }}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
