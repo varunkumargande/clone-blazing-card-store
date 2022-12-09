@@ -25,6 +25,8 @@ import { regex } from "../../Constants/regex";
 import { openInNewTab } from "../../../utilities/utils";
 import Styles from "../../../modular_scss/Signup.module.scss";
 import FacebookLoginComponent from "../../../utilities/facebookLogin";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 function Signup() {
   const dispatch = useDispatch();
@@ -38,6 +40,8 @@ function Signup() {
   const [policyCheck, setPolicyCheck] = useState(false);
   const [searchUsername, setSearchUsername] = useState("");
   const debouncedSearchTerm = useDebounce(searchUsername, 500);
+  const [contactNumber, setContactNumber] = useState("");
+  const [contactNumberError, setContactNumberError] = useState("");
 
   useEffect(
     () => {
@@ -111,6 +115,10 @@ function Signup() {
         );
       });
     }
+  };
+
+  const handleContactNumberField = (value) => {
+    setContactNumber(value);
   };
 
   return (
@@ -241,40 +249,25 @@ function Signup() {
 
               <div className="input-control">
                 <label>{registerConstant.form.contactField.label}</label>
-                <div className="flex space-between">
-                  <MySelect
-                    className={Styles.country_code}
-                    label={registerConstant.form.countryCodeField.label}
-                    name={registerConstant.form.countryCodeField.name}
-                    onChange={handleChange}
-                    value={values.countryCode}
-                    onBlur={handleBlur}
-                  >
-                    {countriesCodeList.map((item) => {
-                      return (
-                        <>
-                          <option value={item?.code}>{item?.code}</option>
-                        </>
-                      );
-                    })}
-                  </MySelect>
 
-                  <input
-                    className={Styles.phone_number}
-                    name={registerConstant.form.contactField.name}
+                <div className="flex space-between">
+                  <PhoneInput
+                    inputProps={{
+                      name: registerConstant.form.contactField.name,
+                      className: "input-control phone-input",
+                    }}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
-                    onBlur={handleBlur}
                     onChange={(e) =>
-                      setFieldValue(
-                        "number",
-                        e.target.value.replace(regex.onlyNumbers, "")
-                      )
+                      setFieldValue("number", e.replace(regex.onlyNumbers, ""))
                     }
-                    maxlength="12"
+                    onBlur={handleBlur}
+                  />
+                  <ErrorMessage
+                    errors={errors.number}
+                    touched={touched.number}
                   />
                 </div>
-                <ErrorMessage errors={errors.number} touched={touched.number} />
               </div>
 
               <div className="input-control wd50 pass">

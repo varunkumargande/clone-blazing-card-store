@@ -7,7 +7,7 @@ export async function UserRegister(values, Router, dispatch) {
     emailId: values.email,
     password: values.password,
     confirmPassword: values.cpass,
-    phoneNumber: values.countryCode + "-" + values.number,
+    phoneNumber: values.number,
     userName: values.username,
   });
   const result = await APIServices.create("customer/register", data);

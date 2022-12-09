@@ -22,14 +22,7 @@ export const registerSchema = Yup.object().shape({
     .email(registerConstant.form.emailField.valid)
     .required(registerConstant.form.emailField.required),
 
-  number: Yup.string()
-    .matches(
-      registerConstant.form.contactField.regex,
-      registerConstant.form.contactField.regexMessage
-    )
-    .required(registerConstant.form.contactField.required)
-    .min(10)
-    .max(12),
+  number: Yup.string().required(registerConstant.form.contactField.required),
 
   password: Yup.string()
     .matches(
@@ -61,6 +54,5 @@ export const registerInitialValues = () => {
     password: "",
     cpass: "",
     username: "",
-    countryCode: "+1",
   };
 };

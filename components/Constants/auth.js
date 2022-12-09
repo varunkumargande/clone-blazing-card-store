@@ -39,13 +39,13 @@ export const registerConstant = {
       name: "number",
       placeholder: "Contact Number",
       label: "Contact Number*",
-      regex: /^([+]1){0,1}[1-9]\d{9}$/,
+      // regex: /^([+]1){0,1}[1-9]\d{9}$/,
 
       // ToDo: Need to remove this code. Keeping this for reference.
       // /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
 
-      regexMessage:
-        "Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)",
+      // regexMessage:
+      //   "Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)",
       required: "Contact number is required",
     },
     countryCodeField: {
