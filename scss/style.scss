@@ -1486,6 +1486,31 @@ align-items: left;
   border: 0;
   display:none;
 }
+.react-tel-input {
+  .arrow{
+    margin-left: 10px;
+  }
+  .phone-input{
+    margin-left: 85px;
+    width: calc(100% - 85px);
+  }
+  .flag-dropdown {
+    border: none;
+    background-color: #fff;
+    border: transparent !important;
+    border-radius: 8px !important;
+    &:focus{
+      outline: none;
+      border-color: 1px solid#1877F2 !important;
+    }
+  }
+  .selected-flag{
+    width: 66px !important;
+    padding: 0 8px !important;
+    border-radius: 8px !important;
+    background-color: #fff;
+  }
+}
 @media only screen and (max-width: 930px) {
   .cus-qa-wrap {
     .cus-qa-row {
