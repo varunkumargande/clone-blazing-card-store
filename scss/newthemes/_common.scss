@@ -1,4 +1,7 @@
-body {
+html{
+  font-size: 10px;
+}
+body{
   @include Inter;
   font-size: 14px;
   color: $primary-color;
@@ -118,10 +121,8 @@ h1 {
 .mb40 {
   margin-bottom: 40px;
 }
-.mr16 {
-  margin-right: 16px;
-}
-.mr16 {
+
+.mr16{
   margin-right: 16px;
 }
 .ml20 {
