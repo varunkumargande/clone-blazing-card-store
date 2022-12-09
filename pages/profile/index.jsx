@@ -409,7 +409,9 @@ export default function PublicProfile() {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        currentUser ? chatLogin() : setShowModal(true);
+                        Object.keys(currentUser).length
+                          ? chatLogin()
+                          : setShowModal(true);
                       }}
                       className="border-btn edit-profile-btn"
                     >

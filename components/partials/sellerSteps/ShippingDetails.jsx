@@ -105,7 +105,7 @@ export default function ShippingDetails() {
               />
               <TextInput
                 className="input-control wd48"
-                label="Address Line 2*"
+                label="Address Line 2"
                 name="addressLine2"
                 type="text"
                 placeholder="Enter here"

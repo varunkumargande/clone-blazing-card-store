@@ -251,7 +251,7 @@ function StreamingBase({
    * Method will Handle bid confirmation event
    */
   const handleConfirmBid = async () => {
-    if (!!cardDetail && !!addressList) {
+    if ((cardDetail?.length > 0) && (addressList?.length > 0)) {
       if (amountToBid > bidAmount) {
         setDisableBid(true);
         setOpen(false);

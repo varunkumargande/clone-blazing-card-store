@@ -16,9 +16,21 @@ export default function FileUpload({ label, ...props }) {
     (state) => state?.becomeSeller?.basicDetails?.documents
   );
   const handleFileSubmission = (event) => {
-    props.formProps.setFieldValue("upload", event.currentTarget.files[0]);
-    props.setImage(event.currentTarget.files[0]);
-    setFileName(event.currentTarget.files[0].name);
+    const file = event.currentTarget.files[0];
+    if (
+      file &&
+      ["jpeg", "jpg", "png"].includes(file.type.split("/")[1]) &&
+      parseFloat((file.size / 1000000).toFixed(2)) < 5
+    ) {
+      props.formProps.setFieldValue("upload", file);
+      props.setImage(file);
+      setFileName(file.name);
+    } else {
+      props.formProps.setFieldError(
+        "upload",
+        "File size should be less than 5MB and format should be png, jpg, jpeg"
+      );
+    }
   };
 
   const handleCloseImage = () => {
@@ -36,16 +48,15 @@ export default function FileUpload({ label, ...props }) {
     if (!!documents?.image && !!documents?.path && !!documents?.fileName) {
       setFileName(documents?.fileName);
     }
-  },[]);
+  }, []);
   return (
     <>
       <div className={props.className}>
         <div className="flex space-between flex-center">
           <label htmlFor={props.id || props.name}>{label}</label>{" "}
-          
           {meta.touched && meta.error && (
-                  <span className="max-limit">{meta.error}</span>
-                )}
+            <span className="max-limit">{meta.error}</span>
+          )}
         </div>
         <div className="uplad-wrapper flex justify-center flex-center">
           {/* Processing */}
@@ -126,7 +137,6 @@ export default function FileUpload({ label, ...props }) {
                 <span className="drag">Drag & Drop your files here</span>
                 <span className="primary-btn">Upload</span>
               </label>
-              
             </>
           )}
           {/* {
