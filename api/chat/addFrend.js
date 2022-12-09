@@ -11,10 +11,11 @@ export async function addChatFrend(
   dispatch,
   currentChatUserId
 ) {
-  socket.current.emit("add-friend", {
-    userId: currentChatUserId,
-    friendId: friendId,
-  });
+  if (socket)
+    socket.emit("add-friend", {
+      userId: currentChatUserId,
+      friendId: friendId,
+    });
 
   const jsonData = {
     userId: currentChatUserId,
