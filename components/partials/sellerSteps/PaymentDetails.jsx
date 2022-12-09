@@ -182,7 +182,7 @@ export default function PaymentDetails() {
             <div className="flex space-between">
               <CardExpiry
                 className="input-control wd48"
-                label="Expiry*"
+                label="Expiration Date*"
                 name="expiry"
                 type="text"
                 placeholder="Enter here (MM/YY)"
