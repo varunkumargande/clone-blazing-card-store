@@ -561,7 +561,7 @@ export function AddNewCardModal(props) {
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
-                <label>Expiration</label>
+                <label>Expiration Date</label>
                 <input
                   type="text"
                   name="expireDate"

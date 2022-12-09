@@ -179,7 +179,7 @@ export default function PaymentDetail() {
                                 </span>
                               </div>
                               <div className="input-control wd50">
-                                <label htmlFor="usr">Expiry*</label>
+                                <label htmlFor="usr">Expiration Date*</label>
                                 <input
                                   name="expireDate"
                                   placeholder={"MM/YY"}
