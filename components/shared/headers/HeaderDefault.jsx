@@ -17,6 +17,8 @@ import { logOut } from "../../../store/auth/action";
 import { searchRequest } from "../../../store/search/action";
 import { stepState } from "../../Constants";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
+import { io } from "socket.io-client";
+import { host } from "../../../chatService";
 import {
   ImageTransformation,
   DefaultImagePath,
@@ -32,7 +34,7 @@ import {
 } from "../../../store/category/action";
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 import { nftMarketUrl } from "../../../api/url";
-
+import { useChatCurrentUser } from "../../../hooks/useChatCurrentUser";
 
 function HeaderDefault({ auth }) {
   const socket = useRef();
@@ -45,6 +47,7 @@ function HeaderDefault({ auth }) {
   const { t } = useTranslation("common");
   const [toggle, setToggle] = useState(false);
   const [isVendor, setVendor] = useState(false);
+  const [currentUserData, setCurrentUserData] = useChatCurrentUser();
 
   let { pageName } = router.query;
   const {
@@ -71,18 +74,21 @@ function HeaderDefault({ auth }) {
         clearInterval(profileInterval);
       }
     }, 10);
-    // if (socket.current) {
-    //   socket.current.on("new-message-notification", (id) => {
-    //     setChatNotification(id);
-    //   });
-    // }
+    if (!!currentUserData) {
+      socket.current = io(host);
+    } else {
+      // setErrorcode(404);
+    }
   }, []);
 
-  // useEffect(() => {
-  //   if (!!localStorage.getItem("chat-app-current-user")) {
-  //     socket.current = io(host);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("new-message-notification", (id) => {
+        // setNewNotification((data) => data.concat(id));
+        console.log(id);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (toggle) {
@@ -94,10 +100,15 @@ function HeaderDefault({ auth }) {
    * UseEffect will check if Buyer is a seller or not via notification
    */
   useEffect(() => {
-    if(!isVendor && (notifications && notifications[0] && notifications[0]['notify_type'] == 'Vendor')) {
+    if (
+      !isVendor &&
+      notifications &&
+      notifications[0] &&
+      notifications[0]["notify_type"] == "Vendor"
+    ) {
       setVendor(true);
     }
-  }, [notifications])
+  }, [notifications]);
 
   const renderProfileImage = () => {
     if (!!profile?.avatarPath && !!profile?.avatar) {
@@ -190,17 +201,23 @@ function HeaderDefault({ auth }) {
         </>
       );
     } else {
-        return (
-          <>
-            {!stepState.includes(pageName) ? (
-              <Link href={auth?.isLoggedIn ? "/become-seller/guidelines" : "/account/login"}>
-                <a className="border-btn flex flex-center justify-center become">
-                  Become a Seller
-                </a>
-              </Link>
-            ) : null}
-          </>
-        );
+      return (
+        <>
+          {!stepState.includes(pageName) ? (
+            <Link
+              href={
+                auth?.isLoggedIn
+                  ? "/become-seller/guidelines"
+                  : "/account/login"
+              }
+            >
+              <a className="border-btn flex flex-center justify-center become">
+                Become a Seller
+              </a>
+            </Link>
+          ) : null}
+        </>
+      );
     }
   };
   // ==============================================================================
@@ -216,10 +233,8 @@ function HeaderDefault({ auth }) {
   };
 
   const handleMarketPlaceRedirection = () => {
-    window
-      .open(nftMarketUrl, "mywindow")
-      .focus();
-  }
+    window.open(nftMarketUrl, "mywindow").focus();
+  };
   // ==============================================================================
   // ======================= Onclick outside dropdown close ========================
   const handleClickOutside = (event) => {
@@ -350,10 +365,16 @@ function HeaderDefault({ auth }) {
                       </Link>
                     </li>
                     <li>
-                        <a className="active" onClick={(e)=>{e.preventDefault();handleMarketPlaceRedirection()}}>
-                          <IconMyOrders />
-                            NFT Market
-                        </a>
+                      <a
+                        className="active"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleMarketPlaceRedirection();
+                        }}
+                      >
+                        <IconMyOrders />
+                        NFT Market
+                      </a>
                     </li>
                     <li>
                       <Link href="/my-orders">
