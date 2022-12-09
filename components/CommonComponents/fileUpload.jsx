@@ -15,6 +15,7 @@ export default function FileUpload({ label, ...props }) {
   const documents = useSelector(
     (state) => state?.becomeSeller?.basicDetails?.documents
   );
+  const [uploadErrorMessage, setUploadErrorMessage] = useState("");  
   const handleFileSubmission = (event) => {
     const file = event.currentTarget.files[0];
     if (
@@ -25,11 +26,9 @@ export default function FileUpload({ label, ...props }) {
       props.formProps.setFieldValue("upload", file);
       props.setImage(file);
       setFileName(file.name);
+      setUploadErrorMessage("")
     } else {
-      props.formProps.setFieldError(
-        "upload",
-        "File size should be less than 5MB and format should be png, jpg, jpeg"
-      );
+      setUploadErrorMessage("File size should be less than 5MB and format should be png, jpg, jpeg");
     }
   };
 
@@ -49,14 +48,16 @@ export default function FileUpload({ label, ...props }) {
       setFileName(documents?.fileName);
     }
   }, []);
+
   return (
     <>
       <div className={props.className}>
         <div className="flex space-between flex-center">
           <label htmlFor={props.id || props.name}>{label}</label>{" "}
-          {meta.touched && meta.error && (
-            <span className="max-limit">{meta.error}</span>
+          {(!!uploadErrorMessage.length || (meta.touched && meta.error)) && (
+            <span className="max-limit">{uploadErrorMessage || meta.error}</span>
           )}
+
         </div>
         <div className="uplad-wrapper flex justify-center flex-center">
           {/* Processing */}
