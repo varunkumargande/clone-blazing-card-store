@@ -428,7 +428,7 @@ function MyProfile(props) {
                           </Link>
                         </li>
                       )}
-                      {profile?.mobileNumber && (
+                      {/* {profile?.mobileNumber && (
                         <li>
                           <Link
                             href={`https://api.whatsapp.com/send?phone=${profile.mobileNumber}`}
@@ -443,7 +443,7 @@ function MyProfile(props) {
                             </a>
                           </Link>
                         </li>
-                      )}
+                      )} */}
                     </ul>
                   </div>
                 </div>
