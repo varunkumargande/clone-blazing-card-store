@@ -55,7 +55,7 @@ export default function FileUpload({ label, ...props }) {
         <div className="flex space-between flex-center">
           <label htmlFor={props.id || props.name}>{label}</label>{" "}
           {(!!uploadErrorMessage.length || (meta.touched && meta.error)) && (
-            <span className="max-limit">{uploadErrorMessage || meta.error}</span>
+            <span className="errorMessage">{uploadErrorMessage || meta.error}</span>
           )}
 
         </div>
