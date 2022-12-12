@@ -4,13 +4,7 @@ import { regex } from "../../components/Constants/regex";
 export const profileSchema = Yup.object().shape({
   firstName: Yup.string().required("First name Required"),
   lastName: Yup.string().required("Last name Required"),
-  phoneNumber: Yup.string()
-    .required("Contact Number is Required")
-    .matches(
-      regex.phoneNumber,
-      "Please enter a valid mobile number with country and area code(Ex: +19999999999 or 9999999999)"
-    ),
-
+  phoneNumber: Yup.string().required("Contact Number is Required"),
   bio: Yup.string().max(300),
   twitterUrl: Yup.string()
     .matches(
@@ -24,7 +18,6 @@ export const profileSchema = Yup.object().shape({
       "Invalid facebook Link !"
     )
     .nullable(),
-  countryCode: Yup.string().required("country code is required"),
 });
 
 export const profileInitialValues = (profileData) => {
@@ -34,13 +27,8 @@ export const profileInitialValues = (profileData) => {
     bio: !!profileData?.bio ? profileData?.bio : "",
     twitterUrl: !!profileData?.twitterUrl ? profileData?.twitterUrl : "",
     facebookUrl: !!profileData?.facebookUrl ? profileData?.facebookUrl : "",
-    phoneNumber: !!profileData?.phoneNumber
-      ? profileData?.phoneNumber.split("-")[1]
-      : "",
+    phoneNumber: !!profileData?.phoneNumber ? profileData?.phoneNumber : "",
     emailId: !!profileData?.emailId ? profileData?.emailId : "",
     userName: profileData?.username || "",
-    countryCode: !!profileData?.phoneNumber
-      ? profileData?.phoneNumber.split("-")[0]
-      : "",
   };
 };
