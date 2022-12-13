@@ -53,7 +53,7 @@ function HeaderDefault({ auth }) {
   const [msgNotificationData, setMsgNotificationData] = useState([]);
   const [socketData] = useMessageSocket();
 
-  let { pageName } = router.query;
+  let { pid } = router.query;
   const {
     notifications,
     notificationsUnreadCount,
@@ -201,7 +201,7 @@ function HeaderDefault({ auth }) {
     } else {
       return (
         <>
-          {!stepState.includes(pageName) ? (
+          {!stepState.includes(pid) ? (
             <Link
               href={
                 auth?.isLoggedIn

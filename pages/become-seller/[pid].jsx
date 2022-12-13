@@ -16,11 +16,12 @@ export default function Steps() {
   const [pageType, setPageType] = useState("");
 
   const route = useRouter();
-  let { pageName } = route.query;
+  let { pid } = route.query;
 
   useEffect(() => {
-    setPageType(pageName);
-  }, [pageName]);
+    console.log(pid, "hello")
+    setPageType(pid);
+  }, [pid]);
 
   const getComponent = useMemo(() => {
     switch (pageType) {
@@ -53,7 +54,7 @@ export default function Steps() {
           )}
           <LeftPannel />
         </div>
-        {pageName && <div className="step-right">{getComponent}</div>}
+        {pageType && <div className="step-right">{getComponent}</div>}
       </section>
       <Footer />
     </>
