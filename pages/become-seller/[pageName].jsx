@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import LeftPannel from "../../components/partials/sellerSteps/LeftPannel";
 import ImportantGuidelines from "../../components/partials/sellerSteps/ImportantGuidelines";
@@ -13,12 +13,17 @@ import BackButton from "../../components/CommonComponents/BackButton";
 
 export default function Steps() {
   const { isMobile } = useIsMobile();
+  const [pageType, setPageType] = useState("");
 
   const route = useRouter();
   let { pageName } = route.query;
 
+  useEffect(() => {
+    setPageType(pageName);
+  }, [pageName]);
+
   const getComponent = useMemo(() => {
-    switch (pageName) {
+    switch (pageType) {
       case "basicDetails":
         return <BasicDetails />;
       case "paymentDetails":
@@ -32,7 +37,7 @@ export default function Steps() {
       default:
         return <ImportantGuidelines />;
     }
-  }, [pageName]);
+  }, [pageType]);
 
   return (
     <>
