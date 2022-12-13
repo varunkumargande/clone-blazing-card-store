@@ -119,3 +119,12 @@ export const handleModalClick = (event, handleOnClose) => {
 export const openInNewTab = (url) => {
   window.open(url, "mywindow").focus();
 };
+
+// method to open social links in new tab
+export const handleSocialLinks = (url) => {
+  let path = url;
+  if (!path.includes("https://")) {
+    path = "https://" + path;
+  }
+  window.open(path, "mywindow").focus();
+};
