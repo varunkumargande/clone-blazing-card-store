@@ -5,6 +5,7 @@ import React, {
   useState,
   useEffect,
 } from "react";
+import { connect } from "react-redux";
 import NotificationMethods from "../../api/notification/NotificationMethods";
 import { notificationBaseUrl } from "../../api/url";
 import useEventSocket from "../../hooks/useEventSocket";
@@ -20,7 +21,6 @@ export function NotificationsProvider(props) {
   const [lastSetDataIds, setLastSetDataIds] = useState([]);
   const [viewMore, setViewMore] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { data } = useEventSocket(
     typeof window !== "undefined" &&
@@ -33,15 +33,6 @@ export function NotificationsProvider(props) {
   const handleNotifications = (newData) => {
     setNotifications(newData);
   };
-
-  useEffect(() => {
-    if (
-      isLoggedIn !== !!localStorage.getItem("blazingUser") &&
-      typeof window !== "undefined"
-    ) {
-      setIsLoggedIn(!!localStorage.getItem("blazingUser"));
-    }
-  }, [typeof window]);
 
   useEffect(() => {
     if (data) {
@@ -80,7 +71,7 @@ export function NotificationsProvider(props) {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (props.auth.isLoggedIn) {
       NotificationMethods.GET_ALL_NOTIFICATION(
         limit,
         offset,
@@ -89,8 +80,16 @@ export function NotificationsProvider(props) {
       NotificationMethods.NOTIFICATION_UNREAD_COUNT((data) =>
         setNotificationsUnreadCount(data.count)
       );
+    } else {
+      setNotifications([]);
+      setNotificationsUnreadCount(0);
+      setOffset(0);
+      setLimit(15);
+      setLastSetDataIds([]);
+      setViewMore(true);
+      setIsFetching(false);
     }
-  }, [offset, isLoggedIn]);
+  }, [offset, props.auth.isLoggedIn]);
 
   const contextValue = useMemo(
     () => ({
@@ -120,4 +119,8 @@ export function useNotifications() {
   return useContext(NotificationsContext);
 }
 
-export default NotificationsProvider;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(NotificationsProvider);
