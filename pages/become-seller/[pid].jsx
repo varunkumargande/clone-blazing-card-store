@@ -19,21 +19,21 @@ export default function Steps() {
   let { pid } = route.query;
 
   useEffect(() => {
-    console.log(pid, "hello")
-    setPageType(pid);
-  }, [pid]);
+    if (typeof window !== undefined)
+      setPageType(window.location.pathname.replace("/become-seller/", ""));
+  }, [typeof window]);
 
   const getComponent = useMemo(() => {
     switch (pageType) {
-      case "basicDetails":
+      case "basicDetails/":
         return <BasicDetails />;
-      case "paymentDetails":
+      case "paymentDetails/":
         return <PaymentDetails />;
-      case "guidelines":
+      case "guidelines/":
         return <ImportantGuidelines />;
-      case "shippingDetails":
+      case "shippingDetails/":
         return <ShippingDetails />;
-      case "submitted":
+      case "submitted/":
         return <ApplicationSubmitted />;
       default:
         return <ImportantGuidelines />;
