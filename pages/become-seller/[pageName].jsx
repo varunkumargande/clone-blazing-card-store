@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
+import React, { useMemo } from "react";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import LeftPannel from "../../components/partials/sellerSteps/LeftPannel";
 import ImportantGuidelines from "../../components/partials/sellerSteps/ImportantGuidelines";
@@ -18,7 +17,7 @@ export default function Steps() {
   const route = useRouter();
   let { pageName } = route.query;
 
-  const getComponent = () => {
+  const getComponent = useMemo(() => {
     switch (pageName) {
       case "basicDetails":
         return <BasicDetails />;
@@ -33,17 +32,23 @@ export default function Steps() {
       default:
         return <ImportantGuidelines />;
     }
-  };
+  }, [pageName]);
 
   return (
     <>
       {isMobile ? "" : <HeaderDefault />}
       <section className="steps-wrapper flex">
         <div className="step-left">
-          {isMobile ? <div className="header-title"><BackButton name={"Become a Seller"} /></div> : ""}
+          {isMobile ? (
+            <div className="header-title">
+              <BackButton name={"Become a Seller"} />
+            </div>
+          ) : (
+            ""
+          )}
           <LeftPannel />
         </div>
-        {pageName && <div className="step-right">{getComponent()}</div>}
+        {pageName && <div className="step-right">{getComponent}</div>}
       </section>
       <Footer />
     </>
