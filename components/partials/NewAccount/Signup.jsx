@@ -256,11 +256,10 @@ function Signup() {
                       name: registerConstant.form.contactField.name,
                       className: "input-control phone-input",
                     }}
+                    enableSearch={true}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
-                    onChange={(e) =>
-                      setFieldValue("number", e.replace(regex.onlyNumbers, ""))
-                    }
+                    onChange={(e) => setFieldValue("number", e)}
                     onBlur={handleBlur}
                   />
                   <ErrorMessage

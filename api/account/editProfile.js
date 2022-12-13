@@ -19,7 +19,7 @@ export async function editProfileApi(
     lastName: values.lastName,
     emailId: values.emailId,
     image: newDpName,
-    phoneNumber: values.countryCode + "-" + values.phoneNumber.toString(),
+    phoneNumber: values.phoneNumber.toString(),
     bio: values.bio,
     twitterUrl: values.twitterUrl,
     facebookUrl: values.facebookUrl,
