@@ -24,6 +24,7 @@ import {
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
 import Error from "../_error";
+import { handleSocialLinks } from "../../utilities/utils";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -307,14 +308,6 @@ export default function PublicProfile() {
       return name;
     }
     return null;
-  };
-
-  const handleSocialLinks = (url) => {
-    let path = url;
-    if (!path.includes("https://")) {
-      path = "https://" + path;
-    }
-    window.open(path, "_blank");
   };
 
   const handleFollow = () => {

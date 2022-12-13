@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Router from "next/router";
 import IconNoNotifications from "../../Icons/IconNoNotifications";
 import NotificationMethods from "../../../api/notification/NotificationMethods";
@@ -31,6 +31,8 @@ const Notifications = (props) => {
       return OrderConfirmationIcon(notification);
     } else if (notification.notify_type === "stream") {
       return GreetingNotificationIcon(notification);
+    } else if (notification.notify_type=== "admin-approval") {
+      return <img src="/static/images/notification-become-a-seller.svg" alt="bought" />;
     }
   };
 
