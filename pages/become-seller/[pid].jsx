@@ -24,19 +24,19 @@ export default function Steps() {
     }
   }, [typeof window, pid]);
 
-  console.log(pageType,"hi")
+  console.log(pageType, "hello varun");
 
   const getComponent = useMemo(() => {
     switch (pageType) {
-      case "basicDetails":
+      case "basicDetails" || "basicDetails/":
         return <BasicDetails />;
-      case "paymentDetails":
+      case "paymentDetails" || "paymentDetails/":
         return <PaymentDetails />;
-      case "guidelines":
+      case "guidelines" || "guidelines/":
         return <ImportantGuidelines />;
-      case "shippingDetails":
+      case "shippingDetails" || "shippingDetails/":
         return <ShippingDetails />;
-      case "submitted":
+      case "submitted" || "submitted/":
         return <ApplicationSubmitted />;
       default:
         return <ImportantGuidelines />;
