@@ -43,7 +43,7 @@ export default function Steps() {
           {isMobile ? <div className="header-title"><BackButton name={"Become a Seller"} /></div> : ""}
           <LeftPannel />
         </div>
-        <div className="step-right">{getComponent()}</div>
+        {pageName && <div className="step-right">{getComponent()}</div>}
       </section>
       <Footer />
     </>
