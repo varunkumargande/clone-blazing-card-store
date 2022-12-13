@@ -7,7 +7,11 @@ export default function useLiveUserCount(streamData, callback) {
   const [channel, setChannel] = useState(null);
 
   const { client } = useJoinRTM(streamData, setChannel);
-
+  useEffect(() => {
+    if(channel)
+    callback(channel);
+  },[channel])
+  
   useEffect(() => {
     const id = setInterval(() => {
       getUserCount();
@@ -18,7 +22,6 @@ export default function useLiveUserCount(streamData, callback) {
   });
 
   const getUserCount = async () => {
-    callback(channel);
     await client
       ?.getChannelMemberCount([streamData?.option?.messageChannel])
       .then(async (members) => {
