@@ -315,6 +315,16 @@
             }
         }
     }
+    .input-control{
+        .selected-flag{
+            background-color: #F5F6FA;
+            border:1px solid #F5F6FA;
+            border-radius: 8px;
+            &:hover,&:focus{
+                border-color: #EBECED;
+            }
+        }
+    }
 }
 
 @media all and (min-width:320px) and (max-width:1024px){

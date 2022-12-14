@@ -229,6 +229,7 @@
             border-radius: 13px;
             padding: 0 7px;
             color: $blue-color;
+            border:none;
         }
     }
 
@@ -424,6 +425,12 @@
             .card-list{ 
                 padding:8px;
             }
+        }
+    }
+    .card-inner{
+        padding-bottom: 25px;
+        .title-wrap{
+            padding-bottom: 10px;
         }
     }
 }
