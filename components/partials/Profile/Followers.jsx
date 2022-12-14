@@ -71,7 +71,6 @@ export default function Followers(props) {
       }
     }
   };
-
   return (
     <>
       <div className="card-list flex flex-center">
@@ -109,9 +108,10 @@ export default function Followers(props) {
           <div className="follow-button-wrapper">
             <button
               className={
-                !!person?.is_user_followed &&
-                !!person?.f_id &&
-                getPathname() === "/account/myprofile"
+                (!!person?.is_user_followed &&
+                  !!person?.f_id &&
+                  getPathname() === "/account/myprofile") ||
+                person?.f_follower_id === getSessionUser()?.id
                   ? "disable primary-btn"
                   : "primary-btn"
               }
