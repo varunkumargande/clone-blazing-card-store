@@ -49,6 +49,7 @@ function categoryStream({ auth, category }) {
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
+      console.log("======>", query);
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
       dispatch(savePageType(query?.page.replace(/\s/g, "")));
@@ -190,10 +191,13 @@ function categoryStream({ auth, category }) {
               {handleShowParentCategories()}
               <div
                 className="overflow-none"
-                onClick={isMobile && scrollToStreamCards?.current?.scrollIntoView({
-                  block: "center",
-                  behavior: "smooth",
-                })}
+                onClick={
+                  isMobile &&
+                  scrollToStreamCards?.current?.scrollIntoView({
+                    block: "center",
+                    behavior: "smooth",
+                  })
+                }
               >
                 {!isMobile && handleShowSubCategories}
                 <div

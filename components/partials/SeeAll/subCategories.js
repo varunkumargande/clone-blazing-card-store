@@ -52,6 +52,7 @@ function SeeAllSubCategories({
 
   const handleSubCategorySelect = (name, id) => {
     dispatch(saveSubCategoryName(name));
+    dispatch(savePageType(query?.page));
     Router.push({
       pathname: "/see-all",
       query: {
