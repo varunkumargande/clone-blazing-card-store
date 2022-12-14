@@ -6,6 +6,7 @@ import { useDispatch, connect } from "react-redux";
 import {
   saveCategoryName,
   saveSubCategoryName,
+  savePageType,
 } from "../../../store/category/action";
 import { getStreamCategoryBasedApi } from "../../../api/stream/subStreamDetail";
 import CategoriesMobile from "../CategoiesMobile/CategoriesMobile";
@@ -45,6 +46,7 @@ function SeeAllParentCategories({
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
+      dispatch(savePageType(query?.page));
     } else {
       Router.push({
         pathname: "/see-all",
