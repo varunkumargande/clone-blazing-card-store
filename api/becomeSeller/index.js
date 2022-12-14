@@ -17,8 +17,5 @@ export async function shippingDetails(payLoad) {
 }
 
 export async function getDetails() {
-  const result = await APIServices.getAll('vendor-store/get-details')
-  if (result && result.data && result.data.data) {
-    return result.data.data;
-  }
+  return await APIServices.getAll('vendor-store/get-details')
 }

@@ -53,6 +53,9 @@ function HeaderDefault({ auth }) {
   const [msgNotificationData, setMsgNotificationData] = useState([]);
   const [socketData] = useMessageSocket();
 
+  const isVendorState = useSelector(
+    (state) => state?.becomeSeller?.isVendor
+  );
   let { pageName } = router.query;
   const {
     notifications,
@@ -178,7 +181,7 @@ function HeaderDefault({ auth }) {
 
   // =================== handle check user login toggle buttun ====================
   const handleCheckUserLoginForVendor = () => {
-    if ((profile?.isVendor || isVendor) && auth?.isLoggedIn) {
+    if ((profile?.isVendor || isVendor || isVendorState) && auth?.isLoggedIn) {
       return (
         <>
           <label className="switch toggle-switch darkBlue">
