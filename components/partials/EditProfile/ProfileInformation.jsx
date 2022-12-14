@@ -350,6 +350,7 @@ export default function ProfileInformation() {
                             </label>
                             <div className="d-flex space-between">
                               <PhoneInput
+                                country={"us"}
                                 inputProps={{
                                   name: profileConstant.form.contactNumberField
                                     .phoneNumberName,

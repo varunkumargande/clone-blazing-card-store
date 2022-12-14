@@ -13,6 +13,8 @@ import { countryListApi } from "../../../api";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
 import { getStateName } from "../../../utilities/utils";
+import { useFetchZipCodeList } from "../../../hooks/useFetchZipCodeList";
+import { Loader } from "../../reusable/Loader";
 
 export default function ShippingDetails() {
   const router = useRouter();
@@ -22,6 +24,11 @@ export default function ShippingDetails() {
   const shippingDetails = useSelector(
     (state) => state?.becomeSeller?.shippingDetails
   );
+  const [setZipCode, isLoading, zipList] = useFetchZipCodeList();
+
+  useEffect(() => {
+    if (shippingDetails?.state) setZipCode(shippingDetails?.state);
+  }, [shippingDetails]);
 
   useEffect(() => {
     countryListApi(setCountryData);
@@ -30,7 +37,7 @@ export default function ShippingDetails() {
 
   const handleSubmit = (values) => {
     const data = {
-      shipFirstName : values?.firstName,
+      shipFirstName: values?.firstName,
       shipLastName: values?.lastName,
       addressLine1: values?.addressLine1,
       addressLine2: values?.addressLine2,
@@ -47,8 +54,8 @@ export default function ShippingDetails() {
    * @description: handle the previous click button. Basically send it to previous step.
    */
   const handlePreviousClick = () => {
-    router.push('/become-seller/paymentDetails');
-  }
+    router.push("/become-seller/paymentDetails");
+  };
 
   return (
     <div className="step-container">
@@ -75,7 +82,7 @@ export default function ShippingDetails() {
           }
         }}
       >
-        {(formProps) => (
+        {({ handleChange }) => (
           <Form>
             <div className="flex space-between">
               <TextInput
@@ -128,13 +135,21 @@ export default function ShippingDetails() {
                 })}
               </MySelect>
 
-              <TextInput
-                className="input-control wd48"
-                label="Postal Code*"
-                name="postalCode"
-                type="text"
-                placeholder="Enter here"
-              />
+              {isLoading ? (
+                <Loader className={"w-50"} />
+              ) : (
+                <MySelect
+                  className="input-control wd48"
+                  label="Postal Code*"
+                  name="postalCode"
+                >
+                  <option>Select</option>
+                  {!!zipList &&
+                    zipList.map((item) => {
+                      return <option value={item.code}>{item.code}</option>;
+                    })}
+                </MySelect>
+              )}
             </div>
             <div className="flex space-between">
               {/* <MySelect
@@ -158,6 +173,11 @@ export default function ShippingDetails() {
                 className="input-control wd48"
                 label="State*"
                 name="state"
+                onChange={(e) => {
+                  e.preventDefault();
+                  handleChange(e);
+                  setZipCode(e.target.value);
+                }}
               >
                 <option>Select here</option>
                 {stateList?.map((item, index) => {
