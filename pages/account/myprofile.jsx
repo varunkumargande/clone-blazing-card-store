@@ -19,6 +19,7 @@ import {
 import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import Error from "../_error";
+import { handleSocialLinks } from "../../utilities/utils";
 
 function MyProfile(props) {
   const router = useRouter();
@@ -405,30 +406,20 @@ function MyProfile(props) {
                     <div className="social-border"></div>
                     <ul className="social-icons flex">
                       {profile?.facebookUrl && (
-                        <li>
-                          <Link href={profile?.facebookUrl}>
-                            <a
-                              target={profile?.facebookUrl ? "_blank" : "_self"}
-                              rel="noopener noreferrer"
-                            >
-                              <IconShareFacebook />
-                            </a>
-                          </Link>
+                        <li
+                          onClick={() => handleSocialLinks(profile.facebookUrl)}
+                        >
+                          <IconShareFacebook />
                         </li>
                       )}
                       {profile?.twitterUrl && (
-                        <li>
-                          <Link href={profile?.twitterUrl}>
-                            <a
-                              target={profile?.twitterUrl ? "_blank" : "_self"}
-                              rel="noopener noreferrer"
-                            >
-                              <IconShareTwitter />
-                            </a>
-                          </Link>
+                        <li
+                          onClick={() => handleSocialLinks(profile.twitterUrl)}
+                        >
+                          <IconShareTwitter />
                         </li>
                       )}
-                      {profile?.mobileNumber && (
+                      {/* {profile?.mobileNumber && (
                         <li>
                           <Link
                             href={`https://api.whatsapp.com/send?phone=${profile.mobileNumber}`}
@@ -443,7 +434,7 @@ function MyProfile(props) {
                             </a>
                           </Link>
                         </li>
-                      )}
+                      )} */}
                     </ul>
                   </div>
                 </div>

@@ -17,6 +17,7 @@ import { registerSchema } from "../../../utilities/validations/signupDetail";
 import { registerInitialValues } from "../../../utilities/validations/signupDetail";
 import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import SuccessMessage from "../../CommonComponents/SuccessMessage";
 import MySelect from "../../CommonComponents/MySelect";
 import { countriesCodeList } from "../../Constants/countryList";
 import useDebounce from "../../../hooks/useDebounce";
@@ -24,6 +25,8 @@ import { regex } from "../../Constants/regex";
 import { openInNewTab } from "../../../utilities/utils";
 import Styles from "../../../modular_scss/Signup.module.scss";
 import FacebookLoginComponent from "../../../utilities/facebookLogin";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 function Signup() {
   const dispatch = useDispatch();
@@ -32,10 +35,13 @@ function Signup() {
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const usernameInput = useRef();
   const [passShow, setPassShow] = useState(false);
+  const [username, setUsername] = useState(null);
   const [conpassShow, setConPassShow] = useState(false);
   const [policyCheck, setPolicyCheck] = useState(false);
   const [searchUsername, setSearchUsername] = useState("");
   const debouncedSearchTerm = useDebounce(searchUsername, 500);
+  const [contactNumber, setContactNumber] = useState("");
+  const [contactNumberError, setContactNumberError] = useState("");
 
   useEffect(
     () => {
@@ -88,9 +94,31 @@ function Signup() {
 
   const checkUsernameExists = async (usernameToCheck) => {
     if (!!usernameToCheck) {
-      const res = await getUsername(usernameToCheck);
-      setUsernameAvailable(res);
+      await getUsername(usernameToCheck, setUsernameAvailable);
     }
+  };
+
+  const showUsernameSuggestionList = (setFieldValue) => {
+    if (!usernameAvailable?.status) {
+      return usernameAvailable?.suggestion?.map((item) => {
+        return (
+          <span
+            className="username-list"
+            onClick={(e) => {
+              e.preventDefault(),
+                setFieldValue("username", item),
+                checkUsernameExists(item);
+            }}
+          >
+            <b>{item}</b> &nbsp;
+          </span>
+        );
+      });
+    }
+  };
+
+  const handleContactNumberField = (value) => {
+    setContactNumber(value);
   };
 
   return (
@@ -128,7 +156,7 @@ function Signup() {
         initialValues={registerInitialValues()}
         validationSchema={registerSchema}
         onSubmit={(values) => {
-          if (!!policyCheck && usernameAvailable) {
+          if (!!policyCheck && !!usernameAvailable) {
             UserRegister(values, Router, dispatch);
           }
         }}
@@ -192,60 +220,53 @@ function Signup() {
                   }}
                   ref={usernameInput}
                   onBlurCapture={handleBlur}
-                  maxLength={12}
+                  maxLength={10}
                   minLength={8}
                 />
-                <ErrorMessage
-                  errors={
-                    !!errors.username
-                      ? errors.username
-                      : !!!usernameAvailable && "Username already exist"
-                  }
-                  touched={touched.username}
-                />
-                {/* <div className="userSuggestion flex nowrap">
-                  <div className={Styles.label}>Available:</div>
-                  <div className={`${Styles.label} flex flex-wrap`}><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span><span className={Styles.link}>aasthahanda12</span></div>
-                </div> */}
+
+                {!!errors.username ? (
+                  <ErrorMessage
+                    errors={
+                      !!errors.username
+                        ? errors.username
+                        : usernameAvailable?.message
+                    }
+                    touched={touched.username}
+                  />
+                ) : (
+                  <SuccessMessage
+                    message={usernameAvailable?.message}
+                    status={usernameAvailable?.status}
+                  />
+                )}
+              </div>
+              <div>
+                {!!usernameAvailable && !usernameAvailable?.status && (
+                  <b>Available : </b>
+                )}
+                {showUsernameSuggestionList(setFieldValue)}
               </div>
 
               <div className="input-control">
                 <label>{registerConstant.form.contactField.label}</label>
-                <div className="flex space-between">
-                  <MySelect
-                    className={Styles.country_code}
-                    label={registerConstant.form.countryCodeField.label}
-                    name={registerConstant.form.countryCodeField.name}
-                    onChange={handleChange}
-                    value={values.countryCode}
-                    onBlur={handleBlur}
-                  >
-                    {countriesCodeList.map((item) => {
-                      return (
-                        <>
-                          <option value={item?.code}>{item?.code}</option>
-                        </>
-                      );
-                    })}
-                  </MySelect>
 
-                  <input
-                    className={Styles.phone_number}
-                    name={registerConstant.form.contactField.name}
+                <div className="flex space-between">
+                  <PhoneInput
+                    inputProps={{
+                      name: registerConstant.form.contactField.name,
+                      className: "input-control phone-input",
+                    }}
+                    enableSearch={true}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
-                    onBlur={handleBlur}
-                    onChange={(e) =>
-                      setFieldValue(
-                        "number",
-                        e.target.value.replace(regex.onlyNumbers, "")
-                      )
-                    }
-                    maxlength="12"
+                    onChange={(e) => setFieldValue("number", e)}
                     onBlur={handleBlur}
                   />
+                  <ErrorMessage
+                    errors={errors.number}
+                    touched={touched.number}
+                  />
                 </div>
-                <ErrorMessage errors={errors.number} touched={touched.number} />
               </div>
 
               <div className="input-control wd50 pass">
