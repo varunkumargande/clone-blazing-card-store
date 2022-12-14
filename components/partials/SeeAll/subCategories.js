@@ -33,6 +33,7 @@ function SeeAllSubCategories({
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category && query?.subCategory) {
+      dispatch(savePageType(query?.page));
       if (streamData.length) {
         setSeeMoreLoader(true);
       } else {
