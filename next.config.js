@@ -8,17 +8,21 @@ const { nextI18NextRewrites } = require("next-i18next/rewrites");
 
 const localeSubpaths = {};
 
-(module.exports = withPlugins([[withImages()]])),
-  {
-    rewrites: async () => nextI18NextRewrites(localeSubpaths),
+module.exports = {
+  trailingSlash: true,
+};
 
-    webpack: (config, { dev }) => {
-      const env = process.env.NEXT_PUBLIC_ENV
-        ? process.env.NEXT_PUBLIC_ENV
-        : "development";
+// (module.exports = withPlugins([[withImages()]])),
+//   {
+//     rewrites: async () => nextI18NextRewrites(localeSubpaths),
 
-      config.plugins.push(new webpack.EnvironmentPlugin(process.env));
+//     webpack: (config, { dev }) => {
+//       const env = process.env.NEXT_PUBLIC_ENV
+//         ? process.env.NEXT_PUBLIC_ENV
+//         : "development";
 
-      return config;
-    },
-  };
+//       config.plugins.push(new webpack.EnvironmentPlugin(process.env));
+
+//       return config;
+//     },
+//   };
