@@ -52,7 +52,7 @@ function categoryStream({ auth, category }) {
       console.log("======>", query);
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-      dispatch(savePageType(query?.page.replace(/\s/g, "")));
+      dispatch(savePageType(query?.page));
     } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
