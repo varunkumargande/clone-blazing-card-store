@@ -51,12 +51,12 @@ function categoryStream({ auth, category }) {
     if (Object.keys(query).length && query?.category) {
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-      dispatch(savePageType(query?.page.replace(/\s/g, "")));
+      dispatch(savePageType(query?.page));
     } else {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
-        dispatch(savePageType("all category"));
+        dispatch(savePageType("allCategory"));
       }
     }
   }, [query]);
@@ -190,10 +190,13 @@ function categoryStream({ auth, category }) {
               {handleShowParentCategories()}
               <div
                 className="overflow-none"
-                onClick={isMobile && scrollToStreamCards?.current?.scrollIntoView({
-                  block: "center",
-                  behavior: "smooth",
-                })}
+                onClick={
+                  isMobile &&
+                  scrollToStreamCards?.current?.scrollIntoView({
+                    block: "center",
+                    behavior: "smooth",
+                  })
+                }
               >
                 {!isMobile && handleShowSubCategories}
                 <div

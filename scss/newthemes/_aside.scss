@@ -230,6 +230,7 @@
 
         .overflow-none {
             max-width: 100%;
+            width: 100%;
         }
         
     }
@@ -242,6 +243,20 @@
             background-color: $white-color;
             .edit-back{
                 margin-right: 15px;
+            }
+        }
+    }
+    .aside-content-wrap {
+        .aside-wrapper {
+            background-color: transparent;
+            .aside-container {
+                li {
+                    font-size: 14px;
+                    padding: 20px 0;
+                    &:after{
+                        content: unset;
+                    }
+                }
             }
         }
     }

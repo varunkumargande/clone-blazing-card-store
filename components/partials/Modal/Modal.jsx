@@ -36,6 +36,7 @@ import {
 import IconStar from "../../Icons/IconStar";
 import saveSelectedCategories from "../../../api/home/saveSelectedCategories";
 import Styles from "../../../modular_scss/Signup.module.scss";
+import { useFetchZipCodeList } from "../../../hooks/useFetchZipCodeList";
 
 const responseGoogleFailure = (response) => {};
 
@@ -649,9 +650,18 @@ export function AddAddressModal(props) {
   const { close, setShip, addressList, countryData } = props;
 
   const [stateList, setStateList] = useState([]);
+  const [countryId, setCountryId] = useState("223");
+  const [zipCodeList, setZipCodeList] = useState([]);
+  const [zipCodeListLoader, setZipCodeListLoader] = useState(false);
+  const [setZipCode, isLoading, zipList] = useFetchZipCodeList();
+
   useEffect(() => {
     getStateList(setStateList);
   }, []);
+
+  useEffect(() => {
+    if (addressList[0]?.state) setZipCode(addressList[0]?.state);
+  }, [addressList]);
 
   const shipSchema = Yup.object().shape({
     company: Yup.string().min(2, "Too Short!").required("Required"),
@@ -744,12 +754,24 @@ export function AddAddressModal(props) {
                 </div>
                 <div className="input-control">
                   <label>Post Code *</label>
-                  <input
-                    name="postcode"
-                    placeholder={"Enter here"}
-                    value={formik.values.postcode}
-                    onChange={formik.handleChange}
-                  />
+                  {isLoading ? (
+                    <Loader className={"w-25"} />
+                  ) : (
+                    <select
+                      className="grey-bg"
+                      name="postcode"
+                      onChange={formik.handleChange}
+                      value={formik.values.postcode}
+                    >
+                      <option>Select</option>
+                      {!!zipList &&
+                        zipList.map((item) => {
+                          return (
+                            <option value={item?.zipId}>{item.zipId}</option>
+                          );
+                        })}
+                    </select>
+                  )}
                   <ErrorMessage errors={formik.errors.postcode} />{" "}
                 </div>
                 <div className="input-control" hidden>
@@ -782,7 +804,11 @@ export function AddAddressModal(props) {
                   <select
                     className="input-control"
                     name="state"
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      formik.handleChange(e);
+                      setZipCode(e.target.value);
+                    }}
                     value={formik.values.state}
                   >
                     <option>Select here</option>

@@ -3,6 +3,7 @@ import React from "react";
 import IconDownload from "../../Icons/IconDownload";
 import { useSelector } from "react-redux";
 import { getCardImagesByName } from "../../helper/cardImageHelper";
+import Styles from "../../../modular_scss/orderDetails.module.scss";
 
 export default function OrderDetails() {
   const orderDetail = useSelector((state) => state?.order?.orderDetail);
@@ -21,6 +22,7 @@ export default function OrderDetails() {
                 <div className="order-head">
                   <strong>Order ID: {productData?.orderId}</strong>
                 </div>
+                <button className={`${Styles.review_btn}`}>Write a Product Review</button>
               </div>
               <div className="order-body-wrapper">
                 <div className="order-body flex space-between">

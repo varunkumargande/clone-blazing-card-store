@@ -26,6 +26,7 @@ function RightDiv({ streamData, channel, client }) {
             userId: peerId,
           };
           setMessages((messages) => [...messages, messageObject]);
+          document.getElementsByClassName('chat-wrap')[0].scrollTop = document.getElementsByClassName('chat-wrap')[0].scrollHeight;
         }
       });
       return () => {

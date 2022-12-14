@@ -5,6 +5,7 @@ import {
   paymentDetailsApi,
   getDetails,
 } from "../../api/becomeSeller";
+import { ALREADY_VENDOR_CODE } from "../../components/Constants";
 import { getErrorMessage } from "../../utilities/common-helpers";
 import { show } from "../toast/action";
 
@@ -16,6 +17,7 @@ export const actionTypes = {
   GET_SUBMIITED_DETAILS: "GET_SUBMIITED_DETAILS",
   CLEAR_STATE: "CLEAR_STATE",
   SET_CLEAR_STATE: "SET_CLEAR_STATE",
+  IS_VENDOR: "IS_VENDOR",
 };
 
 export const rulesAcknowledgement = (payLoad, router) => {
@@ -78,8 +80,14 @@ export const addShippingData = (payLoad, router) => {
 export function getBecomeSellerInfo() {
   return async (dispatch) => {
     const result = await getDetails();
-    if (result) {
-      dispatch(addPreviousData(result));
+    if (result?.data?.data) {
+      dispatch(addPreviousData(result?.data?.data));
+      dispatch(setIsVendor(false));
+    } else {
+      const errorMessage = getErrorMessage(result);
+      if (errorMessage === ALREADY_VENDOR_CODE) {
+        dispatch(setIsVendor(true));
+      }
     }
   };
 }
@@ -128,5 +136,12 @@ export function clearState() {
 export function setClearState() {
   return {
     type: actionTypes.SET_CLEAR_STATE,
+  };
+}
+
+export function setIsVendor(payload) {
+  return {
+    type: actionTypes.IS_VENDOR,
+    payload: payload,
   };
 }

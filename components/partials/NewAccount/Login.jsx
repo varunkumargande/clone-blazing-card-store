@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
 import IconBack from "../../Icons/IconBack";
-import { EmailValidator } from "../../helper/emailValidator";
 import { UserLogin } from "../../../api";
 import { connect, useDispatch } from "react-redux";
 import Router from "next/router";
@@ -14,9 +12,9 @@ import { loginConstant } from "../../Constants/auth";
 /**
  * google and facebook login component and packages
  */
-import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+
 import FacebookLoginComponent from "../../../utilities/facebookLogin";
+import GoogleLoginComponent from "../../../utilities/googleLogin";
 // ======================================================================
 
 import jwt_decode from "jwt-decode";
@@ -36,25 +34,6 @@ function Login(props) {
   const [passShow, setPassShow] = useState(false);
   const [loadImg, setLoadImg] = useState(false);
   const router = useRouter();
-
-  const responseGoogle = (response, encyrpted) => {
-    GoogleLoginApi(
-      response.given_name,
-      response.family_name,
-      response.email,
-      "",
-      "",
-      response.email.split("@")[0],
-      "gmail",
-      "",
-      "",
-      "",
-      "",
-      response.picture,
-      response,
-      dispatch
-    );
-  };
 
   const loginSchema = Yup.object().shape({
     email: Yup.string()
@@ -80,21 +59,7 @@ function Login(props) {
       <h1 className="title mb32">{loginConstant.heading.name}</h1>
 
       <div className="GoogleWrap mb42">
-        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
-          <GoogleLogin
-            render={(renderProps) => (
-              <button className="google-btn" onClick={renderProps.onClick}>
-                <IconGoogle />
-                Continue with Google
-              </button>
-            )}
-            onSuccess={(credentialResponse) => {
-              let data = jwt_decode(credentialResponse.credential);
-              responseGoogle(data);
-            }}
-            onError={() => {}}
-          />
-        </GoogleOAuthProvider>
+        <GoogleLoginComponent />
         <FacebookLoginComponent />
       </div>
 

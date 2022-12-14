@@ -18,10 +18,9 @@ import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { show } from "../../store/toast/action";
 import { useChatCurrentUser } from "../../hooks/useChatCurrentUser";
-import { useMessageSocket } from "../../hooks/useMessageSocket";
 import { sendMessage, getFriendList, getMessage } from "../../api/chat";
 import { fetchUserChatNotification } from "../../store/chat/action";
-import { chatUser } from "../../utilities/chatUser";
+import { getChatNotification } from "../../api/chat";
 
 function Chat({ auth }) {
   // const navigate = useNavigate();
@@ -44,22 +43,22 @@ function Chat({ auth }) {
   const [msgNotificationData, setMsgNotificationData] = useState([]);
   const [exp, setExp] = useState(true);
   const [currentUserData] = useChatCurrentUser();
-  const [socketData] = useMessageSocket();
   const { isMobile } = useIsMobile();
 
   useEffect(() => {
-    if (socketData) {
+    socket.current = io(host);
+    if (socket.current) {
       if (!!currentUserData) {
-        socketData.emit("add-user", currentUserData?._id);
+        socket.current.emit("add-user", currentUserData?._id);
       } else {
         setErrorcode(404);
       }
     }
-  }, [socketData]);
+  }, []);
 
   useEffect(() => {
-    if (socketData) {
-      socketData.on("msg-recieve", (msg, time, from, userData) => {
+    if (socket.current) {
+      socket.current.on("msg-recieve", (msg, time, from, userData) => {
         setArrivalMessage({
           fromSelf: false,
           message: msg,
@@ -68,23 +67,23 @@ function Chat({ auth }) {
           time,
         });
       });
-      socketData.on("new-message-notification", (id) => {
+      socket.current.on("new-message-notification", (id) => {
         setNewNotification((data) => data.concat(id));
       });
     }
-  }, [socketData]);
+  }, []);
 
   useEffect(() => {
     fetchUserData();
     chatSocketInitializer();
-    fetchUserChatNotification(setMsgNotificationData, dispatch);
+    getChatNotification(setMsgNotificationData);
   }, []);
 
   const chatSocketInitializer = async () => {
     const user = currentUserData?._id;
     if (user) {
-      if (socketData) {
-        socketData.on(`fetch-friend`, async (data) => {
+      if (socket.current) {
+        socket.current.on(`fetch-friend`, async (data) => {
           if (data?.friendId == user) {
             await fetchUserData();
           }
@@ -103,8 +102,8 @@ function Chat({ auth }) {
 
   // // ==================== contact's function =========================
   const changeCurrentChat = async (index) => {
-    if (socketData) {
-      socketData.emit(
+    if (socket.current) {
+      socket.current.emit(
         "add-chat-currentUser",
         currentUserData?._id,
         contacts[index]._id
@@ -119,8 +118,8 @@ function Chat({ auth }) {
   // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
     const messageTime = moment().utc();
-    if (socketData) {
-      socketData.emit("send-msg", {
+    if (socket.current) {
+      socket.current.emit("send-msg", {
         to: currentChat._id,
         from: currentUserData?._id,
         isRead: false,
@@ -158,7 +157,7 @@ function Chat({ auth }) {
         <ChatUserModal
           setIsOpen={setIsOpen}
           fetchUserData={fetchUserData}
-          socket={socketData}
+          socket={socket.current}
         />
       );
     }

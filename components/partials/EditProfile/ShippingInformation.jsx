@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState, useRef } from "react";
 import { addressListApi } from "../../../api";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, setNestedObjectValues } from "formik";
@@ -6,18 +6,26 @@ import * as Yup from "yup";
 import { countryListApi, editAddressApi, UserAddAddress } from "../../../api";
 import Router from "next/router";
 import { Loader } from "../../reusable/Loader";
+import { SmallLoader } from "../../reusable/smallLoader";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
 import { getStateName } from "../../../utilities/utils";
+import { useCallback } from "react";
+import { useFetchZipCodeList } from "../../../hooks/useFetchZipCodeList";
 
 function ShippingDetails() {
   const dispatch = useDispatch();
+  const zoneInput = useRef();
   const [addressData, setAddressData] = useState([]);
   const [addressLoader, setAddressLoader] = useState(false);
   const [delStatus, setDelStatus] = useState(0);
   const [countryData, setCountryData] = useState([]);
   const [stateList, setStateList] = useState([]);
+  const [zipCodeList, setZipCodeList] = useState([]);
+  const [zipCodeListLoader, setZipCodeListLoader] = useState(false);
+
+  const [setZipCode, isLoading, zipList] = useFetchZipCodeList();
 
   useEffect(() => {
     setDelStatus(0);
@@ -32,6 +40,10 @@ function ShippingDetails() {
     countryListApi(setCountryData);
     getStateList(setStateList);
   };
+
+  useEffect(() => {
+    if (addressData?.length) setZipCode(addressData[0]?.state);
+  }, [addressData]);
 
   const initialShippingValues = {
     address1: addressData?.length != 0 ? addressData[0]?.address1 : "",
@@ -91,6 +103,7 @@ function ShippingDetails() {
             handleSubmit,
             isSubmitting,
             setValues,
+            setFieldValue,
           }) => (
             <form onSubmit={handleSubmit}>
               <div className="box">
@@ -167,19 +180,31 @@ function ShippingDetails() {
                         touched={touched.countryId}
                       />
                     </div>
+
                     <div className="input-control wd50">
-                      <label htmlFor="usr">Postal Code*</label>
-                      <input
-                        name="postcode"
-                        placeholder={"Enter here"}
-                        id="usr"
+                      <label htmlFor="usr">State*</label>
+                      <select
                         className="grey-bg"
-                        onChange={handleChange}
-                        value={values.postcode}
-                      />
+                        name="state"
+                        onChange={(e) => {
+                          e.preventDefault();
+                          handleChange(e);
+                          setZipCode(e.target.value);
+                        }}
+                        value={values.state}
+                      >
+                        <option>Select</option>
+                        {stateList.map((item) => {
+                          return (
+                            <option value={item.code}>
+                              {getStateName(stateList, item.code)}
+                            </option>
+                          );
+                        })}
+                      </select>
                       <ErrorMessage
-                        errors={errors.postcode}
-                        touched={touched.postcode}
+                        errors={errors.state}
+                        touched={touched.state}
                       />
                     </div>
                     <div className="input-control wd50">
@@ -198,33 +223,31 @@ function ShippingDetails() {
                       />
                     </div>
                     <div className="input-control wd50">
-                      <label htmlFor="usr">State*</label>
-                      {/* <input
-                            name="state"
-                            placeholder={"Enter here"}
-                            id="usr"
-                            className="grey-bg"
-                            onChange={handleChange}
-                            value={values.state}
-                          /> */}
-                      <select
-                        className="grey-bg"
-                        name="state"
-                        onChange={handleChange}
-                        value={values.state}
-                      >
-                        <option>Select</option>
-                        {stateList.map((item, index) => {
-                          return (
-                            <option value={item.code}>
-                              {getStateName(stateList, item.code)}
-                            </option>
-                          );
-                        })}
-                      </select>
+                      <label htmlFor="usr">Postal Code*</label>
+                      {isLoading ? (
+                        <Loader className={"w-25"} />
+                      ) : (
+                        <select
+                          className="grey-bg"
+                          name="postcode"
+                          onChange={handleChange}
+                          value={values.postcode}
+                        >
+                          <option>Select</option>
+                          {!!zipList &&
+                            zipList.map((item, index) => {
+                              return (
+                                <option value={item?.zipId}>
+                                  {item.zipId}
+                                </option>
+                              );
+                            })}
+                        </select>
+                      )}
+
                       <ErrorMessage
-                        errors={errors.state}
-                        touched={touched.state}
+                        errors={errors.postcode}
+                        touched={touched.postcode}
                       />
                     </div>
                   </div>

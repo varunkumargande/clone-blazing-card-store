@@ -98,3 +98,6 @@ export const SocialMediaShareLink = {
   twitter: "https://twitter.com/home?status=",
   facebook: "https://www.facebook.com/sharer/sharer.php?u=",
 };
+
+//ToDo: need to change this to get a proper code from BE for this.
+export const ALREADY_VENDOR_CODE = "Seller is approved already."

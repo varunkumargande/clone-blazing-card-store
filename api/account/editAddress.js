@@ -28,7 +28,7 @@ export async function editAddressApi(
   if (resp) {
     addressList();
   }
-  setAddressLoader(false)
+  setAddressLoader(false);
 
   return result.data;
 }

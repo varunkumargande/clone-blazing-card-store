@@ -1,4 +1,4 @@
-// export const host = "https://b21f-1-6-151-77.in.ngrok.io";
+// export const host = "http://localhost:4401";
 export const host = process.env.NEXT_PUBLIC_CHAT_URL;
 export const loginRoute = `${host}/api/auth/login`;
 export const registerRoute = `${host}/api/auth/register`;
