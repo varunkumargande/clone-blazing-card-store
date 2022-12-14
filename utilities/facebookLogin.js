@@ -11,7 +11,7 @@ const FacebookLoginComponent = () => {
   });
 
   return (
-    <div className="text-center mt-2">
+    <div className="text-center mt-2 mt-4">
       <FacebookLogin
         appId={process.env.NEXT_PUBLIC_FACEBOOK_KEY_ID}
         fields="name,email,picture"
