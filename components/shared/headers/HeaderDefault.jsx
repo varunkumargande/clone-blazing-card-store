@@ -35,8 +35,7 @@ import {
 import { vendorAuthApi } from "../../../api/auth/vendorAuth";
 import { nftMarketUrl } from "../../../api/url";
 import { useChatCurrentUser } from "../../../hooks/useChatCurrentUser";
-import { useMessageSocket } from "../../../hooks/useMessageSocket";
-import { fetchUserChatNotification } from "../../../store/chat/action";
+import { getChatNotification } from "../../../api/chat";
 
 function HeaderDefault({ auth }) {
   const socket = useRef();
@@ -51,8 +50,10 @@ function HeaderDefault({ auth }) {
   const [isVendor, setVendor] = useState(false);
   const [currentUserData, setCurrentUserData] = useChatCurrentUser();
   const [msgNotificationData, setMsgNotificationData] = useState([]);
-  const [socketData] = useMessageSocket();
 
+  const isVendorState = useSelector(
+    (state) => state?.becomeSeller?.isVendor
+  );
   let { pageName } = router.query;
   const {
     notifications,
@@ -64,6 +65,19 @@ function HeaderDefault({ auth }) {
   const wrapperRef = useRef(null);
   const notificationWrapperRef = useRef(null);
   const toast = useSelector((state) => state?.toast?.toast);
+
+  useEffect(() => {
+    socket.current = io(host);
+    if (socket.current) {
+      if (!!currentUserData) {
+        socket.current.emit("add-user-notification", currentUserData?._id);
+      }
+      socket.current.on("new-header-notification", (id) => {
+        setChatNotification(id);
+      });
+    }
+    getChatNotification(setMsgNotificationData);
+  }, []);
 
   const handleOnClick = () => {
     setActive(!active);
@@ -78,15 +92,7 @@ function HeaderDefault({ auth }) {
         clearInterval(profileInterval);
       }
     }, 10);
-    fetchUserChatNotification(setMsgNotificationData, dispatch);
   }, []);
-
-  useEffect(() => {
-    if (socketData)
-      socketData.on("new-message-notification", (id) => {
-        setChatNotification(id);
-      });
-  }, [socketData]);
 
   useEffect(() => {
     if (toggle) {
@@ -178,7 +184,7 @@ function HeaderDefault({ auth }) {
 
   // =================== handle check user login toggle buttun ====================
   const handleCheckUserLoginForVendor = () => {
-    if ((profile?.isVendor || isVendor) && auth?.isLoggedIn) {
+    if ((profile?.isVendor || isVendor || isVendorState) && auth?.isLoggedIn) {
       return (
         <>
           <label className="switch toggle-switch darkBlue">
@@ -265,6 +271,12 @@ function HeaderDefault({ auth }) {
     Router.push("/");
   };
 
+  const showNotificationStatus = () => {
+    if (chatNotification || msgNotificationData.length) {
+      return "active";
+    }
+  };
+
   return (
     <header>
       <div className="inner-container flex flex-wrap flex-center space-between">
@@ -294,7 +306,7 @@ function HeaderDefault({ auth }) {
                 {/* <MessageButton name={"Message"} /> */}
 
                 <button
-                  className="message flex flex-center justify-center"
+                  className={`message flex flex-center justify-center ${showNotificationStatus()}`}
                   onClick={() => handeGoToChat()}
                 >
                   <IconMessage />

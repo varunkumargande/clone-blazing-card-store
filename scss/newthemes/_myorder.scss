@@ -37,7 +37,7 @@
         border-radius: 8px;
     }
     .order-header{
-        padding: 12px 24px;
+        padding: 12px 16px;
         border-bottom: 1px solid $border2-color;
     }
     .divide{
@@ -410,7 +410,7 @@
             margin-bottom: 24px;
             .Search{
                 margin-right: 8px;
-                width: calc(100% - 106px);
+                width: calc(100% - 150px);
             }
         }
     }

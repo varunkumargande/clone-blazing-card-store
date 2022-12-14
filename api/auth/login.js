@@ -4,6 +4,7 @@ import APIServices from "../../services";
 import { show } from "../../store/toast/action";
 import { removeCurrentUrlInLocal } from "../../utilities/utils";
 import { login } from "../../store/auth/action";
+import { setIsVendor } from "../../store/becomeSeller/action";
 
 export async function UserLogin(
   email,
@@ -21,9 +22,12 @@ export async function UserLogin(
     password: password,
     type: loginType,
   });
+  dispatch(setIsVendor(false));
+  
   const result = await APIServices.create("customer/login", data);
 
   if (result && result?.data && result?.data?.status === 1) {
+    localStorage.removeItem("verification-email");
     localStorage.setItem("blazingToken", result.data.data.token);
     localStorage.setItem(
       "chat-app-current-user",

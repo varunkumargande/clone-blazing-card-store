@@ -1,30 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import IconGoogle from "../../Icons/IconGoogle";
 import IconEye from "../../Icons/IconEye";
 import IconBack from "../../Icons/IconBack";
 import { UserRegister } from "../../../api";
 import Router from "next/router";
 import { useDispatch } from "react-redux";
-import { GoogleLoginApi } from "../../../api/auth/GoogleLoginApi";
 import { registerConstant } from "../../../components/Constants/auth";
 import { Formik } from "formik";
 import { getUsername } from "../../../api/auth/getUsername";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 import { registerSchema } from "../../../utilities/validations/signupDetail";
 import { registerInitialValues } from "../../../utilities/validations/signupDetail";
 import { TextInput } from "../../CommonComponents/TextInput";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import SuccessMessage from "../../CommonComponents/SuccessMessage";
-import MySelect from "../../CommonComponents/MySelect";
-import { countriesCodeList } from "../../Constants/countryList";
 import useDebounce from "../../../hooks/useDebounce";
-import { regex } from "../../Constants/regex";
 import { openInNewTab } from "../../../utilities/utils";
 import Styles from "../../../modular_scss/Signup.module.scss";
 import FacebookLoginComponent from "../../../utilities/facebookLogin";
+import GoogleLoginComponent from "../../../utilities/googleLogin";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
@@ -40,8 +34,6 @@ function Signup() {
   const [policyCheck, setPolicyCheck] = useState(false);
   const [searchUsername, setSearchUsername] = useState("");
   const debouncedSearchTerm = useDebounce(searchUsername, 500);
-  const [contactNumber, setContactNumber] = useState("");
-  const [contactNumberError, setContactNumberError] = useState("");
 
   useEffect(
     () => {
@@ -59,27 +51,6 @@ function Signup() {
       setPolicyCheck(true);
     }
   };
-
-  const responseGoogle = (response) => {
-    GoogleLoginApi(
-      response.given_name,
-      response.family_name,
-      response.email,
-      "",
-      "",
-      response.email.split("@")[0],
-      "gmail",
-      "",
-      "",
-      "",
-      "",
-      response.picture,
-      response,
-      dispatch
-    );
-  };
-
-  const responseGoogleFailure = (response) => {};
 
   const isDisable = (errors) => {
     return Boolean(
@@ -117,10 +88,6 @@ function Signup() {
     }
   };
 
-  const handleContactNumberField = (value) => {
-    setContactNumber(value);
-  };
-
   return (
     <div className="login-wrapper">
       <div className="back mb32" onClick={handleBackButton}>
@@ -128,23 +95,7 @@ function Signup() {
       </div>
       <h1 className="title mb32">Sign Up to Blazing Cards</h1>
       <div className="GoogleWrap mb42">
-        <GoogleOAuthProvider clientId="951035021628-hd5p0lgeej6askb3ooie363aft037iun.apps.googleusercontent.com">
-          <GoogleLogin
-            render={(renderProps) => (
-              <button className="google-btn" onClick={renderProps.onClick}>
-                <IconGoogle />
-                Continue with Google
-              </button>
-            )}
-            onSuccess={(credentialResponse) => {
-              let data = jwt_decode(credentialResponse.credential);
-              responseGoogle(data);
-            }}
-            onError={(response) => {
-              responseGoogleFailure(response);
-            }}
-          />
-        </GoogleOAuthProvider>
+        <GoogleLoginComponent />
         <FacebookLoginComponent />
       </div>
 
@@ -252,11 +203,12 @@ function Signup() {
 
                 <div className="flex space-between">
                   <PhoneInput
+                    country={"us"}
                     inputProps={{
                       name: registerConstant.form.contactField.name,
                       className: "input-control phone-input",
+                      required: true,
                     }}
-                    enableSearch={true}
                     placeholder={registerConstant.form.contactField.placeholder}
                     value={values.number}
                     onChange={(e) => setFieldValue("number", e)}

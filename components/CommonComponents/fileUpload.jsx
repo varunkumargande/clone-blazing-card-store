@@ -144,6 +144,7 @@ export default function FileUpload({ label, ...props }) {
             !!props.imageData && props.percentage < 100 ? (<p>{props.percentage & !!props.imageData}</p>) : (<>{props.percentage & !!props.imageData}</>)
           } */}
         </div>
+        <div className="flex justify-right fs-12">File size max. upto 5mb</div>
       </div>
     </>
   );

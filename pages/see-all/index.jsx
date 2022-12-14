@@ -49,7 +49,6 @@ function categoryStream({ auth, category }) {
 
   useEffect(() => {
     if (Object.keys(query).length && query?.category) {
-      console.log("======>", query);
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
       dispatch(savePageType(query?.page));
@@ -57,7 +56,7 @@ function categoryStream({ auth, category }) {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
-        dispatch(savePageType("all category"));
+        dispatch(savePageType("allCategory"));
       }
     }
   }, [query]);

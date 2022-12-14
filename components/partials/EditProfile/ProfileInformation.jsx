@@ -25,7 +25,7 @@ import { countriesCodeList } from "../../Constants/countryCodeList";
 import { profileConstant } from "../../Constants/profile";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-
+import IconDelete from '../../Icons/IconDelete';
 export default function ProfileInformation() {
   const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB
@@ -350,10 +350,11 @@ export default function ProfileInformation() {
                             </label>
                             <div className="d-flex space-between">
                               <PhoneInput
+                                country={"us"}
                                 inputProps={{
                                   name: profileConstant.form.contactNumberField
                                     .phoneNumberName,
-                                  className: "input-control phone-input",
+                                  className: "input-control phone-input grey-bg",
                                 }}
                                 enableSearch={true}
                                 placeholder={

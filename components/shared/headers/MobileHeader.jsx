@@ -10,7 +10,7 @@ import IconMessageMobile from "../../Icons/IconMessageMobile";
 import IconLogoutMobile from "../../Icons/IconLogoutMobile";
 import IconNotificationMobile from "../../Icons/IconNotificationMobile";
 import { useTranslation } from "../../../i18n";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import Router from "next/router";
 import { modalSuccess } from "../../../api/intercept";
 import { logOut } from "../../../store/auth/action";
@@ -30,6 +30,9 @@ function MobileHeader({ auth }) {
   const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const [isVendor, setVendor] = useState(false);
+  const isVendorState = useSelector(
+    (state) => state?.becomeSeller?.isVendor
+  );
 
   const {
     notifications,
@@ -155,7 +158,7 @@ function MobileHeader({ auth }) {
 
   // =================== handle check user login toggle buttun ====================
   const handleCheckUserLoginForVendor = () => {
-    if ((profile?.isVendor || isVendor) && auth?.isLoggedIn) {
+    if ((profile?.isVendor || isVendor || isVendorState) && auth?.isLoggedIn) {
       return (
         <>
           <div className="text-center become-seller flex flex-center justify-center become-toggle">
