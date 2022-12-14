@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import { countryListApi, editAddressApi, UserAddAddress } from "../../../api";
 import Router from "next/router";
 import { Loader } from "../../reusable/Loader";
-import { SmallLoader } from "../../reusable/smallLoader";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { getStateList } from "../../../api/common/common";
 import { US_CODE } from "../../Constants";
