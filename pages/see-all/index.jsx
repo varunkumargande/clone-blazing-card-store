@@ -58,7 +58,7 @@ function categoryStream({ auth, category }) {
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
-        dispatch(savePageType("all category"));
+        dispatch(savePageType("allCategory"));
       }
     }
   }, [query]);

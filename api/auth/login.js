@@ -27,6 +27,7 @@ export async function UserLogin(
   const result = await APIServices.create("customer/login", data);
 
   if (result && result?.data && result?.data?.status === 1) {
+    localStorage.removeItem("verification-email");
     localStorage.setItem("blazingToken", result.data.data.token);
     localStorage.setItem(
       "chat-app-current-user",
