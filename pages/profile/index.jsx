@@ -24,6 +24,7 @@ import {
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
 import Error from "../_error";
+import { handleSocialLinks } from "../../utilities/utils";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -309,14 +310,6 @@ export default function PublicProfile() {
     return null;
   };
 
-  const handleSocialLinks = (url) => {
-    let path = url;
-    if (!path.includes("https://")) {
-      path = "https://" + path;
-    }
-    window.open(path, "_blank");
-  };
-
   const handleFollow = () => {
     if (localStorage.getItem("blazingUser")) {
       if (profile?.isFollow) {
@@ -409,7 +402,9 @@ export default function PublicProfile() {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        currentUser ? chatLogin() : setShowModal(true);
+                        Object.keys(currentUser).length
+                          ? chatLogin()
+                          : setShowModal(true);
                       }}
                       className="border-btn edit-profile-btn"
                     >

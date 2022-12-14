@@ -561,7 +561,7 @@ export function AddNewCardModal(props) {
             </div>
             <div className="flex space-between">
               <div className="input-control wd50">
-                <label>Expiration</label>
+                <label>Expiration Date</label>
                 <input
                   type="text"
                   name="expireDate"
@@ -1632,7 +1632,7 @@ export function IntrestedModal(props) {
                             1
                           );
                         } else {
-                          if(selectedCategories.length<10){
+                          if (selectedCategories.length < 10) {
                             event.target.className = "cate-btn active";
                             selectedCategories.push(Number(event.target.value));
                           }

@@ -23,6 +23,8 @@ import DefaultConstants from "../../../utilities/constants";
 import { TostMessage } from "../ToastMessage/ToastMessage";
 import { countriesCodeList } from "../../Constants/countryCodeList";
 import { profileConstant } from "../../Constants/profile";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export default function ProfileInformation() {
   const dispatch = useDispatch();
@@ -134,7 +136,7 @@ export default function ProfileInformation() {
             <div className="prifile-image br50">
               {profileData != null ? (
                 showImageLoader ? (
-                  <Loader className="d-flex w-50 m-auto"  />
+                  <Loader className="d-flex w-50 m-auto" />
                 ) : (
                   <>
                     {newDp != "" ? (
@@ -238,21 +240,15 @@ export default function ProfileInformation() {
               initialValues={profileInitialValues(profileData)}
               validationSchema={profileSchema}
               onSubmit={(values) => {
-                if (values.countryCode == "") {
-                  dispatch(
-                    show({ message: "Country Code is required", type: "error" })
-                  );
-                } else {
-                  setLoader(true);
-                  editProfileApi(
-                    values,
-                    newDpName,
-                    Router,
-                    setLoader,
-                    dispatch,
-                    currentChatUser
-                  );
-                }
+                setLoader(true);
+                editProfileApi(
+                  values,
+                  newDpName,
+                  Router,
+                  setLoader,
+                  dispatch,
+                  currentChatUser
+                );
               }}
             >
               {({
@@ -272,9 +268,13 @@ export default function ProfileInformation() {
                       <div className="inner-box">
                         <div className="flex space-between">
                           <div className="input-control wd50">
-                            <label>{profileConstant.form.firstNameField.label}</label>
+                            <label>
+                              {profileConstant.form.firstNameField.label}
+                            </label>
                             <input
-                              placeholder={profileConstant.form.firstNameField.placeholder}
+                              placeholder={
+                                profileConstant.form.firstNameField.placeholder
+                              }
                               className="grey-bg"
                               name={profileConstant.form.firstNameField.name}
                               onChange={(e) =>
@@ -289,6 +289,7 @@ export default function ProfileInformation() {
                               }
                               value={values.firstName}
                               type={profileConstant.form.firstNameField.type}
+                              onBlur={handleBlur}
                             />
                             <ErrorMessage
                               errors={errors.firstName}
@@ -296,10 +297,14 @@ export default function ProfileInformation() {
                             />
                           </div>
                           <div className="input-control wd50">
-                            <label>{profileConstant.form.lastNameField.label}</label>
+                            <label>
+                              {profileConstant.form.lastNameField.label}
+                            </label>
                             <input
                               name={profileConstant.form.lastNameField.name}
-                              placeholder={profileConstant.form.lastNameField.placeholder}
+                              placeholder={
+                                profileConstant.form.lastNameField.placeholder
+                              }
                               className="grey-bg"
                               onChange={(e) =>
                                 setFieldValue(
@@ -312,6 +317,7 @@ export default function ProfileInformation() {
                                 )
                               }
                               value={values.lastName}
+                              onBlur={handleBlur}
                             />
                             <ErrorMessage
                               errors={errors.lastName}
@@ -322,11 +328,15 @@ export default function ProfileInformation() {
                         <div className="flex space-between">
                           <div className="input-control wd50">
                             <div className="flex space-between flex-center">
-                              <label htmlFor="usr">{profileConstant.form.userNameField.label}</label>
+                              <label htmlFor="usr">
+                                {profileConstant.form.userNameField.label}
+                              </label>
                             </div>
                             <input
                               name={profileConstant.form.userNameField.name}
-                              placeholder={profileConstant.form.userNameField.placeholder}
+                              placeholder={
+                                profileConstant.form.userNameField.placeholder
+                              }
                               id={profileConstant.form.userNameField.id}
                               className="grey-bg"
                               value={profileData?.username}
@@ -335,45 +345,26 @@ export default function ProfileInformation() {
                           </div>
 
                           <div className="input-control wd50">
-                            <label htmlFor="usr">{profileConstant.form.contactNumberField.label}</label>
-
+                            <label htmlFor="usr">
+                              {profileConstant.form.contactNumberField.label}
+                            </label>
                             <div className="d-flex space-between">
-                              <MySelect
-                                className={`grey-bg ${Styles.country_code}`}
-                                name={profileConstant.form.contactNumberField.countryCodeName}
-                                onChange={handleChange}
-                                value={values.countryCode}
-                                onBlur={handleBlur}
-                              >
-                                {countriesCodeList.map((item) => {
-                                  return (
-                                    <>
-                                      <option value={item?.code}>
-                                        {item?.code}
-                                      </option>
-                                    </>
-                                  );
-                                })}
-                              </MySelect>
-
-                              <input
-                                name={profileConstant.form.contactNumberField.phoneNumberName}
-                                placeholder={profileConstant.form.contactNumberField.placeholder}
-                                id={profileConstant.form.contactNumberField.id}
-                                className={`grey-bg ${Styles.phone_number}`}
-                                onBlur={handleBlur}
-                                onChange={(e) =>
-                                  setFieldValue(
-                                    profileConstant.form.contactNumberField.phoneNumberName,
-                                    e.target.value.replace(
-                                      regex.excludePlusAndNumber,
-                                      ""
-                                    )
-                                  )
+                              <PhoneInput
+                                inputProps={{
+                                  name: profileConstant.form.contactNumberField
+                                    .phoneNumberName,
+                                  className: "input-control phone-input",
+                                }}
+                                enableSearch={true}
+                                placeholder={
+                                  profileConstant.form.contactNumberField
+                                    .placeholder
                                 }
                                 value={values.phoneNumber}
-                                maxLength={12}
-                                type={profileConstant.form.contactNumberField.type}
+                                onChange={(e) =>
+                                  setFieldValue("phoneNumber", e)
+                                }
+                                onBlur={handleBlur}
                               />
                             </div>
                             <ErrorMessage
@@ -385,13 +376,17 @@ export default function ProfileInformation() {
 
                         <div className="input-control">
                           <div className="flex space-between flex-center">
-                            <label htmlFor="bio">{profileConstant.form.bioField.label}</label>
+                            <label htmlFor="bio">
+                              {profileConstant.form.bioField.label}
+                            </label>
                             <div className="max-limit">Max. 300 characters</div>
                           </div>
                           <textarea
                             name={profileConstant.form.bioField.name}
                             id={profileConstant.form.bioField.id}
-                            placeholder={profileConstant.form.bioField.placeholder}
+                            placeholder={
+                              profileConstant.form.bioField.placeholder
+                            }
                             className="grey-bg"
                             onChange={handleChange}
                             value={values.bio}
@@ -410,10 +405,21 @@ export default function ProfileInformation() {
                       <div className="inner-box">
                         <div className="flex space-between">
                           <div className="input-control">
-                            <label>{profileConstant.form.socialShareLinksField.twitter.label}</label>
+                            <label>
+                              {
+                                profileConstant.form.socialShareLinksField
+                                  .twitter.label
+                              }
+                            </label>
                             <input
-                              name={profileConstant.form.socialShareLinksField.twitter.name}
-                              placeholder={profileConstant.form.socialShareLinksField.twitter.placeholder}
+                              name={
+                                profileConstant.form.socialShareLinksField
+                                  .twitter.name
+                              }
+                              placeholder={
+                                profileConstant.form.socialShareLinksField
+                                  .twitter.placeholder
+                              }
                               className="grey-bg"
                               onChange={handleChange}
                               value={values.twitterUrl}
@@ -426,12 +432,26 @@ export default function ProfileInformation() {
                           </div>
                           <div className="input-control">
                             <div className="flex space-between flex-center">
-                              <label htmlFor="usr">{profileConstant.form.socialShareLinksField.facebook.label}</label>
+                              <label htmlFor="usr">
+                                {
+                                  profileConstant.form.socialShareLinksField
+                                    .facebook.label
+                                }
+                              </label>
                             </div>
                             <input
-                              name={profileConstant.form.socialShareLinksField.facebook.name}
-                              placeholder={profileConstant.form.socialShareLinksField.facebook.placeholder}
-                              id={profileConstant.form.socialShareLinksField.facebook.id}
+                              name={
+                                profileConstant.form.socialShareLinksField
+                                  .facebook.name
+                              }
+                              placeholder={
+                                profileConstant.form.socialShareLinksField
+                                  .facebook.placeholder
+                              }
+                              id={
+                                profileConstant.form.socialShareLinksField
+                                  .facebook.id
+                              }
                               className="grey-bg"
                               onChange={handleChange}
                               value={values.facebookUrl}
@@ -447,12 +467,19 @@ export default function ProfileInformation() {
                     <div className="button-wrapper flex mb40">
                       <button
                         className="border-btn mr16"
-                        type={profileConstant.form.buttonField.cancelButton.type}
+                        type={
+                          profileConstant.form.buttonField.cancelButton.type
+                        }
                         onClick={() => handleCancelButton()}
                       >
                         {profileConstant.form.buttonField.cancelButton.label}
                       </button>
-                      <button className="primary-btn" type={profileConstant.form.buttonField.submitButton.type}>
+                      <button
+                        className="primary-btn"
+                        type={
+                          profileConstant.form.buttonField.submitButton.type
+                        }
+                      >
                         {profileConstant.form.buttonField.submitButton.label}
                       </button>
                     </div>

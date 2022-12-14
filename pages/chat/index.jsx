@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-// import { allUsersRoute, host } from "../../api/utils/APIRoutes";
-// import { v4 as uuidv4 } from "uuid";
 import IconBack from "../../components/Icons/IconBack";
 import { recieveMessageRoute, friendList, host } from "../../chatService";
 import ChatInput from "../../components/chats/components/ChatInput";
@@ -21,13 +18,9 @@ import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
 import { show } from "../../store/toast/action";
 import { useChatCurrentUser } from "../../hooks/useChatCurrentUser";
-
-import {
-  getChatNotification,
-  sendMessage,
-  getFriendList,
-  getMessage,
-} from "../../api/chat";
+import { useMessageSocket } from "../../hooks/useMessageSocket";
+import { sendMessage, getFriendList, getMessage } from "../../api/chat";
+import { fetchUserChatNotification } from "../../store/chat/action";
 import { chatUser } from "../../utilities/chatUser";
 
 function Chat({ auth }) {
@@ -49,26 +42,24 @@ function Chat({ auth }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [newNotification, setNewNotification] = useState([]);
   const [msgNotificationData, setMsgNotificationData] = useState([]);
-  const [currentUserData, setCurrentUserData] = useChatCurrentUser();
-
+  const [exp, setExp] = useState(true);
+  const [currentUserData] = useChatCurrentUser();
+  const [socketData] = useMessageSocket();
   const { isMobile } = useIsMobile();
 
-  const fetchUserChatNotification = () => {
-    getChatNotification(setMsgNotificationData);
-  };
-
   useEffect(() => {
-    if (!!currentUserData) {
-      socket.current = io(host);
-      socket.current.emit("add-user", currentUserData?._id);
-    } else {
-      setErrorcode(404);
+    if (socketData) {
+      if (!!currentUserData) {
+        socketData.emit("add-user", currentUserData?._id);
+      } else {
+        setErrorcode(404);
+      }
     }
-  }, []);
+  }, [socketData]);
 
   useEffect(() => {
-    if (socket.current) {
-      socket.current.on("msg-recieve", (msg, time, from, userData) => {
+    if (socketData) {
+      socketData.on("msg-recieve", (msg, time, from, userData) => {
         setArrivalMessage({
           fromSelf: false,
           message: msg,
@@ -77,26 +68,28 @@ function Chat({ auth }) {
           time,
         });
       });
-      socket.current.on("new-message-notification", (id) => {
+      socketData.on("new-message-notification", (id) => {
         setNewNotification((data) => data.concat(id));
       });
     }
-  }, []);
+  }, [socketData]);
 
   useEffect(() => {
     fetchUserData();
     chatSocketInitializer();
-    fetchUserChatNotification();
+    fetchUserChatNotification(setMsgNotificationData, dispatch);
   }, []);
 
   const chatSocketInitializer = async () => {
     const user = currentUserData?._id;
     if (user) {
-      socket.current.on(`fetch-friend`, async (data) => {
-        if (data?.friendId == user) {
-          await fetchUserData();
-        }
-      });
+      if (socketData) {
+        socketData.on(`fetch-friend`, async (data) => {
+          if (data?.friendId == user) {
+            await fetchUserData();
+          }
+        });
+      }
     }
   };
 
@@ -106,44 +99,47 @@ function Chat({ auth }) {
       getFriendList(setContacts, setUserCount, dispatch);
     }
   };
-
   // =====================================================================================
 
   // // ==================== contact's function =========================
   const changeCurrentChat = async (index) => {
-    socket.current.emit(
-      "add-chat-currentUser",
-      currentUserData?._id,
-      contacts[index]._id
-    );
-    setCurrentSelected(index);
-    setCurrentChat(contacts[index]);
-    getMessage(setMessages, contacts, index);
+    if (socketData) {
+      socketData.emit(
+        "add-chat-currentUser",
+        currentUserData?._id,
+        contacts[index]._id
+      );
+      setCurrentSelected(index);
+      setCurrentChat(contacts[index]);
+      getMessage(setMessages, contacts, index);
+    }
   };
   // // =================================================================
 
   // // =========================== send message ==============================
   const handleSendMsg = async (msg) => {
     const messageTime = moment().utc();
-    socket.current.emit("send-msg", {
-      to: currentChat._id,
-      from: currentUserData?._id,
-      isRead: false,
-      msg,
-      messageTime,
-    });
+    if (socketData) {
+      socketData.emit("send-msg", {
+        to: currentChat._id,
+        from: currentUserData?._id,
+        isRead: false,
+        msg,
+        messageTime,
+      });
 
-    let sendMessageData = {
-      from: currentUserData?._id,
-      to: currentChat._id,
-      message: msg,
-      messageTime: messageTime,
-      isRead: false,
-    };
-    sendMessage(sendMessageData);
-    const msgs = [...messages];
-    msgs.push({ fromSelf: true, message: msg, time: moment().format() });
-    setMessages(msgs);
+      let sendMessageData = {
+        from: currentUserData?._id,
+        to: currentChat._id,
+        message: msg,
+        messageTime: messageTime,
+        isRead: false,
+      };
+      sendMessage(sendMessageData);
+      const msgs = [...messages];
+      msgs.push({ fromSelf: true, message: msg, time: moment().format() });
+      setMessages(msgs);
+    }
   };
 
   useEffect(() => {
@@ -162,7 +158,7 @@ function Chat({ auth }) {
         <ChatUserModal
           setIsOpen={setIsOpen}
           fetchUserData={fetchUserData}
-          socket={socket}
+          socket={socketData}
         />
       );
     }
