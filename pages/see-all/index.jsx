@@ -48,18 +48,29 @@ function categoryStream({ auth, category }) {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(query).length && query?.category) {
+    if (Object.keys(query).length && query?.page && query?.category) {
+      dispatch(savePageType(query?.page));
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
-      dispatch(savePageType(query?.page));
+      Router.push({
+        pathname: "/see-all",
+        query: {
+          page: query?.page,
+          category: query?.category,
+          subCategory: query?.subCategory,
+        },
+      });
     } else {
+      if (!query.page) {
+        Router.push("/404");
+      }
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
         dispatch(savePageType("allCategory"));
       }
     }
-  }, [query]);
+  }, [query?.category]);
 
   const getStreamCards = () => {
     if (streamData.length) {
