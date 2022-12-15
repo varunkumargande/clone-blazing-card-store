@@ -49,7 +49,6 @@ function categoryStream({ auth, category }) {
 
   useEffect(() => {
     if (Object.keys(query).length && query?.page && query?.category) {
-      console.log(query);
       dispatch(savePageType(query?.page));
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
@@ -62,6 +61,9 @@ function categoryStream({ auth, category }) {
         },
       });
     } else {
+      if (!query.page) {
+        Router.push("/404");
+      }
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));
