@@ -68,7 +68,7 @@ function categoryStream({ auth, category }) {
         dispatch(savePageType("allCategory"));
       }
     }
-  }, [query]);
+  }, [query?.category]);
 
   const getStreamCards = () => {
     if (streamData.length) {
