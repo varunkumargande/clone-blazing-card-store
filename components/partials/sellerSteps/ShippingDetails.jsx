@@ -135,40 +135,6 @@ export default function ShippingDetails() {
                 })}
               </MySelect>
 
-              {isLoading ? (
-                <Loader className={"w-50"} />
-              ) : (
-                <MySelect
-                  className="input-control wd48"
-                  label="Postal Code*"
-                  name="postalCode"
-                >
-                  <option>Select</option>
-                  {!!zipList &&
-                    zipList.map((item) => {
-                      return <option value={item.code}>{item.code}</option>;
-                    })}
-                </MySelect>
-              )}
-            </div>
-            <div className="flex space-between">
-              {/* <MySelect
-                className="input-control wd48"
-                label="City*"
-                name="city"
-              >
-                <option>Select here</option>
-                <option value="delhi">Delhi</option>
-                <option value="mumbai">Mumbai</option>
-                <option value="chennai">Channai</option>
-              </MySelect> */}
-              <TextInput
-                className="input-control wd48"
-                label="City*"
-                name="city"
-                type="text"
-                placeholder="Enter here"
-              />
               <MySelect
                 className="input-control wd48"
                 label="State*"
@@ -190,6 +156,41 @@ export default function ShippingDetails() {
                   );
                 })}
               </MySelect>
+            </div>
+            <div className="flex space-between">
+              {/* <MySelect
+                className="input-control wd48"
+                label="City*"
+                name="city"
+              >
+                <option>Select here</option>
+                <option value="delhi">Delhi</option>
+                <option value="mumbai">Mumbai</option>
+                <option value="chennai">Channai</option>
+              </MySelect> */}
+              <TextInput
+                className="input-control wd48"
+                label="City*"
+                name="city"
+                type="text"
+                placeholder="Enter here"
+              />
+
+              {isLoading ? (
+                <Loader className={"w-50"} />
+              ) : (
+                <MySelect
+                  className="input-control wd48"
+                  label="Postal Code*"
+                  name="postalCode"
+                >
+                  <option>Select</option>
+                  {!!zipList &&
+                    zipList.map((item) => {
+                      return <option value={item.code}>{item.code}</option>;
+                    })}
+                </MySelect>
+              )}
             </div>
 
             <div className="submit-wrapper flex space-between conform">

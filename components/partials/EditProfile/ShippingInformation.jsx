@@ -236,9 +236,7 @@ function ShippingDetails() {
                           {!!zipList &&
                             zipList.map((item, index) => {
                               return (
-                                <option value={item?.zipId}>
-                                  {item.zipId}
-                                </option>
+                                <option value={item?.code}>{item.code}</option>
                               );
                             })}
                         </select>
