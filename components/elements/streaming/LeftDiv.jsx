@@ -9,7 +9,10 @@ import {
   userFollowUnfollow,
 } from "../../../api/stream/streams_api";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
-import { ImageTransformation, DefaultImagePath } from "../../Constants/imageConstants";
+import {
+  ImageTransformation,
+  DefaultImagePath,
+} from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
 import { SignUPGoogle } from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
@@ -31,13 +34,14 @@ function LeftDiv({
   const TOGGLE_STATES = {
     AUCTION: "auction",
     BUYNOW: "buynow",
+    GIVEAWAY: "giveaway",
     SOLD: "sold",
     PURCHASED: "purchased",
   };
   const router = useRouter();
   const { isMobile } = useIsMobile();
 
-  const TOGGLES = ["Auction", "Buy Now", "Sold", "Purchased"];
+  const TOGGLES = ["Auction", "Buy Now", "Giveaway", "Sold", "Purchased"];
   const [toggleState, setToggleState] = useState(TOGGLE_STATES.AUCTION);
   const streamUuid = router.query["uuid"];
   const stream = useSelector((state) => state.stream);
@@ -63,6 +67,7 @@ function LeftDiv({
   const initialStreamingData = {
     auction: [],
     buynow: [],
+    giveaway: [],
     sold: [],
     purchased: [],
   };
@@ -102,6 +107,9 @@ function LeftDiv({
           break;
         case TOGGLE_STATES.BUYNOW:
           url = `stream/streamProductList?streamuuid=${streamUuid}&sellType=buy_now`;
+          break;
+        case TOGGLE_STATES.GIVEAWAY:
+          url = `stream/streamProductList?streamuuid=${streamUuid}&sellType=giveaway`;
           break;
         case TOGGLE_STATES.PURCHASED:
           url = "#";
@@ -282,6 +290,14 @@ function LeftDiv({
                 </div>
               </div>
             </div>
+          ) : toggleState == "giveaway" ? (
+            <div className="flex flex-center space-between list">
+              <div className="left flex column">
+                <strong>{productDetails.productName}</strong>
+                <span>{productDetails.description}</span>
+                <span>{productDetails.quantity} Available</span>
+              </div>
+            </div>
           ) : toggleState == "sold" ? (
             <div className="flex space-between list-data">
               <div className="left flex column">
@@ -351,9 +367,16 @@ function LeftDiv({
     return (
       <div
         className="modalOverlay flex justify-center flex-center"
-        onClick={(event) => { handleModalClick(event, setShowUnFollowModal) }}
+        onClick={(event) => {
+          handleModalClick(event, setShowUnFollowModal);
+        }}
       >
-        <div className="modal" onClick={(event) => { handleModalClick(event) }}>
+        <div
+          className="modal"
+          onClick={(event) => {
+            handleModalClick(event);
+          }}
+        >
           <div className="modal-body text-center">
             <div className="profile-icon">
               {stream?.streamData?.vendorDetails ? (
