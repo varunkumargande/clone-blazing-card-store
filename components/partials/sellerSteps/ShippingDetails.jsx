@@ -129,27 +129,35 @@ export default function ShippingDetails() {
                 {countryData?.map((item, index) => {
                   return (
                     <>
-                      <option value={item.countryId}>{item.name}</option>
+                      <option key={item.countryId} value={item.countryId}>
+                        {item.name}
+                      </option>
                     </>
                   );
                 })}
               </MySelect>
 
-              {isLoading ? (
-                <Loader className={"w-50"} />
-              ) : (
-                <MySelect
-                  className="input-control wd48"
-                  label="Postal Code*"
-                  name="postalCode"
-                >
-                  <option>Select</option>
-                  {!!zipList &&
-                    zipList.map((item) => {
-                      return <option value={item.code}>{item.code}</option>;
-                    })}
-                </MySelect>
-              )}
+              <MySelect
+                className="input-control wd48"
+                label="State*"
+                name="state"
+                onChange={(e) => {
+                  e.preventDefault();
+                  handleChange(e);
+                  setZipCode(e.target.value);
+                }}
+              >
+                <option>Select here</option>
+                {stateList?.map((item, index) => {
+                  return (
+                    <>
+                      <option key={item.code} value={item.code}>
+                        {getStateName(stateList, item.code)}
+                      </option>
+                    </>
+                  );
+                })}
+              </MySelect>
             </div>
             <div className="flex space-between">
               {/* <MySelect
@@ -169,27 +177,26 @@ export default function ShippingDetails() {
                 type="text"
                 placeholder="Enter here"
               />
-              <MySelect
-                className="input-control wd48"
-                label="State*"
-                name="state"
-                onChange={(e) => {
-                  e.preventDefault();
-                  handleChange(e);
-                  setZipCode(e.target.value);
-                }}
-              >
-                <option>Select here</option>
-                {stateList?.map((item, index) => {
-                  return (
-                    <>
-                      <option value={item.code}>
-                        {getStateName(stateList, item.code)}
-                      </option>
-                    </>
-                  );
-                })}
-              </MySelect>
+
+              {isLoading ? (
+                <Loader className={"w-50"} />
+              ) : (
+                <MySelect
+                  className="input-control wd48"
+                  label="Postal Code*"
+                  name="postalCode"
+                >
+                  <option>Select</option>
+                  {!!zipList &&
+                    zipList.map((item) => {
+                      return (
+                        <option key={item?.zipId} value={item.code}>
+                          {item.code}
+                        </option>
+                      );
+                    })}
+                </MySelect>
+              )}
             </div>
 
             <div className="submit-wrapper flex space-between conform">

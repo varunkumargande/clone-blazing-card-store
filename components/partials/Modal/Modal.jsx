@@ -752,52 +752,29 @@ export function AddAddressModal(props) {
                   />
                   <ErrorMessage errors={formik.errors.address2} />{" "}
                 </div>
-                <div className="input-control">
-                  <label>Post Code *</label>
-                  {isLoading ? (
-                    <Loader className={"w-25"} />
-                  ) : (
-                    <select
-                      className="grey-bg"
-                      name="postcode"
-                      onChange={formik.handleChange}
-                      value={formik.values.postcode}
-                    >
-                      <option>Select</option>
-                      {!!zipList &&
-                        zipList.map((item) => {
-                          return (
-                            <option value={item?.zipId}>{item.zipId}</option>
-                          );
-                        })}
-                    </select>
-                  )}
-                  <ErrorMessage errors={formik.errors.postcode} />{" "}
-                </div>
-                <div className="input-control" hidden>
-                  <input name="addressId" value={formik.values.addressId} />
-                </div>
-                <div className="input-control">
-                  <label>City *</label>
-                  <input
-                    name="city"
-                    placeholder={"Enter here"}
-                    value={formik.values.city}
-                    onChange={formik.handleChange}
-                  />
-                  <ErrorMessage errors={formik.errors.city} />{" "}
-                </div>
 
-                {/* <div className="input-control"> Please do not remove this code 
-                  <label>State *</label> A quick fix for the stable build
-                  <input
-                    name="state"
-                    placeholder={"Enter here"}
-                    value={formik.values.state}
+                <div className="input-control">
+                  <label>Country *</label>
+                  <select
+                    className="input-control"
+                    name="countryId"
                     onChange={formik.handleChange}
-                  />
-                  <ErrorMessage errors={formik.errors.state} />{" "}
-                </div> */}
+                    value={formik.values.countryId}
+                    disabled={true}
+                  >
+                    <option>United States</option>
+                    {countryData?.map((item) => {
+                      return (
+                        <>
+                          <option key={item.countryId} value={item.countryId}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                  </select>
+                  <ErrorMessage errors={formik.errors.countryId} />
+                </div>
 
                 <div className="input-control">
                   <label>State *</label>
@@ -825,25 +802,54 @@ export function AddAddressModal(props) {
                   <ErrorMessage errors={formik.errors.state} />
                 </div>
 
+                <div className="input-control" hidden>
+                  <input name="addressId" value={formik.values.addressId} />
+                </div>
                 <div className="input-control">
-                  <label>Country *</label>
-                  <select
-                    className="input-control"
-                    name="countryId"
+                  <label>City *</label>
+                  <input
+                    name="city"
+                    placeholder={"Enter here"}
+                    value={formik.values.city}
                     onChange={formik.handleChange}
-                    value={formik.values.countryId}
-                    disabled={true}
-                  >
-                    <option>United States</option>
-                    {countryData?.map((item) => {
-                      return (
-                        <>
-                          <option value={item.countryId}>{item.name}</option>
-                        </>
-                      );
-                    })}
-                  </select>
-                  <ErrorMessage errors={formik.errors.countryId} />
+                  />
+                  <ErrorMessage errors={formik.errors.city} />{" "}
+                </div>
+
+                {/* <div className="input-control"> Please do not remove this code 
+                  <label>State *</label> A quick fix for the stable build
+                  <input
+                    name="state"
+                    placeholder={"Enter here"}
+                    value={formik.values.state}
+                    onChange={formik.handleChange}
+                  />
+                  <ErrorMessage errors={formik.errors.state} />{" "}
+                </div> */}
+
+                <div className="input-control">
+                  <label>Post Code *</label>
+                  {isLoading ? (
+                    <Loader className={"w-25"} />
+                  ) : (
+                    <select
+                      className="grey-bg"
+                      name="postcode"
+                      onChange={formik.handleChange}
+                      value={formik.values.postcode}
+                    >
+                      <option>Select</option>
+                      {!!zipList &&
+                        zipList.map((item) => {
+                          return (
+                            <option key={item?.zipId} value={item?.code}>
+                              {item.code}
+                            </option>
+                          );
+                        })}
+                    </select>
+                  )}
+                  <ErrorMessage errors={formik.errors.postcode} />{" "}
                 </div>
               </div>
               <div className="modal-footer">
