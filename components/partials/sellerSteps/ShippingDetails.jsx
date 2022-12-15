@@ -129,7 +129,9 @@ export default function ShippingDetails() {
                 {countryData?.map((item, index) => {
                   return (
                     <>
-                      <option value={item.countryId}>{item.name}</option>
+                      <option key={item.countryId} value={item.countryId}>
+                        {item.name}
+                      </option>
                     </>
                   );
                 })}
@@ -149,7 +151,7 @@ export default function ShippingDetails() {
                 {stateList?.map((item, index) => {
                   return (
                     <>
-                      <option value={item.code}>
+                      <option key={item.code} value={item.code}>
                         {getStateName(stateList, item.code)}
                       </option>
                     </>
@@ -187,7 +189,11 @@ export default function ShippingDetails() {
                   <option>Select</option>
                   {!!zipList &&
                     zipList.map((item) => {
-                      return <option value={item.code}>{item.code}</option>;
+                      return (
+                        <option key={item?.zipId} value={item.code}>
+                          {item.code}
+                        </option>
+                      );
                     })}
                 </MySelect>
               )}

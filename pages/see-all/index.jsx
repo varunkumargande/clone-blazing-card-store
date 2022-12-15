@@ -48,9 +48,8 @@ function categoryStream({ auth, category }) {
   }, []);
 
   useEffect(() => {
-    console.log(query);
-    if (Object.keys(query).length && query?.category) {
-      console.log("========>", query);
+    if (Object.keys(query).length && query?.page) {
+      console.log(query);
       dispatch(saveCategoryName(query?.category));
       dispatch(saveSubCategoryName(query?.subCategory));
       dispatch(savePageType(query?.page.replace(/\s/g, "")));

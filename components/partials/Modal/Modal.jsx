@@ -766,7 +766,9 @@ export function AddAddressModal(props) {
                     {countryData?.map((item) => {
                       return (
                         <>
-                          <option value={item.countryId}>{item.name}</option>
+                          <option key={item.countryId} value={item.countryId}>
+                            {item.name}
+                          </option>
                         </>
                       );
                     })}
@@ -840,7 +842,9 @@ export function AddAddressModal(props) {
                       {!!zipList &&
                         zipList.map((item) => {
                           return (
-                            <option value={item?.code}>{item.code}</option>
+                            <option key={item?.zipId} value={item?.code}>
+                              {item.code}
+                            </option>
                           );
                         })}
                     </select>

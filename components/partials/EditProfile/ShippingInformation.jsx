@@ -167,7 +167,10 @@ function ShippingDetails() {
                         {countryData.map((item, index) => {
                           return (
                             <>
-                              <option value={item.countryId}>
+                              <option
+                                key={item.countryId}
+                                value={item.countryId}
+                              >
                                 {item.name}
                               </option>
                             </>
@@ -195,7 +198,7 @@ function ShippingDetails() {
                         <option>Select</option>
                         {stateList.map((item) => {
                           return (
-                            <option value={item.code}>
+                            <option key={item.code} value={item.code}>
                               {getStateName(stateList, item.code)}
                             </option>
                           );
@@ -236,7 +239,9 @@ function ShippingDetails() {
                           {!!zipList &&
                             zipList.map((item, index) => {
                               return (
-                                <option value={item?.code}>{item.code}</option>
+                                <option key={item?.zipId} value={item?.code}>
+                                  {item?.code}
+                                </option>
                               );
                             })}
                         </select>
