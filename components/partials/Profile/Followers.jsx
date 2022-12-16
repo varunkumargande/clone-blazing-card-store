@@ -113,7 +113,7 @@ export default function Followers(props) {
                   getPathname() === "/account/myprofile") ||
                 person?.f_follower_id === getSessionUser()?.id
                   ? "disable primary-btn"
-                  : "primary-btn"
+                  : `${person?.is_user_followed === 1 && "following-button"} primary-btn`
               }
               onClick={(e) => {
                 e.preventDefault();
