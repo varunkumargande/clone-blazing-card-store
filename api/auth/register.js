@@ -18,8 +18,10 @@ export async function UserRegister(values, Router, dispatch) {
         type: "success",
       })
     );
-    Router.push("/account/verify-email");
-    localStorage.setItem("verification-email", values.email);
+    Router.push("/account/login");
+
+    // it will use in future for email verification
+    // localStorage.setItem("verification-email", values.email);
   } else {
     dispatch(
       show({
