@@ -427,7 +427,7 @@ export default function PublicProfile() {
                   </div>
                   <div className="flex justify-center">
                     <button
-                      className="primary-btn follow-btn"
+                      className={`${handleFollowButtonText() === "Following" && "following-button"} primary-btn follow-btn`}
                       onClick={handleFollow}
                     >
                       {handleFollowButtonText()}
