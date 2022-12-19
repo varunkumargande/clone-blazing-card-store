@@ -68,6 +68,8 @@ function StreamingBase({
   const [liked, setLiked] = useState(
     stream?.streamData?.isLike ? stream?.streamData?.isLike : false
   );
+  const [isVendorLive, setVendorLive] = useState(false);
+  const [CurrentLiveUser, setCurrentLiveUser] = useState(userCount);
 
   const [onPageLanding, setOnPageLanding] = useState(true);
 
@@ -84,6 +86,15 @@ function StreamingBase({
       setLiked(true);
     }
   }, [stream?.streamData?.isLike]);
+
+  useEffect(() => {
+    if(isVendorLive) {
+      setCurrentLiveUser(Number(userCount) > 0 ? Number(userCount) - 1 : 0);
+    } else {
+      setCurrentLiveUser(Number(userCount))
+    }
+  }, [isVendorLive])
+  console.log(userCount, 'userCount', CurrentLiveUser, 'CurrentLiveUser')
 
   /**
    * This useEffect will start countdown till 0
@@ -446,7 +457,7 @@ function StreamingBase({
       <div className="overlay-sighin"></div>
       <div className="stream-image-video">
         {/* <img src="/static/images/stream-image.jpg" alt="stream" /> */}
-        <StreamingElement volume={volumeLevel} isMute={isMute} />
+        <StreamingElement volume={volumeLevel} isMute={isMute} vendorLive={setVendorLive} />
       </div>
       <div className={`${Styles.overlay}`}>
         <div className="stream-header flex space-between">
@@ -471,7 +482,7 @@ function StreamingBase({
           )}
           
           <div className={`tme-wrap flex flex-center justify-center live ${Styles.tme_wrap}`}>
-            <span>{userCount}</span> <button className="live"></button>
+            <span>{CurrentLiveUser}</span> <button className="live"></button>
           </div>
           {/* <div className="tme-wrap end flex flex-center justify-center"><span>1.2K</span></div> */}
         </div>
