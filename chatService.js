@@ -11,3 +11,4 @@ export const searchUsers = `${host}/api/auth/searchUsers`;
 export const addFriend = `${host}/api/auth/addFriend`;
 export const friendList = `${host}/api/auth/friendlist`;
 export const notificationList = `${host}/api/auth/getNotification`;
+export const getUserId = `${host}/api/auth/getUser`;

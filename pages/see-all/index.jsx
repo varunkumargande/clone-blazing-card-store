@@ -61,9 +61,6 @@ function categoryStream({ auth, category }) {
         },
       });
     } else {
-      if (!query.page) {
-        Router.push("/404");
-      }
       if (!!category?.categories) {
         dispatch(saveCategoryName(category?.categories[0]?.categorySlug));
         dispatch(saveSubCategoryName("all"));

@@ -1,3 +1,4 @@
+import { getUserId } from "../../chatService";
 import http from "../intercept";
 
 let GetPublicProfile = async (userId, callback, loggedInUser = false) => {
@@ -142,6 +143,15 @@ let functionCallbackSetter = (response, callback) => {
   }
 };
 
+/**
+ * @method: GetUserChatDetails
+ * @description: this method get the user chat details like chat id of specific uesr.
+ *               (Right now this method is getting used in profile page when user click on Message button)
+ */
+let GetUserChatDetails = async (userId) => {
+  return await http.get(`${getUserId}/${userId}`);
+};
+
 const ProfileMethods = {
   GetPublicProfile,
   GetScheduledStreams,
@@ -151,6 +161,7 @@ const ProfileMethods = {
   GetUserFollowings,
   UserFollowUser,
   FollowUser,
+  GetUserChatDetails
 };
 
 export default ProfileMethods;

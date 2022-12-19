@@ -4,7 +4,7 @@ import { agoraGettToken } from "../../../api/stream/agora";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
 import { ImageTransformation } from "../../Constants/imageConstants";
-const StreamingElement = ({ volume, isMute }) => {
+const StreamingElement = ({ volume, isMute, vendorLive }) => {
   const options = useSelector((state) => state?.stream?.streamPageData?.option);
   const streamData = useSelector((state) => state?.stream?.streamData);
   const rtc = useRef({});
@@ -49,6 +49,7 @@ const StreamingElement = ({ volume, isMute }) => {
         // Subscribe to a remote user.
         await rtc.current.client.subscribe(user, mediaType);
         setRemoteUser(user);
+        vendorLive(true);
         // If the subscribed track is video.
         if (mediaType === "video") {
           // Get `RemoteVideoTrack` in the `user` object.
@@ -69,6 +70,7 @@ const StreamingElement = ({ volume, isMute }) => {
 
       rtc.current.client.on("user-unpublished", (user) => {
         // Get the dynamically created DIV container.
+        vendorLive(false);
         const remotePlayerContainer = document.getElementById("local_stream");
         // Destroy the container.
         remotePlayerContainer = "";

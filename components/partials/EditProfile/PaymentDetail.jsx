@@ -276,8 +276,8 @@ export default function PaymentDetail() {
                           </button>
 
                           <button
-                            className={`primary-btn ${
-                              !values.termCheckbox && "disable"
+                            className={`primary-btn${
+                              !values.termCheckbox ? " disable" : ""
                             }`}
                             disabled={!values.termCheckbox}
                           >
