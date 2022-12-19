@@ -75,6 +75,7 @@ export default function ShippingDetails() {
           city: shippingDetails?.city ?? "",
           state: shippingDetails?.state ?? "",
         }}
+        validateOnMount={true}
         validationSchema={shippingDetailsvalidation}
         onSubmit={(values) => {
           if (values) {
@@ -82,7 +83,7 @@ export default function ShippingDetails() {
           }
         }}
       >
-        {({ handleChange }) => (
+        {(formProps) => (
           <Form>
             <div className="flex space-between">
               <TextInput
@@ -143,7 +144,7 @@ export default function ShippingDetails() {
                 name="state"
                 onChange={(e) => {
                   e.preventDefault();
-                  handleChange(e);
+                  formProps.handleChange(e);
                   setZipCode(e.target.value);
                 }}
               >
@@ -203,7 +204,13 @@ export default function ShippingDetails() {
               <button onClick={handlePreviousClick} className="border-btn">
                 Previous
               </button>
-              <button type="submit" className="primary-btn">
+              <button
+                type="submit"
+                className={`primary-btn${
+                  !(formProps?.isValid) ? " disable" : ""
+                }`}
+                disabled={!(formProps?.isValid)}
+              >
                 Confirm Shipping Details
               </button>
             </div>
