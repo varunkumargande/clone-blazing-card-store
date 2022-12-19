@@ -13,7 +13,6 @@ import IconBack from "../../Icons/IconBack";
 import BackButton from "../../CommonComponents/BackButton";
 import { uploadImageToServer } from "../../../utilities/common-helpers";
 import DefaultConstants from "../../../utilities/constants";
-
 export default function BasicDetails() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -24,6 +23,7 @@ export default function BasicDetails() {
   const [updateFileName, setUpdateFileName] = useState(
     BasicDetails?.documents?.image || null
   );
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleSubmit = async (values) => {
     if (!!values?.firstName && !!values?.lastName && !!values?.upload) {
@@ -71,6 +71,7 @@ export default function BasicDetails() {
   };
 
   const handleFileUpload = async (image, base64) => {
+    setIsUploading(true);
     const uploadImage = await uploadImageToServer(
       image,
       DefaultConstants.CommonConstants.DOCUMENT_UPLOAD_USER_PATH
@@ -78,6 +79,7 @@ export default function BasicDetails() {
     if (uploadImage.status == 200) {
       setImageData(base64);
       setUpdateFileName(uploadImage.fileName);
+      setIsUploading(false);
     }
   };
 
@@ -86,9 +88,8 @@ export default function BasicDetails() {
    * @description: handle the previous click button. Basically send it to previous step.
    */
   const handlePreviousClick = () => {
-    router.push('/become-seller/guidelines')
-  }
-
+    router.push("/become-seller/guidelines");
+  };
   return (
     <div className="step-container">
       <BackButton name={"Basic Details"} backUrl="/" />
@@ -100,6 +101,7 @@ export default function BasicDetails() {
       <Formik
         initialValues={initialValues}
         validateOnChange
+        validateOnMount={true}
         validationSchema={basicDetailvalidation}
         onSubmit={(values) => {
           if (values) {
@@ -118,7 +120,6 @@ export default function BasicDetails() {
                 placeholder="Enter here"
                 maxLength="25"
               />
-
               <TextInput
                 className="input-control wd48"
                 label="Last Name*"
@@ -127,7 +128,6 @@ export default function BasicDetails() {
                 placeholder="Enter here"
                 maxLength="25"
               />
-
             </div>
             <div className="flex space-between">
               <FileUpload
@@ -147,7 +147,14 @@ export default function BasicDetails() {
               <button onClick={handlePreviousClick} className="border-btn">
                 Previous
               </button>
-              <button type="submit" className="primary-btn">
+              <button
+                type="submit"
+                className={
+                  "primary-btn" +
+                  (!(formProps?.isValid && !isUploading) ? " disable" : "")
+                }
+                disabled={!formProps?.isValid || isUploading}
+              >
                 Save & Next
               </button>
             </div>

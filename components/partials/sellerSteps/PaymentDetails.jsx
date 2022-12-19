@@ -112,9 +112,9 @@ export default function PaymentDetails() {
    * @description: handle the previous click button. Basically send it to previous step.
    */
   const handlePreviousClick = () => {
-    router.push('/become-seller/basicDetails')
-  }
-    
+    router.push("/become-seller/basicDetails");
+  };
+
   return (
     <div className="step-container">
       <BackButton name={"Payment Details"} backUrl="/" />
@@ -132,8 +132,9 @@ export default function PaymentDetails() {
           expiry: paymentDetails?.expireDate ?? "",
           country: paymentDetails?.countryId ?? "",
           paymentMethod: paymentDetails?.paymentMethod ?? "",
-          termCheckBox: !!paymentDetails?.termCheckBox
+          termCheckBox: !!paymentDetails?.termCheckBox,
         }}
+        validateOnMount={true}
         validationSchema={paymentDetailsvalidation(cardType)}
         onSubmit={(values) => {
           if (values) {
@@ -185,6 +186,7 @@ export default function PaymentDetails() {
                 label="Expiration Date*"
                 name="expiry"
                 type="text"
+                inputMode="numeric"
                 placeholder="Enter here (MM/YY)"
                 formProps={formProps}
                 clearState={clearState}
@@ -266,7 +268,13 @@ export default function PaymentDetails() {
                   Save & Next
                 </button>
               ) : (
-                <button type="submit" className="primary-btn">
+                <button
+                  type="submit"
+                  className={`primary-btn${
+                    !(formProps?.isValid) ? " disable" : ""
+                  }`}
+                  disabled={!(formProps?.isValid)}
+                >
                   Save & Next
                 </button>
               )}
