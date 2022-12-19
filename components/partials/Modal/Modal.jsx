@@ -1178,7 +1178,7 @@ export function UnfollowModalMultiple(props) {
           </div>
           <div className="profile-id">
             Want to unfollow @
-            {profile?.follower_username ?? profile?.following_username}
+            {profile?.follower_username ?? profile?.following_username}?
           </div>
           <div className="btn-wrap follow-btn-wrap flex justify-center">
             <button
@@ -1246,7 +1246,7 @@ export function UnfollowModal(props) {
             )}
           </div>
           <div className="profile-id">
-            Want to unfollow @{profile?.username}
+            Want to unfollow @{profile?.username}?
           </div>
           <div className="btn-wrap follow-btn-wrap flex justify-center">
             <button

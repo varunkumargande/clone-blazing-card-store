@@ -500,10 +500,6 @@ label {
     pointer-events: all;
     cursor: not-allowed !important;
   }
-  &:hover {
-    color: $white-color;
-    background-color: $primary-btn-hover;
-  }
 }
 .disable-btn {
   font-size: 16px;
@@ -536,10 +532,6 @@ label {
   justify-content: center;
   align-items: center;
   transition: all 0.2s;
-  &:hover {
-    background-color: $blue-color;
-    color: $white-color;
-  }
 }
 .cate-btn {
   height: 32px;
@@ -626,8 +618,8 @@ label {
     }
   }
 }
-#container.visible {
-  display: none;
+#container.visible, #back2top {
+  display: none !important;
 }
 // Breadcrumb css changes
 .breadcrumbs-wrapper {
@@ -787,6 +779,18 @@ label {
     }
     .show-hide {
       top: 42px;
+    }
+  }
+  .border-btn {
+    &:hover {
+      background-color: $blue-color;
+      color: $white-color;
+    }
+  }
+  .primary-btn {
+    &:hover {
+      color: $white-color;
+      background-color: $primary-btn-hover;
     }
   }
 }
