@@ -26,6 +26,8 @@ import { profileConstant } from "../../Constants/profile";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import IconDelete from '../../Icons/IconDelete';
+import { deleteProfileImageApi } from "../../../api/profile/deleteProfileImageApi";
+
 export default function ProfileInformation() {
   const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB
@@ -128,6 +130,10 @@ export default function ProfileInformation() {
     setLoader(true);
   };
 
+  const handleDeleteProfileImage = () => {
+    deleteProfileImageApi(dispatch, setLoader)
+  }
+
   const handleImageUpload = () => {
     return (
       <>
@@ -209,9 +215,9 @@ export default function ProfileInformation() {
                     onChange={(e) => changeDP(e)}
                   />
                 </label>
-                {/* <button className="delete-btn flex justify-center flex-center br50">
-                <IconDelete />
-              </button> */}
+                <button className="delete-btn flex justify-center flex-center br50" onClick={(e) => { e.preventDefault(); handleDeleteProfileImage() }}>
+                  <IconDelete />
+                </button>
               </div>
               <div className="dicscription">
                 {newDpError ||
