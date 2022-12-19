@@ -17,7 +17,16 @@ export default function ProfilePannel({
   setNewNotification,
   notificationData,
   setNotificationData,
+  queryChatUserId,
+  queryChatUserIndex
 }) {
+
+  useEffect(() => {
+    if (queryChatUserIndex && queryChatUserId) {
+      handleSelectChatUser(queryChatUserIndex, queryChatUserId);
+    }
+  }, [queryChatUserIndex])
+
   const handleSelectChatUser = (index, id) => {
     /**
      * these both function is use for remove read message satus in state

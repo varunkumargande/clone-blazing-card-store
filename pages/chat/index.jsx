@@ -44,6 +44,7 @@ function Chat({ auth }) {
   const [exp, setExp] = useState(true);
   const [currentUserData] = useChatCurrentUser();
   const { isMobile } = useIsMobile();
+  const [queryUserIndex, setQueryUserIndex] = useState(null);
 
   useEffect(() => {
     socket.current = io(host);
@@ -78,6 +79,15 @@ function Chat({ auth }) {
     chatSocketInitializer();
     getChatNotification(setMsgNotificationData);
   }, []);
+
+  useEffect(() => {
+    if (router.query?.chatUserId && contacts.length) {
+      const queryUserIndex = contacts.findIndex((contact) => contact?._id === router.query?.chatUserId);
+      if (queryUserIndex >= 0) {
+        setQueryUserIndex(queryUserIndex);
+      }
+    }
+  }, [contacts])
 
   const chatSocketInitializer = async () => {
     const user = currentUserData?._id;
@@ -180,6 +190,8 @@ function Chat({ auth }) {
           setNewNotification={setNewNotification}
           notificationData={msgNotificationData}
           setNotificationData={setMsgNotificationData}
+          queryChatUserId={router?.query?.chatUserId}
+          queryChatUserIndex={queryUserIndex}
         />
       </>
     );

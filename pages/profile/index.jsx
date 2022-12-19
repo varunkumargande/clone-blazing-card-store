@@ -25,6 +25,9 @@ import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
 import Error from "../_error";
 import { handleSocialLinks } from "../../utilities/utils";
+import { getErrorMessage } from "../../utilities/common-helpers";
+import { show } from "../../store/toast/action";
+import { useDispatch } from "react-redux";
 
 export default function PublicProfile() {
   const router = useRouter();
@@ -38,6 +41,7 @@ export default function PublicProfile() {
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [likedShows, setLikedShows] = useState([]);
+  const [chatLoading, setChatLoading] = useState(false);
   const [tabs, setTabs] = useState(null);
   const [activeTab, setActiveTab] = useState(
     tabs && tabs.length > 0 ? tabs[0].key : ""
@@ -48,6 +52,7 @@ export default function PublicProfile() {
   const [isOpenFollowUnfollow, setIsOpenFollowUnfollow] = useState(false);
   const [errorCode, setErrorcode] = useState(0);
   const wrapperRef = useRef(null);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (localStorage.getItem("blazingUser")) {
@@ -76,6 +81,34 @@ export default function PublicProfile() {
     ProfileMethods.GetUserFollowers(userId, setFollowers, currentUser?.id);
     ProfileMethods.GetUserFollowings(userId, setFollowing, currentUser?.id);
   };
+
+  /**
+   * @method: handleMessageClick
+   * @description: as name implie this method handles the click on Message button.
+   */
+  const handleMessageClick = async () => {
+    if (Object.keys(currentUser).length) {
+      await getUserChatDetails();
+    } else {
+      setShowModal(true);
+    }
+  }
+
+  /**
+   * @method: getUserChatDetails
+   * @description: gets the chat detial of the user.
+   */
+  const getUserChatDetails = async () => {
+    setChatLoading(true);
+    const response = await ProfileMethods.GetUserChatDetails(userId);
+    if (response?.data?.success) {
+      await chatLogin(dispatch, response?.data?.response?._id);
+    } else {
+      const errorMessage = getErrorMessage(response);
+      dispatch(show({ message: errorMessage, type: "error" }));
+    }
+    setChatLoading(false);
+  }
 
   useEffect(() => {
     if (router.query.userId) {
@@ -402,11 +435,10 @@ export default function PublicProfile() {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        Object.keys(currentUser).length
-                          ? chatLogin()
-                          : setShowModal(true);
+                        handleMessageClick();
                       }}
-                      className="border-btn edit-profile-btn"
+                      className={`border-btn edit-profile-btn ${chatLoading && "disable-opacity"}`}
+                      disabled={chatLoading}
                     >
                       Message
                     </button>
