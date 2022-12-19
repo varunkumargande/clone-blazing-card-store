@@ -186,6 +186,7 @@ export default function PaymentDetails() {
                 label="Expiration Date*"
                 name="expiry"
                 type="text"
+                inputMode="numeric"
                 placeholder="Enter here (MM/YY)"
                 formProps={formProps}
                 clearState={clearState}
