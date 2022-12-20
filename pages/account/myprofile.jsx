@@ -20,6 +20,7 @@ import BackButton from "../../components/CommonComponents/BackButton";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import Error from "../_error";
 import { handleSocialLinks } from "../../utilities/utils";
+import RecentReviewContainer from "../profile/RecentReviewContainer";
 
 function MyProfile(props) {
   const router = useRouter();
@@ -261,7 +262,11 @@ function MyProfile(props) {
           }}
           className={`title ${activeTab === tab.key && "active"}`}
         >
-          {tab.title}({renderTabContentCount(tab.key)})
+          {tab.title}{!tab?.showOnlyTitle &&
+            <>
+              ({renderTabContentCount(tab.key)})
+            </>
+          }
         </button>
       </div>
     );
@@ -281,6 +286,8 @@ function MyProfile(props) {
         return ProfileComponent(false);
       case "liked-shows":
         return LikedShowsComponent();
+      case "recent-reviews": 
+      return <RecentReviewContainer userId={userId}/>;
       default:
         return null;
     }

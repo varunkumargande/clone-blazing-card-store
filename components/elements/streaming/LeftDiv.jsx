@@ -513,6 +513,22 @@ function LeftDiv({
             )}
           </div>
           <div className="followrs-count">{noOfFollower} Followers</div>
+          <div className={`flex flex-center ${Styles.rating_count}`}>
+            {streamingDetails?.vendorDetails ?
+              <>
+                <span className={`mr-2 flex flex-center ${Styles.w_11}`}>
+                  <IconStarFilled />
+                </span>
+                {Number(streamingDetails?.vendorDetails?.avgRating).toFixed(1) || ''} &nbsp;&nbsp;{streamingDetails?.vendorDetails?.ratingCount || 0} Ratings
+              </>
+              :
+              <Skeleton
+                baseColor="#dddbdb66"
+                highlightColor="#cdcccc"
+                width={`100px`}
+              />
+            }
+          </div>
         </div>
         <div className="btn-wrap">
           {followed ? (

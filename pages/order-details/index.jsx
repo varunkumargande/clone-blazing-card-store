@@ -7,11 +7,14 @@ import Footer from "../../components/partials/LandingPage/Footer";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import IconBack from "../../components/Icons/IconBack";
 import { useRouter } from "next/router";
-import { orderDetailApi } from "../../api";
+import { orderDetailApi, submitReview } from "../../api";
 import moment from "moment";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import { useMutation } from "react-query";
+import { show } from "../../store/toast/action";
+import { getErrorMessage } from "../../utilities/common-helpers";
 
 export default function Orderdetails() {
   const router = useRouter();
@@ -21,8 +24,24 @@ export default function Orderdetails() {
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   const orderDetail = useSelector((state) => state?.order?.orderDetail);
+  const submitRatingMutation = useMutation('submitReview',
+    {
+      mutationFn: submitReview,
+      onSuccess: (data) => {
+        if (data?.data?.status === 1) {
+          dispatch(show({ message: data.data?.message, type: "success" }));
+        } else {
+          const errorMessage = getErrorMessage(data);
+          dispatch(show({ message: errorMessage, type: "error" }));
+        }
+      },
+      onError: (error) => {
+        const errorMessage = getErrorMessage(error);
+        dispatch(show({ message: errorMessage, type: "error" }));
+      },
+    });
 
-  useEffect(() => {
+    useEffect(() => {
     orderDetailApi(dispatch, orderId);
   }, []);
 
@@ -107,7 +126,7 @@ export default function Orderdetails() {
           </div>
         </div>
         <div className="orderdetails-wrapper flex space-between">
-          <OrderDetails />
+          <OrderDetails submitRatingMutation={submitRatingMutation} />
         </div>
       </div>
       <Footer />
