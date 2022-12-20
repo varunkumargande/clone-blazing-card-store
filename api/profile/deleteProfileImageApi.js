@@ -3,13 +3,12 @@ import { show } from "../../store/toast/action";
 import { getErrorMessage } from "../../utilities/common-helpers";
 import getProfileApi from "../home/getInfo";
 
-export async function deleteProfileImageApi(dispatch, setLoader) {
+export async function deleteProfileImageApi(dispatch, setIsProfileImageDelete) {
 
     const result = await APIServices.deleteAll("customer/deleteCustomerProfileImage")
-
     if (result?.status === 200) {
         getProfileApi()
-        setLoader(true)
+        setIsProfileImageDelete(false)
         dispatch(show({ message: result.data.message, type: "success" }));
     } else {
         const errorMessage = getErrorMessage(result);

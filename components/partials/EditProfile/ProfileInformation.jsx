@@ -34,7 +34,7 @@ export default function ProfileInformation() {
   const [profileData, setProfileData] = useState(null);
   const [newDpError, setNewDpError] = useState("");
   const [impuploadsuccess, setimpuploadsuccess] = useState(false);
-  const [newDp, setNewDp] = useState("");
+  const [newDp, setNewDp] = useState(null);
   const [newDpName, setNewDpName] = useState("");
   const inputFile = useRef(null);
   const [loader, setLoader] = useState(false);
@@ -43,6 +43,7 @@ export default function ProfileInformation() {
   const toast = useSelector((state) => state?.toast?.toast);
   const [disableUploadButton, setDisableUploadButton] = useState(false);
   const [currentChatUser, setCurrentChatUser] = useState(null);
+  const [isProfileImageDelete, setIsProfileImageDelete] = useState(false)
 
   useEffect(() => {
     if (!!JSON.parse(localStorage.getItem("chat-app-current-user"))) {
@@ -72,7 +73,7 @@ export default function ProfileInformation() {
       setProfileData(jsonObject);
       setLoader(false);
     }
-  }, [loader]);
+  }, [loader, isProfileImageDelete]);
 
   const changeDP = (e) => {
     setNewDpError("");
@@ -82,6 +83,7 @@ export default function ProfileInformation() {
       files[0] &&
       files[0].name.toLowerCase().match(/\.(jpg|jpeg|png)$/)
     ) {
+      // console.log(files)
       const fsize = files[0].size;
       const file = Math.round(fsize / 1024);
       if (file < 1024 * MaxProfileImageSize) {
@@ -131,9 +133,17 @@ export default function ProfileInformation() {
   };
 
   const handleDeleteProfileImage = () => {
-    deleteProfileImageApi(dispatch, setLoader)
+    if (newDp) {
+      setNewDp(null);
+      setNewDpName("")
+    }
+    else {
+      setIsProfileImageDelete(true)
+      deleteProfileImageApi(dispatch, setIsProfileImageDelete)
+    }
   }
 
+  console.log(newDp)
   const handleImageUpload = () => {
     return (
       <>
@@ -145,7 +155,7 @@ export default function ProfileInformation() {
                   <Loader className="d-flex w-50 m-auto" />
                 ) : (
                   <>
-                    {newDp != "" ? (
+                    {!!newDp ? (
                       <>
                         <img
                           style={{ borderRadius: "50%" }}
@@ -198,9 +208,8 @@ export default function ProfileInformation() {
                   className={
                     disableUploadButton && !!toast.message
                       ? "upload-btn flex justify-center flex-center disable-upload-image-btn"
-                      : `upload-btn flex justify-center flex-center ${
-                          showImageLoader && "disable-upload-image-btn"
-                        }`
+                      : `upload-btn flex justify-center flex-center ${showImageLoader && "disable-upload-image-btn"
+                      }`
                   }
                 >
                   Update Profile Image
