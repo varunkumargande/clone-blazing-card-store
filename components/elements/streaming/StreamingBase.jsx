@@ -267,7 +267,7 @@ function StreamingBase({
    * Method will Handle bid confirmation event
    */
   const handleConfirmBid = async () => {
-    if(!loggedInUserData?.mobileNumber){
+    if(!loggedInUserData?.userData?.mobileNumber){
       dispatch(show({ message: MOBILE_NUMBER_ERROR, type: "error" }));
       return;
     }

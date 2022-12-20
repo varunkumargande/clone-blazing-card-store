@@ -88,7 +88,7 @@ function CenterDiv({
   };
 
   const handleSubmitBuyProduct = async () => {
-    if(!loggedInUserData?.mobileNumber){
+    if(!loggedInUserData?.userData?.mobileNumber){
       dispatch(show({ message: MOBILE_NUMBER_ERROR, type: "error" }));
       return;
     }
