@@ -142,7 +142,6 @@ export default function ProfileInformation() {
     }
   }
 
-  console.log(newDp)
   const handleImageUpload = () => {
     return (
       <>
