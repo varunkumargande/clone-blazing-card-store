@@ -17,6 +17,8 @@ import { getStreamingCardDetail } from "../../../api/stream/cardApi";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { show } from "../../../store/toast/action";
+import { MOBILE_NUMBER_ERROR } from "../../Constants";
+import useIsLoggedIn from "../../../hooks/useIsLoggedIn";
 
 function CenterDiv({
   productDetail,
@@ -34,6 +36,7 @@ function CenterDiv({
   currentAuctionDetails,
 }) {
   const dispatch = useDispatch();
+  const loggedInUserData = useIsLoggedIn();
 
   const [openOptions, setOpenOptions] = React.useState(true);
   const [paymentForm, setPaymentFormOpen] = React.useState(false);
@@ -85,9 +88,13 @@ function CenterDiv({
   };
 
   const handleSubmitBuyProduct = async () => {
+    if(!loggedInUserData?.userData?.mobileNumber){
+      dispatch(show({ message: MOBILE_NUMBER_ERROR, type: "error" }));
+      return;
+    }
     if (cardDetail.length != 0 && addressList.length != 0) {
-      setPaymentLoader(true);
-      const orderIdValue = await buyProduct(
+        setPaymentLoader(true);
+        const orderIdValue = await buyProduct(
         cardDetail[cardDetail.length - 1],
         addressList[addressList.length - 1],
         productDetail,
