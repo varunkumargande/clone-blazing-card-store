@@ -265,12 +265,22 @@
             svg{
                 pointer-events: none;
             }
-            &.like{
-                transition:all .25s;
-                &.liked,&:hover{
-                    .icon{
-                        fill:$red-color;
-                        stroke:$red-color;
+            &.like {
+                transition: all .25s;
+
+                &.liked {
+                    .icon {
+                        fill: $red-color;
+                        stroke: $red-color;
+                    }
+                }
+
+                @media (hover: hover) {
+                    &:hover {
+                        .icon {
+                            fill: $red-color;
+                            stroke: $red-color;
+                        }
                     }
                 }
             }
