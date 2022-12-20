@@ -83,7 +83,6 @@ export default function ProfileInformation() {
       files[0] &&
       files[0].name.toLowerCase().match(/\.(jpg|jpeg|png)$/)
     ) {
-      // console.log(files)
       const fsize = files[0].size;
       const file = Math.round(fsize / 1024);
       if (file < 1024 * MaxProfileImageSize) {
@@ -132,6 +131,9 @@ export default function ProfileInformation() {
     setLoader(true);
   };
 
+  /**
+   * Delete Profile Image of the user
+   */
   const handleDeleteProfileImage = () => {
     if (newDp) {
       setNewDp(null);
@@ -143,7 +145,6 @@ export default function ProfileInformation() {
     }
   }
 
-  console.log(newDp)
   const handleImageUpload = () => {
     return (
       <>
