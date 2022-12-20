@@ -557,7 +557,7 @@ function LeftDiv({
                 />
               )}
             </h3>
-            <div className="tab-wrapper flex">{getToggles()}</div>
+            <div className={`tab-wrapper flex space-between w-full ${Styles.w_400}`}>{getToggles()}</div>
             <div className="search">
               <input
                 type="text"

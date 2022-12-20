@@ -1,9 +1,7 @@
 import React from "react";
 import IconBack from "../../Icons/IconBack";
 import { useRouter } from "next/router";
-import { useIsMobile } from "../../../contexts//Devices/CurrentDevices";
 export default function ApplicationSubmitted() {
-  const { isMobile } = useIsMobile();
   const router = useRouter();
   return (
     <div className="step-container">
@@ -16,19 +14,17 @@ export default function ApplicationSubmitted() {
         Please allow the Applications Team up to 2 weeks to review your
         Application.
       </div>
-      {!isMobile && (
-        <h6 className="flex flex-center backto-home">
-          <div
-            className="edit-back"
-            onClick={(e) => {
-              e.preventDefault();
-              router.push("/");
-            }}
-          >
-            <IconBack /> Back to home
-          </div>
-        </h6>
-      )}
+      <h6 className="flex flex-center backto-home">
+        <div
+          className="edit-back"
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/");
+          }}
+        >
+          <IconBack /> Back to home
+        </div>
+      </h6>
     </div>
   );
 }

@@ -30,6 +30,9 @@ import {
   likedRequest,
   removeLikedRequest,
 } from "../../../store/likedStream/action";
+import { show } from "../../../store/toast/action";
+import useIsLoggedIn from "../../../hooks/useIsLoggedIn";
+import { MOBILE_NUMBER_ERROR } from "../../Constants";
 import Styles from "../../../modular_scss/StreamingBase.module.scss";
 
 function StreamingBase({
@@ -45,6 +48,7 @@ function StreamingBase({
   setCurrentAuctionDetails,
   currentAuctionDetails,
 }) {
+  const loggedInUserData = useIsLoggedIn();
   const stream = useSelector((state) => state.stream);
   const [open, setOpen] = useState(false);
   const [bidAmount, setBidAmount] = useState(null);
@@ -53,6 +57,7 @@ function StreamingBase({
   const [seconds, setSeconds] = useState(null);
   const [disableBid, setDisableBid] = useState(false);
   const [isBidResponseModal, setIsBidResponseModal] = useState(false);
+  
   /*****For notifications *****/
 
   const [volumeLevel, setVolumeLevel] = useState(100);
@@ -61,7 +66,7 @@ function StreamingBase({
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   // const streamNotification = streamNotification;
-
+  
   const [auctionId, setAuctionId] = useState(null);
   const router = useRouter();
   const uuid = router.query["uuid"];
@@ -262,23 +267,27 @@ function StreamingBase({
    * Method will Handle bid confirmation event
    */
   const handleConfirmBid = async () => {
+    if(!loggedInUserData?.userData?.mobileNumber){
+      dispatch(show({ message: MOBILE_NUMBER_ERROR, type: "error" }));
+      return;
+    }
     if ((cardDetail?.length > 0) && (addressList?.length > 0)) {
-      if (amountToBid > bidAmount) {
-        setDisableBid(true);
-        setOpen(false);
-        const res = await createBid(
-          Number(auctionId),
-          Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
-          Number(amountToBid)
-        );
-        if (res?.status === 200) {
-          setDisableBid(false);
-          increaseBidAmount();
-          setIsBidResponseModal(!isBidResponseModal);
-        } else {
-          setDisableBid(false);
+        if (amountToBid > bidAmount) {
+          setDisableBid(true);
+          setOpen(false);
+          const res = await createBid(
+            Number(auctionId),
+            Number(stream?.streamPageData.streamPageDteails.loggedInUserId),
+            Number(amountToBid)
+          );
+          if (res?.status === 200) {
+            setDisableBid(false);
+            increaseBidAmount();
+            setIsBidResponseModal(!isBidResponseModal);
+          } else {
+            setDisableBid(false);
+          }
         }
-      }
     } else {
       openPayment(true);
     }

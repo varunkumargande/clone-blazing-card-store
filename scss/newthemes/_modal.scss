@@ -79,7 +79,7 @@
         }
     }
     .modal-body{
-        max-height: calc(100vh - 230px);
+        max-height: calc(100vh - 330px);
         @include overflow;
         padding: 20px 18px 20px;
         .Stream-title{
@@ -420,6 +420,8 @@
                 background-color: $white-color;
                 border-bottom: 1px solid $border2-color;
                 padding-top: 30px;
+                padding-bottom: 10px;
+                height: 65px;
                 .close{
                     span{
                         display: none
