@@ -1,7 +1,7 @@
 node_modules
 .next
-.gitignore
 out
 DS_Store
 package-lock.json
 .env*.local
+package-lock.json

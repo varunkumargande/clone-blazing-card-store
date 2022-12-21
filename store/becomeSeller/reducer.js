@@ -46,7 +46,6 @@ const getStepState = (lastStep) => {
           shippingDetails: "process",
           submitted: ""
         }
-      break;
       case 4:
         return {
           guidelines : 'completed',
@@ -55,10 +54,8 @@ const getStepState = (lastStep) => {
           shippingDetails: "completed",
           submitted: "process"
         }
-      break;
     default:
         return stepState;
-      break;
   }
 }
 
