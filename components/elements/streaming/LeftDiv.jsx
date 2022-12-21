@@ -14,7 +14,7 @@ import {
   DefaultImagePath,
 } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
-import { SignUPGoogle } from "../../partials/Modal/Modal";
+import { SignUPGoogle} from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 import Styles from "../../../modular_scss/LeftDiv.module.scss";
 import { handleModalClick } from "../../../utilities/utils";

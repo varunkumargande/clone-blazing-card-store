@@ -1633,3 +1633,49 @@ export function UserSuggestionModal(props) {
     </div>
   );
 }
+
+export function BlockModal(props) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal small">
+        <div className="modal-header flex Space-between flex-center nobg hauto py-4">
+          <h5 className="modal-title flex flex-center small">
+            <span className="profile mr-3 rounded-circle">
+              <img src="/static/images/profileImg.png" alt="" />
+            </span>
+            Marie Woodey
+            <button className={`border-btn ml-3 ${Styles.following_btn} `}>Following</button>
+          </h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body p-0">
+          <div className="py-3 px-4 flex border-top list nowrap">
+            <div className={`icon flex flex-center justify-center ${Styles.list_icon}`}><i class="fa fa-user" aria-hidden="true"></i></div>
+            <div className="text">
+              <div className={`${Styles.list_title}`}>View Profile</div>
+            </div>
+          </div>
+          <div className="py-3 px-4 flex border-top list nowrap">
+            <div className={`icon flex flex-center justify-center ${Styles.list_icon}`}><i class="fa fa-ban" aria-hidden="true"></i></div>
+            <div className="text">
+              <div className={`${Styles.list_title}`}>Block and Remove from stream</div>
+              <div className={`${Styles.list_body}`}>
+This will restrict the user from performing any
+actions on this stream.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
