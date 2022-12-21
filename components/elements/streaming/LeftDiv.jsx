@@ -514,6 +514,8 @@ function LeftDiv({
           </div>
           <div className="followrs-count">{noOfFollower} Followers</div>
           <div className={`flex flex-center ${Styles.rating_count}`}>
+            {/* Rating And Review Feature */}
+            {/* RatingAndReviewStart */}
             {streamingDetails?.vendorDetails ?
               <>
                 <span className={`mr-2 flex flex-center ${Styles.w_11}`}>
@@ -528,6 +530,7 @@ function LeftDiv({
                 width={`100px`}
               />
             }
+            {/* RatingAndReviewEnd */}
           </div>
         </div>
         <div className="btn-wrap">
