@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import MobileHeader from "../../components/partials/LandingPage/MobileHeader";
+import React, { useEffect } from "react";
 import HeaderDefault from "../../components/shared/headers/HeaderDefault";
 import LeftPannel from "../../components/partials/sellerSteps/LeftPannel";
 import ImportantGuidelines from "../../components/partials/sellerSteps/ImportantGuidelines";
@@ -11,12 +10,23 @@ import Footer from "../../components/partials/LandingPage/Footer";
 import { useRouter } from "next/router";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import BackButton from "../../components/CommonComponents/BackButton";
+import useIsLoggedIn from "../../hooks/useIsLoggedIn";
+import { getBecomeSellerInfo } from "../../store/becomeSeller/action";
+import { useDispatch } from "react-redux";
 
 export default function Steps() {
   const { isMobile } = useIsMobile();
+  const { isLoggedIn } = useIsLoggedIn();
+  const dispatch = useDispatch();
 
   const route = useRouter();
   let { pageName } = route.query;
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(getBecomeSellerInfo());
+    }
+  }, [isLoggedIn]);
 
   const getComponent = () => {
     switch (pageName) {
