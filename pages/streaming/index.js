@@ -8,6 +8,8 @@ import dynamic from "next/dynamic";
 import Footer from "../../components/partials/LandingPage/Footer";
 import IconBack from "../../components/Icons/IconBack";
 import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
+import { TostMessage } from "../../components/partials/ToastMessage/ToastMessage";
+import { useSelector } from "react-redux";
 // import Head from "next/head";
 const Streaming = dynamic(() => import("../../components/elements/streaming"), {
   ssr: false,
@@ -18,6 +20,7 @@ function StreamingPage(data) {
   const network = useNetwork();
   const { isMobile } = useIsMobile();
   const router = useRouter();
+  const toast = useSelector((state) => state?.toast?.toast);
 
   useEffect(() => {
     if (network === false) {
@@ -55,6 +58,7 @@ function StreamingPage(data) {
             <div className="edit-back" onClick={handleBackButton}>
               <IconBack />
             </div>
+            {!!toast.message && <TostMessage data={toast}></TostMessage>}
           </div>
         ) : (
           <HeaderDefault />
