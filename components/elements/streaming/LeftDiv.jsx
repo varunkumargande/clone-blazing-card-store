@@ -553,7 +553,6 @@ function LeftDiv({
             </button>
           )}
         </div>
-        <div className={`flex flex-center ${Styles.rating_count}`}><span className={`mr-2 flex flex-center ${Styles.w_11}`}><IconStarFilled /></span>4.3  2,576 Ratings</div>
       </div>
       {isLeftDivOpen ? (
         <div className="leftdata-wrapper">
