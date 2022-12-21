@@ -23,6 +23,18 @@ import "../scss/elements/_streaming.scss";
 import CurrentDeviceProvider from "../contexts/Devices/CurrentDevices";
 import CategoriesDataProvider from "../contexts/Categoires/CategoriesData";
 import { login } from "../store/auth/action";
+import { QueryClient, QueryClientProvider } from "react-query";
+// Note: ReactQueryDevtools can be used for api testing purpose when running locally.
+//       To use it uncomment it here and also below where it is used. 
+// import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 function MyApp({ Component, pageProps }) {
   const RedirectMaintain = useSelector((s) => s.setting.maintenance);
@@ -72,6 +84,7 @@ function MyApp({ Component, pageProps }) {
         <CurrentDeviceProvider>
           <CategoriesDataProvider>
             {getLayout(
+              <QueryClientProvider client={queryClient}>
               <Provider store={configureStore}>
                 <Component {...pageProps} />
                 <ToastContainer
@@ -85,7 +98,11 @@ function MyApp({ Component, pageProps }) {
                   closeOnClick
                   pauseOnHover
                 />
+                 {/* Note: ReactQueryDevtools can be used for api testing purpose when running locally.
+                            To use it uncomment it here and also above import.  */}
+                {/* <ReactQueryDevtools initialIsOpen /> */}
               </Provider>
+              </QueryClientProvider>
             )}
           </CategoriesDataProvider>
         </CurrentDeviceProvider>

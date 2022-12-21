@@ -49,7 +49,7 @@ export const ModalHeader = ({ children, title, handleOnClose }) => {
                     className="close"
                     data-dismiss="modal"
                     aria-label="Close"
-                    onClick={handleOnClose}
+                    onClick={(e) => {e.preventDefault();handleOnClose()}}
                 >
                     <span aria-hidden="true">
                         <IconClose />

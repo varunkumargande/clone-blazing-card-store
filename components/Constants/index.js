@@ -68,6 +68,14 @@ const VendorTabs = [
     title: "Following",
     key: "following",
   },
+  // Rating And Review Feature
+  // RatingAndReviewStart
+  {
+    title: "Recent Reviews",
+    key: "recent-reviews",
+    showOnlyTitle: true,
+  },
+  // RatingAndReviewEnd
 ];
 
 const BuyerTabs = [
