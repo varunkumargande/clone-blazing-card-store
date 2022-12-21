@@ -25,6 +25,7 @@ import { useIsMobile } from "../../contexts/Devices/CurrentDevices";
 import { chatLogin } from "../../api";
 import Error from "../_error";
 import { handleSocialLinks } from "../../utilities/utils";
+import RecentReviewContainer from "./RecentReviewContainer";
 import { getErrorMessage } from "../../utilities/common-helpers";
 import { show } from "../../store/toast/action";
 import { useDispatch } from "react-redux";
@@ -287,7 +288,11 @@ export default function PublicProfile() {
           }}
           className={`title ${activeTab === tab.key && "active"}`}
         >
-          {tab.title}({renderTabContentCount(tab.key)})
+          {tab.title}{!tab?.showOnlyTitle &&
+            <>
+              ({renderTabContentCount(tab.key)})
+            </>
+          }
         </button>
       </div>
     );
@@ -307,6 +312,8 @@ export default function PublicProfile() {
         return ProfileComponent(false);
       case "liked-shows":
         return LikedShowsComponent();
+      case "recent-reviews":
+        return <RecentReviewContainer userId={userId} />
       default:
         return null;
     }

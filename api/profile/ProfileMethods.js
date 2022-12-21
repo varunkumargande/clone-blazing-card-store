@@ -133,6 +133,16 @@ const FollowUser = (
     .catch((error) => {});
 };
 
+/**
+ * @method: GetVendorReviews
+ * @description: method used to get the specif vendor reviews done by the buyers.
+ */
+const GetVendorReviews = async (params) => {
+  return await http.get('vendor-store/vendor-product-rating-list', {
+    params
+  })
+}
+
 let functionCallbackSetter = (response, callback) => {
   if (response && response.status == 200) {
     if (response.data.data) {
@@ -161,7 +171,8 @@ const ProfileMethods = {
   GetUserFollowings,
   UserFollowUser,
   FollowUser,
-  GetUserChatDetails
+  GetVendorReviews,
+  GetUserChatDetails,
 };
 
 export default ProfileMethods;
