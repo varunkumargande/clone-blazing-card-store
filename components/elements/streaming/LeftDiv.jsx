@@ -14,7 +14,7 @@ import {
   DefaultImagePath,
 } from "../../Constants/imageConstants";
 import DefaultServices from "../../Services/DefaultServices";
-import { SignUPGoogle } from "../../partials/Modal/Modal";
+import { SignUPGoogle} from "../../partials/Modal/Modal";
 import { useIsMobile } from "../../../contexts/Devices/CurrentDevices";
 import Styles from "../../../modular_scss/LeftDiv.module.scss";
 import { handleModalClick } from "../../../utilities/utils";
@@ -514,6 +514,8 @@ function LeftDiv({
           </div>
           <div className="followrs-count">{noOfFollower} Followers</div>
           <div className={`flex flex-center ${Styles.rating_count}`}>
+            {/* Rating And Review Feature */}
+            {/* RatingAndReviewStart */}
             {streamingDetails?.vendorDetails ?
               <>
                 <span className={`mr-2 flex flex-center ${Styles.w_11}`}>
@@ -528,6 +530,7 @@ function LeftDiv({
                 width={`100px`}
               />
             }
+            {/* RatingAndReviewEnd */}
           </div>
         </div>
         <div className="btn-wrap">
@@ -553,7 +556,6 @@ function LeftDiv({
             </button>
           )}
         </div>
-        <div className={`flex flex-center ${Styles.rating_count}`}><span className={`mr-2 flex flex-center ${Styles.w_11}`}><IconStarFilled /></span>4.3  2,576 Ratings</div>
       </div>
       {isLeftDivOpen ? (
         <div className="leftdata-wrapper">

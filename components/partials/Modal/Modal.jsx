@@ -1479,112 +1479,7 @@ export function BidCreatedModal(props) {
     </div>
   );
 }
-export function ProductReviewModal(props) {
-  return (
-    <div className="modalOverlay flex justify-center flex-center">
-      <div className="modal large">
-        <div className="modal-header flex Space-between flex-center">
-          <h5 className="modal-title">Write a Product Review</h5>
-          <button
-            type="button"
-            className="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">
-              <IconClose />
-            </span>
-          </button>
-        </div>
-        <div className="modal-body">
-          <div className="prduct-reviews flex space-between">
-            <div className="review-left wd50">
-              <div className="title">
-                Rate the following aspects of the product
-              </div>
-              <div className="reviewBox flex space-between flex-center">
-                <div className="label">Shipping*</div>
-                <div className="review">
-                  <span className="active">
-                    <IconStar />
-                  </span>
-                  <span className="active">
-                    <IconStar />
-                  </span>
-                  <span className="active">
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                </div>
-              </div>
-              <div className="reviewBox flex space-between flex-center">
-                <div className="label">Packaging*</div>
-                <div className="review">
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                </div>
-              </div>
-              <div className="reviewBox flex space-between flex-center">
-                <div className="label">Accuracy*</div>
-                <div className="review">
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                  <span>
-                    <IconStar />
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="review-right wd50">
-              <div className="input-control mb32">
-                <label>Description*</label>
-                <textarea
-                  className="grey-bg"
-                  placeholder="Enter here"
-                ></textarea>
-                <div className="errorText"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="modal-footer">
-          <div className="flex space-between btn-wrap">
-            <button className="border-btn">Cancel</button>
-            <button className={"primary-btn disable"}>Submit Review</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+
 export function ReturnOrderModal(props) {
   return (
     <div className="modalOverlay flex justify-center flex-center">
@@ -1738,3 +1633,49 @@ export function UserSuggestionModal(props) {
     </div>
   );
 }
+
+export function BlockModal(props) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal small">
+        <div className="modal-header flex Space-between flex-center nobg hauto py-4">
+          <h5 className="modal-title flex flex-center small">
+            <span className="profile mr-3 rounded-circle">
+              <img src="/static/images/profileImg.png" alt="" />
+            </span>
+            Marie Woodey
+            <button className={`border-btn ml-3 ${Styles.following_btn} `}>Following</button>
+          </h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body p-0">
+          <div className="py-3 px-4 flex border-top list nowrap">
+            <div className={`icon flex flex-center justify-center ${Styles.list_icon}`}><i class="fa fa-user" aria-hidden="true"></i></div>
+            <div className="text">
+              <div className={`${Styles.list_title}`}>View Profile</div>
+            </div>
+          </div>
+          <div className="py-3 px-4 flex border-top list nowrap">
+            <div className={`icon flex flex-center justify-center ${Styles.list_icon}`}><i class="fa fa-ban" aria-hidden="true"></i></div>
+            <div className="text">
+              <div className={`${Styles.list_title}`}>Block and Remove from stream</div>
+              <div className={`${Styles.list_body}`}>
+This will restrict the user from performing any
+actions on this stream.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+

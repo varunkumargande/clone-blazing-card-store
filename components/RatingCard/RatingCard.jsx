@@ -18,7 +18,7 @@ const RatingCard = ({
             <div className={Styles.head_section}>
                 <div className={Styles.left_part}>
                     <div className={Styles.profile_img_container}>
-                    <div className={Styles.profile_img}>
+                    <div className={`${Styles.profile_img} flex justify-content-center align-content-center`}>
                         {imageUrl ?
                             <CloudinaryImage
                                 imageUrl={imageUrl}
