@@ -138,8 +138,6 @@ export default function ProfileInformation() {
     if (newDp) {
       setNewDp(null);
       setNewDpName("")
-    }
-    else {
       setIsProfileImageDelete(true)
       deleteProfileImageApi(dispatch, setIsProfileImageDelete)
     }
