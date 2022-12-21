@@ -9,7 +9,6 @@ import CategoryStream from "../components/partials/LandingPage/Electronic";
 import LikedList from "../components/partials/LandingPage/Layout/LikedList";
 import HeaderDefault from "../components/shared/headers/HeaderDefault";
 import Vertical from "../components/partials/LandingPage/Layout/vertical";
-import { getBecomeSellerInfo } from "../store/becomeSeller/action";
 import { connect } from "react-redux";
 import { catStreamDetailApi } from "../api/stream/subStreamDetail";
 import { useIsMobile } from "../contexts/Devices/CurrentDevices";
@@ -17,14 +16,10 @@ import {
   IntrestedModal,
   SignUPGoogle,
 } from "../components/partials/Modal/Modal";
-import useIsLoggedIn from "../hooks/useIsLoggedIn";
 import getCategoriesToSelect from "../api/home/getCategoriesToSelect";
 
 function landingPage({ category }) {
   const { isMobile } = useIsMobile();
-  const { isLoggedIn } = useIsLoggedIn();
-
-  const dispatch = useDispatch();
   const [loader, setLoader] = useState(null);
   const [catIds, setCatIds] = useState(null);
   const [apiCount, setApiCount] = useState(0);
@@ -33,12 +28,6 @@ function landingPage({ category }) {
   const [page, setPage] = useState(0);
   const [catId, setCatId] = useState(null);
   const [fetch, setFetch] = useState(true);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(getBecomeSellerInfo());
-    }
-  }, [isLoggedIn]);
 
   // ========================= category for home page ==============================
   const [categories, setCategories] = useState([]);
