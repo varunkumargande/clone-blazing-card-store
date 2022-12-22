@@ -14,7 +14,7 @@ const RatingCard = ({
     ratingTypes = []
 }) => {
     return (
-        <div className={Styles.rating_card}>
+        <div className={`${Styles.rating_card} my-4`}>
             <div className={Styles.head_section}>
                 <div className={Styles.left_part}>
                     <div className={Styles.profile_img_container}>

@@ -68,7 +68,7 @@ export default function OrderDetails({submitRatingMutation}) {
     setReviewModal(false);
   }
 
-  const renderRatingModalContent = (values, handleChange, handleBlur, setFieldValue, errors, touched) => {
+  const renderRatingModalContent = (values, handleChange, handleBlur, setFieldValue, setFieldTouched, errors, touched) => {
     const setRating = (value, valueKey) => {
       setFieldValue(valueKey, value)
     }
@@ -98,7 +98,10 @@ export default function OrderDetails({submitRatingMutation}) {
               placeholder="Enter here"
               value={values?.description}
               onBlur={handleBlur}
-              onChange={handleChange} />
+              onChange={(event) => {
+                setFieldTouched('description')
+                handleChange(event)
+              }} />
             {touched.description &&
               <div className="errorText">{errors?.description}</div>
             }
@@ -248,6 +251,7 @@ export default function OrderDetails({submitRatingMutation}) {
                 handleChange,
                 setFieldValue,
                 touched,
+                setFieldTouched,
                 handleBlur,
                 handleSubmit,
               }) => (
@@ -255,7 +259,7 @@ export default function OrderDetails({submitRatingMutation}) {
                   <CustomModal className="large" handleOnClose={handleReviewModalClose}>
                     <ModalHeader title="Write a Product Review" handleOnClose={handleReviewModalClose} />
                     <ModalContent>
-                      {renderRatingModalContent(values, handleChange, handleBlur, setFieldValue, errors, touched)}
+                      {renderRatingModalContent(values, handleChange, handleBlur, setFieldValue, setFieldTouched, errors, touched)}
                     </ModalContent>
                     <ModalFooter>
                       <button className="border-btn" onClick={handleReviewModalClose}>
