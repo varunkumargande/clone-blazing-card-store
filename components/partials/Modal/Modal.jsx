@@ -37,6 +37,7 @@ import IconStar from "../../Icons/IconStar";
 import saveSelectedCategories from "../../../api/home/saveSelectedCategories";
 import Styles from "../../../modular_scss/Signup.module.scss";
 import { useFetchZipCodeList } from "../../../hooks/useFetchZipCodeList";
+import IconEye from "../../Icons/IconEye";
 
 const responseGoogleFailure = (response) => {};
 
@@ -875,6 +876,7 @@ export function AddAddressModal(props) {
 
 export function DeletAccountModal({ setIsOpen, userName }) {
   const dispatch = useDispatch();
+  const [passwordShow, setPasswordShow] = useState(false);
 
   const deleteSchema = Yup.object().shape({
     userName: Yup.string().required("Required"),
@@ -938,15 +940,24 @@ export function DeletAccountModal({ setIsOpen, userName }) {
               />
               <ErrorMessage errors={formik.errors.userName} />{" "}
             </div>
-            <div className="input-control">
+            <div className="input-control pass">
               <label>Password *</label>
               <input
-                type="password"
+                type={passwordShow ? "text" : "password"}
                 name="password"
                 placeholder={"Enter here"}
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
+              <button
+                className="show-hide"
+                onClick={(event) => {
+                  event.preventDefault();
+                  setPasswordShow(!passwordShow);
+                }}
+              >
+                <IconEye />
+              </button>
               <ErrorMessage errors={formik.errors.password} />{" "}
             </div>
             <div className="flex btn-wrap delete">

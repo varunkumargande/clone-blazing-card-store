@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import IconDelete from "../../Icons/IconDelete";
+import IconEye from "../../Icons/IconEye";
 import Link from "next/link";
 import { changePasswordApi } from "../../../api";
 import { Formik } from "formik";
@@ -8,6 +9,9 @@ import { useDispatch } from "react-redux";
 export default function ChangePassword() {
   const dispatch = useDispatch();
   const [passLoader, setPassLoader] = useState(false);
+  const [currentPasswordShow, setCurrentPasswordShow] = useState(false);
+  const [newPasswordShow, setNewPasswordShow] = useState(false);
+  const [retypePasswordShow, setRetypePasswordShow] = useState(false);
 
   const initialChangePassValues = {
     currentPassword: "",
@@ -58,21 +62,30 @@ export default function ChangePassword() {
                 <form onSubmit={handleSubmit}>
                   <div className="box">
                     <div className="inner-box">
-                      <div className="input-control wd50">
+                      <div className="input-control wd50 pass">
                         <label>Current Password*</label>
                         <input
                           name="currentPassword"
                           placeholder={"Enter here"}
                           className="grey-bg"
                           onChange={handleChange}
-                          type="password"
+                          type={currentPasswordShow ? "text" : "password"}
                           value={values.currentPassword}
                         />
+                          <button
+                            className="show-hide"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setCurrentPasswordShow(!currentPasswordShow);
+                            }}
+                          >
+                            <IconEye />
+                          </button>
                         <span className="errorMessage">
                           {errors.currentPassword}
                         </span>
                       </div>
-                      <div className="input-control wd50">
+                      <div className="input-control wd50 pass">
                         <label htmlFor="usr">New Password*</label>
                         <input
                           name="newPassword"
@@ -80,14 +93,23 @@ export default function ChangePassword() {
                           id="usr"
                           className="grey-bg"
                           onChange={handleChange}
-                          type="password"
+                          type={newPasswordShow ? "text" : "password"}
                           value={values.newPassword}
                         />
+                          <button
+                            className="show-hide"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setNewPasswordShow(!newPasswordShow);
+                            }}
+                          >
+                            <IconEye />
+                          </button>
                         <span className="errorMessage">
                           {errors.newPassword}
                         </span>
                       </div>
-                      <div className="input-control wd50">
+                      <div className="input-control wd50 pass">
                         <label htmlFor="usr">Retype New Password*</label>
                         <input
                           name="retypeNewPassword"
@@ -96,8 +118,17 @@ export default function ChangePassword() {
                           className="grey-bg"
                           onChange={handleChange}
                           value={values.retypeNewPassword}
-                          type="password"
+                          type={retypePasswordShow ? "text" : "password"}
                         />
+                          <button
+                            className="show-hide"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setRetypePasswordShow(!retypePasswordShow);
+                            }}
+                          >
+                            <IconEye />
+                          </button>
                         <span className="errorMessage">
                           {errors.retypeNewPassword}
                         </span>
