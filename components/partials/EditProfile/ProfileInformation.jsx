@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { editProfileApi } from "../../../api";
 import Router from "next/router";
 import { DeletAccountModal } from "../Modal/Modal";
-import { imageUrl } from "../../../api/url";
 import { Loader } from "../../reusable/Loader";
 import { uploadImageToServer } from "../../../utilities/common-helpers";
 import CloudinaryImage from "../../CommonComponents/CloudinaryImage";
@@ -17,21 +15,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { show } from "../../../store/toast/action";
 import { profileSchema } from "../../../utilities/validations/profileDetails";
 import { profileInitialValues } from "../../../utilities/validations/profileDetails";
-import MySelect from "../../CommonComponents/MySelect";
-import Styles from "../../../modular_scss/ProfileInformation.module.scss";
 import DefaultConstants from "../../../utilities/constants";
 import { TostMessage } from "../ToastMessage/ToastMessage";
-import { countriesCodeList } from "../../Constants/countryCodeList";
 import { profileConstant } from "../../Constants/profile";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import IconDelete from '../../Icons/IconDelete';
+import IconDelete from "../../Icons/IconDelete";
 import { deleteProfileImageApi } from "../../../api/profile/deleteProfileImageApi";
 
 export default function ProfileInformation() {
   const dispatch = useDispatch();
   const MaxProfileImageSize = 5; // in MB
   const [profileData, setProfileData] = useState(null);
+  const [clearAvatar, setClearAvatar] = useState(false);
   const [newDpError, setNewDpError] = useState("");
   const [impuploadsuccess, setimpuploadsuccess] = useState(false);
   const [newDp, setNewDp] = useState(null);
@@ -43,7 +39,7 @@ export default function ProfileInformation() {
   const toast = useSelector((state) => state?.toast?.toast);
   const [disableUploadButton, setDisableUploadButton] = useState(false);
   const [currentChatUser, setCurrentChatUser] = useState(null);
-  const [isProfileImageDelete, setIsProfileImageDelete] = useState(false)
+  const [isProfileImageDelete, setIsProfileImageDelete] = useState(false);
 
   useEffect(() => {
     if (!!JSON.parse(localStorage.getItem("chat-app-current-user"))) {
@@ -137,11 +133,12 @@ export default function ProfileInformation() {
   const handleDeleteProfileImage = () => {
     if (newDp) {
       setNewDp(null);
-      setNewDpName("")
-      setIsProfileImageDelete(true)
-      deleteProfileImageApi(dispatch, setIsProfileImageDelete)
+      setNewDpName("");
+    } else {
+      deleteProfileImageApi(dispatch, setIsProfileImageDelete, setClearAvatar);
     }
-  }
+    setIsProfileImageDelete(true);
+  };
 
   const handleImageUpload = () => {
     return (
@@ -166,7 +163,7 @@ export default function ProfileInformation() {
                       </>
                     ) : (
                       <>
-                        {profileData?.avatar ? (
+                        {profileData?.avatar && !clearAvatar ? (
                           <CloudinaryImage
                             imageUrl={DefaultServices?.GetFullImageURL(
                               profileData,
@@ -207,8 +204,9 @@ export default function ProfileInformation() {
                   className={
                     disableUploadButton && !!toast.message
                       ? "upload-btn flex justify-center flex-center disable-upload-image-btn"
-                      : `upload-btn flex justify-center flex-center ${showImageLoader && "disable-upload-image-btn"
-                      }`
+                      : `upload-btn flex justify-center flex-center ${
+                          showImageLoader && "disable-upload-image-btn"
+                        }`
                   }
                 >
                   Update Profile Image
@@ -220,12 +218,23 @@ export default function ProfileInformation() {
                       showImageLoader ||
                       (disableUploadButton && !!toast.message)
                     }
+                    onClick={(e) => {
+                      e.target.value = "";
+                    }}
                     onChange={(e) => changeDP(e)}
                   />
                 </label>
-                <button className="delete-btn flex justify-center flex-center br50" onClick={(e) => { e.preventDefault(); handleDeleteProfileImage() }}>
-                  <IconDelete />
-                </button>
+                {(!!profileData.avatar || newDp) && (
+                  <button
+                    className="delete-btn flex justify-center flex-center br50"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDeleteProfileImage();
+                    }}
+                  >
+                    <IconDelete />
+                  </button>
+                )}
               </div>
               <div className="dicscription">
                 {newDpError ||
@@ -244,6 +253,7 @@ export default function ProfileInformation() {
       </>
     );
   };
+
   const handleProfileForm = () => {
     if (loader == false) {
       if (!!profileData) {
@@ -368,7 +378,8 @@ export default function ProfileInformation() {
                                 inputProps={{
                                   name: profileConstant.form.contactNumberField
                                     .phoneNumberName,
-                                  className: "input-control phone-input grey-bg",
+                                  className:
+                                    "input-control phone-input grey-bg",
                                 }}
                                 enableSearch={true}
                                 placeholder={
