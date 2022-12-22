@@ -33,7 +33,7 @@ class APIServices {
     return http.delete(`/${url}/${id}`);
   }
 
-  deleteAll() {
+  deleteAll(url) {
     return http.delete(`/${url}`);
   }
 
