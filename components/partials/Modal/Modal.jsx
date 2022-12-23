@@ -37,7 +37,10 @@ import IconStar from "../../Icons/IconStar";
 import saveSelectedCategories from "../../../api/home/saveSelectedCategories";
 import Styles from "../../../modular_scss/Signup.module.scss";
 import { useFetchZipCodeList } from "../../../hooks/useFetchZipCodeList";
+import { blockUserAPI } from "../../../api/stream/blockUserAPI";
+import useIsLoggedIn from "../../../hooks/useIsLoggedIn";
 import IconEye from "../../Icons/IconEye";
+import ModalStyles from "../../../modular_scss/Modal.module.scss";
 
 const responseGoogleFailure = (response) => {};
 
@@ -1645,23 +1648,61 @@ export function UserSuggestionModal(props) {
   );
 }
 
-export function BlockModal(props) {
+export function BlockAndRemoveModal(props) {
+  const { setBlockAndRemoveModal, userInfo, streamUUID, vendorId } = props;
+  const dispatch = useDispatch();
+  const moderatorId = useIsLoggedIn()?.userData?.id;
+  const handleProfileClick = () => {
+    window.open("/profile?userId=" + userInfo?.id, "mywindow").focus();
+  };
+  const handleBlockUser = async () => {
+    if (streamUUID && vendorId && moderatorId && userInfo?.id) {
+      const response = await blockUserAPI(
+        streamUUID,
+        vendorId,
+        moderatorId,
+        userInfo?.id,
+        dispatch
+      );
+    }
+  };
   return (
     <div className="modalOverlay flex justify-center flex-center">
       <div className="modal small">
         <div className="modal-header flex Space-between flex-center nobg hauto py-4">
           <h5 className="modal-title flex flex-center small">
-            <span className="profile mr-3 rounded-circle">
-              <img src="/static/images/profileImg.png" alt="" />
+            <span className={`profile mr-3 ${ModalStyles.rounded_circle}`}>
+              {userInfo?.profileUrl ? (
+                <CloudinaryImage
+                  imageUrl={userInfo?.profileUrl}
+                  keyId={`chatBox${userInfo?.username}`}
+                  transformation={ImageTransformation.streamPageProfile}
+                  alternative="profile"
+                />
+              ) : (
+                <img
+                  onError={() => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = "/static/images/profileImg.png";
+                  }}
+                  height={16}
+                  width={12}
+                  src={DefaultImagePath.defaultProfileImage}
+                  alt="Profile"
+                />
+              )}
             </span>
-            Marie Woodey
-            <button className={`border-btn ml-3 ${Styles.following_btn} `}>Following</button>
+            {userInfo?.username}
           </h5>
           <button
             type="button"
             className="close"
             data-dismiss="modal"
             aria-label="Close"
+            onClick={(e) => {
+              e.preventDefault();
+              setBlockAndRemoveModal(false);
+            }}
           >
             <span aria-hidden="true">
               <IconClose />
@@ -1670,18 +1711,43 @@ export function BlockModal(props) {
         </div>
         <div className="modal-body p-0">
           <div className="py-3 px-4 flex border-top list nowrap">
-            <div className={`icon flex flex-center justify-center ${Styles.list_icon}`}><i class="fa fa-user" aria-hidden="true"></i></div>
+            <div
+              className={`icon flex flex-center justify-center ${Styles.list_icon}`}
+            >
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </div>
             <div className="text">
-              <div className={`${Styles.list_title}`}>View Profile</div>
+              <div
+                className={`${Styles.list_title} pointer`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleProfileClick();
+                }}
+              >
+                View Profile
+              </div>
             </div>
           </div>
           <div className="py-3 px-4 flex border-top list nowrap">
-            <div className={`icon flex flex-center justify-center ${Styles.list_icon}`}><i class="fa fa-ban" aria-hidden="true"></i></div>
+            <div
+              className={`icon flex flex-center justify-center ${Styles.list_icon}`}
+            >
+              <i class="fa fa-ban" aria-hidden="true"></i>
+            </div>
             <div className="text">
-              <div className={`${Styles.list_title}`}>Block and Remove from stream</div>
+              <div
+                className={`${Styles.list_title} pointer`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleBlockUser();
+                }}
+              >
+                Block and Remove from stream
+              </div>
               <div className={`${Styles.list_body}`}>
-This will restrict the user from performing any
-actions on this stream.</div>
+                This will restrict the user from performing any actions on this
+                stream.
+              </div>
             </div>
           </div>
         </div>
@@ -1690,3 +1756,39 @@ actions on this stream.</div>
   );
 }
 
+export function BlockInfoModal(props) {
+  return (
+    <div className="modalOverlay flex justify-center flex-center">
+      <div className="modal small">
+        <div className="modal-header flex Space-between flex-center nobg hauto py-4">
+          <h5 className="modal-title flex flex-center small">
+            <div
+              className={`icon flex flex-center justify-center ${Styles.list_icon}`}
+            >
+              <i class="fa fa-ban" aria-hidden="true"></i>
+            </div>
+          </h5>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            onClick={(e) => {
+              e.preventDefault();
+              Router.push("/");
+            }}
+          >
+            <span aria-hidden="true">
+              <IconClose />
+            </span>
+          </button>
+        </div>
+        <div className="modal-body p-0">
+          <div className="py-3 px-4 flex border-top list nowrap">
+            <div className="text">You are blocked from this stream!!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
