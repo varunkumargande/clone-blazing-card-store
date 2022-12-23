@@ -57,7 +57,6 @@ import Styles from "./RecentReview.module.scss";
    * @description: getRatingTypesData
    */
   const getRatingTypesData = ((ratingData) => {
-    console.log('how mnay times does this get called');
     return [
       {
         name: 'Shipping',

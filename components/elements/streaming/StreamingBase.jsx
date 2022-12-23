@@ -99,7 +99,6 @@ function StreamingBase({
       setCurrentLiveUser(Number(userCount))
     }
   }, [isVendorLive])
-  console.log(userCount, 'userCount', CurrentLiveUser, 'CurrentLiveUser')
 
   /**
    * This useEffect will start countdown till 0
