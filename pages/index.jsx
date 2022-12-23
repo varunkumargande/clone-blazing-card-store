@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import MobileHeader from "../components/shared/headers/MobileHeader";
 import Category from "../components/partials/LandingPage/Category";
+import InterestedCategories from "../components/partials/LandingPage/HomePageSections/InterestedCategories";
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
 import Footer from "../components/partials/LandingPage/Footer";
@@ -187,6 +188,7 @@ function landingPage({ category }) {
         setCateStreamData={setCateStreamData}
       />
       <div className="card-wrapper">
+        <InterestedCategories />
         {category.categoryName == "likes" ? (
           getAllLikedCard()
         ) : category.categoryName === null ? (
