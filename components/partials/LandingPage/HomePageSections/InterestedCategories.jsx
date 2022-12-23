@@ -5,11 +5,11 @@ import ShowSectionCards from "./ShowSectionCards";
 
 import Styles from "../../../../modular_scss/InterestedCategories.module.scss";
 
-function InterestedCategories() {
+function InterestedCategories({ showLoginModal }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const result = getInterestsApi("interested", setCategories);
+    getInterestsApi("interested", setCategories);
   }, []);
 
   return (
@@ -19,7 +19,7 @@ function InterestedCategories() {
         <div>
           {categories?.data?.data?.map((datum) => (
             <button
-              key={`${datum.category_id}-${datum?.type}-interested-home-page`}
+              key={`${datum.categoryId}-${datum?.type}-interested-home-page`}
               className={`btn text-capitalize ${Styles.category_btn} btn-outline-dark px-4 mr-3 mb-3`}
             >
               {datum.name}
@@ -29,7 +29,8 @@ function InterestedCategories() {
       </div>
       {categories?.data?.data?.map((datum) => (
         <ShowSectionCards
-          key={`${datum.category_id}-${datum?.type}-interested-home-category`}
+          showLoginModal={showLoginModal}
+          key={`${datum.categoryId}-${datum?.type}-interested-home-category`}
           section={datum}
         />
       ))}

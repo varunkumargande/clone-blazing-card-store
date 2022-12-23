@@ -2,6 +2,7 @@ import React, { useState, useEffect, memo } from "react";
 import MobileHeader from "../components/shared/headers/MobileHeader";
 import Category from "../components/partials/LandingPage/Category";
 import InterestedCategories from "../components/partials/LandingPage/HomePageSections/InterestedCategories";
+import NormalCategories from "../components/partials/LandingPage/HomePageSections/NormalCategories";
 import LiveShow from "../components/partials/LandingPage/LiveShow";
 import ScheduledShow from "../components/partials/LandingPage/ScheduledShow";
 import Footer from "../components/partials/LandingPage/Footer";
@@ -18,6 +19,7 @@ import {
   SignUPGoogle,
 } from "../components/partials/Modal/Modal";
 import getCategoriesToSelect from "../api/home/getCategoriesToSelect";
+import useIsLoggedIn from "../hooks/useIsLoggedIn";
 
 function landingPage({ category }) {
   const { isMobile } = useIsMobile();
@@ -48,6 +50,8 @@ function landingPage({ category }) {
   const streamSchDetail = useSelector(
     (state) => state?.stream?.streamdetails
   )?.length;
+
+  const { isLoggedIn } = useIsLoggedIn();
 
   /**
    * appending category ids in object for handling home page
@@ -188,14 +192,15 @@ function landingPage({ category }) {
         setCateStreamData={setCateStreamData}
       />
       <div className="card-wrapper">
-        <InterestedCategories />
+        {isLoggedIn && <InterestedCategories showLoginModal={setShowModal} />}
         {category.categoryName == "likes" ? (
           getAllLikedCard()
         ) : category.categoryName === null ? (
           <>
             <LiveShow showLoginModal={setShowModal} />
             <ScheduledShow showLoginModal={setShowModal} />
-            {getAllCategoriesCard()}
+            {/* {getAllCategoriesCard()} */}
+            <NormalCategories showLoginModal={setShowModal} />
           </>
         ) : (
           <Vertical showLoginModal={setShowModal} />

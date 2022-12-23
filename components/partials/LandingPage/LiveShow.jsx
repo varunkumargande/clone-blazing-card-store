@@ -13,11 +13,11 @@ function LiveShow({ showLoginModal }) {
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(null);
   const [loader, setLoader] = useState(true);
-  const [seeMoreLoader,setSeeMoreLoader] = useState(true);
+  const [seeMoreLoader, setSeeMoreLoader] = useState(true);
 
   useEffect(() => {
-   setSeeMoreLoader(true)
-    liveDetailApi(setData, page, setTotal, setLoader,setSeeMoreLoader);
+    setSeeMoreLoader(true);
+    liveDetailApi(setData, page, setTotal, setLoader, setSeeMoreLoader);
   }, [page]);
 
   const getStreamCards = () => {

@@ -108,11 +108,11 @@ export const SocialMediaShareLink = {
 };
 
 //ToDo: need to change this to get a proper code from BE for this. Right now using the erro message which may get change from BE in future.
-export const ALREADY_VENDOR_CODE = "Seller is approved already."
+export const ALREADY_VENDOR_CODE = "Seller is approved already.";
 
 //ToDo: need to change this to get a proper code from BE for this. Right now using the erro message which may get change from BE in future.
-export const ALREADY_FRIEND_ERROR_CODE = "Already Friend with User."
-
+export const ALREADY_FRIEND_ERROR_CODE = "Already Friend with User.";
 
 // Error message
-export const MOBILE_NUMBER_ERROR = "Please enter mobile number in your profile!"
+export const MOBILE_NUMBER_ERROR =
+  "Please enter mobile number in your profile!";

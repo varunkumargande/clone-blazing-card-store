@@ -8,11 +8,21 @@ export async function getInterestsApi(type, setResult) {
   setResult(result);
 }
 
-export async function getSectionCardsApi(id, type, offset, setResult, setLoader) {
-  let url = (type === "category" && `&categoryId=${id}`);
+export async function getSectionCardsApi(
+  id,
+  type,
+  offset,
+  updateCards,
+  setTotal,
+  setLoader
+) {
+  let url = type === "category" && `&categoryId=${id}`;
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${offset}${url}&hi`
+    `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${offset}${url}`
   );
-  setResult(result);
+  if (result?.data?.data?.total) {
+    updateCards(result?.data?.data?.data);
+    setTotal(result?.data?.data?.total);
+  }
   setLoader(false);
 }
