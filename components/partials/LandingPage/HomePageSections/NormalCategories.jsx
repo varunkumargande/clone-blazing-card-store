@@ -15,7 +15,7 @@ function NormalCategories({ showLoginModal }) {
       {categories?.data?.data?.map((datum) => (
         <ShowSectionCards
           showLoginModal={showLoginModal}
-          key={`${datum.categoryId}-${datum?.type}-interested-home-category`}
+          key={`${datum.categoryId}-${datum?.type}-normal-home-category`}
           section={datum}
         />
       ))}

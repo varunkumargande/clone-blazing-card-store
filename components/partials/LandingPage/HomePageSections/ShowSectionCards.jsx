@@ -29,6 +29,7 @@ function ShowSectionCards({ section, showLoginModal }) {
         className="card-list flex flex-center"
         onClick={(e) => {
           e.preventDefault();
+          setLoader(true);
           setOffset(offset + categoryConstant.LIVE_DATA.limit);
         }}
       >
@@ -56,7 +57,7 @@ function ShowSectionCards({ section, showLoginModal }) {
   };
 
   const showCards = () => {
-    if (loader) {
+    if (loader && !cards.length) {
       return (
         <div className="overflow-wrap mb-5">
           <div className="card-wrap flex">
@@ -64,25 +65,25 @@ function ShowSectionCards({ section, showLoginModal }) {
           </div>
         </div>
       );
-    } else if (!loader) {
-      if (!!total) {
-        return (
-          <div className="overflow-wrap mb-5">
-            <div className="card-wrap flex">
-              {cards?.map((item) => (
-                <StreamCard
-                  key={item.uuid}
-                  showLoginModal={showLoginModal}
-                  detail={item}
-                />
-              ))}
-              {total > cards?.length && showCardLoader()}
-            </div>
+    } else if (!!total) {
+      return (
+        <div className="overflow-wrap mb-5">
+          <div className="card-wrap flex">
+            {cards?.map((item) => (
+              <StreamCard
+                key={item.uuid}
+                showLoginModal={showLoginModal}
+                detail={item}
+              />
+            ))}
+            {loader && (
+              <StreamCardSkeleton count={3} name={"home-live-shows"} />
+            )}
+            {total > cards?.length && showCardLoader()}
           </div>
-        );
-      }
-      return;
-    }
+        </div>
+      );
+    } else return;
   };
 
   return (
