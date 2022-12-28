@@ -19,6 +19,9 @@ const saveSelectedCategories = async (data, setIsInterestedCategoryOpen) => {
     );
     if (response?.data?.status === 1) {
       setIsInterestedCategoryOpen(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   } catch (error) {
     const toast = {
