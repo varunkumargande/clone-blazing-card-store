@@ -14,8 +14,7 @@ function ShowSectionCards({ section, showLoginModal }) {
   const [offset, setOffset] = useState(0);
   useEffect(() => {
     getSectionCardsApi(
-      section.categoryId,
-      section.type || "category",
+      section,
       offset,
       (data) => setCards([...cards, ...data]),
       setTotal,

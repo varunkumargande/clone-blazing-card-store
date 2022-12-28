@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState, useMemo } from "react";
+import Router from "next/router";
 
 import { getInterestsApi } from "../../../../api/home/categories";
 import ShowSectionCards from "./ShowSectionCards";
@@ -21,6 +22,16 @@ function InterestedCategories({ showLoginModal }) {
             <button
               key={`${datum.categoryId}-${datum?.type}-interested-home-page`}
               className={`btn text-capitalize ${Styles.category_btn} btn-outline-dark px-4 mr-3 mb-3`}
+              onClick={(e) => {
+                e.preventDefault();
+                Router.push(
+                  `/see-all?page=allCategory&category=${
+                    datum?.categorySlug
+                  }&subCategory=${
+                    datum?.type === "category" ? "all" : datum?.subCategorySlug
+                  }`
+                );
+              }}
             >
               {datum.name}
             </button>

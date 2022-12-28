@@ -9,20 +9,23 @@ export async function getInterestsApi(type, setResult) {
 }
 
 export async function getSectionCardsApi(
-  id,
-  type,
+  section,
   offset,
   updateCards,
   setTotal,
   setLoader
 ) {
-  let url = type === "category" && `&categoryId=${id}`;
   const result = await APIServices.getAll(
-    `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${offset}${url}`
+    section?.type === "subCategory"
+      ? `stream/categories-stream?category_slug=${section.categorySlug}&subCategory_slug=${section.subCategorySlug}&type=allCategory&limit=${categoryConstant.LIVE_DATA.limit}&offset=${offset}`
+      : `stream/stream-homePage?type=${categoryConstant.CATEGORY_DATA.type}&limit=${categoryConstant.LIVE_DATA.limit}&offset=${offset}&categoryId=${section.categoryId}`
   );
   if (result?.data?.data?.total) {
     updateCards(result?.data?.data?.data);
     setTotal(result?.data?.data?.total);
+  } else if (result?.data?.data?.result) {
+    updateCards(result?.data?.data?.result)
+    setTotal(result?.data?.data?.isNextPage);
   }
   setLoader(false);
 }
